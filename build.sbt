@@ -27,7 +27,7 @@ lazy val root = project
       "-new-syntax", // Require then and do in control expressions
     ),
 
-    libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.9",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % "test",
+    libraryDependencies += "org.scalatestplus" %% "mockito-3-4" % "3.2.9.0" % Test,
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test
 
-  )
+)

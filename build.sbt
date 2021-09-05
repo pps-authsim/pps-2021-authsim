@@ -1,3 +1,5 @@
+import sbt.Keys.libraryDependencies
+
 val scala3Version = "3.0.1"
 
 lazy val root = project
@@ -8,5 +10,8 @@ lazy val root = project
 
     scalaVersion := scala3Version,
 
-    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
+    libraryDependencies ++= Seq(
+      "com.novocode" % "junit-interface" % "0.11" % "test",
+      "com.google.guava" % "guava" % "25.1-jre"
+    )
   )

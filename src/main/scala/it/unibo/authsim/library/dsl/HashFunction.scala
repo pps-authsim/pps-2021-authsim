@@ -1,9 +1,12 @@
-package DSL
-import java.security.MessageDigest
-import scala.util.Try
+package it.unibo.authsim.library.dsl
+
 import com.google.common.hash.Hashing
 import com.google.common.io.BaseEncoding
+import it.HashFunction
+
 import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import scala.util.Try
 
 trait HashFunction {
   //Marica non ha messo nulla in input ma come faccio ad hashare un valore che non ho?

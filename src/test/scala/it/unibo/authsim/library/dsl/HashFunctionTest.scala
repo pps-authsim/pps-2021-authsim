@@ -1,5 +1,6 @@
-package DSL
+package it.unibo.authsim.library.dsl
 
+import it.unibo.authsim.library.dsl.HashFunction
 import org.junit.Assert.{assertEquals, assertNotEquals}
 import org.junit.Test
 

@@ -27,8 +27,8 @@ lazy val root = project
       "-new-syntax", // Require then and do in control expressions
     ),
 
-    libraryDependencies += "com.google.guava" % "guava" % "25.1-jre",
     libraryDependencies += "org.scalatestplus" %% "mockito-3-4" % "3.2.9.0" % "test",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test
-
+    libraryDependencies += "org.apache.commons" % "commons-configuration2" % "2.7",
+    libraryDependencies += "commons-codec" % "commons-codec" % "20041127.091804",
+    libraryDependencies += "commons-io" % "commons-io" % "20030203.000550",
 )

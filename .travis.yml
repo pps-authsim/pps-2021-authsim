@@ -1,3 +1,14 @@
+dist: xenial
+
 language: scala
 scala:
   - 3.0.1
+
+addons:
+  sonarcloud:
+    organization: "pps-authsim"
+    token:
+      secure: "jvwtXaE6beFJbZYbI4zFgZr9LNvGd7WNYP6WLomKJgI7TKi+xFFcpNdgIal7jVI5deaoJ6aT1UxpEnwxpYCva/2XojApwGZPjVRGg94Xx88LZh7rigymDUaqtqOr/D58aFGaqksdiHXzB25SPZLtkyfWf7CuMptvKTMxeb8kMG0GvKYPbAmbaFxaRjh9CLo5d4Tm53myDpfn/S+irX9Vwtm5GBq9D8BMK1GQHtn0irqUoVXs9ID19WBa2K+f0P03405wgcmsAqJzCXDnVM+Ct/Woht5aTktaYiNoI6PNuzpJy83NXL+u3Wy3h4n4m0EezHAA9TRtZ/68isV1k3kWEL4IDHN/ooWMy8MPVYp5iSgeLOv8iT0hFs3Y0o6NSlFvslV4HzYsBzZM382p4mMEWpoyrbWWvt0K73c9BFoglDnb4ZEtDeg+WMNXCz5p6tcYyjedEjq1zHqF5ilXo6Tul0ft8+/izeJGIly9EZYhye9aiO+O314S62RRaf2HWS4eRLFQzRBR0lpxq88sNuw1Xc4W1Jv2Tkx7WJX29sVwSJXgQIDw7r4rkORHxjmF9zlBxzZ9YK0GW9fLWNdIz2LcBCp9PkALjiF09jvncd5e5VWmHeY34P+2tHzVShV/havga2HbbhX4SlNPxc7AkETIggdX5qomQ77r1lRRB048OF4="
+
+script:
+  - sonar-scanner

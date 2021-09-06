@@ -16,11 +16,12 @@ object Logger{
   }
 }
 
-object LoggerTest{
+object LoggerTest extends App{
   import it.unibo.authsim.library.dsl.Logger.LoggerImpl
   val logger= new LoggerImpl
+  val time = new Date()
 
   logger.receivelsCracked(true)
-  logger.receiveStatistics(map)
-  logger.receiveExecutionTime(date.getTime)
+  logger.receiveStatistics(Map.empty)
+  logger.receiveExecutionTime(time.getTime)
 }

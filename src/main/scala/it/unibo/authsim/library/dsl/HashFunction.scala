@@ -9,10 +9,10 @@ trait HashFunction {
 }
 
 object HashFunction {
-  case class SHA() extends HashFunction {
-    override def hash(str: String): String = DigestUtils.shaHex(str.getBytes(StandardCharsets.UTF_8))
+  case class SHA1() extends HashFunction {
+    override def hash(password: String): String = DigestUtils.shaHex(password.getBytes(StandardCharsets.UTF_8))
   }
   case class MD5() extends HashFunction {
-    override def hash(str: String): String = DigestUtils.md5Hex(str.getBytes(StandardCharsets.UTF_8))
+    override def hash(password: String): String = DigestUtils.md5Hex(password.getBytes(StandardCharsets.UTF_8))
   }
 }

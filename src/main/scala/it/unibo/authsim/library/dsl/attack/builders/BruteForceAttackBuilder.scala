@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.attack.builders
 
 import it.unibo.authsim.library.dsl.attack.logspecification.LogSpec
 import it.unibo.authsim.library.dsl.stub._
-import org.joda.time.Duration
+import scala.concurrent.duration.Duration
 
 class BruteForceAttackBuilder extends OfflineAttackBuilder {
 

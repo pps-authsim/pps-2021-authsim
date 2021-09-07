@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-import org.joda.time.Duration
+import scala.concurrent.duration.Duration
 import it.unibo.authsim.library.dsl.attack.logspecification.LogSpec
 
 trait AttackBuilder {

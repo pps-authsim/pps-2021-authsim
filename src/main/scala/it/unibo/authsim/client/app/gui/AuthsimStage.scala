@@ -8,7 +8,6 @@ object AuthsimStage extends JFXApp3.PrimaryStage {
 
   title = "AuthSim"
   width = 1024
-  height = 768
   scene = new Scene {
     root = new VBox {
       children = Seq(

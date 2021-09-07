@@ -4,7 +4,7 @@ import java.util.Date
 trait Logger {
   def receiveExecutionTime(executionTime: Long): Unit
   def receiveStatistics(map: Map [String, String]): Unit
-  def receivelsCracked(flag: Boolean): Unit
+  def receiveCracked(flag: Boolean): Unit
 }
 
 object Logger{

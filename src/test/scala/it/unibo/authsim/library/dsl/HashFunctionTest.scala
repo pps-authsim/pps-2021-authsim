@@ -1,6 +1,5 @@
 package it.unibo.authsim.library.dsl
 
-import it.unibo.authsim.library.dsl.HashFunction
 import org.scalatest.wordspec.AnyWordSpec
 
 class HashFunctionTest extends AnyWordSpec {

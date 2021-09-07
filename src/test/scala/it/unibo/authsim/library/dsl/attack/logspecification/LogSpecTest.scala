@@ -2,10 +2,10 @@ package it.unibo.authsim.library.dsl.attack.logspecification
 
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.attack.logspecification.*
-import it.unibo.authsim.library.dsl.stub.Logger
+import it.unibo.authsim.library.dsl.Logger
 
 class LogSpecTest extends AnyWordSpec {
-  val myLogger: Logger = new Logger() {}
+  val myLogger: Logger = Logger()
   val is = afterWord("is")
 
   "A LogCategory" when {

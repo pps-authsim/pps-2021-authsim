@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-import it.unibo.authsim.library.dsl.stub.Proxy
+import it.unibo.authsim.library.dsl.Proxy
 
 trait OfflineAttackBuilder extends AttackBuilder {
   private var target: Proxy = null

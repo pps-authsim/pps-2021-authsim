@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.attack.logspecification
 
-import it.unibo.authsim.library.dsl.stub.Logger
+import it.unibo.authsim.library.dsl.Logger
 
 enum LogCategory:
   case ALL, SUCCESS, TIME, ATTEMPTS

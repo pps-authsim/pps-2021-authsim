@@ -2,8 +2,9 @@ package it.unibo.authsim.client.app.gui.tabs
 
 import it.unibo.authsim.client.app.gui.AuthsimStage.{height, width}
 import it.unibo.authsim.client.app.gui.tabs.AddUserForm.{add, hgap, padding, vgap}
+import scalafx.scene.layout.HBox
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.control.{ChoiceBox, Label, ListView, SplitPane, TextField, TextFormatter}
+import scalafx.scene.control.{Button, ChoiceBox, Label, ListView, SplitPane, TextField, TextFormatter}
 import scalafx.scene.layout.{BorderPane, GridPane, Pane, VBox}
 import scalafx.scene.paint.Color.*
 import scalafx.scene.paint.{LinearGradient, Stops}
@@ -49,6 +50,9 @@ object AddUserForm extends GridPane {
 
   val passwordField = new TextField();
   add(passwordField, 1, 2)
+
+  val saveButton = new Button("Save");
+  add(saveButton, 1, 4)
 }
 
 
@@ -90,9 +94,16 @@ object GenerateUsersForm extends GridPane {
     )
   }
   add(presetSelect, 1, 2)
+
+  val generateButton = new Button("Save");
+  add(generateButton, 1, 3)
 }
 
 object UsersList extends VBox {
+
+  val deleteSelectedButton = new Button("Delete Selected")
+  val resetButton = new Button("Reset")
+
   children = Seq(
     new Label("Created Users"),
     new ListView[String]() {
@@ -100,6 +111,12 @@ object UsersList extends VBox {
         "User1 Password1",
         "User2 Password2",
         "User3 Password3"
+      )
+    },
+    new HBox() {
+      children = Seq(
+        deleteSelectedButton,
+        resetButton
       )
     }
   )

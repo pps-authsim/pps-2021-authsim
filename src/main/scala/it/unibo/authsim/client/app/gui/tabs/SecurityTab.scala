@@ -8,6 +8,8 @@ import scalafx.scene.layout.VBox
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 
+// TODO modularize tab
+// TODO modularize label + list + textarea blocks with event handling and model binding
 object SecurityTab extends VBox {
 
   children = Seq(

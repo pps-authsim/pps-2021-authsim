@@ -1,7 +1,7 @@
 package it.unibo.authsim.client.app.gui.tabs
 
 import it.unibo.authsim.client.app.gui.AuthsimStage.{height, width}
-import it.unibo.authsim.client.app.gui.tabs.AddUserForm.{add, hgap, padding, vgap}
+import it.unibo.authsim.client.app.gui.tabs.AddUserForm.{add, alignment, hgap, padding, vgap}
 import scalafx.scene.layout.HBox
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, ChoiceBox, Label, ListView, SplitPane, TextField, TextFormatter}
@@ -32,10 +32,10 @@ object UsersTab extends SplitPane {
 }
 
 object AddUserForm extends GridPane {
-  alignment = Pos.Center;
-  hgap = 10;
-  vgap = 10;
-  padding = Insets(25, 25, 25, 25);
+  alignment = Pos.Center
+  hgap = 10
+  vgap = 10
+  padding = Insets(25, 25, 25, 25)
 
   val scenetitle = new Text("Add User")
   scenetitle.setFont(Font.font("Tahoma", FontWeight.Normal, 20))
@@ -105,7 +105,12 @@ object UsersList extends VBox {
   val resetButton = new Button("Reset")
 
   children = Seq(
-    new Label("Created Users"),
+    new HBox() {
+      alignment = Pos.Center
+      children = Seq(
+        new Label("Generated Users")
+      )
+    },
     new ListView[String]() {
       items = ObservableBuffer[String](
         "User1 Password1",

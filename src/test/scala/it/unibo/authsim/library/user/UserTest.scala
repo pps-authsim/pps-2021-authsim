@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.dsl
-import it.unibo.authsim.library.user.UserInformation
-import it.unibo.authsim.library.user.SaltInformation
+package it.unibo.authsim.library.user
+
+import it.unibo.authsim.library.user.{SaltInformation, UserInformation}
+import org.scalatest.BeforeAndAfter
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.{BeforeAndAfter}
 
 class UserTest extends AnyWordSpec{
   private def to = afterWord("to")

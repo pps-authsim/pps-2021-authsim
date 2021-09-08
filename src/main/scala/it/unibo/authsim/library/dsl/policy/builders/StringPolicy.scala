@@ -11,18 +11,25 @@ object StringPolicy:
 
     def this() = this(ListBuffer(RegexUtils.minimalLength))
 
+    protected def checkReCall(regex: Regex): Unit =
+      val regexString: String = regex.toString
+      val index: Int = this.patterns.indexWhere(r => r.toString == regexString)
+      if index != -1 then this.patterns.remove(index)
+
     def addPatterns(regex: Regex): Builder =
       patterns += regex
       this
 
     def maximumLength(number: Int): Builder =
       if number < this.minLen then throw new IllegalArgumentException("number must be > " + this.minLen)
+      this.checkReCall(RegexUtils.rangeLength(this.minLen, this.maxLen))
       this.maxLen = number
       this.addPatterns(RegexUtils.rangeLength(this.minLen, number))
       this
 
     def minimumLength(number: Int): Builder =
       if number > this.maxLen then throw new IllegalArgumentException("number must be <" + this.maxLen)
+      this.checkReCall(RegexUtils.minimumLength(this.minLen))
       this.minLen = number
       this.addPatterns(RegexUtils.minimumLength(number))
       this
@@ -43,21 +50,25 @@ object StringPolicy:
     private var minNumbers: Int = 0
 
     def minimumLowerChars(number: Int): OnlyCharsBuilder =
+      this.checkReCall(RegexUtils.minimumLowerCharacters(this.minLowerChars))
       this.minLowerChars = number
       this.addPatterns(RegexUtils.minimumLowerCharacters(number))
       this
 
     def minimumUpperChars(number: Int): OnlyCharsBuilder =
+      this.checkReCall(RegexUtils.minimumUpperCharacters(this.minUpperChars))
       this.minUpperChars = number
       this.addPatterns(RegexUtils.minimumUpperCharacters(number))
       this
 
     def minimumSymbols(number: Int): OnlyCharsBuilder =
+      this.checkReCall(RegexUtils.minimumSymbols(this.minSymbols))
       this.minSymbols = number
       this.addPatterns(RegexUtils.minimumSymbols(number))
       this
 
     def minimumNumbers(number: Int): OnlyCharsBuilder =
+      this.checkReCall(RegexUtils.minimumNumbers(this.minNumbers))
       this.minNumbers = number
       this.addPatterns(RegexUtils.minimumNumbers(number))
       this

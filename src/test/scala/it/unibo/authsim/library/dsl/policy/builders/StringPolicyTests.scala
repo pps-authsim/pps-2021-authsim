@@ -11,6 +11,7 @@ class StringPolicyTests extends AnyWordSpec :
 
   private val MINIMUM_LENGTH: Int = 1
   private val SETTED_MINIMUM_SYMBOLS: Int = 4
+  private val ACTUAL_MAX_LENGTH: Int = 5
   private val password = PasswordPolicy()
   private val userID = UserIDPolicy()
   private val otp = OTPPolicy()
@@ -45,6 +46,13 @@ class StringPolicyTests extends AnyWordSpec :
       "return 4" in {
         password minimumSymbols 4
         assert(password.getMinimumSymbols === SETTED_MINIMUM_SYMBOLS)
+      }
+    }
+
+    "call n times the same methods" should {
+      "set the last call" in {
+        password maximumLength 10 maximumLength 13 maximumLength 5
+        assert(password.getMaximumLength == ACTUAL_MAX_LENGTH)
       }
     }
   }

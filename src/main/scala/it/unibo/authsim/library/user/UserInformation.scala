@@ -1,7 +1,5 @@
 package it.unibo.authsim.library.user
 
-import it.unibo.authsim.library.dsl.SaltInformation
-
 trait UserInformation (saltInformation: SaltInformation, additionalInformation: Map[String, String]) extends User
 
 object UserInformation:
@@ -16,3 +14,9 @@ object UserInformation:
                                     saltInformation: SaltInformation,
                                     additionalInformation: Map[String, String])
                                    extends UserInformation(saltInformation, additionalInformation)
+
+trait SaltInformation (lenght: Option[Int], choicePolicy:Option[String], value: Option[String])
+
+object SaltInformation:
+  def apply(lenght: Option[Int], choicePolicy: Option[String],value: Option[String]): SaltInformation = SaltInformationImpl(lenght,choicePolicy, value)
+  case class SaltInformationImpl(lenght: Option[Int], choicePolicy: Option[String], value: Option[String]) extends SaltInformation(lenght, choicePolicy, value)

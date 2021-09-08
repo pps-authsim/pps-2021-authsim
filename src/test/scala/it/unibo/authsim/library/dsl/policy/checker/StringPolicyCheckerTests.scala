@@ -16,10 +16,11 @@ class StringPolicyCheckerTests extends AnyWordSpec:
   private val PASSWORD1: String = USERID
   private val PASSWORD_SYMBOLS: String = "Password$11"
   private val OTP = "12121212121"
+  private val WRONG_OTP = "aaaaaa12"
 
-  private val password: CredentialPolicy = PasswordPolicy()
-  private val userID: CredentialPolicy = UserIDPolicy()
-  private val otp: CredentialPolicy = OTPPolicy()
+  private val password = PasswordPolicy()
+  private val userID = UserIDPolicy()
+  private val otp = OTPPolicy()
 
   "A StringPolicyChecker " when {
     " a policy is set " should {
@@ -33,7 +34,8 @@ class StringPolicyCheckerTests extends AnyWordSpec:
       "return false for invalid string" in {
         assert(!(StringPolicyChecker(password) check EMPTY_PASSWORD))
         assert(!(StringPolicyChecker(password minimumUpperChars 3) check PASSWORD1))
-        assert(!(StringPolicyChecker(otp minimumNumbers 4 maximumLength 8) check OTP))
+        assert(!(StringPolicyChecker(otp maximumLength 8) check OTP))
+        assert(!(StringPolicyChecker(otp maximumLength 8) check WRONG_OTP))
         assert(!(StringPolicyChecker(password minimumSymbols 3) check PASSWORD))
       }
     }

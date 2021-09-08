@@ -11,11 +11,11 @@ class StringPolicyTests extends AnyWordSpec :
 
   private val MINIMUM_LENGTH: Int = 1
   private val SETTED_MINIMUM_SYMBOLS: Int = 4
-  private val password: CredentialPolicy = PasswordPolicy()
-  private val userID: CredentialPolicy = UserIDPolicy()
-  private val otp: CredentialPolicy = OTPPolicy()
+  private val password = PasswordPolicy()
+  private val userID = UserIDPolicy()
+  private val otp = OTPPolicy()
 
-  "A StringPolicy Builder" when {
+  "A Policy Builder" when {
     "set nothing" should{
       "have minimum length equivalent to 1" in {
         assert(password.getMinimumLength == MINIMUM_LENGTH)
@@ -49,21 +49,3 @@ class StringPolicyTests extends AnyWordSpec :
     }
   }
 
-
-  "A OTPPolicy" should {
-    "produce UnsupportedOperationException when minimumLowerChars is invoked" in {
-      assertThrows[UnsupportedOperationException] {
-        otp minimumLowerChars 2
-      }
-    }
-    "produce UnsupportedOperationException when minimumUpperChars is invoked" in {
-      assertThrows[UnsupportedOperationException] {
-        otp minimumUpperChars 5
-      }
-    }
-    "produce UnsupportedOperationException when minimumSymbols is invoked" in {
-      assertThrows[UnsupportedOperationException] {
-        otp minimumSymbols 1
-      }
-    }
-  }

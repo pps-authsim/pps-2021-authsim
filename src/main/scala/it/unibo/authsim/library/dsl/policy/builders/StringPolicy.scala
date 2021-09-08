@@ -3,68 +3,64 @@ package it.unibo.authsim.library.dsl.policy.builders
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
-trait StringPolicy:
-  def patterns: ListBuffer[Regex]
-  def minimumLength(number: Int): StringPolicy
-  def maximumLength(number: Int): StringPolicy
-  def minimumLowerChars(number: Int): StringPolicy
-  def minimumUpperChars(number: Int): StringPolicy
-  def minimumSymbols(number: Int): StringPolicy
-  def minimumNumbers(number: Int): StringPolicy
-  def addPatterns(regex: Regex): StringPolicy
-
 object StringPolicy:
 
-  class Builder(override val patterns: ListBuffer[Regex]) extends StringPolicy:
-
+  class Builder(val patterns: ListBuffer[Regex]):
     private var minLen: Int = 1
     private var maxLen: Int = Int.MaxValue
-    private var minUpperChars: Int = 0
-    private var minLowerChars: Int = 0
-    private var minSymbols: Int = 0
-    private var minNumbers: Int = 0
 
     def this() = this(ListBuffer(RegexUtils.minimalLength))
 
-    override def minimumLength(number: Int): StringPolicy =
-      if number > this.maxLen then throw new IllegalArgumentException("number must be <" + this.maxLen)
-      this.minLen = number
-      this.addPatterns(RegexUtils.minimumLength(number))
+    def addPatterns(regex: Regex): Builder =
+      patterns += regex
       this
 
-    override def maximumLength(number: Int): StringPolicy =
+    def maximumLength(number: Int): Builder =
       if number < this.minLen then throw new IllegalArgumentException("number must be > " + this.minLen)
       this.maxLen = number
       this.addPatterns(RegexUtils.rangeLength(this.minLen, number))
       this
 
-    override def minimumLowerChars(number: Int): StringPolicy =
-      this.minLowerChars = number
-      this.addPatterns(RegexUtils.minimumLowerCharacters(number))
-      this
-
-    override def minimumUpperChars(number: Int): StringPolicy =
-      this.minUpperChars = number
-      this.addPatterns(RegexUtils.minimumUpperCharacters(number))
-      this
-
-    override def minimumSymbols(number: Int): StringPolicy =
-      this.minSymbols = number
-      this.addPatterns(RegexUtils.minimumSymbols(number))
-      this
-
-    override def minimumNumbers(number: Int): StringPolicy =
-      this.minNumbers = number
-      this.addPatterns(RegexUtils.minimumNumbers(number))
-      this
-
-    override def addPatterns(regex: Regex): StringPolicy =
-      patterns += regex
+    def minimumLength(number: Int): Builder =
+      if number > this.maxLen then throw new IllegalArgumentException("number must be <" + this.maxLen)
+      this.minLen = number
+      this.addPatterns(RegexUtils.minimumLength(number))
       this
 
     def getMinimumLength: Int = this.minLen
 
     def getMaximumLength: Int = this.maxLen
+
+    override def toString: String =
+      "Policy.Builder { minimum length = " + this.getMinimumLength +
+        ", maximum length = " + this.getMaximumLength +
+        ", patterns = " + this.patterns + " }"
+
+  trait OnlyCharsBuilder extends Builder:
+    private var minUpperChars: Int = 0
+    private var minLowerChars: Int = 0
+    private var minSymbols: Int = 0
+    private var minNumbers: Int = 0
+
+    def minimumLowerChars(number: Int): OnlyCharsBuilder =
+      this.minLowerChars = number
+      this.addPatterns(RegexUtils.minimumLowerCharacters(number))
+      this
+
+    def minimumUpperChars(number: Int): OnlyCharsBuilder =
+      this.minUpperChars = number
+      this.addPatterns(RegexUtils.minimumUpperCharacters(number))
+      this
+
+    def minimumSymbols(number: Int): OnlyCharsBuilder =
+      this.minSymbols = number
+      this.addPatterns(RegexUtils.minimumSymbols(number))
+      this
+
+    def minimumNumbers(number: Int): OnlyCharsBuilder =
+      this.minNumbers = number
+      this.addPatterns(RegexUtils.minimumNumbers(number))
+      this
 
     def getMinimumUpperChars: Int = this.minUpperChars
 
@@ -81,14 +77,12 @@ object StringPolicy:
         ", minimum lowercase chars = " + this.getMinimumLowerChars +
         ", minimum symbols = " + this.getMinimumSymbols +
         ", minimum numbers = " + this.getMinimumNumbers +
-        ", patterns " + this.patterns + " }"
+        ", patterns = " + this.patterns + " }"
 
-  sealed trait CredentialPolicy extends Builder
-  case class PasswordPolicy() extends CredentialPolicy
-  case class UserIDPolicy() extends CredentialPolicy
+  sealed trait CredentialPolicy() extends Builder
+  case class PasswordPolicy() extends CredentialPolicy with OnlyCharsBuilder
+  case class UserIDPolicy() extends CredentialPolicy with OnlyCharsBuilder
   case class OTPPolicy() extends CredentialPolicy:
-    override def minimumLowerChars(number: Int): StringPolicy = throw new UnsupportedOperationException
-    override def minimumUpperChars(number: Int): StringPolicy = throw new UnsupportedOperationException
-    override def minimumSymbols(number: Int): StringPolicy =  throw new UnsupportedOperationException
+    this.addPatterns(RegexUtils.onlyNumbers)
 
-  case class SaltPolicy() extends Builder
+  case class SaltPolicy() extends Builder with OnlyCharsBuilder

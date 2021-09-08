@@ -91,4 +91,4 @@ object StringPolicy:
     override def minimumUpperChars(number: Int): StringPolicy = throw new UnsupportedOperationException
     override def minimumSymbols(number: Int): StringPolicy =  throw new UnsupportedOperationException
 
-  case class Salt() extends Builder
+  case class SaltPolicy() extends Builder

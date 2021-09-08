@@ -1,12 +1,10 @@
 package it.unibo.authsim.library.dsl
-import it.unibo.authsim.library.dsl.Logger.LoggerImpl
+import it.unibo.authsim.library.dsl.Logger.*
 import org.scalatest.funsuite.AnyFunSuite
 import java.util.Calendar
 
-import java.util.Date
-
 object LoggerTest extends App{
-    val logger= new LoggerImpl
+    val logger= Logger
 
     logger.receiveCracked(true)
     logger.receiveStatistics(Map.empty)

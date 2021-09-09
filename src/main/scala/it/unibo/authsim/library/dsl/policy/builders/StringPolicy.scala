@@ -90,7 +90,7 @@ object StringPolicy:
         ", minimum numbers = " + this.getMinimumNumbers +
         ", patterns = " + this.patterns + " }"
 
-  sealed trait CredentialPolicy() extends Builder
+  sealed trait CredentialPolicy extends Builder
   case class PasswordPolicy() extends CredentialPolicy with OnlyCharsBuilder
   case class UserIDPolicy() extends CredentialPolicy with OnlyCharsBuilder
   case class OTPPolicy() extends CredentialPolicy:

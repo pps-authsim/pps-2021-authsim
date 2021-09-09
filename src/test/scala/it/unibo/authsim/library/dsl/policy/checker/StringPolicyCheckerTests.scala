@@ -1,12 +1,8 @@
 package it.unibo.authsim.library.dsl.policy.checker
 
 import it.unibo.authsim.library.dsl.policy.builders.StringPolicy.*
-import it.unibo.authsim.library.dsl.policy.checker.StringPolicyChecker
 import org.scalatest.*
 import org.scalatest.wordspec.AnyWordSpec
-
-import scala.collection.mutable.ListBuffer
-import scala.util.matching.Regex
 
 class StringPolicyCheckerTests extends AnyWordSpec with BeforeAndAfter:
 

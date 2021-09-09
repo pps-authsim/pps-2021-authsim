@@ -4,9 +4,6 @@ import it.unibo.authsim.library.dsl.policy.builders.StringPolicy.*
 import org.scalatest.*
 import org.scalatest.wordspec.AnyWordSpec
 
-import scala.collection.mutable.ListBuffer
-import scala.util.matching.Regex
-
 class StringPolicyTests extends AnyWordSpec :
 
   private val MINIMUM_LENGTH: Int = 1

@@ -5,7 +5,7 @@ import it.unibo.authsim.library.dsl.attack.logspecification.*
 import it.unibo.authsim.library.dsl.Logger
 
 class LogSpecTest extends AnyWordSpec {
-  val myLogger: Logger = Logger()
+  val myLogger: Logger = Logger
   val is = afterWord("is")
 
   "A LogCategory" when {

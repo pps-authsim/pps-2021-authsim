@@ -8,7 +8,7 @@ import scala.concurrent.duration.Duration
 
 class BruteForceAttackBuilderTest extends AnyWordSpec {
   val myProxy = Proxy()
-  val myLogger = Logger()
+  val myLogger = Logger
   val myBruteForceBuilder = new BruteForceAttackBuilder()
 
   "The BruteForceAttackBuilder" must {

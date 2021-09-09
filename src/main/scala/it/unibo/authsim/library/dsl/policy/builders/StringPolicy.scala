@@ -11,6 +11,9 @@ object StringPolicy:
 
     def this() = this(ListBuffer(RegexUtils.minimalLength))
 
+    protected def checkNegativeNumbers(number: Int): Unit =
+      if number < 0 then throw new IllegalArgumentException("number must be >= 0")
+
     protected def checkReCall(regex: Regex): Unit =
       val regexString: String = regex.toString
       val index: Int = this.patterns.indexWhere(r => r.toString == regexString)
@@ -21,6 +24,7 @@ object StringPolicy:
       this
 
     def maximumLength(number: Int): Builder =
+      this.checkNegativeNumbers(number)
       this.checkReCall(RegexUtils.rangeLength(this.minLen, this.maxLen))
       if number < this.minLen then throw new IllegalArgumentException("number must be > " + this.minLen)
       this.maxLen = number
@@ -28,6 +32,7 @@ object StringPolicy:
       this
 
     def minimumLength(number: Int): Builder =
+      this.checkNegativeNumbers(number)
       this.checkReCall(RegexUtils.minimumLength(this.minLen))
       if number > this.maxLen then throw new IllegalArgumentException("number must be <" + this.maxLen)
       this.minLen = number
@@ -50,24 +55,28 @@ object StringPolicy:
     private var minNumbers: Int = 0
 
     def minimumLowerChars(number: Int): OnlyCharsBuilder =
+      this.checkNegativeNumbers(number)
       this.checkReCall(RegexUtils.minimumLowerCharacters(this.minLowerChars))
       this.minLowerChars = number
       this.addPatterns(RegexUtils.minimumLowerCharacters(number))
       this
 
     def minimumUpperChars(number: Int): OnlyCharsBuilder =
+      this.checkNegativeNumbers(number)
       this.checkReCall(RegexUtils.minimumUpperCharacters(this.minUpperChars))
       this.minUpperChars = number
       this.addPatterns(RegexUtils.minimumUpperCharacters(number))
       this
 
     def minimumSymbols(number: Int): OnlyCharsBuilder =
+      this.checkNegativeNumbers(number)
       this.checkReCall(RegexUtils.minimumSymbols(this.minSymbols))
       this.minSymbols = number
       this.addPatterns(RegexUtils.minimumSymbols(number))
       this
 
     def minimumNumbers(number: Int): OnlyCharsBuilder =
+      this.checkNegativeNumbers(number)
       this.checkReCall(RegexUtils.minimumNumbers(this.minNumbers))
       this.minNumbers = number
       this.addPatterns(RegexUtils.minimumNumbers(number))

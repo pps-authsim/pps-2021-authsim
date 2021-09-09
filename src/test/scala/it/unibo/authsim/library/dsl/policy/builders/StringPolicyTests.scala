@@ -4,14 +4,21 @@ import it.unibo.authsim.library.dsl.policy.builders.StringPolicy.*
 import org.scalatest.*
 import org.scalatest.wordspec.AnyWordSpec
 
-class StringPolicyTests extends AnyWordSpec :
+class StringPolicyTests extends AnyWordSpec with BeforeAndAfter:
 
   private val MINIMUM_LENGTH: Int = 1
   private val SETTED_MINIMUM_SYMBOLS: Int = 4
   private val ACTUAL_MAX_LENGTH: Int = 5
-  private val password = PasswordPolicy()
-  private val userID = UserIDPolicy()
-  private val otp = OTPPolicy()
+
+  private var password = PasswordPolicy()
+  private var userID = UserIDPolicy()
+  private var otp = OTPPolicy()
+
+  before {
+    password = PasswordPolicy()
+    userID = UserIDPolicy()
+    otp = OTPPolicy()
+  }
 
   "A Policy Builder" when {
     "set nothing" should{
@@ -50,6 +57,14 @@ class StringPolicyTests extends AnyWordSpec :
       "set the last call" in {
         password maximumLength 10 maximumLength 13 maximumLength 5
         assert(password.getMaximumLength == ACTUAL_MAX_LENGTH)
+      }
+    }
+
+    "set a methods with negative number" should {
+      "throws IllegalArgument Exception " in {
+        assertThrows[IllegalArgumentException] {
+          otp maximumLength -3
+        }
       }
     }
   }

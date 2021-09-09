@@ -1,9 +1,11 @@
 package it.unibo.authsim.library.dsl.attack.statistics
 
+import it.unibo.authsim.library.user.User
+
 import scala.concurrent.duration.Duration
 
-class Statistics(val successfulValues: Set[String], val attempts: Long, val elapsedTime: Duration) {
+class Statistics(val successfulBreaches: Set[User], val attempts: Long, val elapsedTime: Duration) {
   def +(other: Statistics): Statistics = {
-    new Statistics(this.successfulValues ++ other.successfulValues, this.attempts + other.attempts, this.elapsedTime + other.elapsedTime)
+    new Statistics(this.successfulBreaches ++ other.successfulBreaches, this.attempts + other.attempts, this.elapsedTime + other.elapsedTime)
   }
 }

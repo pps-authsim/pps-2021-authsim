@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.attack.builders
 
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.attack.logspecification.*
-import it.unibo.authsim.library.dsl.{Logger, Proxy}
+import it.unibo.authsim.library.dsl.{HashFunction, Logger, Proxy}
 
 import scala.concurrent.duration.Duration
 
@@ -12,9 +12,12 @@ class BruteForceAttackBuilderTest extends AnyWordSpec {
   val myBruteForceBuilder = new BruteForceAttackBuilder()
 
   "The BruteForceAttackBuilder" must {
-    myBruteForceBuilder against myProxy
+    myBruteForceBuilder against myProxy hashingWith HashFunction.MD5()
     "declare a target" in {
       assert(myBruteForceBuilder.getTarget() != null)
+    }
+    "select a hash function" in {
+      assert(myBruteForceBuilder.getHashFunction() != null)
     }
   }
 

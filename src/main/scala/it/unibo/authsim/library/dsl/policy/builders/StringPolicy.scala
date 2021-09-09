@@ -21,15 +21,15 @@ object StringPolicy:
       this
 
     def maximumLength(number: Int): Builder =
-      if number < this.minLen then throw new IllegalArgumentException("number must be > " + this.minLen)
       this.checkReCall(RegexUtils.rangeLength(this.minLen, this.maxLen))
+      if number < this.minLen then throw new IllegalArgumentException("number must be > " + this.minLen)
       this.maxLen = number
       this.addPatterns(RegexUtils.rangeLength(this.minLen, number))
       this
 
     def minimumLength(number: Int): Builder =
-      if number > this.maxLen then throw new IllegalArgumentException("number must be <" + this.maxLen)
       this.checkReCall(RegexUtils.minimumLength(this.minLen))
+      if number > this.maxLen then throw new IllegalArgumentException("number must be <" + this.maxLen)
       this.minLen = number
       this.addPatterns(RegexUtils.minimumLength(number))
       this

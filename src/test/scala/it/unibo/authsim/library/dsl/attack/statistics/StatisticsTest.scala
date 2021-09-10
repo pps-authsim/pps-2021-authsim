@@ -8,7 +8,7 @@ import it.unibo.authsim.library.user.User
 class StatisticsTest extends AnyWordSpec {
   class SimpleUser(val username: String, val password: String) extends User {}
 
-  val invariantStats = new Statistics(Set(), attempts = 0, Duration.Zero)
+  val invariantStats = Statistics.zero
   val simpleStats = new Statistics(Set(new SimpleUser("mario", "authsim")), 1_000_000, Duration(2, MINUTES))
   val anotherStats = new Statistics(Set(new SimpleUser("luca", "pps2021")), 3_000_000, Duration(7, MINUTES))
 

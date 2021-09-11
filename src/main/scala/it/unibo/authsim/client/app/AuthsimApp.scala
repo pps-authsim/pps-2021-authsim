@@ -2,11 +2,12 @@ package it.unibo.authsim.client.app
 
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
-import it.unibo.authsim.client.app.mvvm.view.tabs.{AttackTab, SecurityTab, UsersTab}
+import it.unibo.authsim.client.app.mvvm.view.tabs.{AttackTab, SecurityTab}
 import it.unibo.authsim.client.app.mvvm.viewmodel.ViewModel
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.binder.TabsBinder
+import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
 import scalafx.application.JFXApp3
 import scalafx.beans.property.DoubleProperty
 import scalafx.geometry.Insets
@@ -32,8 +33,8 @@ object AuthsimApp extends JFXApp3 {
 
     val usersModel = new UsersModel
 
-    val model = new AuthsimModel(usersModel)
     val view = new AuthsimView(usersTab, securityTab, attackTab)
+    val model = new AuthsimModel(usersModel)
     val viewModel = new ViewModel(model)
 
     val tabsBinder = new TabsBinder(viewModel)

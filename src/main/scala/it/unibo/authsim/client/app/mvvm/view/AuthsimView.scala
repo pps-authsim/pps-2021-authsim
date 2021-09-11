@@ -1,6 +1,7 @@
 package it.unibo.authsim.client.app.mvvm.view
 
-import it.unibo.authsim.client.app.mvvm.view.tabs.{AttackTab, SecurityTab, UsersTab}
+import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
+import it.unibo.authsim.client.app.mvvm.view.tabs.{AttackTab, SecurityTab}
 import scalafx.application.JFXApp3
 import scalafx.scene.{Node, Scene}
 import scalafx.scene.control.{Tab, TabPane}

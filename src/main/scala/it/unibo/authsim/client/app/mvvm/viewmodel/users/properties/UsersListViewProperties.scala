@@ -1,9 +1,10 @@
 package it.unibo.authsim.client.app.mvvm.viewmodel.users.properties
 
+import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
 import javafx.collections.ObservableList
 import scalafx.beans.property.{ObjectProperty}
 
 class UsersListViewProperties(
-                             val usersListProperty: ObjectProperty[ObservableList[String]],
-                             val usersListSelectionModel: scalafx.beans.property.ObjectProperty[javafx.scene.control.MultipleSelectionModel[String]]
+                             val usersListProperty: ObjectProperty[ObservableList[UserEntry]],
+                             val usersListSelectionModel: scalafx.beans.property.ObjectProperty[javafx.scene.control.MultipleSelectionModel[UserEntry]]
                              )

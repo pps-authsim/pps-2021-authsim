@@ -3,7 +3,7 @@ package it.unibo.authsim.client.app.mvvm.binder
 import it.unibo.authsim.client.app.mvvm.view.tabs.SecurityTab
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.SecurityPoliciesProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.properties.GenerateUsersFormProperties
-import it.unibo.authsim.client.app.mvvm.view.tabs.{AttackTab, SecurityTab, UsersTab}
+import it.unibo.authsim.client.app.mvvm.view.tabs.{AttackTab, SecurityTab}
 import it.unibo.authsim.client.app.mvvm.viewmodel.ViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.properties.AttackSequenceProperties
@@ -12,6 +12,7 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.{Credentia
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.properties.{AddUserFormProperties, GenerateUsersFormProperties, UsersListViewProperties}
 import it.unibo.authsim.client.app.mvvm.view.tabs.SecurityTab
+import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.SecurityPoliciesProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.properties.GenerateUsersFormProperties
 import scalafx.event.ActionEvent

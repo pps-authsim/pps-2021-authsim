@@ -5,6 +5,10 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
+import it.unibo.authsim.client.app.mvvm.model.users.User
+import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
+import javafx.collections.ObservableList
+import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
 
 class ViewModel(
                  private val model: AuthsimModel
@@ -16,6 +20,9 @@ class ViewModel(
 
   def bindUsersViewModel(usersViewModel: UsersViewModel): Unit = {
     this.usersViewModel = usersViewModel
+    val usersModel = model.usersModel;
+
+    usersViewModel.usersListProperties.usersListProperty.value.addAll(new UserEntry("user", "pass"))
   }
 
   def bindSecurityViewModel(securityViewModel: SecurityViewModel): Unit = {
@@ -30,7 +37,12 @@ class ViewModel(
     val username = usersViewModel.addUserFormProperties.usernameProperty.getValue()
     val password = usersViewModel.addUserFormProperties.passwordProperty.getValue()
 
-    println(username + password)
+    val user = new User(username, password)
+    val userEntry = new UserEntry(username, password)
+
+    // TODO make observable list?
+    model.usersModel.usersList += user
+    usersViewModel.usersListProperties.usersListProperty.value += userEntry
   }
 
   def generateUsers(): Unit = {

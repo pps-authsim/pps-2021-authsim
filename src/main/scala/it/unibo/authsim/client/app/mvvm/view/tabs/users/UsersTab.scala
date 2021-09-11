@@ -1,16 +1,16 @@
-package it.unibo.authsim.client.app.mvvm.view.tabs
+package it.unibo.authsim.client.app.mvvm.view.tabs.users
 
+import it.unibo.authsim.client.app.mvvm.view.tabs.users.{AddUserForm, GenerateUsersForm, UsersList}
 import javafx.scene.control.CheckBox
-import scalafx.scene.layout.HBox
+import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.control.{Button, ChoiceBox, Label, ListView, SplitPane, TextField, TextFormatter}
-import scalafx.scene.layout.{BorderPane, GridPane, Pane, VBox}
+import scalafx.scene.control.*
+import scalafx.scene.layout.{GridPane, VBox, HBox}
+import scalafx.scene.control.TextFormatter.Change
 import scalafx.scene.paint.Color.*
 import scalafx.scene.paint.{LinearGradient, Stops}
 import scalafx.scene.text.{Font, FontWeight, Text}
-import scalafx.util.converter.FormatStringConverter
-import scalafx.scene.control.TextFormatter.Change
-import scalafx.collections.ObservableBuffer;
+import scalafx.util.converter.FormatStringConverter;
 
 // TODO refactor for clarity
 class UsersTab() extends SplitPane {
@@ -73,14 +73,8 @@ class UsersTab() extends SplitPane {
     new Button("Save");
   }
 
-  def makeUsersListView(): ListView[String] = {
-    new ListView[String]() {
-      items = ObservableBuffer[String](
-        "User1 Password1",
-        "User2 Password2",
-        "User3 Password3"
-      )
-    }
+  def makeUsersListView(): ListView[UserEntry] = {
+    new ListView[UserEntry]()
   }
 
   def makeDeleteSelectedButton(): Button = {
@@ -145,7 +139,7 @@ class GenerateUsersForm(quantityField: TextField, presetSelect: ChoiceBox[String
   add(generateButton, 1, 3)
 }
 
-class UsersList(usersList: ListView[String], deleteSelectedButton: Button, resetButton: Button) extends VBox {
+class UsersList(usersList: ListView[UserEntry], deleteSelectedButton: Button, resetButton: Button) extends VBox {
 
   children = Seq(
     new HBox() {

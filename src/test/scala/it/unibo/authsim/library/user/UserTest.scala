@@ -7,9 +7,8 @@ import org.scalatest.wordspec.AnyWordSpec
 class UserTest extends AnyWordSpec{
   private def to = afterWord("to")
   private def are = afterWord("are")
-
-  private val salt = SaltInformation(Option.empty, Option.empty, Option.empty)
-  private val user = UserInformation("Alexandra", "Pippa", salt, Map.empty)
+  private def so = afterWord("so")
+  private val user = UserInformation("Alexandra", "Pippa", SaltInformation())
 
   private val salt2 = SaltInformation(Option(3), Option("Policy1"), Option("value1"))
   private val user2 = UserInformation("Lorenzo", "Cody", salt2, Map.empty)
@@ -22,10 +21,10 @@ class UserTest extends AnyWordSpec{
       "and a password" in {
         assert(user.password == "Pippa")
       }
-      "however one can choose to not salt user's password so saltvalues should be" in {
-        assert(user.saltInformation== salt)
+      "one could choose to not salt user's password, in this case the salt information should take the default values" in {
+        assert(user.saltInformation == SaltInformation())
       }
-      "also users's additional information could not be provided" in{
+      "the same would happen id users's additional information could not be provided" in{
         assert(user.additionalInformation == Map.empty)
       }
     }

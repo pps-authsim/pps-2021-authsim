@@ -7,7 +7,7 @@ object StringPolicy:
 
   class Builder(val patterns: ListBuffer[Regex]):
     private var minLen: Int = 1
-    private var maxLen: Int = Int.MaxValue
+    private var maxLen: Int = 20
 
     def this() = this(ListBuffer(RegexUtils.minimalLength))
 

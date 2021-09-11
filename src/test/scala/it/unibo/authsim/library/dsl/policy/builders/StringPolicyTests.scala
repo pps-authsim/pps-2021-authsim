@@ -7,6 +7,7 @@ import org.scalatest.wordspec.AnyWordSpec
 class StringPolicyTests extends AnyWordSpec with BeforeAndAfter:
 
   private val MINIMUM_LENGTH: Int = 1
+  private val MAXIMUM_LENGTH: Int = 20
   private val SETTED_MINIMUM_SYMBOLS: Int = 4
   private val ACTUAL_MAX_LENGTH: Int = 5
 
@@ -25,8 +26,8 @@ class StringPolicyTests extends AnyWordSpec with BeforeAndAfter:
       "have minimum length equivalent to 1" in {
         assert(password.getMinimumLength == MINIMUM_LENGTH)
       }
-      "have maximum length equivalent to " + Int.MaxValue  in {
-        assert(password.getMaximumLength == Int.MaxValue)
+      "have maximum length equivalent to 20"  in {
+        assert(password.getMaximumLength == MAXIMUM_LENGTH)
       }
     }
 

@@ -11,8 +11,7 @@ object StringPolicy:
 
     def this() = this(ListBuffer(RegexUtils.minimalLength))
 
-    protected def checkNegativeNumbers(number: Int): Unit =
-      if number < 0 then throw new IllegalArgumentException("number must be >= 0")
+    protected def checkNegativeNumbers(number: Int): Unit = require(number > 0, "number must be >= 0")
 
     protected def checkReCall(regex: Regex): Unit =
       val regexString: String = regex.toString
@@ -26,7 +25,7 @@ object StringPolicy:
     def maximumLength(number: Int): Builder =
       this.checkNegativeNumbers(number)
       this.checkReCall(RegexUtils.rangeLength(this.minLen, this.maxLen))
-      if number < this.minLen then throw new IllegalArgumentException("number must be > " + this.minLen)
+      require(number >= this.minLen , s"number must be >= ${this.minLen}")
       this.maxLen = number
       this.addPatterns(RegexUtils.rangeLength(this.minLen, number))
       this
@@ -34,7 +33,7 @@ object StringPolicy:
     def minimumLength(number: Int): Builder =
       this.checkNegativeNumbers(number)
       this.checkReCall(RegexUtils.minimumLength(this.minLen))
-      if number > this.maxLen then throw new IllegalArgumentException("number must be <" + this.maxLen)
+      require(number <= this.maxLen, s"number must be <= ${this.maxLen}")
       this.minLen = number
       this.addPatterns(RegexUtils.minimumLength(number))
       this

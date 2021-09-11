@@ -7,7 +7,7 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 class ViewModel() {
 
   var usersViewModel: UsersViewModel = null
-  var securityViewModel: SecurityViewModel = null;
+  var securityViewModel: SecurityViewModel = null
   var attackViewModel: AttackViewModel = null
 
   def bindUsersViewModel(usersViewModel: UsersViewModel): Unit = {
@@ -47,7 +47,9 @@ class ViewModel() {
   }
 
   def launchAttack(): Unit = {
-
+    val users = usersViewModel.usersListProperties.usersListProperty.value
+    val selectedProcedure = attackViewModel.attackSequenceProperties.attackSequenceListSelectionModel.value.getSelectedItem
+    println(selectedProcedure)
   }
 
 }

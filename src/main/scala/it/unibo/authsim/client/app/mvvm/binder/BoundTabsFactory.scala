@@ -63,6 +63,8 @@ class BoundTabsFactory(private val viewModel: ViewModel) {
 
     tabContent.launchAttackButton.setOnAction((e: ActionEvent) => viewModel.launchAttack())
 
+    viewModel.bindAttackViewModel(attackViewModel)
+
     makeTab("Attack", tabContent)
   }
 

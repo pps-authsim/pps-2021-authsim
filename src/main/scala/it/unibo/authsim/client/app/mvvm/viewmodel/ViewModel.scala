@@ -3,8 +3,12 @@ package it.unibo.authsim.client.app.mvvm.viewmodel
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
+import it.unibo.authsim.client.app.mvvm.view.AuthsimView
+import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 
-class ViewModel() {
+class ViewModel(
+                 private val model: AuthsimModel
+               ) {
 
   var usersViewModel: UsersViewModel = null
   var securityViewModel: SecurityViewModel = null
@@ -36,7 +40,7 @@ class ViewModel() {
     println(quantity + preset) // TODO add business logic
   }
 
-  def deleteSelectedUsers():Unit = {
+  def deleteSelectedUsers(): Unit = {
     val users = usersViewModel.usersListProperties.usersListProperty.value
     println(users) // TODO add business logic
   }
@@ -49,7 +53,7 @@ class ViewModel() {
   def launchAttack(): Unit = {
     val users = usersViewModel.usersListProperties.usersListProperty.value
     val selectedProcedure = attackViewModel.attackSequenceProperties.attackSequenceListSelectionModel.value.getSelectedItem
-    println(selectedProcedure)
+    println(selectedProcedure) // TODO add business logic
   }
 
 }

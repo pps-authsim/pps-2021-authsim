@@ -1,13 +1,16 @@
 package it.unibo.authsim.client.app
 
-import it.unibo.authsim.client.app.mvvm.binder.BoundTabsFactory
-import it.unibo.authsim.client.app.mvvm.view.AuthsimTabbedStageView
-import it.unibo.authsim.client.app.mvvm.view.tabs.UsersTab
+import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
+import it.unibo.authsim.client.app.mvvm.view.AuthsimView
+import it.unibo.authsim.client.app.mvvm.view.tabs.{AttackTab, SecurityTab, UsersTab}
 import it.unibo.authsim.client.app.mvvm.viewmodel.ViewModel
+import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
+import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
+import it.unibo.authsim.client.app.mvvm.binder.TabsBinder
 import scalafx.application.JFXApp3
 import scalafx.beans.property.DoubleProperty
 import scalafx.geometry.Insets
-import scalafx.scene.Scene
+import scalafx.scene.{Node, Scene}
 import scalafx.scene.control.{Tab, TabPane}
 import scalafx.scene.effect.DropShadow
 import scalafx.scene.layout.{BorderPane, HBox, Priority, VBox}
@@ -20,23 +23,25 @@ import scalafx.scene.text.{Font, Text}
  */
 object AuthsimApp extends JFXApp3 {
 
-  private val viewModel = new ViewModel();
-
   override def start(): Unit = {
-    // TODO launch computations thread
-    stage = new AuthsimTabbedStageView(makeBoundModularTabs())
-  }
+    // TODO launch ViewModel on a thread
 
-  private def makeBoundModularTabs(): Seq[Tab] = {
-    val binder = new BoundTabsFactory(viewModel)
-    val usersTab = binder.makeBoundUsersTab()
-    val securityTab = binder.makeSecurityTab()
-    val attackTab = binder.makeAttackTab()
-    return Seq(
-      usersTab,
-      securityTab,
-      attackTab
-    )
+    val usersTab = new UsersTab
+    val securityTab = new SecurityTab
+    val attackTab = new AttackTab
+
+    val usersModel = new UsersModel
+
+    val model = new AuthsimModel(usersModel)
+    val view = new AuthsimView(usersTab, securityTab, attackTab)
+    val viewModel = new ViewModel(model)
+
+    val tabsBinder = new TabsBinder(viewModel)
+    tabsBinder.bindUsersTab(usersTab)
+    tabsBinder.bindSecurityTab(securityTab)
+    tabsBinder.bindAttackTab(attackTab)
+
+    stage = view
   }
 
 }

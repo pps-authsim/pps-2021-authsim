@@ -1,11 +1,12 @@
 package it.unibo.authsim.client.app.mvvm.view
 
+import it.unibo.authsim.client.app.mvvm.view.tabs.{AttackTab, SecurityTab, UsersTab}
 import scalafx.application.JFXApp3
-import scalafx.scene.Scene
+import scalafx.scene.{Node, Scene}
 import scalafx.scene.control.{Tab, TabPane}
 import scalafx.scene.layout.VBox
 
-object AuthsimTabbedStageView {
+object AuthsimView {
 
   private val windowTitle = "AuthSim - pps2021"
   private val startingWindowWidth = 1024
@@ -28,11 +29,29 @@ object AuthsimTabbedStageView {
  * Abstracts ScalaFx tabbed view creation
  * @param tabModules - a sequence of tabs show at the primary window
  */
-class AuthsimTabbedStageView(private val tabModules: Seq[Tab]) extends JFXApp3.PrimaryStage {
+class AuthsimView(
+                              usersTab: UsersTab,
+                              securityTab: SecurityTab,
+                              attackTab: AttackTab
+                            ) extends JFXApp3.PrimaryStage {
 
-  title = AuthsimTabbedStageView.windowTitle
-  width = AuthsimTabbedStageView.startingWindowWidth
-  scene = AuthsimTabbedStageView.makeSceneFromTabs(tabModules);
+
+
+  title = AuthsimView.windowTitle
+  width = AuthsimView.startingWindowWidth
+  scene = AuthsimView.makeSceneFromTabs(Seq(
+    makeTab("Users", usersTab),
+    makeTab("Security", securityTab),
+    makeTab("Attack", attackTab)
+  ));
+
+  private def makeTab(title: String, tabContent: Node): Tab = {
+    return new Tab {
+      text = title
+      closable = false
+      content = tabContent
+    }
+  }
 
 }
 

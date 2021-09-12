@@ -1,5 +1,8 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
+import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
+import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.*
+
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
@@ -8,15 +11,22 @@ object StringPolicy:
   class Builder(val patterns: ListBuffer[Regex]):
     private var minLen: Int = 1
     private var maxLen: Int = 20
+    private var alphabetPolicy: PolicyAlphabet = new PolicyDefaultAlphabet
 
-    def this() = this(ListBuffer(RegexUtils.minimalLength))
+    def this() =
+      this(ListBuffer())
+      this.addPatterns(this.alphabetPolicy.minimalLength)
 
-    protected def checkNegativeNumbers(number: Int): Unit = require(number > 0, "number must be >= 0")
+    protected def checkNegativeNumbers(number: Int): Unit = require(number > 0, "number must be > 0")
 
     protected def checkReCall(regex: Regex): Unit =
       val regexString: String = regex.toString
       val index: Int = this.patterns.indexWhere(r => r.toString == regexString)
       if index != -1 then this.patterns.remove(index)
+
+    def addAlphabet(alphabetPolicy: PolicyAlphabet): Builder =
+      this.alphabetPolicy = alphabetPolicy
+      this
 
     def addPatterns(regex: Regex): Builder =
       patterns += regex
@@ -24,23 +34,25 @@ object StringPolicy:
 
     def maximumLength(number: Int): Builder =
       this.checkNegativeNumbers(number)
-      this.checkReCall(RegexUtils.rangeLength(this.minLen, this.maxLen))
+      this.checkReCall(this.alphabetPolicy.rangeLength(this.minLen, this.maxLen))
       require(number >= this.minLen , s"number must be >= ${this.minLen}")
       this.maxLen = number
-      this.addPatterns(RegexUtils.rangeLength(this.minLen, number))
+      this.addPatterns(this.alphabetPolicy.rangeLength(this.minLen, number))
       this
 
     def minimumLength(number: Int): Builder =
       this.checkNegativeNumbers(number)
-      this.checkReCall(RegexUtils.minimumLength(this.minLen))
+      this.checkReCall(this.alphabetPolicy.minimumLength(this.minLen))
       require(number <= this.maxLen, s"number must be <= ${this.maxLen}")
       this.minLen = number
-      this.addPatterns(RegexUtils.minimumLength(number))
+      this.addPatterns(this.alphabetPolicy.minimumLength(number))
       this
 
     def getMinimumLength: Int = this.minLen
 
     def getMaximumLength: Int = this.maxLen
+
+    def getAlphabet: PolicyAlphabet = this.alphabetPolicy
 
     override def toString: String =
       "Policy.Builder { minimum length = " + this.getMinimumLength +
@@ -55,30 +67,30 @@ object StringPolicy:
 
     def minimumLowerChars(number: Int): OnlyCharsBuilder =
       this.checkNegativeNumbers(number)
-      this.checkReCall(RegexUtils.minimumLowerCharacters(this.minLowerChars))
+      this.checkReCall(this.getAlphabet.minimumLowerCharacters(this.minLowerChars))
       this.minLowerChars = number
-      this.addPatterns(RegexUtils.minimumLowerCharacters(number))
+      this.addPatterns(this.getAlphabet.minimumLowerCharacters(number))
       this
 
     def minimumUpperChars(number: Int): OnlyCharsBuilder =
       this.checkNegativeNumbers(number)
-      this.checkReCall(RegexUtils.minimumUpperCharacters(this.minUpperChars))
+      this.checkReCall(this.getAlphabet.minimumUpperCharacters(this.minUpperChars))
       this.minUpperChars = number
-      this.addPatterns(RegexUtils.minimumUpperCharacters(number))
+      this.addPatterns(this.getAlphabet.minimumUpperCharacters(number))
       this
 
     def minimumSymbols(number: Int): OnlyCharsBuilder =
       this.checkNegativeNumbers(number)
-      this.checkReCall(RegexUtils.minimumSymbols(this.minSymbols))
+      this.checkReCall(this.getAlphabet.minimumSymbols(this.minSymbols))
       this.minSymbols = number
-      this.addPatterns(RegexUtils.minimumSymbols(number))
+      this.addPatterns(this.getAlphabet.minimumSymbols(number))
       this
 
     def minimumNumbers(number: Int): OnlyCharsBuilder =
       this.checkNegativeNumbers(number)
-      this.checkReCall(RegexUtils.minimumNumbers(this.minNumbers))
+      this.checkReCall(this.getAlphabet.minimumNumbers(this.minNumbers))
       this.minNumbers = number
-      this.addPatterns(RegexUtils.minimumNumbers(number))
+      this.addPatterns(this.getAlphabet.minimumNumbers(number))
       this
 
     def getMinimumUpperChars: Int = this.minUpperChars
@@ -102,6 +114,6 @@ object StringPolicy:
   case class PasswordPolicy() extends CredentialPolicy with OnlyCharsBuilder
   case class UserIDPolicy() extends CredentialPolicy with OnlyCharsBuilder
   case class OTPPolicy() extends CredentialPolicy:
-    this.addPatterns(RegexUtils.onlyNumbers)
+    this.addPatterns(this.getAlphabet.onlyNumbers)
 
   case class SaltPolicy() extends Builder with OnlyCharsBuilder

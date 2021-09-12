@@ -5,8 +5,8 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.{Credentia
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.SecurityPoliciesProperties
 
 class SecurityViewModel(
-                         securityPoliciesProperties: SecurityPoliciesProperties,
-                         credentialsSourceProperties: CredentialsSourceProperties
+                         val securityPoliciesProperties: SecurityPoliciesProperties,
+                         val credentialsSourceProperties: CredentialsSourceProperties
                        ) {
 
 }

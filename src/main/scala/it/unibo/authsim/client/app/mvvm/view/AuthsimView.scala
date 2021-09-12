@@ -31,9 +31,9 @@ object AuthsimView {
  * @param tabModules - a sequence of tabs show at the primary window
  */
 class AuthsimView(
-                              usersTab: UsersTab,
-                              securityTab: SecurityTab,
-                              attackTab: AttackTab
+                              val usersTab: UsersTab,
+                              val securityTab: SecurityTab,
+                              val attackTab: AttackTab
                             ) extends JFXApp3.PrimaryStage {
 
 

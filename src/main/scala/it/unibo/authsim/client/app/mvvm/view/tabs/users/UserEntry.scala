@@ -1,5 +1,5 @@
 package it.unibo.authsim.client.app.mvvm.view.tabs.users
 
-class UserEntry(username: String, password: String) {
+case class UserEntry(val username: String, val password: String) {
   override def toString: String = username + " " + password
 }

@@ -1,5 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.binder
 
+import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.view.tabs.SecurityTab
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.SecurityPoliciesProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.properties.GenerateUsersFormProperties
@@ -20,9 +21,15 @@ import scalafx.scene.Node
 import scalafx.scene.control.Tab
 import scalafx.Includes.*
 
-class TabsBinder(private val viewModel: ViewModel) {
+class TabsBinder(private val view: AuthsimView, private val viewModel: ViewModel) {
 
-  def bindUsersTab(tab: UsersTab): Unit = {
+  def bind(): Unit = {
+    bindUsersTab(view.usersTab)
+    bindSecurityTab(view.securityTab)
+    bindAttackTab(view.attackTab)
+  }
+
+  private def bindUsersTab(tab: UsersTab): Unit = {
 
     val addUserFormProperties = new AddUserFormProperties(tab.usernameField.text, tab.passwordField.text);
     val generateUsersForm = new GenerateUsersFormProperties(tab.quantityField.text, tab.presetSelect.value);
@@ -34,13 +41,13 @@ class TabsBinder(private val viewModel: ViewModel) {
 
     tab.generateButton.setOnAction((e: ActionEvent) => viewModel.generateUsers())
 
-    tab.resetButton.setOnAction((e: ActionEvent) => viewModel.deleteSelectedUsers())
-    tab.deleteSelectedButton.setOnAction((e: ActionEvent) => viewModel.resetUsers())
+    tab.deleteSelectedButton.setOnAction((e: ActionEvent) => viewModel.deleteSelectedUsers())
+    tab.resetButton.setOnAction((e: ActionEvent) => viewModel.resetUsers())
 
     viewModel.bindUsersViewModel(usersViewModel)
   }
 
-  def bindSecurityTab(tab: SecurityTab): Unit = {
+  private def bindSecurityTab(tab: SecurityTab): Unit = {
     val securityPoliciesProperties = new SecurityPoliciesProperties(tab.securityPoliciesList.items, tab.securityPoliciesList.selectionModel, tab.securityPolicyDescription.text)
     val credentialsSourceProperties = new CredentialsSourceProperties(tab.credentialsSourceList.items, tab.credentialsSourceList.selectionModel, tab.credentialsSourceDescription.text)
 
@@ -49,7 +56,7 @@ class TabsBinder(private val viewModel: ViewModel) {
     viewModel.bindSecurityViewModel(securityViewModel)
   }
 
-  def bindAttackTab(tab: AttackTab): Unit = {
+  private def bindAttackTab(tab: AttackTab): Unit = {
     val attackSequenceProperties = new AttackSequenceProperties(
       tab.attackSequenceList.items,
       tab.attackSequenceList.selectionModel,
@@ -63,5 +70,5 @@ class TabsBinder(private val viewModel: ViewModel) {
 
     viewModel.bindAttackViewModel(attackViewModel)
   }
-  
+
 }

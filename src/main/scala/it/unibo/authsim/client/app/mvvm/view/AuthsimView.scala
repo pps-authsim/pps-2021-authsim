@@ -35,9 +35,7 @@ class AuthsimView(
                               val usersTab: UsersTab,
                               val securityTab: SecurityTab,
                               val attackTab: AttackTab
-                            ) extends JFXApp3.PrimaryStage {
-
-
+                            ) extends JFXApp3.PrimaryStage :
 
   title = AuthsimView.windowTitle
   width = AuthsimView.startingWindowWidth
@@ -47,15 +45,12 @@ class AuthsimView(
     makeTab("Attack", attackTab)
   ));
 
-  private def makeTab(title: String, tabContent: Node): Tab = {
-    return new Tab {
-      text = title
-      closable = false
-      content = tabContent
-    }
+  private def makeTab(title: String, tabContent: Node): Tab = new Tab {
+    text = title
+    closable = false
+    content = tabContent
   }
 
-}
 
 
 

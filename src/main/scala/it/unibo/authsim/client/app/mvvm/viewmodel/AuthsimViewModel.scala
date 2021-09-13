@@ -5,6 +5,7 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
+import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
 import it.unibo.authsim.client.app.mvvm.model.users.User
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
@@ -18,7 +19,7 @@ object AuthsimViewModel:
 
 class AuthsimViewModel(
                  private val model: AuthsimModel
-               ) {
+               ) :
 
   var usersViewModel: UsersViewModel = null
   var securityViewModel: SecurityViewModel = null
@@ -69,9 +70,9 @@ class AuthsimViewModel(
     val anotherSequenceName = "Sequence2"
     val anotherSequenceDescription = "Even better attack sequence"
 
-    model.attackModel.securityPolicyList += new AttackSequenceEntry(sequenceName, sequenceDescription)
+    model.attackModel.securityPolicyList += new AttackSequence(sequenceName, sequenceDescription)
     attackViewModel.attackSequenceProperties.attackSequenceList.value.add(new AttackSequenceEntry(sequenceName, sequenceDescription))
-    model.attackModel.securityPolicyList += new AttackSequenceEntry(anotherSequenceName, anotherSequenceDescription)
+    model.attackModel.securityPolicyList += new AttackSequence(anotherSequenceName, anotherSequenceDescription)
     attackViewModel.attackSequenceProperties.attackSequenceList.value.add(new AttackSequenceEntry(anotherSequenceName, anotherSequenceDescription))
 
     this.attackViewModel = attackViewModel
@@ -81,11 +82,12 @@ class AuthsimViewModel(
     val username = usersViewModel.addUserFormProperties.usernameProperty.getValue()
     val password = usersViewModel.addUserFormProperties.passwordProperty.getValue()
 
-    val user = new User(username, password)
-    val userEntry = new UserEntry(username, password)
+    if username != null && !username.isBlank && password != null && !password.isBlank then
+      val user = new User(username, password)
+      val userEntry = new UserEntry(username, password)
 
-    model.usersModel.usersList += user
-    usersViewModel.usersListProperties.usersListProperty.value += userEntry
+      model.usersModel.usersList += user
+      usersViewModel.usersListProperties.usersListProperty.value += userEntry
   }
 
   def generateUsers(): Unit = {
@@ -120,5 +122,4 @@ class AuthsimViewModel(
       attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModel.ATTACK_MISSING_VALUE_TEXT
   }
 
-}
 

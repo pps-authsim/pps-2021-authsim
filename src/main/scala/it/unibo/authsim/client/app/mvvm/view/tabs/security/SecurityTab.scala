@@ -5,7 +5,7 @@ import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.{HBox, VBox}
 
-class SecurityTab extends VBox {
+class SecurityTab extends VBox :
 
   val securityPoliciesList = makeSecurityPoliciesList()
   val securityPolicyDescription = makeSecurityPolicyDescription()
@@ -13,30 +13,22 @@ class SecurityTab extends VBox {
   val credentialsSourceList = makeCredentialsSourceList()
   val credentialsSourceDescription = makeCredentialsSourceDescription()
 
-  def makeSecurityPoliciesList(): ListView[SecurityPolicyEntry] = {
-    new ListView[SecurityPolicyEntry]() {
-      items = ObservableBuffer[SecurityPolicyEntry]()
-    }
+  def makeSecurityPoliciesList(): ListView[SecurityPolicyEntry] = new ListView[SecurityPolicyEntry]() {
+    items = ObservableBuffer[SecurityPolicyEntry]()
   }
 
-  def makeSecurityPolicyDescription(): TextArea = {
-    new TextArea() {
-      text = ""
-      editable = false;
-    }
+  def makeSecurityPolicyDescription(): TextArea = new TextArea() {
+    text = ""
+    editable = false;
   }
 
-  def makeCredentialsSourceList(): ListView[CredentialsSourceEntry] = {
-    new ListView[CredentialsSourceEntry]() {
-      items = ObservableBuffer[CredentialsSourceEntry]()
-    }
+  def makeCredentialsSourceList(): ListView[CredentialsSourceEntry] = new ListView[CredentialsSourceEntry]() {
+    items = ObservableBuffer[CredentialsSourceEntry]()
   }
 
-  def makeCredentialsSourceDescription(): TextArea = {
-    new TextArea() {
-      text = ""
-      editable = false;
-    }
+  def makeCredentialsSourceDescription(): TextArea = new TextArea() {
+    text = ""
+    editable = false;
   }
 
   children = Seq(
@@ -62,4 +54,4 @@ class SecurityTab extends VBox {
     }
   )
 
-}
+

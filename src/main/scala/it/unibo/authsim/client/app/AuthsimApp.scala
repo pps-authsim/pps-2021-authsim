@@ -25,7 +25,7 @@ import scalafx.scene.text.{Font, Text}
 /**
  * Defines the entrypoint to
  */
-object AuthsimApp extends JFXApp3 {
+object AuthsimApp extends JFXApp3 :
 
   override def start(): Unit = {
     // TODO launch ViewModel on a thread
@@ -48,5 +48,3 @@ object AuthsimApp extends JFXApp3 {
 
     stage = view
   }
-
-}

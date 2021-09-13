@@ -9,6 +9,4 @@ class AttackSequenceProperties(
                                 val attackSequenceListSelectionModel: scalafx.beans.property.ObjectProperty[javafx.scene.control.MultipleSelectionModel[AttackSequenceEntry]],
                                 val attackSequenceDescription: StringProperty,
                                 val attackLog: StringProperty
-                              ) {
-
-}
+                              )

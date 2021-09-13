@@ -8,6 +8,4 @@ class CredentialsSourceProperties(
                                    val credentialsSourceList: ObjectProperty[ObservableList[CredentialsSourceEntry]],
                                    val credentialsSourceListSelectionModel: scalafx.beans.property.ObjectProperty[javafx.scene.control.MultipleSelectionModel[CredentialsSourceEntry]],
                                    val credentialsSourceDescription: StringProperty
-                                 ) {
-
-}
+                                 )

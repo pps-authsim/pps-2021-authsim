@@ -4,5 +4,4 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.attack.properties.AttackSequen
 
 class AttackViewModel(
                      val attackSequenceProperties: AttackSequenceProperties
-                     ) {
-}
+                     )

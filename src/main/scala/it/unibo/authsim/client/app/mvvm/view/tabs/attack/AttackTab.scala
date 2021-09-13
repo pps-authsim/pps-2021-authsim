@@ -5,7 +5,8 @@ import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.{HBox, VBox}
 
-class AttackTab extends VBox {
+// todo expose only properties
+class AttackTab extends VBox :
 
   val attackSequenceList = makeAttackSequenceList()
   val attackSequenceDescription = makeAttackSequenceDescription()
@@ -14,29 +15,21 @@ class AttackTab extends VBox {
 
   val launchAttackButton = makeLauchAttackButton()
 
-  def makeAttackSequenceList(): ListView[AttackSequenceEntry] = {
-    new ListView[AttackSequenceEntry]() {
-      items = ObservableBuffer[AttackSequenceEntry]()
-    }
+  def makeAttackSequenceList(): ListView[AttackSequenceEntry] = new ListView[AttackSequenceEntry]() {
+    items = ObservableBuffer[AttackSequenceEntry]()
   }
 
-  def makeAttackSequenceDescription(): TextArea = {
-    new TextArea() {
-      text = ""
-      editable = false;
-    }
+  def makeAttackSequenceDescription(): TextArea = new TextArea() {
+    text = ""
+    editable = false;
   }
 
-  def makeAttackLog(): TextArea = {
-    new TextArea() {
-      text = "Lorem Ipsum"
-      editable = false;
-    }
+  def makeAttackLog(): TextArea = new TextArea() {
+    text = "Lorem Ipsum"
+    editable = false;
   }
 
-  def makeLauchAttackButton(): Button = {
-    new Button("Launch Attack!")
-  }
+  def makeLauchAttackButton(): Button = new Button("Launch Attack!")
 
   children = Seq(
     new HBox() {
@@ -59,4 +52,4 @@ class AttackTab extends VBox {
     },
   )
 
-}
+

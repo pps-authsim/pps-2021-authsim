@@ -7,6 +7,4 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.SecurityPo
 class SecurityViewModel(
                          val securityPoliciesProperties: SecurityPoliciesProperties,
                          val credentialsSourceProperties: CredentialsSourceProperties
-                       ) {
-
-}
+                       )

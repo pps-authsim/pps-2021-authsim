@@ -9,6 +9,4 @@ class UsersViewModel(
                       val addUserFormProperties: AddUserFormProperties,
                       val generateUsersFormProperties: GenerateUsersFormProperties,
                       val usersListProperties: UsersListViewProperties
-                    ) {
-
-}
+                    )

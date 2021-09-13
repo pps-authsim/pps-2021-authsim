@@ -23,7 +23,7 @@ import scalafx.scene.Node
 import scalafx.scene.control.Tab
 import scalafx.Includes.*
 
-class ViewModelBinder(private val view: AuthsimView, private val viewModel: AuthsimViewModel) {
+class ViewModelBinder(private val view: AuthsimView, private val viewModel: AuthsimViewModel):
 
   def bind(): Unit = {
     bindUsersTab(view.usersTab)
@@ -56,17 +56,9 @@ class ViewModelBinder(private val view: AuthsimView, private val viewModel: Auth
 
     val securityViewModel = new SecurityViewModel(securityPoliciesProperties, credentialsSourceProperties)
 
-    tab.securityPoliciesList.selectionModel.value.selectedItemProperty().addListener(new ChangeListener[SecurityPolicyEntry] {
-      def changed(o: ObservableValue[_ <: SecurityPolicyEntry], oldValue: SecurityPolicyEntry, newValue: SecurityPolicyEntry): Unit = {
-        tab.securityPolicyDescription.text = newValue.description
-      }
-    })
+    tab.securityPoliciesList.selectionModel.value.selectedItemProperty().addListener((o: ObservableValue[_ <: SecurityPolicyEntry], oldValue: SecurityPolicyEntry, newValue: SecurityPolicyEntry) => tab.securityPolicyDescription.text = newValue.description)
 
-    tab.credentialsSourceList.selectionModel.value.selectedItemProperty().addListener(new ChangeListener[CredentialsSourceEntry] {
-      def changed(o: ObservableValue[_ <: CredentialsSourceEntry], oldValue: CredentialsSourceEntry, newValue: CredentialsSourceEntry): Unit = {
-        tab.credentialsSourceDescription.text = newValue.description
-      }
-    })
+    tab.credentialsSourceList.selectionModel.value.selectedItemProperty().addListener((o: ObservableValue[_ <: CredentialsSourceEntry], oldValue: CredentialsSourceEntry, newValue: CredentialsSourceEntry) => tab.credentialsSourceDescription.text = newValue.description)
 
     viewModel.bindSecurityViewModel(securityViewModel)
   }
@@ -83,13 +75,9 @@ class ViewModelBinder(private val view: AuthsimView, private val viewModel: Auth
 
     tab.launchAttackButton.setOnAction((e: ActionEvent) => viewModel.launchAttack())
 
-    tab.attackSequenceList.selectionModel.value.selectedItemProperty().addListener(new ChangeListener[AttackSequenceEntry] {
-      def changed(o: ObservableValue[_ <: AttackSequenceEntry], oldValue: AttackSequenceEntry, newValue: AttackSequenceEntry): Unit = {
-        tab.attackSequenceDescription.text = newValue.description
-      }
-    })
+    tab.attackSequenceList.selectionModel.value.selectedItemProperty().addListener((o: ObservableValue[_ <: AttackSequenceEntry], oldValue: AttackSequenceEntry, newValue: AttackSequenceEntry) => tab.attackSequenceDescription.text = newValue.description)
 
     viewModel.bindAttackViewModel(attackViewModel)
   }
 
-}
+

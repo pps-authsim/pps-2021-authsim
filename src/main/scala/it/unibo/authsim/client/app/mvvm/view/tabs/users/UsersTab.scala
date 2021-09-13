@@ -4,16 +4,16 @@ import it.unibo.authsim.client.app.mvvm.view.tabs.users.{AddUserForm, GenerateUs
 import javafx.scene.control.CheckBox
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.control.*
-import scalafx.scene.layout.{GridPane, VBox, HBox}
+import scalafx.scene.control.{Button, ChoiceBox, Label, ListView, SplitPane, TextField, TextFormatter}
 import scalafx.scene.control.TextFormatter.Change
+import scalafx.scene.layout.{GridPane, HBox, VBox}
 import scalafx.scene.paint.Color.*
 import scalafx.scene.paint.{LinearGradient, Stops}
 import scalafx.scene.text.{Font, FontWeight, Text}
 import scalafx.util.converter.FormatStringConverter;
 
 // TODO refactor for clarity
-class UsersTab() extends SplitPane {
+class UsersTab() extends SplitPane :
 
   val usernameField = makeUsernameField()
   val passwordField = makePasswordField()
@@ -30,17 +30,11 @@ class UsersTab() extends SplitPane {
   items.add(makeUserCreationPane())
   items.add(makeUserManagementPane())
 
-  def makeUsernameField(): TextField = {
-    new TextField();
-  }
+  def makeUsernameField(): TextField = new TextField();
 
-  def makePasswordField(): TextField = {
-    new TextField();
-  }
+  def makePasswordField(): TextField = new TextField();
 
-  def makeSaveButton(): Button = {
-    new Button("Save");
-  }
+  def makeSaveButton(): Button = new Button("Save");
 
   def makeQuantityField(): TextField = {
     //TODO refactor and bring this to a util
@@ -58,53 +52,37 @@ class UsersTab() extends SplitPane {
     };
   }
 
-  def makePresetSelect(): ChoiceBox[String] = {
-    // TODO define a generation preset enum in library
-    new ChoiceBox[String] {
-      items = ObservableBuffer[String](
-        "Preset1",
-        "Preset2",
-        "Preset3"
-      )
-    }
+  // TODO define a generation preset enum in library
+  def makePresetSelect(): ChoiceBox[String] = new ChoiceBox[String] {
+    items = ObservableBuffer[String](
+      "Preset1",
+      "Preset2",
+      "Preset3"
+    )
   }
 
-  def makeGenerateButton(): Button = {
-    new Button("Save");
+  def makeGenerateButton(): Button = new Button("Save")
+
+  def makeUsersListView(): ListView[UserEntry] = new ListView()
+
+  def makeDeleteSelectedButton(): Button = new Button("Delete Selected")
+
+  def makeResetButton(): Button = new Button("Reset")
+
+  def makeUserCreationPane(): VBox = new VBox {
+    children = Seq(
+      new AddUserForm(usernameField, passwordField, saveButton),
+      new GenerateUsersForm(quantityField, presetSelect, generateButton)
+    )
   }
 
-  def makeUsersListView(): ListView[UserEntry] = {
-    new ListView[UserEntry]()
+  def makeUserManagementPane(): VBox = new VBox {
+    children = Seq(
+      new UsersList(usersList, deleteSelectedButton, resetButton)
+    )
   }
 
-  def makeDeleteSelectedButton(): Button = {
-    new Button("Delete Selected")
-  }
-
-  def makeResetButton(): Button = {
-    new Button("Reset")
-  }
-
-  def makeUserCreationPane(): VBox = {
-    new VBox {
-      children = Seq(
-        new AddUserForm(usernameField, passwordField, saveButton),
-        new GenerateUsersForm(quantityField, presetSelect, generateButton)
-      )
-    }
-  }
-
-  def makeUserManagementPane(): VBox = {
-    new VBox {
-      children = Seq(
-        new UsersList(usersList, deleteSelectedButton, resetButton)
-      )
-    }
-  }
-
-}
-
-class AddUserForm(usernameField: TextField, passwordField: TextField, saveButton: Button) extends GridPane {
+class AddUserForm(usernameField: TextField, passwordField: TextField, saveButton: Button) extends GridPane :
   alignment = Pos.Center
   hgap = 10
   vgap = 10
@@ -117,10 +95,10 @@ class AddUserForm(usernameField: TextField, passwordField: TextField, saveButton
   add(new Label("Password"), 0, 2)
   add(passwordField, 1, 2)
   add(saveButton, 1, 4)
-}
 
 
-class GenerateUsersForm(quantityField: TextField, presetSelect: ChoiceBox[String], generateButton: Button) extends GridPane {
+
+class GenerateUsersForm(quantityField: TextField, presetSelect: ChoiceBox[String], generateButton: Button) extends GridPane :
   alignment = Pos.Center;
   hgap = 10;
   vgap = 10;
@@ -137,9 +115,9 @@ class GenerateUsersForm(quantityField: TextField, presetSelect: ChoiceBox[String
   add(presetSelect, 1, 2)
 
   add(generateButton, 1, 3)
-}
 
-class UsersList(usersList: ListView[UserEntry], deleteSelectedButton: Button, resetButton: Button) extends VBox {
+
+class UsersList(usersList: ListView[UserEntry], deleteSelectedButton: Button, resetButton: Button) extends VBox :
 
   children = Seq(
     new HBox() {
@@ -156,4 +134,3 @@ class UsersList(usersList: ListView[UserEntry], deleteSelectedButton: Button, re
       )
     }
   )
-}

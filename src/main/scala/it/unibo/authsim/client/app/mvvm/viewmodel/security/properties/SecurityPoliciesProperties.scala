@@ -8,6 +8,4 @@ class SecurityPoliciesProperties(
                                   val securityPoliciesList: ObjectProperty[ObservableList[SecurityPolicyEntry]],
                                   val securityPoliciesListSelectionModel: scalafx.beans.property.ObjectProperty[javafx.scene.control.MultipleSelectionModel[SecurityPolicyEntry]],
                                   val securityPoliciesDescription: StringProperty
-                                ) {
-
-}
+                                )

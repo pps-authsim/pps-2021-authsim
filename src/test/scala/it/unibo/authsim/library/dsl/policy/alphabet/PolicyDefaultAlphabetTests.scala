@@ -1,6 +1,5 @@
 package it.unibo.authsim.library.dsl.policy.alphabet
 
-import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.*
 import org.scalatest.wordspec.AnyWordSpec
 

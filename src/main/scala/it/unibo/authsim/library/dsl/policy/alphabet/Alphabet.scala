@@ -1,7 +1,6 @@
 package it.unibo.authsim.library.dsl.policy.alphabet
 
 import scala.util.matching.Regex
-import it.unibo.authsim.library.dsl.policy.alphabet.RegexAlphabet
 
 trait Alphabet:
   def lowers: Seq[Char] = Seq.empty

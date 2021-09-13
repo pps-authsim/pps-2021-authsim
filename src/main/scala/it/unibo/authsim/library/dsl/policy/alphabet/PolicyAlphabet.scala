@@ -12,3 +12,9 @@ object PolicyAlphabet:
     override def digits: Seq[Char] = for i <- '0' to '9' yield i
     override def symbols: Seq[Char] = Seq('!', '@', '#', '$', '%', '^', '&', '*')
 
+    override def toString: String = s"PolicyDefaultAlphabet {"+
+        s" lowers = " + this.lowers.mkString +
+        s", uppers = " + this.uppers.mkString +
+        s", digits = " + this.digits.mkString +
+        s", symbols = " + this.symbols.mkString + " }"
+

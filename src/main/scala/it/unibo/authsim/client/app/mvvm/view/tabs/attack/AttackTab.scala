@@ -1,11 +1,9 @@
-package it.unibo.authsim.client.app.mvvm.view.tabs
+package it.unibo.authsim.client.app.mvvm.view.tabs.attack
 
-import scalafx.scene.control.Button
-import scalafx.scene.layout.VBox
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
-import scalafx.scene.control.{Label, ListView, SplitPane, TextArea}
-import scalafx.scene.layout.HBox
+import scalafx.scene.control.*
+import scalafx.scene.layout.{HBox, VBox}
 
 class AttackTab extends VBox {
 
@@ -16,19 +14,15 @@ class AttackTab extends VBox {
 
   val launchAttackButton = makeLauchAttackButton()
 
-  def makeAttackSequenceList(): ListView[String] = {
-    new ListView[String]() {
-      items = ObservableBuffer[String](
-        "Foo",
-        "Bar",
-        "Fizz"
-      )
+  def makeAttackSequenceList(): ListView[AttackSequenceEntry] = {
+    new ListView[AttackSequenceEntry]() {
+      items = ObservableBuffer[AttackSequenceEntry]()
     }
   }
 
   def makeAttackSequenceDescription(): TextArea = {
     new TextArea() {
-      text = "Lorem Ipsum"
+      text = ""
       editable = false;
     }
   }

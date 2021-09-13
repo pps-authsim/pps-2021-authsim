@@ -1,10 +1,9 @@
-package it.unibo.authsim.client.app.mvvm.view.tabs
+package it.unibo.authsim.client.app.mvvm.view.tabs.security
 
-import scalafx.scene.layout.HBox
-import scalafx.scene.control.{Label, ListView, SplitPane, TextArea, TextField}
-import scalafx.scene.layout.VBox
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
+import scalafx.scene.control.*
+import scalafx.scene.layout.{HBox, VBox}
 
 class SecurityTab extends VBox {
 
@@ -14,36 +13,28 @@ class SecurityTab extends VBox {
   val credentialsSourceList = makeCredentialsSourceList()
   val credentialsSourceDescription = makeCredentialsSourceDescription()
 
-  def makeSecurityPoliciesList(): ListView[String] = {
-    new ListView[String]() {
-      items = ObservableBuffer[String](
-        "Foo",
-        "Bar",
-        "Fizz"
-      )
+  def makeSecurityPoliciesList(): ListView[SecurityPolicyEntry] = {
+    new ListView[SecurityPolicyEntry]() {
+      items = ObservableBuffer[SecurityPolicyEntry]()
     }
   }
 
   def makeSecurityPolicyDescription(): TextArea = {
     new TextArea() {
-      text = "Lorem Ipsum"
+      text = ""
       editable = false;
     }
   }
 
-  def makeCredentialsSourceList(): ListView[String] = {
-    new ListView[String]() {
-      items = ObservableBuffer[String](
-        "Foo",
-        "Bar",
-        "Fizz"
-      )
+  def makeCredentialsSourceList(): ListView[CredentialsSourceEntry] = {
+    new ListView[CredentialsSourceEntry]() {
+      items = ObservableBuffer[CredentialsSourceEntry]()
     }
   }
 
   def makeCredentialsSourceDescription(): TextArea = {
     new TextArea() {
-      text = "Lorem Ipsum"
+      text = ""
       editable = false;
     }
   }

@@ -2,13 +2,14 @@ package it.unibo.authsim.client.app
 
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
-import it.unibo.authsim.client.app.mvvm.view.tabs.{AttackTab, SecurityTab}
-import it.unibo.authsim.client.app.mvvm.viewmodel.ViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
-import it.unibo.authsim.client.app.mvvm.binder.TabsBinder
+import it.unibo.authsim.client.app.mvvm.binder.ViewModelBinder
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackModel
 import it.unibo.authsim.client.app.mvvm.model.security.SecurityModel
+import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
+import it.unibo.authsim.client.app.mvvm.view.tabs.security.SecurityTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
 import scalafx.application.JFXApp3
 import scalafx.beans.property.DoubleProperty
@@ -40,9 +41,9 @@ object AuthsimApp extends JFXApp3 {
     val view = new AuthsimView(usersTab, securityTab, attackTab)
     val model = new AuthsimModel(usersModel, securityModel, attackModel)
     
-    val viewModel = new ViewModel(model)
+    val viewModel = new AuthsimViewModel(model)
 
-    val tabsBinder = new TabsBinder(view, viewModel)
+    val tabsBinder = new ViewModelBinder(view, viewModel)
     tabsBinder.bind();
 
     stage = view

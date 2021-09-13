@@ -1,40 +1,38 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPolicy.*
+import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.*
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 import org.scalatest.*
 import org.scalatest.wordspec.AnyWordSpec
 
-class StringPolicyTests extends AnyWordSpec with BeforeAndAfter:
+import scala.language.postfixOps
+
+class StringPoliciesBuildersTests extends AnyWordSpec:
 
   private val MINIMUM_LENGTH: Int = 1
   private val MAXIMUM_LENGTH: Int = 20
   private val SETTED_MINIMUM_SYMBOLS: Int = 4
   private val ACTUAL_MAX_LENGTH: Int = 5
 
-  private var password = PasswordPolicy()
-  private var userID = UserIDPolicy()
-  private var otp = OTPPolicy()
-
-  before {
-    password = PasswordPolicy()
-    userID = UserIDPolicy()
-    otp = OTPPolicy()
-  }
+  private var passwordPolicy: PasswordPolicy = null
+  private var userIDPolicy: UserIDPolicy = null
+  private var otpPolicy: OTPPolicy = null
 
   "A Policy Builder" when {
     "set nothing" should{
+      passwordPolicy = PasswordPolicyBuilder() build;
       "have minimum length equivalent to 1" in {
-        assert(password.getMinimumLength == MINIMUM_LENGTH)
+        assert(passwordPolicy.minimumLength == MINIMUM_LENGTH)
       }
       "have maximum length equivalent to 20"  in {
-        assert(password.getMaximumLength == MAXIMUM_LENGTH)
+        assert(passwordPolicy.maximumLength == MAXIMUM_LENGTH)
       }
     }
 
     "set maximum length" should {
       "be greater than minimum length" in {
         assertThrows[IllegalArgumentException] {
-          password minimumLength 10 maximumLength 5
+          PasswordPolicyBuilder() minimumLength 10 maximumLength 5
         }
       }
     }
@@ -42,29 +40,29 @@ class StringPolicyTests extends AnyWordSpec with BeforeAndAfter:
     "set minimum length" should {
       "be less than maximum length" in {
         assertThrows[IllegalArgumentException] {
-          userID maximumLength 7 minimumLength 14
+          UserIDPolicyBuilder() maximumLength 7 minimumLength 14
         }
       }
     }
 
     "set at least 4 symbols" should {
+      passwordPolicy = PasswordPolicyBuilder() minimumSymbols 4 build;
       "return 4" in {
-        password minimumSymbols 4
-        assert(password.getMinimumSymbols === SETTED_MINIMUM_SYMBOLS)
+        assert(passwordPolicy.minimumSymbols === SETTED_MINIMUM_SYMBOLS)
       }
     }
 
     "call n times the same methods" should {
       "set the last call" in {
-        password maximumLength 10 maximumLength 13 maximumLength 5
-        assert(password.getMaximumLength == ACTUAL_MAX_LENGTH)
+        passwordPolicy =  PasswordPolicyBuilder() maximumLength 10 maximumLength 13 maximumLength 5 build;
+        assert(passwordPolicy.maximumLength == ACTUAL_MAX_LENGTH)
       }
     }
 
     "set a methods with negative number" should {
       "throws IllegalArgument Exception " in {
         assertThrows[IllegalArgumentException] {
-          otp maximumLength -3
+          OTPPolicyBuilder() maximumLength -3
         }
       }
     }

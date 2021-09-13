@@ -3,24 +3,25 @@ package it.unibo.authsim.library.dsl.policy.builders
 import it.unibo.authsim.library.dsl.HashFunction.{SHA1, SHA256, SHA384}
 import it.unibo.authsim.library.dsl.Protocol.*
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
-import it.unibo.authsim.library.dsl.policy.builders.StringPolicy.{OTPPolicy, CredentialPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
+import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{OTPPolicyBuilder, PasswordPolicyBuilder, SaltPolicyBuilder, UserIDPolicyBuilder}
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
 import it.unibo.authsim.library.dsl.policy.model.Policy
 
 import scala.language.postfixOps
 
 class PolicyBuilderTests:
 
-  private val userIDPolicy: CredentialPolicy = (UserIDPolicy() minimumLength 3).asInstanceOf[CredentialPolicy]
-  private val userIDPolicy1: UserIDPolicy = (UserIDPolicy() minimumLength 3).asInstanceOf[UserIDPolicy]
+  private val userIDPolicy: CredentialPolicy = UserIDPolicyBuilder() minimumLength 3 build
+  private val userIDPolicy1: UserIDPolicy = UserIDPolicyBuilder() minimumLength 3 build
 
-  private val passwordPolicy: CredentialPolicy = (PasswordPolicy() minimumUpperChars 3 minimumLength 8).asInstanceOf[CredentialPolicy]
-  private val passwordPolicy1: PasswordPolicy = (PasswordPolicy() minimumUpperChars 3 minimumLength 8).asInstanceOf[PasswordPolicy]
+  private val passwordPolicy: CredentialPolicy = PasswordPolicyBuilder() minimumUpperChars 3 minimumLength 8 build
+  private val passwordPolicy1: PasswordPolicy = PasswordPolicyBuilder() minimumUpperChars 3 minimumLength 8 build
 
-  private val saltPolicy: SaltPolicy = (SaltPolicy() minimumNumbers 3 minimumLength 5 maximumLength 10).asInstanceOf[SaltPolicy]
-  private val saltPolicy1: SaltPolicy = (SaltPolicy() minimumNumbers 3 minimumLength 5 maximumLength 30).asInstanceOf[SaltPolicy]
+  private val saltPolicy: SaltPolicy = SaltPolicyBuilder() minimumNumbers 3 minimumLength 5 maximumLength 10 build
+  private val saltPolicy1: SaltPolicy = SaltPolicyBuilder() minimumNumbers 3 minimumLength 5 maximumLength 30 build
 
-  private val optPolicy: OTPPolicy = (OTPPolicy() minimumLength 10 maximumLength 10).asInstanceOf[OTPPolicy]
-  private val optPolicy1: OTPPolicy = (OTPPolicy() minimumLength 10 maximumLength 30).asInstanceOf[OTPPolicy]
+  private val optPolicy: OTPPolicy = OTPPolicyBuilder() minimumLength 10 maximumLength 10 build
+  private val optPolicy1: OTPPolicy = OTPPolicyBuilder() minimumLength 10 maximumLength 30 build
 
 
   private val policy0: Policy =

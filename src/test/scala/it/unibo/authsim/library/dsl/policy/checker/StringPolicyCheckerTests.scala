@@ -1,10 +1,13 @@
 package it.unibo.authsim.library.dsl.policy.checker
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPolicy.*
+import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.*
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 import org.scalatest.*
 import org.scalatest.wordspec.AnyWordSpec
 
-class StringPolicyCheckerTests extends AnyWordSpec with BeforeAndAfter:
+import scala.language.postfixOps
+
+class StringPolicyCheckerTests extends AnyWordSpec:
 
   private val EMPTY_PASSWORD = ""
   private val PASSWORD: String = "mariorossia"
@@ -18,73 +21,77 @@ class StringPolicyCheckerTests extends AnyWordSpec with BeforeAndAfter:
   private val trueForValidString = (valid: String) => s"return true for the following string: ${valid} "
   private val not = afterWord("not")
 
-  private var password = PasswordPolicy()
-  private var userID = UserIDPolicy()
-  private var otp = OTPPolicy()
+  private var passwordPolicy: PasswordPolicy = null
+  private var userIDPolicy: UserIDPolicy = null
+  private var otpPolicy: OTPPolicy = null
 
-  before {
-    password = PasswordPolicy()
-    userID = UserIDPolicy()
-    otp = OTPPolicy()
-  }
 
   "A StringPolicyChecker " when {
     " a policy is set " which {
       "it owns a minimum length of 5 characters and a maximum length of 20 characters" should {
         trueForValidString(PASSWORD) in {
-          assert(StringPolicyChecker(password minimumLength 5 maximumLength 20) check PASSWORD)
+          passwordPolicy = PasswordPolicyBuilder() minimumLength 5 maximumLength 20 build;
+          assert(StringPolicyChecker(passwordPolicy) check PASSWORD)
         }
       }
 
       "it owns least of one symbols and number" should {
         trueForValidString(PASSWORD_SYMBOLS) in {
-          assert(StringPolicyChecker(password minimumSymbols 1 minimumNumbers 1) check PASSWORD_SYMBOLS)
+          passwordPolicy = PasswordPolicyBuilder() minimumSymbols 1 minimumNumbers 1 build;
+          assert(StringPolicyChecker(passwordPolicy) check PASSWORD_SYMBOLS)
         }
       }
 
       "it owns least of two uppercase characters" should {
         trueForValidString(USERID) in {
-          assert(StringPolicyChecker(userID minimumUpperChars 2) check USERID)
+          userIDPolicy = UserIDPolicyBuilder() minimumUpperChars 2 build;
+          assert(StringPolicyChecker(userIDPolicy) check USERID)
         }
       }
 
       "it owns least of four lowercase characters" should {
         trueForValidString(USERID_LOWERCASE) in {
-          assert(StringPolicyChecker(userID minimumLowerChars 4) check USERID_LOWERCASE)
+          userIDPolicy = UserIDPolicyBuilder() minimumLowerChars 4 build;
+          assert(StringPolicyChecker(userIDPolicy) check USERID_LOWERCASE)
         }
       }
 
       "it is a OTPPolicy (i.e. only numbers)" should {
         trueForValidString(OTP) in {
-          assert((StringPolicyChecker(otp) check OTP))
+          otpPolicy = OTPPolicyBuilder() build;
+          assert(StringPolicyChecker(otpPolicy) check OTP)
         }
       }
 
 
       "it owns a minimum length of 1 characters" should not{
         trueForValidString(EMPTY_PASSWORD) in {
-          assert(!(StringPolicyChecker(password) check EMPTY_PASSWORD))
+          assert(!(StringPolicyChecker(PasswordPolicyBuilder() build) check EMPTY_PASSWORD))
         }
       }
 
       "it owns least of three symbols and number" should not {
         trueForValidString(PASSWORD) in {
-          assert(!(StringPolicyChecker(password minimumSymbols 3) check PASSWORD))
+          passwordPolicy = PasswordPolicyBuilder() minimumSymbols 3 build;
+          assert(!(StringPolicyChecker(passwordPolicy) check PASSWORD))
         }
       }
 
       "it owns least of three uppercase characters" should not {
         trueForValidString(PASSWORD1) in {
-          assert(!(StringPolicyChecker(password minimumUpperChars 3) check PASSWORD1))
+          passwordPolicy = PasswordPolicyBuilder() minimumUpperChars 3 build;
+          assert(!(StringPolicyChecker(passwordPolicy) check PASSWORD1))
         }
       }
 
       "it owns a maximum length of 8 characters and it is a OTPPolicy (i.e. only numbers)" should not {
         trueForValidString(OTP) in {
-          assert(!(StringPolicyChecker(otp maximumLength 8) check OTP))
+          otpPolicy = OTPPolicyBuilder() maximumLength 8 build;
+          assert(!(StringPolicyChecker(otpPolicy) check OTP))
         }
         trueForValidString(WRONG_OTP) in {
-          assert(!(StringPolicyChecker(otp maximumLength 8) check WRONG_OTP))
+          otpPolicy = OTPPolicyBuilder() maximumLength 8 build;
+          assert(!(StringPolicyChecker(otpPolicy) check WRONG_OTP))
         }
       }
     }

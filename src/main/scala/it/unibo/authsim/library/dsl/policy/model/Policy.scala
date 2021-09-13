@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.policy.model
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPolicy.{CredentialPolicy, SaltPolicy}
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, SaltPolicy}
 import it.unibo.authsim.library.dsl.{HashFunction, Protocol}
 
 trait Policy:

@@ -1,7 +1,6 @@
 package it.unibo.authsim.library.dsl.policy.auto.generator
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPolicy
-import it.unibo.authsim.library.dsl.policy.builders.StringPolicy.*
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 
 import scala.collection.mutable.ListBuffer
 import scala.language.postfixOps
@@ -9,46 +8,45 @@ import scala.util.Random
 
 object StringPolicyAutoBuilder:
 
-  def apply(policy: StringPolicy.Builder): PolicyAutoBuilder[String] = new PolicyAutoBuilder[String]:
+  def apply(policy: StringPolicy): PolicyAutoBuilder[String] = new PolicyAutoBuilder[String]:
     override def generate: String =
-      println(s"Policy -> length (${policy.getMinimumLength}, ${policy.getMaximumLength})")
       val generatedString: ListBuffer[Char] = ListBuffer.empty
 
       policy match
-        case builder: OnlyCharsBuilder =>
+        case otpPolicy: OTPPolicy =>
+          println("Add numbers")
+          generatedString ++= otpPolicy.alphabet.randomDigits.take(Random.between(otpPolicy.minimumLength, otpPolicy.maximumLength + 1))
 
-          if builder.getMinimumSymbols > 0
+        case sPolicy: StringPolicy with RestrictStringPolicy with MoreRestrictStringPolicy =>
+          println(s"Policy -> length (${sPolicy.minimumLength}, ${sPolicy.maximumLength})")
+          if sPolicy.minimumSymbols > 0
           then
-            println(s"Add ${builder.getMinimumSymbols} symbols")
-            generatedString ++= policy.getAlphabet.randomSymbols.take(builder.getMinimumSymbols)
+            println(s"Add ${sPolicy.minimumSymbols} symbols")
+            generatedString ++= sPolicy.alphabet.randomSymbols.take(sPolicy.minimumSymbols)
 
-          if builder.getMinimumUpperChars > 0
+          if sPolicy.minimumUpperChars > 0
           then
-            println(s"Add ${builder.getMinimumUpperChars} uppers")
-            generatedString ++= policy.getAlphabet.randomUppers.take(builder.getMinimumUpperChars)
+            println(s"Add ${sPolicy.minimumUpperChars} uppers")
+            generatedString ++= sPolicy.alphabet.randomUppers.take(sPolicy.minimumUpperChars)
 
-          if builder.getMinimumNumbers > 0
+          if sPolicy.minimumNumbers > 0
           then
-            println(s"Add ${builder.getMinimumNumbers} digits")
-            generatedString ++= policy.getAlphabet.randomDigits.take(builder.getMinimumNumbers)
+            println(s"Add ${sPolicy.minimumNumbers} digits")
+            generatedString ++= sPolicy.alphabet.randomDigits.take(sPolicy.minimumNumbers)
 
-          if builder.getMinimumLowerChars > 0
+          if sPolicy.minimumLowerChars > 0
           then
-            println(s"Add ${builder.getMinimumLowerChars} lowers")
-            generatedString ++= policy.getAlphabet.randomLowers.take(builder.getMinimumLowerChars)
+            println(s"Add ${sPolicy.minimumLowerChars} lowers")
+            generatedString ++= sPolicy.alphabet.randomLowers.take(sPolicy.minimumLowerChars)
 
-          val minBound: Int = if generatedString.length >= policy.getMinimumLength then 0 else policy.getMinimumLength - generatedString.length
-          val maxBound = (policy.getMaximumLength - generatedString.length) + 1
+          val minBound: Int = if generatedString.length >= sPolicy.minimumLength then 0 else sPolicy.minimumLength - generatedString.length
+          val maxBound = (sPolicy.maximumLength - generatedString.length) + 1
           val numChars: Int = Random.between(minBound, maxBound)
           println(s"Add more missing chars: random ($minBound, $maxBound) => add $numChars chars")
-          generatedString ++= policy.getAlphabet.randomAlphanumericsymbols.take(numChars)
-
-        case _: OTPPolicy =>
-          println("Add numbers")
-          generatedString ++= policy.getAlphabet.randomDigits.take(Random.between(policy.getMinimumLength, policy.getMaximumLength + 1))
+          generatedString ++= sPolicy.alphabet.randomAlphanumericsymbols.take(numChars)
 
       println(s"Generated $generatedString")
       Random.shuffle(generatedString).mkString
 
-  def apply(policies: Seq[StringPolicy.Builder]): PolicyAutoBuilder[Seq[String]] = new PolicyAutoBuilder[Seq[String]]:
+  def apply(policies: Seq[StringPolicy]): PolicyAutoBuilder[Seq[String]] = new PolicyAutoBuilder[Seq[String]]:
     override def generate: Seq[String] = policies map { StringPolicyAutoBuilder(_) generate }

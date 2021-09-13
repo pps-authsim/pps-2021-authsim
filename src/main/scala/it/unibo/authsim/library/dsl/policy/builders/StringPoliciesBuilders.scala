@@ -2,6 +2,7 @@ package it.unibo.authsim.library.dsl.policy.builders
 
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
+import it.unibo.authsim.library.dsl.policy.checkers.PolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 
 import scala.collection.mutable.ListBuffer
@@ -12,6 +13,7 @@ object StringPoliciesBuilders extends App:
   trait StringPolicyBuilder[T] extends Builder[T]:
     def addAlphabet(alphabetPolicy: PolicyAlphabet): StringPolicyBuilder[T]
     def addPatterns(regex: Regex): StringPolicyBuilder[T]
+    def check(value: String)(implicit policyChecker: List[Regex] => PolicyChecker[String]): Boolean
 
   trait RestrictStringPolicyBuilder[T] extends Builder[T]:
     def maximumLength(number: Int): RestrictStringPolicyBuilder[T]
@@ -59,6 +61,8 @@ object StringPoliciesBuilders extends App:
       this.minLen = number
       this.addPatterns(this.alphabetPolicy.minimumLength(number))
       this
+
+    override def check(value: String)(implicit policyChecker: List[Regex] => PolicyChecker[String]): Boolean = policyChecker(patterns.toList).check(value)
 
   abstract class AbstractMoreRestrictStringPolicyBuilder[T] extends AbstractStringPolicyBuilder[T] with MoreRestrictStringPolicyBuilder[T]:
     protected var minUpperChars: Int = 0

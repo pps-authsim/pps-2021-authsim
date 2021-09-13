@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.policy.checker
+package it.unibo.authsim.library.dsl.policy.checkers
 
 import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.*
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
@@ -18,7 +18,7 @@ class StringPolicyCheckerTests extends AnyWordSpec:
   private val OTP = "12121212121"
   private val WRONG_OTP = "aaaaaa12"
 
-  private val trueForValidString = (valid: String) => s"return true for the following string: ${valid} "
+  private val trueForValidString = (valid: String) => s"return true for the following string: ${valid}"
   private val not = afterWord("not")
 
   private var passwordPolicy: PasswordPolicy = null
@@ -63,7 +63,6 @@ class StringPolicyCheckerTests extends AnyWordSpec:
         }
       }
 
-
       "it owns a minimum length of 1 characters" should not{
         trueForValidString(EMPTY_PASSWORD) in {
           assert(!(StringPolicyChecker(PasswordPolicyBuilder() build) check EMPTY_PASSWORD))
@@ -89,6 +88,7 @@ class StringPolicyCheckerTests extends AnyWordSpec:
           otpPolicy = OTPPolicyBuilder() maximumLength 8 build;
           assert(!(StringPolicyChecker(otpPolicy) check OTP))
         }
+
         trueForValidString(WRONG_OTP) in {
           otpPolicy = OTPPolicyBuilder() maximumLength 8 build;
           assert(!(StringPolicyChecker(otpPolicy) check WRONG_OTP))
@@ -97,3 +97,75 @@ class StringPolicyCheckerTests extends AnyWordSpec:
     }
   }
 
+  "A PasswordPolicyBuilder " when {
+    "called 'check' for a policy " which {
+
+      "it owns a minimum length of 5 characters and a maximum length of 20 characters" should {
+        trueForValidString(PASSWORD) in {
+          assert(PasswordPolicyBuilder() minimumLength 5 maximumLength 20 check PASSWORD)
+        }
+      }
+
+      "it owns least of one symbols and number" should {
+        trueForValidString(PASSWORD_SYMBOLS) in {
+          assert(PasswordPolicyBuilder() minimumSymbols 1 minimumNumbers 1 check PASSWORD_SYMBOLS)
+        }
+      }
+
+
+      "it owns a minimum length of 1 characters" should not{
+        trueForValidString(EMPTY_PASSWORD) in {
+          assert(!(PasswordPolicyBuilder() check EMPTY_PASSWORD))
+        }
+      }
+
+      "it owns least of three symbols and number" should not {
+        trueForValidString(PASSWORD) in {
+          assert(!(PasswordPolicyBuilder() minimumSymbols 3 check PASSWORD))
+        }
+      }
+
+      "it owns least of three uppercase characters" should not {
+        trueForValidString(PASSWORD1) in {
+          assert(!( PasswordPolicyBuilder() minimumUpperChars 3 check PASSWORD1))
+        }
+      }
+    }
+  }
+
+  "A UserIDPolicyBuilder " when {
+    "called 'check' for a policy " which {
+
+      "it owns least of two uppercase characters" should {
+        trueForValidString(USERID) in {
+          assert(UserIDPolicyBuilder() minimumUpperChars 2 check USERID)
+        }
+      }
+
+      "it owns least of four lowercase characters" should {
+        trueForValidString(USERID_LOWERCASE) in {
+          assert(UserIDPolicyBuilder() minimumLowerChars 4 check USERID_LOWERCASE)
+        }
+      }
+    }
+  }
+
+  "A OTPPolicyBuilder " when {
+    "called 'check' for a policy " which {
+
+      "it is a OTPPolicy (i.e. only numbers)" should {
+        trueForValidString(OTP) in {
+          assert( OTPPolicyBuilder()check OTP)
+        }
+      }
+
+      "it owns a maximum length of 8 characters and it is a OTPPolicy (i.e. only numbers)" should not {
+        trueForValidString(OTP) in {
+          assert(!(OTPPolicyBuilder() maximumLength 8 check OTP))
+        }
+        trueForValidString(WRONG_OTP) in {
+          assert(!(OTPPolicyBuilder() maximumLength 8 check WRONG_OTP))
+        }
+      }
+    }
+  }

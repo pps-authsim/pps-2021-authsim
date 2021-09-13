@@ -1,6 +1,6 @@
-package it.unibo.authsim.library.dsl.policy.auto.generator
+package it.unibo.authsim.library.dsl.policy.builders
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{OTPPolicyBuilder, PasswordPolicyBuilder, UserIDPolicyBuilder}
+import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.*
 import org.scalatest.*
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -56,20 +56,21 @@ class StringPolicyAutoBuilderTests extends AnyFunSuite with BeforeAndAfter:
   }
 
   private object StringPolicyAutoBuilderTestHelpers:
-    import scala.language.postfixOps
+    import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
     import it.unibo.authsim.library.dsl.policy.model.StringPolicies.StringPolicy
-    import it.unibo.authsim.library.dsl.policy.checker.StringPolicyChecker
+
+    import scala.language.postfixOps
 
     private var generatedPolicy: String = ""
     private var generatedPolicies: Seq[String] = Seq.empty
 
     def testAutoBuilder(policy: StringPolicy): Boolean =
-      generatedPolicy = StringPolicyAutoBuilder(policy) generate;
+      generatedPolicy = policy generate;
       println(generatedPolicy)
       StringPolicyChecker(policy) check generatedPolicy
 
     def testAutoBuilder(policies: Seq[StringPolicy]): Boolean =
-      generatedPolicies = StringPolicyAutoBuilder(policies) generate;
+      generatedPolicies = policies.map { _.generate }
       println(generatedPolicies)
       generatedPolicies.zipWithIndex.forall((generatedPolicy, index) => StringPolicyChecker(policies(index)) check generatedPolicy)
 

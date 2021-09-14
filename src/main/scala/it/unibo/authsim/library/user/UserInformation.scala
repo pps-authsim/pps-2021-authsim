@@ -10,8 +10,9 @@ object UserInformation:
             additionalInformation: Map[String, String]= Map.empty) =
             new UserInformationImpl(username,password, saltInformation, additionalInformation)
 
-  case class UserInformationImpl(username: String ,
-                                    password: String,
+  //non sono sicura che la password debba essere una val, forse sarebbe meglio una var
+  case class UserInformationImpl(override val username: String ,
+                                 override val password: String,
                                     saltInformation: SaltInformation,
                                     additionalInformation: Map[String, String]=Map.empty)
                                    extends UserInformation(saltInformation, additionalInformation)

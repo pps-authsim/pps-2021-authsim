@@ -8,6 +8,7 @@ import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
 import it.unibo.authsim.client.app.mvvm.model.users.User
+import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
@@ -32,8 +33,8 @@ class AuthsimViewModel(
     val username = "user"
     val password = "password"
 
+    AuthsimModel.bindPropertiesWithObservableList(model.usersModel.usersList, usersViewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
     model.usersModel.usersList += new User(username, password)
-    usersViewModel.usersListProperties.usersListProperty.value.add(new UserEntry(username, password))
   }
 
   def bindSecurityViewModel(securityViewModel: SecurityViewModel): Unit = {
@@ -51,15 +52,13 @@ class AuthsimViewModel(
     val anotherCredentialsSource = "source2"
     val anotherCredentialsSourceDescription = "This is another cred source"
 
+    AuthsimModel.bindPropertiesWithObservableList(model.securityModel.securityPolicyList, securityViewModel.securityPoliciesProperties.securityPoliciesList.value, policy => new SecurityPolicyEntry(policy.policy, policy.description))
     model.securityModel.securityPolicyList += new SecurityPolicy(policyName, policyDescription)
-    securityViewModel.securityPoliciesProperties.securityPoliciesList.value.add(new SecurityPolicyEntry(policyName, policyDescription))
     model.securityModel.securityPolicyList += new SecurityPolicy(anotherPolicyName, anotherPolicyDescription)
-    securityViewModel.securityPoliciesProperties.securityPoliciesList.value.add(new SecurityPolicyEntry(anotherPolicyName, anotherPolicyDescription))
 
+    AuthsimModel.bindPropertiesWithObservableList(model.securityModel.credentialsSourceList, securityViewModel.credentialsSourceProperties.credentialsSourceList.value, source => new CredentialsSourceEntry(source.source, source.description))
     model.securityModel.credentialsSourceList += new CredentialsSource(credentialsSource, credentialsSourceDescription)
-    securityViewModel.credentialsSourceProperties.credentialsSourceList.value.add(new CredentialsSourceEntry(credentialsSource, credentialsSourceDescription))
     model.securityModel.credentialsSourceList += new CredentialsSource(anotherCredentialsSource, anotherCredentialsSourceDescription)
-    securityViewModel.credentialsSourceProperties.credentialsSourceList.value.add(new CredentialsSourceEntry(anotherCredentialsSource, anotherCredentialsSourceDescription))
   }
 
   def bindAttackViewModel(attackViewModel: AttackViewModel): Unit = {
@@ -70,10 +69,9 @@ class AuthsimViewModel(
     val anotherSequenceName = "Sequence2"
     val anotherSequenceDescription = "Even better attack sequence"
 
-    model.attackModel.securityPolicyList += new AttackSequence(sequenceName, sequenceDescription)
-    attackViewModel.attackSequenceProperties.attackSequenceList.value.add(new AttackSequenceEntry(sequenceName, sequenceDescription))
-    model.attackModel.securityPolicyList += new AttackSequence(anotherSequenceName, anotherSequenceDescription)
-    attackViewModel.attackSequenceProperties.attackSequenceList.value.add(new AttackSequenceEntry(anotherSequenceName, anotherSequenceDescription))
+    AuthsimModel.bindPropertiesWithObservableList(model.attackModel.attackSequenceList, attackViewModel.attackSequenceProperties.attackSequenceList.value, (sequence => new AttackSequenceEntry(sequence.sequence, sequence.description)))
+    model.attackModel.attackSequenceList += new AttackSequence(sequenceName, sequenceDescription)
+    model.attackModel.attackSequenceList += new AttackSequence(anotherSequenceName, anotherSequenceDescription)
 
     this.attackViewModel = attackViewModel
   }
@@ -84,10 +82,7 @@ class AuthsimViewModel(
 
     if username != null && !username.isBlank && password != null && !password.isBlank then
       val user = new User(username, password)
-      val userEntry = new UserEntry(username, password)
-
       model.usersModel.usersList += user
-      usersViewModel.usersListProperties.usersListProperty.value += userEntry
   }
 
   def generateUsers(): Unit = {
@@ -102,11 +97,12 @@ class AuthsimViewModel(
     val user = new User(userEntry.username, userEntry.password)
 
     model.usersModel.usersList -= user
-    usersViewModel.usersListProperties.usersListProperty.value.remove(userEntry)
   }
 
   def resetUsers(): Unit = {
     val usersList = usersViewModel.usersListProperties.usersListProperty.value.clear()
+    model.usersModel.usersList = new ObservableListBuffer
+    AuthsimModel.bindPropertiesWithObservableList(model.usersModel.usersList, usersViewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
   }
 
   def launchAttack(): Unit = {
@@ -117,7 +113,7 @@ class AuthsimViewModel(
 
     // TODO hook client when ready
     if users != null && !users.isEmpty && policy != null && credentialsSource != null && selectedProcedure != null then
-      attackViewModel.attackSequenceProperties.attackLog.value = " " + users + " " + selectedProcedure+ " " + policy + " " + credentialsSource + " " + selectedProcedure
+      attackViewModel.attackSequenceProperties.attackLog.value = " " + users + " " + policy + " " + credentialsSource + " " + selectedProcedure
     else
       attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModel.ATTACK_MISSING_VALUE_TEXT
   }

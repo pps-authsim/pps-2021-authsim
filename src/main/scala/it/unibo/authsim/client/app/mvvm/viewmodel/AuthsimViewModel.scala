@@ -107,9 +107,9 @@ class AuthsimViewModel(
 
   def launchAttack(): Unit = {
     val users = usersViewModel.usersListProperties.usersListProperty.value
-    val policy = securityViewModel.securityPoliciesProperties.securityPoliciesListSelectionModel.value.getSelectedItem
-    val credentialsSource = securityViewModel.credentialsSourceProperties.credentialsSourceListSelectionModel.value.getSelectedItem
-    val selectedProcedure = attackViewModel.attackSequenceProperties.attackSequenceListSelectionModel.value.getSelectedItem
+    val policy = securityViewModel.securityPoliciesProperties.securityPoliciesListSelectedValue.getValue
+    val credentialsSource = securityViewModel.credentialsSourceProperties.credentialsSourceListSelectedValue.getValue
+    val selectedProcedure = attackViewModel.attackSequenceProperties.attackSequenceListSelectedValue.getValue
 
     // TODO hook client when ready
     if users != null && !users.isEmpty && policy != null && credentialsSource != null && selectedProcedure != null then

@@ -1,35 +1,46 @@
 package it.unibo.authsim.client.app.mvvm.view.tabs.security
 
+import javafx.beans.property.ReadOnlyObjectProperty
+import javafx.beans.value.ChangeListener
+import javafx.collections.ObservableList
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.{HBox, VBox}
+import scalafx.beans.property.{ObjectProperty, StringProperty}
 
 class SecurityTab extends VBox :
 
-  val securityPoliciesList = makeSecurityPoliciesList()
-  val securityPolicyDescription = makeSecurityPolicyDescription()
+  private val securityPoliciesList = makeSecurityPoliciesList()
+  private val securityPolicyDescription = makeSecurityPolicyDescription()
 
-  val credentialsSourceList = makeCredentialsSourceList()
-  val credentialsSourceDescription = makeCredentialsSourceDescription()
+  private val credentialsSourceList = makeCredentialsSourceList()
+  private val credentialsSourceDescription = makeCredentialsSourceDescription()
 
-  def makeSecurityPoliciesList(): ListView[SecurityPolicyEntry] = new ListView[SecurityPolicyEntry]() {
+  private def makeSecurityPoliciesList(): ListView[SecurityPolicyEntry] = new ListView[SecurityPolicyEntry]() {
     items = ObservableBuffer[SecurityPolicyEntry]()
   }
 
-  def makeSecurityPolicyDescription(): TextArea = new TextArea() {
+  private def makeSecurityPolicyDescription(): TextArea = new TextArea() {
     text = ""
     editable = false;
   }
 
-  def makeCredentialsSourceList(): ListView[CredentialsSourceEntry] = new ListView[CredentialsSourceEntry]() {
+  private def makeCredentialsSourceList(): ListView[CredentialsSourceEntry] = new ListView[CredentialsSourceEntry]() {
     items = ObservableBuffer[CredentialsSourceEntry]()
   }
 
-  def makeCredentialsSourceDescription(): TextArea = new TextArea() {
+  private def makeCredentialsSourceDescription(): TextArea = new TextArea() {
     text = ""
     editable = false;
   }
+
+  val credentialsSourceListProperty: ObjectProperty[ObservableList[CredentialsSourceEntry]] = credentialsSourceList.items
+  val credentialsSourceListSelectedProperty: ReadOnlyObjectProperty[CredentialsSourceEntry] = credentialsSourceList.selectionModel.value.selectedItemProperty()
+  val credentialsSourceDescriptionProperty: StringProperty = credentialsSourceDescription.text
+  val securityPoliciesListProperty: ObjectProperty[ObservableList[SecurityPolicyEntry]] = securityPoliciesList.items
+  val securityPoliciesListSelectedProperty: ReadOnlyObjectProperty[SecurityPolicyEntry] = securityPoliciesList.selectionModel.value.selectedItemProperty()
+  val securityPoliciesDescriptionProperty: StringProperty = securityPolicyDescription.text
 
   children = Seq(
     new HBox() {
@@ -54,4 +65,6 @@ class SecurityTab extends VBox :
     }
   )
 
+  def bindOnPolicyChange(listener: ChangeListener[SecurityPolicyEntry]) = securityPoliciesListSelectedProperty.addListener(listener)
+  def bindOnCredentialsSourceChange(listener: ChangeListener[CredentialsSourceEntry]) = credentialsSourceListSelectedProperty.addListener(listener)
 

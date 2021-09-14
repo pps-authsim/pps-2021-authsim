@@ -1,35 +1,43 @@
 package it.unibo.authsim.client.app.mvvm.view.tabs.attack
 
+import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
+import javafx.beans.value.ChangeListener
+import javafx.collections.ObservableList
+import javafx.event.EventHandler
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 import scalafx.scene.control.*
+import scalafx.Includes.jfxReadOnlyObjectProperty2sfx
+import scalafx.beans.property.{ObjectProperty, ReadOnlyObjectProperty, StringProperty}
 import scalafx.scene.layout.{HBox, VBox}
+import scalafx.event.ActionEvent
 
 // todo expose only properties
 class AttackTab extends VBox :
 
-  val attackSequenceList = makeAttackSequenceList()
-  val attackSequenceDescription = makeAttackSequenceDescription()
+  private val attackSequenceList = makeAttackSequenceList()
+  private val attackSequenceDescription = makeAttackSequenceDescription()
+  private val attackLog = makeAttackLog()
+  private val launchAttackButton = new Button("Launch Attack!")
 
-  val attackLog = makeAttackLog()
+  val attackSequenceListProperty: ObjectProperty[ObservableList[AttackSequenceEntry]] = attackSequenceList.items
+  val attackSequenceListSelectedValueProperty: ReadOnlyObjectProperty[AttackSequenceEntry] = attackSequenceList.selectionModel.getValue.selectedItemProperty()
+  val attackSequenceDescriptionProperty: StringProperty = attackSequenceDescription.text
+  val attackLogProperty: StringProperty = attackLog.text
 
-  val launchAttackButton = makeLauchAttackButton()
-
-  def makeAttackSequenceList(): ListView[AttackSequenceEntry] = new ListView[AttackSequenceEntry]() {
+  private def makeAttackSequenceList(): ListView[AttackSequenceEntry] = new ListView[AttackSequenceEntry]() {
     items = ObservableBuffer[AttackSequenceEntry]()
   }
 
-  def makeAttackSequenceDescription(): TextArea = new TextArea() {
+  private def makeAttackSequenceDescription(): TextArea = new TextArea() {
     text = ""
     editable = false;
   }
 
-  def makeAttackLog(): TextArea = new TextArea() {
-    text = "Lorem Ipsum"
+  private def makeAttackLog(): TextArea = new TextArea() {
+    text = "This is the attack log, the informations regarding the attack are going to be displayed here."
     editable = false;
   }
-
-  def makeLauchAttackButton(): Button = new Button("Launch Attack!")
 
   children = Seq(
     new HBox() {
@@ -51,5 +59,8 @@ class AttackTab extends VBox :
       )
     },
   )
+
+  def bindOnSequenceChange(listener: ChangeListener[AttackSequenceEntry]) = attackSequenceListSelectedValueProperty.addListener(listener)
+  def bindOnAttackLaunch(handler: EventHandler[javafx.event.ActionEvent]) = launchAttackButton.setOnAction(handler)
 
 

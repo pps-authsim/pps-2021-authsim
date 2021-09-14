@@ -33,49 +33,47 @@ class ViewModelBinder(private val view: AuthsimView, private val viewModel: Auth
 
   private def bindUsersTab(tab: UsersTab): Unit = {
 
-    val addUserFormProperties = new AddUserFormProperties(tab.usernameField.text, tab.passwordField.text);
-    val generateUsersForm = new GenerateUsersFormProperties(tab.quantityField.text, tab.presetSelect.value);
-    val usersListProperties = new UsersListViewProperties(tab.usersList.items, tab.usersList.selectionModel);
+    val addUserFormProperties = new AddUserFormProperties(tab.usernameProperty, tab.passwordProperty);
+    val generateUsersForm = new GenerateUsersFormProperties(tab.quantityProperty, tab.presetProperty);
+    val usersListProperties = new UsersListViewProperties(tab.usersListProperty, tab.usersListSelectionModel);
 
     val usersViewModel = new UsersViewModel(addUserFormProperties, generateUsersForm, usersListProperties)
 
-    tab.saveButton.setOnAction((e: ActionEvent) => viewModel.saveUser())
+    tab.bindOnSave((e: ActionEvent) => viewModel.saveUser())
 
-    tab.generateButton.setOnAction((e: ActionEvent) => viewModel.generateUsers())
+    tab.bindOnGenerate((e: ActionEvent) => viewModel.generateUsers())
 
-    tab.deleteSelectedButton.setOnAction((e: ActionEvent) => viewModel.deleteSelectedUsers())
-    tab.resetButton.setOnAction((e: ActionEvent) => viewModel.resetUsers())
+    tab.bindOnDeleteSelected((e: ActionEvent) => viewModel.deleteSelectedUsers())
+    tab.bindOnReset((e: ActionEvent) => viewModel.resetUsers())
 
     viewModel.bindUsersViewModel(usersViewModel)
   }
 
   private def bindSecurityTab(tab: SecurityTab): Unit = {
-    val securityPoliciesProperties = new SecurityPoliciesProperties(tab.securityPoliciesList.items, tab.securityPoliciesList.selectionModel, tab.securityPolicyDescription.text)
+    val securityPoliciesProperties = new SecurityPoliciesProperties(tab.securityPoliciesListProperty, tab.securityPoliciesListSelectedProperty, tab.securityPoliciesDescriptionProperty)
 
-    val credentialsSourceProperties = new CredentialsSourceProperties(tab.credentialsSourceList.items, tab.credentialsSourceList.selectionModel, tab.credentialsSourceDescription.text)
+    val credentialsSourceProperties = new CredentialsSourceProperties(tab.credentialsSourceListProperty, tab.credentialsSourceListSelectedProperty, tab.credentialsSourceDescriptionProperty)
 
     val securityViewModel = new SecurityViewModel(securityPoliciesProperties, credentialsSourceProperties)
 
-    tab.securityPoliciesList.selectionModel.value.selectedItemProperty().addListener((o: ObservableValue[_ <: SecurityPolicyEntry], oldValue: SecurityPolicyEntry, newValue: SecurityPolicyEntry) => tab.securityPolicyDescription.text = newValue.description)
-
-    tab.credentialsSourceList.selectionModel.value.selectedItemProperty().addListener((o: ObservableValue[_ <: CredentialsSourceEntry], oldValue: CredentialsSourceEntry, newValue: CredentialsSourceEntry) => tab.credentialsSourceDescription.text = newValue.description)
+    tab.bindOnPolicyChange((o: ObservableValue[_ <: SecurityPolicyEntry], oldValue: SecurityPolicyEntry, newValue: SecurityPolicyEntry) => tab.securityPoliciesDescriptionProperty.value = newValue.description)
+    tab.bindOnCredentialsSourceChange((o: ObservableValue[_ <: CredentialsSourceEntry], oldValue: CredentialsSourceEntry, newValue: CredentialsSourceEntry) => tab.credentialsSourceDescriptionProperty.value = newValue.description)
 
     viewModel.bindSecurityViewModel(securityViewModel)
   }
 
   private def bindAttackTab(tab: AttackTab): Unit = {
     val attackSequenceProperties = new AttackSequenceProperties(
-      tab.attackSequenceList.items,
-      tab.attackSequenceList.selectionModel,
-      tab.attackSequenceDescription.text,
-      tab.attackLog.text
+      tab.attackSequenceListProperty,
+      tab.attackSequenceListSelectedValueProperty,
+      tab.attackSequenceDescriptionProperty,
+      tab.attackLogProperty
     )
 
     val attackViewModel = new AttackViewModel(attackSequenceProperties)
 
-    tab.launchAttackButton.setOnAction((e: ActionEvent) => viewModel.launchAttack())
-
-    tab.attackSequenceList.selectionModel.value.selectedItemProperty().addListener((o: ObservableValue[_ <: AttackSequenceEntry], oldValue: AttackSequenceEntry, newValue: AttackSequenceEntry) => tab.attackSequenceDescription.text = newValue.description)
+    tab.bindOnSequenceChange((o: ObservableValue[_ <: AttackSequenceEntry], oldValue: AttackSequenceEntry, newValue: AttackSequenceEntry) => tab.attackSequenceDescriptionProperty.value = newValue.description)
+    tab.bindOnAttackLaunch((e: ActionEvent) => viewModel.launchAttack())
 
     viewModel.bindAttackViewModel(attackViewModel)
   }

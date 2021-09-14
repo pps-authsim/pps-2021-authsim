@@ -1,8 +1,13 @@
 package it.unibo.authsim.client.app.mvvm.view.tabs.users
 
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{AddUserForm, GenerateUsersForm, UsersList}
+import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
+import javafx.collections.ObservableList
+import javafx.event.EventHandler
 import javafx.scene.control.CheckBox
+import scalafx.beans.property.{ObjectProperty, StringProperty}
 import scalafx.collections.ObservableBuffer
+import scalafx.event.ActionEvent
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, ChoiceBox, Label, ListView, SplitPane, TextField, TextFormatter}
 import scalafx.scene.control.TextFormatter.Change
@@ -10,77 +15,58 @@ import scalafx.scene.layout.{GridPane, HBox, VBox}
 import scalafx.scene.paint.Color.*
 import scalafx.scene.paint.{LinearGradient, Stops}
 import scalafx.scene.text.{Font, FontWeight, Text}
-import scalafx.util.converter.FormatStringConverter;
+import scalafx.util.converter.FormatStringConverter
+import scalafx.Includes.eventClosureWrapperWithParam
 
 // TODO refactor for clarity
 class UsersTab() extends SplitPane :
 
-  val usernameField = makeUsernameField()
-  val passwordField = makePasswordField()
-  val saveButton = makeSaveButton()
+  private val usernameField = new TextField()
+  private val passwordField = new TextField()
+  private val saveButton = new Button("Save")
 
-  val quantityField = makeQuantityField()
-  val presetSelect = makePresetSelect()
-  val generateButton = makeGenerateButton()
-
-  val usersList = makeUsersListView()
-  val deleteSelectedButton = makeDeleteSelectedButton()
-  val resetButton = makeResetButton()
-
-  items.add(makeUserCreationPane())
-  items.add(makeUserManagementPane())
-
-  def makeUsernameField(): TextField = new TextField();
-
-  def makePasswordField(): TextField = new TextField();
-
-  def makeSaveButton(): Button = new Button("Save");
-
-  def makeQuantityField(): TextField = {
-    //TODO refactor and bring this to a util
-    val numberFilter: Change => Change = (change: Change) => {
-      val text = change.text
-
-      if (text.matches("[0-9]*")) then
-        change
-      else
-        null
-    }
-
-    new TextField {
-      textFormatter = new TextFormatter(numberFilter)
-    };
-  }
-
-  // TODO define a generation preset enum in library
-  def makePresetSelect(): ChoiceBox[String] = new ChoiceBox[String] {
+  private val quantityField = UsersViewModel.makeNumberTextField()
+  // TODO define enum when lib is ready
+  private val presetSelect = new ChoiceBox[String] {
     items = ObservableBuffer[String](
       "Preset1",
       "Preset2",
       "Preset3"
     )
   }
+  private val generateButton = new Button("Generate")
 
-  def makeGenerateButton(): Button = new Button("Save")
+  private val usersList = new ListView[UserEntry]()
+  private val deleteSelectedButton = new Button("Delete Selected")
+  private val resetButton = new Button("Reset")
 
-  def makeUsersListView(): ListView[UserEntry] = new ListView()
+  val usernameProperty: StringProperty = usernameField.text
+  val passwordProperty: StringProperty = passwordField.text
+  val quantityProperty: StringProperty = quantityField.text
+  val presetProperty: ObjectProperty[String] = presetSelect.value
+  val usersListProperty: ObjectProperty[ObservableList[UserEntry]] = usersList.items
+  val usersListSelectionModel: ObjectProperty[javafx.scene.control.MultipleSelectionModel[UserEntry]] = usersList.selectionModel
 
-  def makeDeleteSelectedButton(): Button = new Button("Delete Selected")
+  items.add(makeUserCreationPane())
+  items.add(makeUserManagementPane())
 
-  def makeResetButton(): Button = new Button("Reset")
-
-  def makeUserCreationPane(): VBox = new VBox {
+  private def makeUserCreationPane(): VBox = new VBox {
     children = Seq(
       new AddUserForm(usernameField, passwordField, saveButton),
       new GenerateUsersForm(quantityField, presetSelect, generateButton)
     )
   }
 
-  def makeUserManagementPane(): VBox = new VBox {
+  private def makeUserManagementPane(): VBox = new VBox {
     children = Seq(
       new UsersList(usersList, deleteSelectedButton, resetButton)
     )
   }
+
+  def bindOnSave(handler: EventHandler[javafx.event.ActionEvent]) = saveButton.setOnAction(handler)
+  def bindOnGenerate(handler: EventHandler[javafx.event.ActionEvent]) = generateButton.setOnAction(handler)
+  def bindOnDeleteSelected(handler: EventHandler[javafx.event.ActionEvent]) = deleteSelectedButton.setOnAction(handler)
+  def bindOnReset(handler: EventHandler[javafx.event.ActionEvent]) = resetButton.setOnAction(handler)
 
 class AddUserForm(usernameField: TextField, passwordField: TextField, saveButton: Button) extends GridPane :
   alignment = Pos.Center

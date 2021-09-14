@@ -12,22 +12,16 @@ object AESCTR:
   def encrypt(input: Array[Byte], key: Array[Byte], iv: Array[Byte]): Array[Byte] =
     val keySpec = new SecretKeySpec(key, "AES")
     val ivSpec = new IvParameterSpec(iv)
-
     val cipher = Cipher.getInstance("AES/CTR/NoPadding")
-
     cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
-
     cipher.doFinal(input)
 
 
   def decrypt(input: Array[Byte], key: Array[Byte], iv: Array[Byte]): Array[Byte] =
     val keySpec = new SecretKeySpec(key, "AES")
     val ivSpec = new IvParameterSpec(iv)
-
     val cipher = Cipher.getInstance("AES/CTR/NoPadding")
-
     cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
-
     cipher.doFinal(input)
 
 
@@ -39,6 +33,6 @@ object App:
     val iv = Hex.decodeHex("01020304050607080910111201010101".toCharArray)
     val encrypted = AESCTR.encrypt(input, key, iv)
     val decrypted = AESCTR.decrypt(encrypted, key, iv)
-
+    
     println("input: " + new String(input, "UTF-8"))
     println("decrypted: " + new String(decrypted, "UTF-8"))

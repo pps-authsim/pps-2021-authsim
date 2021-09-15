@@ -1,5 +1,7 @@
 package it.unibo.authsim.library.user
 
+import it.unibo.authsim.library.user.model.User
+
 trait UserInformation (saltInformation: SaltInformation,
                        additionalInformation: Map[String, String]) extends User
 

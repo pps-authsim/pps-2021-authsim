@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.user.builder
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.CredentialPolicy
-
+/*
 trait UserGenerator:
   def of(credentialPolicy: CredentialPolicy): UserGenerator
 
@@ -12,5 +12,14 @@ object UserGenerator:
     private var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
 
     override def of(credentialPolicy: CredentialPolicy): UserGenerator =
+      this._credentialPolicies = credentialPolicy +: this._credentialPolicies
+      this
+
+ */
+
+class UserGenerator(): //extends UserGenerator:
+  protected var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
+  //def credentialPolicies: Seq[CredentialPolicy]
+  def of(credentialPolicy: CredentialPolicy): UserGenerator =
       this._credentialPolicies = credentialPolicy +: this._credentialPolicies
       this

@@ -23,12 +23,12 @@ class BruteForceAttack(private val target: Proxy, private val hashFunction: Hash
     var jobResults: List[Future[Statistics]] = List.empty
     var totalResults = Statistics.zero
     // TODO: refine alphabet and max length
-    val alphabet = ConcurrentStringProvider.lowercaseLetters
+    val alphabet = ConcurrentStringCombinator.lowercaseLetters
                    // ++ ConcurrentStringProvider.uppercaseLetters
                    // ++ ConcurrentStringProvider.numbers
                    // ++ ConcurrentStringProvider.symbols
     val maxPasswordLength = 4
-    val monitor = new ConcurrentStringProvider(alphabet, maxPasswordLength)
+    val monitor = new ConcurrentStringCombinator(alphabet, maxPasswordLength)
     val startTime = System.nanoTime()
     (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.getUserInformations().head, monitor)) :: jobResults)
     // TODO: refine timeout
@@ -54,7 +54,7 @@ class BruteForceAttack(private val target: Proxy, private val hashFunction: Hash
     })
   }
 
-  private def futureJob(targetUser: User, stringProvider: ConcurrentStringProvider): Statistics = {
+  private def futureJob(targetUser: User, stringProvider: ConcurrentStringCombinator): Statistics = {
     var localStatistics = Statistics.zero
     var nextPassword = stringProvider.getNextString()
     while !nextPassword.isEmpty do

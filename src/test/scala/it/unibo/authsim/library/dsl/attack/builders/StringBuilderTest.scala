@@ -6,7 +6,7 @@ import java.util.stream.Collectors
 
 class StringBuilderTest extends AnyWordSpec {
   val alphabet = List("a", "b")
-  val concurrentStringProvider = new ConcurrentStringProvider(alphabet, 2)
+  val concurrentStringProvider = new ConcurrentStringCombinator(alphabet, 2)
 
   "A string provider" when {
     "the max length is > 0" should {

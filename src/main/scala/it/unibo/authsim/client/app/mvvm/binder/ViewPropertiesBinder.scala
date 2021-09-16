@@ -23,6 +23,9 @@ import scalafx.scene.Node
 import scalafx.scene.control.Tab
 import scalafx.Includes.*
 
+/**
+ * Helper object for binding view properties to the provided viewmodel
+ */
 object ViewPropertiesBinder:
 
   def bindUsersTab(view: AuthsimView, viewModel: AuthsimViewModel): UsersViewModel =

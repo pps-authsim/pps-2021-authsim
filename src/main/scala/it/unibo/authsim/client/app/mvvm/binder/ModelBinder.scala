@@ -14,6 +14,9 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import javafx.collections.ObservableList
 
+/**
+ * Helper object for binding model and viewModel dynamic callbacks
+ */
 object ModelBinder:
 
   def bindUsersViewModel(usersModel: UsersModel, viewModel: UsersViewModel): Unit =

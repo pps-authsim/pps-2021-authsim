@@ -7,4 +7,10 @@ import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
 import javafx.collections.ObservableList
 
+/**
+ * Application's model
+ * @param usersModel users model
+ * @param securityModel security model
+ * @param attackModel attack model
+ */
 class AuthsimModel(val usersModel: UsersModel, val securityModel: SecurityModel, val attackModel: AttackModel)

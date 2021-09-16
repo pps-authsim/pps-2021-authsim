@@ -22,6 +22,13 @@ object ObservableListBuffer:
     observableListBuffer
 
 
+/**
+ * An observable buffer that can be singularly subscribed to on add or remove events
+ * @param wrappedList (optional) initial collection, defaults to an empty list
+ * @param onAdd (optional) define callback for add event
+ * @param onRemove (optional) define callback for delete event
+ * @tparam A type of lists's elements
+ */
 class ObservableListBuffer[A](
                                private val wrappedList: ListBuffer[A] = ListBuffer[A](),
                                private var onAdd: Option[(A => Unit)] = Option.empty,

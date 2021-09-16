@@ -39,8 +39,10 @@ object AuthsimView {
 }
 
 /**
- * Abstracts ScalaFx tabbed view creation
- * @param tabModules - a sequence of tabs show at the primary window
+ * Application's view consisting of tabbed views
+ * @param usersTab users tab
+ * @param securityTab security tab
+ * @param attackTab attack tab
  */
 class AuthsimView(
                               val usersTab: UsersTab,

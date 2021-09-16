@@ -21,8 +21,8 @@ object AuthsimViewModel:
 
 /**
  * Binds View with Model via the ViewModel layer
- * @param view
- * @param model
+ * @param view view
+ * @param model model
  */
 class AuthsimViewModel(val view: AuthsimView, val model: AuthsimModel):
 

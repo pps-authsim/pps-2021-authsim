@@ -1,5 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.view.tabs.users
 
+import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{AddUserForm, GenerateUsersForm, UsersList}
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import javafx.collections.ObservableList
@@ -24,7 +25,7 @@ class UsersTab() extends SplitPane :
   private val passwordField = new TextField()
   private val saveButton = new Button("Save")
 
-  private val quantityField = UsersViewModel.makeNumberTextField()
+  private val quantityField = AuthsimView.makeNumberTextField()
   
   // TODO define enum when lib is ready
   private val presetSelect = new ChoiceBox[String] {

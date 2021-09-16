@@ -4,8 +4,9 @@ import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.SecurityTab
 import scalafx.application.JFXApp3
+import scalafx.scene.control.TextFormatter.Change
 import scalafx.scene.{Node, Scene}
-import scalafx.scene.control.{Tab, TabPane}
+import scalafx.scene.control.{Tab, TabPane, TextField, TextFormatter}
 import scalafx.scene.layout.VBox
 
 object AuthsimView {
@@ -23,6 +24,16 @@ object AuthsimView {
         )
       }
     }
+  }
+
+  def makeNumberTextField(): TextField = new TextField {
+    val numberFilter: Change => Change = (change: Change) =>
+      val text = change.text
+      if (text.matches("[0-9]*")) then
+        change
+      else
+        null
+    textFormatter = new TextFormatter(numberFilter)
   }
 
 }

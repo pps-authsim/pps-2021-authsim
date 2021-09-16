@@ -19,6 +19,11 @@ import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
 object AuthsimViewModel:
   val ATTACK_MISSING_VALUE_TEXT = "Please, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
 
+/**
+ * Binds View with Model via the ViewModel layer
+ * @param view
+ * @param model
+ */
 class AuthsimViewModel(val view: AuthsimView, val model: AuthsimModel):
 
   private val usersViewModel: UsersViewModel = ViewPropertiesBinder.bindUsersTab(view, this)

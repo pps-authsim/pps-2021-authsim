@@ -1,71 +1,55 @@
 package it.unibo.authsim.library.user.builder
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.PasswordPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
-import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.model.User
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.*
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
-import scala.language.postfixOps
+import it.unibo.authsim.library.user.builder.CredentialsUtils
+import it.unibo.authsim.library.user.builder.CredentialsUtils.generateRandomString
 
-//trait UserBuilder(username: String, password:String ) extends UserGenerator
+abstract class UserBuilder[U] extends Builder[U]:
+  protected var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
+  protected var _userName: String=""
+  protected var _password:String=""
+  protected def checkPolicy(): Boolean=
+      !_credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy])).map(e=>
+        if(e.isInstanceOf[PasswordPolicy]) then
+          StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check _password
+        else if (e.isInstanceOf[UserIDPolicy]) then
+          StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check _userName
+      ).contains(false)
 
-object UserBuilder:
-  def apply(username: String, password:String) = new UserBuilder(username, password, credentialPolicy=Seq.empty)
-  def apply(username: String, password:String, credentialPolicy: Seq[CredentialPolicy]) = new UserBuilder(username, password, credentialPolicy)
-  case class UserBuilder(val username:String, val password:String, val credentialPolicy:Seq[CredentialPolicy]): //extends UserBuilder(username, password):
-    //_credentialPolicies=credentialPolicy
-    private def checkPolicy(): Boolean=
-      var result1=true
-      var result2=true
-      for( e <-credentialPolicy)
-       if(e.isInstanceOf[PasswordPolicy])then result1=StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check password
-       else if (e.isInstanceOf[UserIDPolicy])then result2=StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check username
-      result1&&result2
+  def withPolicy(policy:CredentialPolicy)=
+    this._credentialPolicies = policy +: this._credentialPolicies
+    this
 
-    def build(): Option[User]=
-      if(checkPolicy()) then
-        val user: User = User(username, password)
-        Some(user)
-      else
-        None
+  def build(): Option[U] | U
 
+class UserCostumBuilder extends UserBuilder[User]:
+  def withName(userName:String)=
+    this._userName = userName
+    this
 
-case class UserBuilder(val username:String, val password:String, val credentialPolicy:Seq[CredentialPolicy]): //extends UserBuilder(username, password):
-  //_credentialPolicies=credentialPolicy
-  private def checkPolicy(): Boolean=
-    var result1=true
-    var result2=true
-    for( e <-credentialPolicy)
-      if(e.isInstanceOf[PasswordPolicy])then result1=StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check password
-      else if (e.isInstanceOf[UserIDPolicy])then result2=StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check username
-    result1&&result2
+  def withPassword(password:String)=
+    this._password = password
+    this
 
-  def build(): Option[User]=
-    if(checkPolicy()) then
-      val user: User = User(username, password)
+  override def build(): Option[User]=
+    if(this.checkPolicy()) then
+      val user= User(_userName, _password)
       Some(user)
     else
       None
 
+class UserAutoBuilder extends UserBuilder[User]:
 
-case class UserBuilder2(val username:String, val password:String, val credentialPolicy:Seq[CredentialPolicy]= Seq.empty): //extends UserBuilder(username, password):
-  //_credentialPolicies=credentialPolicy
-  private def checkPolicy(): Boolean=
-  //questo punto esclamativo davanti fa un po' schifo
-    !credentialPolicy.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy])).map(e=>
-      if(e.isInstanceOf[PasswordPolicy]) then
-        StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check password
-      else if (e.isInstanceOf[UserIDPolicy]) then
-        StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check username
-    ).contains(false)
-
-  def build(): Option[User]=
-    if(checkPolicy()) then
-      val user: User = User(username, password)
-      Some(user)
+  override def build(): User=
+    if(_credentialPolicies.isEmpty) then
+      User(generateRandomString(), generateRandomString())
     else
-      None
-
-
+      _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy])).map(e=>
+        if(e.isInstanceOf[PasswordPolicy]) then
+          _password=e.asInstanceOf[PasswordPolicy].generate
+        else if (e.isInstanceOf[UserIDPolicy]) then
+          _userName=e.asInstanceOf[UserIDPolicy].generate
+      )//TO-DO if no polcy is passed it should get the default one
+      User(_userName, _password)

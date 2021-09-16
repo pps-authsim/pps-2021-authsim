@@ -5,7 +5,7 @@ import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
-import it.unibo.authsim.client.app.mvvm.binder.ViewModelBinder
+import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ViewPropertiesBinder}
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackModel
 import it.unibo.authsim.client.app.mvvm.model.security.SecurityModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
@@ -23,13 +23,11 @@ import scalafx.scene.paint.Color.*
 import scalafx.scene.text.{Font, Text}
 
 /**
- * Defines the entrypoint to
+ * Defines the entrypoint for the authsim app
  */
 object AuthsimApp extends JFXApp3 :
 
   override def start(): Unit = {
-    // TODO launch ViewModel on a thread
-
     val usersTab = new UsersTab
     val securityTab = new SecurityTab
     val attackTab = new AttackTab
@@ -43,8 +41,8 @@ object AuthsimApp extends JFXApp3 :
     
     val viewModel = new AuthsimViewModel(model)
 
-    val tabsBinder = new ViewModelBinder(view, viewModel)
-    tabsBinder.bind();
+    ViewPropertiesBinder.bind(view, viewModel)
+    ModelBinder.bind(model, viewModel)
 
     stage = view
   }

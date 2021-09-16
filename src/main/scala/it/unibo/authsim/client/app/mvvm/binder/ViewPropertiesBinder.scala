@@ -23,15 +23,14 @@ import scalafx.scene.Node
 import scalafx.scene.control.Tab
 import scalafx.Includes.*
 
-class ViewModelBinder(private val view: AuthsimView, private val viewModel: AuthsimViewModel):
+object ViewPropertiesBinder:
+  
+  def bind(view: AuthsimView, viewModel: AuthsimViewModel): Unit =
+    bindUsersTab(view.usersTab, viewModel)
+    bindAttackTab(view.attackTab, viewModel)
+    bindSecurityTab(view.securityTab, viewModel)
 
-  def bind(): Unit = {
-    bindUsersTab(view.usersTab)
-    bindSecurityTab(view.securityTab)
-    bindAttackTab(view.attackTab)
-  }
-
-  private def bindUsersTab(tab: UsersTab): Unit = {
+  private def bindUsersTab(tab: UsersTab, viewModel: AuthsimViewModel): Unit = {
 
     val addUserFormProperties = new AddUserFormProperties(tab.usernameProperty, tab.passwordProperty);
     val generateUsersForm = new GenerateUsersFormProperties(tab.quantityProperty, tab.presetProperty);
@@ -46,10 +45,10 @@ class ViewModelBinder(private val view: AuthsimView, private val viewModel: Auth
     tab.bindOnDeleteSelected((e: ActionEvent) => viewModel.deleteSelectedUsers())
     tab.bindOnReset((e: ActionEvent) => viewModel.resetUsers())
 
-    viewModel.bindUsersViewModel(usersViewModel)
+    viewModel.usersViewModel = usersViewModel
   }
 
-  private def bindSecurityTab(tab: SecurityTab): Unit = {
+  private def bindSecurityTab(tab: SecurityTab, viewModel: AuthsimViewModel): Unit = {
     val securityPoliciesProperties = new SecurityPoliciesProperties(tab.securityPoliciesListProperty, tab.securityPoliciesListSelectedProperty, tab.securityPoliciesDescriptionProperty)
 
     val credentialsSourceProperties = new CredentialsSourceProperties(tab.credentialsSourceListProperty, tab.credentialsSourceListSelectedProperty, tab.credentialsSourceDescriptionProperty)
@@ -59,10 +58,10 @@ class ViewModelBinder(private val view: AuthsimView, private val viewModel: Auth
     tab.bindOnPolicyChange((o: ObservableValue[_ <: SecurityPolicyEntry], oldValue: SecurityPolicyEntry, newValue: SecurityPolicyEntry) => tab.securityPoliciesDescriptionProperty.value = newValue.description)
     tab.bindOnCredentialsSourceChange((o: ObservableValue[_ <: CredentialsSourceEntry], oldValue: CredentialsSourceEntry, newValue: CredentialsSourceEntry) => tab.credentialsSourceDescriptionProperty.value = newValue.description)
 
-    viewModel.bindSecurityViewModel(securityViewModel)
+    viewModel.securityViewModel = securityViewModel
   }
 
-  private def bindAttackTab(tab: AttackTab): Unit = {
+  private def bindAttackTab(tab: AttackTab, viewModel: AuthsimViewModel): Unit = {
     val attackSequenceProperties = new AttackSequenceProperties(
       tab.attackSequenceListProperty,
       tab.attackSequenceListSelectedValueProperty,
@@ -75,7 +74,7 @@ class ViewModelBinder(private val view: AuthsimView, private val viewModel: Auth
     tab.bindOnSequenceChange((o: ObservableValue[_ <: AttackSequenceEntry], oldValue: AttackSequenceEntry, newValue: AttackSequenceEntry) => tab.attackSequenceDescriptionProperty.value = newValue.description)
     tab.bindOnAttackLaunch((e: ActionEvent) => viewModel.launchAttack())
 
-    viewModel.bindAttackViewModel(attackViewModel)
+    viewModel.attackViewModel = attackViewModel
   }
 
 

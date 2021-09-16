@@ -5,7 +5,7 @@ import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.collections.ObservableList
 import scalafx.beans.property.{ObjectProperty, StringProperty}
 
-class AttackSequenceProperties(
+case class AttackSequenceProperties(
                                 val attackSequenceList: ObjectProperty[ObservableList[AttackSequenceEntry]],
                                 val attackSequenceListSelectedValue: ReadOnlyObjectProperty[AttackSequenceEntry],
                                 val attackSequenceDescription: StringProperty,

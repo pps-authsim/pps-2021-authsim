@@ -27,7 +27,7 @@ import scalafx.scene.text.{Font, Text}
  */
 object AuthsimApp extends JFXApp3 :
 
-  override def start(): Unit = {
+  override def start(): Unit = 
     val usersTab = new UsersTab
     val securityTab = new SecurityTab
     val attackTab = new AttackTab
@@ -45,4 +45,4 @@ object AuthsimApp extends JFXApp3 :
     ModelBinder.bind(model, viewModel)
 
     stage = view
-  }
+  

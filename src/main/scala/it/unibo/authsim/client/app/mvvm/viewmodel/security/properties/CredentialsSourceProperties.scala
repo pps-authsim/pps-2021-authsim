@@ -5,7 +5,7 @@ import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.collections.ObservableList
 import scalafx.beans.property.{ObjectProperty, StringProperty}
 
-class CredentialsSourceProperties(
+case class CredentialsSourceProperties(
                                    val credentialsSourceList: ObjectProperty[ObservableList[CredentialsSourceEntry]],
                                    val credentialsSourceListSelectedValue: ReadOnlyObjectProperty[CredentialsSourceEntry],
                                    val credentialsSourceDescription: StringProperty

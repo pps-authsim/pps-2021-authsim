@@ -5,7 +5,7 @@ import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.collections.ObservableList
 import scalafx.beans.property.{ObjectProperty, StringProperty}
 
-class SecurityPoliciesProperties(
+case class SecurityPoliciesProperties(
                                   val securityPoliciesList: ObjectProperty[ObservableList[SecurityPolicyEntry]],
                                   val securityPoliciesListSelectedValue: ReadOnlyObjectProperty[SecurityPolicyEntry],
                                   val securityPoliciesDescription: StringProperty

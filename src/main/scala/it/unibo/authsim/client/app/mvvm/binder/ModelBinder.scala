@@ -21,15 +21,15 @@ object ModelBinder:
     bindSecurityViewModel(model.securityModel, viewModel)
     bindAttackViewModel(model.attackModel, viewModel)
 
-  private def bindUsersViewModel(usersModel: UsersModel, viewModel: AuthsimViewModel): Unit = {
+  private def bindUsersViewModel(usersModel: UsersModel, viewModel: AuthsimViewModel): Unit =
     val username = "user"
     val password = "password"
 
     ModelBinder.bindPropertiesWithObservableList(usersModel.usersList, viewModel.usersViewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
     usersModel.usersList += new User(username, password)
-  }
 
-  private def bindSecurityViewModel(securityModel: SecurityModel, viewModel: AuthsimViewModel): Unit = {
+
+  private def bindSecurityViewModel(securityModel: SecurityModel, viewModel: AuthsimViewModel): Unit =
     val policyName = "policy1"
     val policyDescription = "This is a simple policy"
     val anotherPolicyName = "policy2"
@@ -47,9 +47,9 @@ object ModelBinder:
     ModelBinder.bindPropertiesWithObservableList(securityModel.credentialsSourceList, viewModel.securityViewModel.credentialsSourceProperties.credentialsSourceList.value, source => new CredentialsSourceEntry(source.source, source.description))
     securityModel.credentialsSourceList += new CredentialsSource(credentialsSource, credentialsSourceDescription)
     securityModel.credentialsSourceList += new CredentialsSource(anotherCredentialsSource, anotherCredentialsSourceDescription)
-  }
 
-  private def bindAttackViewModel(attackModel: AttackModel, viewModel: AuthsimViewModel): Unit = {
+
+  private def bindAttackViewModel(attackModel: AttackModel, viewModel: AuthsimViewModel): Unit =
     val sequenceName = "Sequence1"
     val sequenceDescription = "An attack sequence"
     val anotherSequenceName = "Sequence2"
@@ -58,10 +58,10 @@ object ModelBinder:
     ModelBinder.bindPropertiesWithObservableList(attackModel.attackSequenceList, viewModel.attackViewModel.attackSequenceProperties.attackSequenceList.value, (sequence => new AttackSequenceEntry(sequence.sequence, sequence.description)))
     attackModel.attackSequenceList += new AttackSequence(sequenceName, sequenceDescription)
     attackModel.attackSequenceList += new AttackSequence(anotherSequenceName, anotherSequenceDescription)
-  }
 
-  private def bindPropertiesWithObservableList[A, B](observableListBuffer: ObservableListBuffer[A], propertiesList: ObservableList[B], mapper: (A => B)) = {
-    observableListBuffer.onAdd = Option(o => propertiesList.add(mapper.apply(o)))
-    observableListBuffer.onRemove = Option(o => propertiesList.remove(mapper.apply(o)))
-  }
+
+  private def bindPropertiesWithObservableList[A, B](observableListBuffer: ObservableListBuffer[A], propertiesList: ObservableList[B], mapper: (A => B)) =
+    observableListBuffer.onAdd(o => propertiesList.add(mapper.apply(o)))
+    observableListBuffer.onRemove(o => propertiesList.remove(mapper.apply(o)))
+
 

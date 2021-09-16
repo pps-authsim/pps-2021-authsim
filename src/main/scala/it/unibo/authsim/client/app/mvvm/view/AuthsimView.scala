@@ -43,7 +43,7 @@ class AuthsimView(
     makeTab("Users", usersTab),
     makeTab("Security", securityTab),
     makeTab("Attack", attackTab)
-  ));
+  ))
 
   private def makeTab(title: String, tabContent: Node): Tab = new Tab {
     text = title

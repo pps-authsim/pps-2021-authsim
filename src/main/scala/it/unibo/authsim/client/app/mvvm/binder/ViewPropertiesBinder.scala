@@ -24,13 +24,13 @@ import scalafx.scene.control.Tab
 import scalafx.Includes.*
 
 object ViewPropertiesBinder:
-  
+
   def bind(view: AuthsimView, viewModel: AuthsimViewModel): Unit =
     bindUsersTab(view.usersTab, viewModel)
     bindAttackTab(view.attackTab, viewModel)
     bindSecurityTab(view.securityTab, viewModel)
 
-  private def bindUsersTab(tab: UsersTab, viewModel: AuthsimViewModel): Unit = {
+  private def bindUsersTab(tab: UsersTab, viewModel: AuthsimViewModel): Unit =
 
     val addUserFormProperties = new AddUserFormProperties(tab.usernameProperty, tab.passwordProperty);
     val generateUsersForm = new GenerateUsersFormProperties(tab.quantityProperty, tab.presetProperty);
@@ -46,9 +46,9 @@ object ViewPropertiesBinder:
     tab.bindOnReset((e: ActionEvent) => viewModel.resetUsers())
 
     viewModel.usersViewModel = usersViewModel
-  }
 
-  private def bindSecurityTab(tab: SecurityTab, viewModel: AuthsimViewModel): Unit = {
+
+  private def bindSecurityTab(tab: SecurityTab, viewModel: AuthsimViewModel): Unit =
     val securityPoliciesProperties = new SecurityPoliciesProperties(tab.securityPoliciesListProperty, tab.securityPoliciesListSelectedProperty, tab.securityPoliciesDescriptionProperty)
 
     val credentialsSourceProperties = new CredentialsSourceProperties(tab.credentialsSourceListProperty, tab.credentialsSourceListSelectedProperty, tab.credentialsSourceDescriptionProperty)
@@ -59,9 +59,9 @@ object ViewPropertiesBinder:
     tab.bindOnCredentialsSourceChange((o: ObservableValue[_ <: CredentialsSourceEntry], oldValue: CredentialsSourceEntry, newValue: CredentialsSourceEntry) => tab.credentialsSourceDescriptionProperty.value = newValue.description)
 
     viewModel.securityViewModel = securityViewModel
-  }
 
-  private def bindAttackTab(tab: AttackTab, viewModel: AuthsimViewModel): Unit = {
+
+  private def bindAttackTab(tab: AttackTab, viewModel: AuthsimViewModel): Unit =
     val attackSequenceProperties = new AttackSequenceProperties(
       tab.attackSequenceListProperty,
       tab.attackSequenceListSelectedValueProperty,
@@ -75,6 +75,6 @@ object ViewPropertiesBinder:
     tab.bindOnAttackLaunch((e: ActionEvent) => viewModel.launchAttack())
 
     viewModel.attackViewModel = attackViewModel
-  }
+
 
 

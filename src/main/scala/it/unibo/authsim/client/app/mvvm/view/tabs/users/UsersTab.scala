@@ -18,7 +18,6 @@ import scalafx.scene.text.{Font, FontWeight, Text}
 import scalafx.util.converter.FormatStringConverter
 import scalafx.Includes.eventClosureWrapperWithParam
 
-// TODO refactor for clarity
 class UsersTab() extends SplitPane :
 
   private val usernameField = new TextField()
@@ -26,6 +25,7 @@ class UsersTab() extends SplitPane :
   private val saveButton = new Button("Save")
 
   private val quantityField = UsersViewModel.makeNumberTextField()
+  
   // TODO define enum when lib is ready
   private val presetSelect = new ChoiceBox[String] {
     items = ObservableBuffer[String](
@@ -34,6 +34,7 @@ class UsersTab() extends SplitPane :
       "Preset3"
     )
   }
+  
   private val generateButton = new Button("Generate")
 
   private val usersList = new ListView[UserEntry]()

@@ -3,7 +3,7 @@ package it.unibo.authsim.library.dsl.attack.builders
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.attack.logspecification.*
 import it.unibo.authsim.library.dsl.{HashFunction, Logger, Proxy}
-import it.unibo.authsim.library.user.{SaltInformation, UserInformation}
+import it.unibo.authsim.library.user.model.{SaltInformation, UserInformation}
 
 import scala.concurrent.duration.Duration
 

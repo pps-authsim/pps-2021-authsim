@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.user
 
-import it.unibo.authsim.library.user.{SaltInformation, UserInformation}
+import it.unibo.authsim.library.user.model.{SaltInformation, UserInformation}
 import org.scalatest.BeforeAndAfter
 import org.scalatest.wordspec.AnyWordSpec
 

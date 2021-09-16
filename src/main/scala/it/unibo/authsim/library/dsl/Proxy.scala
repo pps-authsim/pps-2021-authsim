@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl
 
-import it.unibo.authsim.library.user.UserInformation
+import it.unibo.authsim.library.user.model.UserInformation
 
 trait Proxy :
   def getUserInformations(): List[UserInformation]

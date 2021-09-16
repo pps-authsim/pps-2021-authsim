@@ -10,12 +10,12 @@ trait AttackBuilder {
   final def getLogSpecification() = this.logSpecification
   final def getTimeout() = this.timeout
 
-  def log(logSpecification: LogSpec): AttackBuilder = {
+  def log(logSpecification: LogSpec): this.type = {
     this.logSpecification = Option(logSpecification)
     this
   }
 
-  def timeout(time: Duration): AttackBuilder = {
+  def timeout(time: Duration): this.type = {
     this.timeout = Option(time)
     this
   }

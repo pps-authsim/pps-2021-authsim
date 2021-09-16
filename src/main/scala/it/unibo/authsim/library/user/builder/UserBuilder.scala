@@ -53,19 +53,13 @@ case class UserBuilder(val username:String, val password:String, val credentialP
 case class UserBuilder2(val username:String, val password:String, val credentialPolicy:Seq[CredentialPolicy]= Seq.empty): //extends UserBuilder(username, password):
   //_credentialPolicies=credentialPolicy
   private def checkPolicy(): Boolean=
+  //questo punto esclamativo davanti fa un po' schifo
     !credentialPolicy.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy])).map(e=>
       if(e.isInstanceOf[PasswordPolicy]) then
         StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check password
       else if (e.isInstanceOf[UserIDPolicy]) then
         StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check username
     ).contains(false)
-    /*
-        var result1=true
-        var result2=true
-        for( e <-credentialPolicy)
-          if(e.isInstanceOf[PasswordPolicy])then result1=StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check password
-          else if (e.isInstanceOf[UserIDPolicy])then result2=StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check username
-        result1&&result2*/
 
   def build(): Option[User]=
     if(checkPolicy()) then

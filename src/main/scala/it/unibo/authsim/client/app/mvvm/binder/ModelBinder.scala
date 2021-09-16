@@ -16,20 +16,15 @@ import javafx.collections.ObservableList
 
 object ModelBinder:
 
-  def bind(model: AuthsimModel, viewModel: AuthsimViewModel): Unit =
-    bindUsersViewModel(model.usersModel, viewModel)
-    bindSecurityViewModel(model.securityModel, viewModel)
-    bindAttackViewModel(model.attackModel, viewModel)
-
-  private def bindUsersViewModel(usersModel: UsersModel, viewModel: AuthsimViewModel): Unit =
+  def bindUsersViewModel(usersModel: UsersModel, viewModel: UsersViewModel): Unit =
     val username = "user"
     val password = "password"
 
-    ModelBinder.bindPropertiesWithObservableList(usersModel.usersList, viewModel.usersViewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
+    ModelBinder.bindPropertiesWithObservableList(usersModel.usersList, viewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
     usersModel.usersList += new User(username, password)
 
 
-  private def bindSecurityViewModel(securityModel: SecurityModel, viewModel: AuthsimViewModel): Unit =
+  def bindSecurityViewModel(securityModel: SecurityModel, viewModel: SecurityViewModel): Unit =
     val policyName = "policy1"
     val policyDescription = "This is a simple policy"
     val anotherPolicyName = "policy2"
@@ -40,25 +35,23 @@ object ModelBinder:
     val anotherCredentialsSource = "source2"
     val anotherCredentialsSourceDescription = "This is another cred source"
 
-    ModelBinder.bindPropertiesWithObservableList(securityModel.securityPolicyList, viewModel.securityViewModel.securityPoliciesProperties.securityPoliciesList.value, policy => new SecurityPolicyEntry(policy.policy, policy.description))
+    ModelBinder.bindPropertiesWithObservableList(securityModel.securityPolicyList, viewModel.securityPoliciesProperties.securityPoliciesList.value, policy => new SecurityPolicyEntry(policy.policy, policy.description))
     securityModel.securityPolicyList += new SecurityPolicy(policyName, policyDescription)
     securityModel.securityPolicyList += new SecurityPolicy(anotherPolicyName, anotherPolicyDescription)
 
-    ModelBinder.bindPropertiesWithObservableList(securityModel.credentialsSourceList, viewModel.securityViewModel.credentialsSourceProperties.credentialsSourceList.value, source => new CredentialsSourceEntry(source.source, source.description))
+    ModelBinder.bindPropertiesWithObservableList(securityModel.credentialsSourceList, viewModel.credentialsSourceProperties.credentialsSourceList.value, source => new CredentialsSourceEntry(source.source, source.description))
     securityModel.credentialsSourceList += new CredentialsSource(credentialsSource, credentialsSourceDescription)
     securityModel.credentialsSourceList += new CredentialsSource(anotherCredentialsSource, anotherCredentialsSourceDescription)
 
-
-  private def bindAttackViewModel(attackModel: AttackModel, viewModel: AuthsimViewModel): Unit =
+  def bindAttackViewModel(attackModel: AttackModel, viewModel: AttackViewModel): Unit =
     val sequenceName = "Sequence1"
     val sequenceDescription = "An attack sequence"
     val anotherSequenceName = "Sequence2"
     val anotherSequenceDescription = "Even better attack sequence"
 
-    ModelBinder.bindPropertiesWithObservableList(attackModel.attackSequenceList, viewModel.attackViewModel.attackSequenceProperties.attackSequenceList.value, (sequence => new AttackSequenceEntry(sequence.sequence, sequence.description)))
+    ModelBinder.bindPropertiesWithObservableList(attackModel.attackSequenceList, viewModel.attackSequenceProperties.attackSequenceList.value, (sequence => new AttackSequenceEntry(sequence.sequence, sequence.description)))
     attackModel.attackSequenceList += new AttackSequence(sequenceName, sequenceDescription)
     attackModel.attackSequenceList += new AttackSequence(anotherSequenceName, anotherSequenceDescription)
-
 
   private def bindPropertiesWithObservableList[A, B](observableListBuffer: ObservableListBuffer[A], propertiesList: ObservableList[B], mapper: (A => B)) =
     observableListBuffer.onAdd(o => propertiesList.add(mapper.apply(o)))

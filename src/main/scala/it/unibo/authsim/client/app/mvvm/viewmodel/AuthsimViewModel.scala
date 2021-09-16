@@ -1,5 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.viewmodel
 
+import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ViewPropertiesBinder}
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
@@ -18,43 +19,46 @@ import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
 object AuthsimViewModel:
   val ATTACK_MISSING_VALUE_TEXT = "Please, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
 
-class AuthsimViewModel(
-                 private val model: AuthsimModel
-               ) :
+class AuthsimViewModel(val view: AuthsimView, val model: AuthsimModel):
 
-  var usersViewModel: UsersViewModel = null
-  var securityViewModel: SecurityViewModel = null
-  var attackViewModel: AttackViewModel = null
+  private val usersViewModel: UsersViewModel = ViewPropertiesBinder.bindUsersTab(view, this)
+  ModelBinder.bindUsersViewModel(model.usersModel, usersViewModel)
 
-  def saveUser(): Unit = 
+  private val securityViewModel: SecurityViewModel = ViewPropertiesBinder.bindSecurityTab(view, this)
+  ModelBinder.bindSecurityViewModel(model.securityModel, securityViewModel)
+
+  private val attackViewModel: AttackViewModel = ViewPropertiesBinder.bindAttackTab(view, this)
+  ModelBinder.bindAttackViewModel(model.attackModel, attackViewModel)
+
+  def saveUser(): Unit =
     val username = usersViewModel.addUserFormProperties.usernameProperty.getValue()
     val password = usersViewModel.addUserFormProperties.passwordProperty.getValue()
 
     if username != null && !username.isBlank && password != null && !password.isBlank then
       val user = new User(username, password)
       model.usersModel.usersList += user
-  
 
-  def generateUsers(): Unit = 
+
+  def generateUsers(): Unit =
     val quantity = usersViewModel.generateUsersFormProperties.quantityProperty.getValue();
     val preset = usersViewModel.generateUsersFormProperties.presetProperty.getValue();
 
     println(quantity + " " + preset) // TODO hook client when ready
-  
 
-  def deleteSelectedUsers(): Unit = 
+
+  def deleteSelectedUsers(): Unit =
     val userEntry = usersViewModel.usersListProperties.usersListSelectionModel.value.getSelectedItem
     val user = new User(userEntry.username, userEntry.password)
 
     model.usersModel.usersList -= user
-  
 
-  def resetUsers(): Unit = 
+
+  def resetUsers(): Unit =
     val usersList = usersViewModel.usersListProperties.usersListProperty.value.clear()
     model.usersModel.usersList.clear()
-   
 
-  def launchAttack(): Unit = 
+
+  def launchAttack(): Unit =
     val users = usersViewModel.usersListProperties.usersListProperty.value
     val policy = securityViewModel.securityPoliciesProperties.securityPoliciesListSelectedValue.getValue
     val credentialsSource = securityViewModel.credentialsSourceProperties.credentialsSourceListSelectedValue.getValue
@@ -65,6 +69,6 @@ class AuthsimViewModel(
       attackViewModel.attackSequenceProperties.attackLog.value = " " + users + " " + policy + " " + credentialsSource + " " + selectedProcedure
     else
       attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModel.ATTACK_MISSING_VALUE_TEXT
-  
+
 
 

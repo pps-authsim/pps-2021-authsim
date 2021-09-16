@@ -23,26 +23,29 @@ import scalafx.scene.paint.Color.*
 import scalafx.scene.text.{Font, Text}
 
 /**
- * Defines the entrypoint for the authsim app
+ * Entrypoint for the authsim app
  */
 object AuthsimApp extends JFXApp3 :
 
-  override def start(): Unit = 
+  override def start(): Unit =
+
+    val view = makeAuthsimView()
+    val model = makeAuthsimModel()
+    
+    new AuthsimViewModel(view, model)
+
+    stage = view
+
+  private def makeAuthsimView(): AuthsimView =
     val usersTab = new UsersTab
     val securityTab = new SecurityTab
     val attackTab = new AttackTab
 
+    new AuthsimView(usersTab, securityTab, attackTab)
+
+  private def makeAuthsimModel(): AuthsimModel =
     val usersModel = new UsersModel
     val securityModel = new SecurityModel
     val attackModel = new AttackModel
 
-    val view = new AuthsimView(usersTab, securityTab, attackTab)
-    val model = new AuthsimModel(usersModel, securityModel, attackModel)
-    
-    val viewModel = new AuthsimViewModel(model)
-
-    ViewPropertiesBinder.bind(view, viewModel)
-    ModelBinder.bind(model, viewModel)
-
-    stage = view
-  
+    new AuthsimModel(usersModel, securityModel, attackModel)

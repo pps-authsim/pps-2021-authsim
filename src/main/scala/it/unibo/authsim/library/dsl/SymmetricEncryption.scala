@@ -5,9 +5,8 @@ import org.apache.commons.codec.binary.Hex
 import java.security.Security
 import java.util.Base64
 import javax.crypto.spec.SecretKeySpec
-import javax.crypto.{Cipher, Mac}
+import javax.crypto.{Cipher, KeyGenerator, Mac, SecretKey, SecretKeyFactory}
 import javax.crypto.spec.IvParameterSpec
-import javax.crypto.KeyGenerator
 
 trait Encryption
 
@@ -27,10 +26,8 @@ object SymmetricEncryption:
 
   def encrypt(password: String, key: String, iv:String, algorithm: String): String=
     val input = password.getBytes("UTF-8")
-    val key2 = Hex.decodeHex(key.toCharArray)
-    val iv2 = Hex.decodeHex(iv.toCharArray)
-    val keySpec = new SecretKeySpec(key2, algorithm)
-    val ivSpec = new IvParameterSpec(iv2)
+    val keySpec = new SecretKeySpec(key, algorithm)
+    val ivSpec = new IvParameterSpec(iv)
     val cipher = Cipher.getInstance(algorithm+"/CTR/NoPadding")
     cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
     cipher.doFinal(input)
@@ -55,8 +52,8 @@ object App:
     val algorithm:String="AES"
     val encrypted2 = SymmetricEncryption.encrypt(password, key, iv, algorithm)
     val decrypted2 = SymmetricEncryption.decrypt(encrypted2, key, iv, algorithm)
-
-    println("decrypted2: " + decrypted2)
+    println("Input:" + password)
+    println("Input decrypted: " + decrypted2)
 
     val prova=Util.toMultiple("a")
     println(prova)

@@ -25,22 +25,7 @@ object SymmetricEncryption:
     //Base64.encode(keyGen.generateKey())
   implicit def stringToByteArray(value : String):Array[Byte] = Hex.decodeHex(value.toCharArray)
 
-  def encrypt(input: Array[Byte], key: Array[Byte], iv: Array[Byte]): Array[Byte] =
-    val keySpec = new SecretKeySpec(key, "AES")
-    val ivSpec = new IvParameterSpec(iv)
-    val cipher = Cipher.getInstance("AES/CTR/NoPadding")
-    cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
-    cipher.doFinal(input)
-
-
-  def decrypt(input: Array[Byte], key: Array[Byte], iv: Array[Byte]): Array[Byte] =
-    val keySpec = new SecretKeySpec(key, "AES")
-    val ivSpec = new IvParameterSpec(iv)
-    val cipher = Cipher.getInstance("AES/CTR/NoPadding")
-    cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
-    cipher.doFinal(input)
-
-  def encrypt2(password: String, key: String, iv:String, algorithm: String): String=
+  def encrypt(password: String, key: String, iv:String, algorithm: String): String=
     val input = password.getBytes("UTF-8")
     val key2 = Hex.decodeHex(key.toCharArray)
     val iv2 = Hex.decodeHex(iv.toCharArray)
@@ -51,7 +36,7 @@ object SymmetricEncryption:
     cipher.doFinal(input)
     new String(input, "UTF-8")
 
-  def decrypt2(passwordEcrypted: String, key: String, iv:String, algorithm: String): String=
+  def decrypt(passwordEcrypted: String, key: String, iv:String, algorithm: String): String=
     val input = passwordEcrypted.getBytes("UTF-8")
     val keySpec = new SecretKeySpec(key, algorithm)
     val ivSpec = new IvParameterSpec(iv)
@@ -62,18 +47,14 @@ object SymmetricEncryption:
 
 object App:
   def main(args: Array[String]): Unit =
-    val input = "my super secret input!!!".getBytes("UTF-8")
-    // For key consider using a "Password Based Key Generation", like PBKDF2, SCRIPT, ...
-    val key = Hex.decodeHex("000102030405060708090a0b0c0d0e0f".toCharArray)
-    val iv = Hex.decodeHex("01020304050607080910111201010101".toCharArray)
-    val encrypted = SymmetricEncryption.encrypt(input, key, iv)
-    val decrypted = SymmetricEncryption.decrypt(encrypted, key, iv)
 
-    println("input: " + new String(input, "UTF-8"))
-    println("decrypted: " + new String(decrypted, "UTF-8"))
 //key 4 byte
-    val encrypted2 = SymmetricEncryption.encrypt2("my super secret input!!!", "12345678123456781234567812345678", "12345678123456781234567812345678", "AES")
-    val decrypted2 = SymmetricEncryption.decrypt2(encrypted2, "12345678123456781234567812345678", "12345678123456781234567812345678", "AES")
+    val password: String="my super secret input!!!"
+    val key:String="12345678123456781234567812345678"
+    val iv:String="12345678123456781234567812345678"
+    val algorithm:String="AES"
+    val encrypted2 = SymmetricEncryption.encrypt(password, key, iv, algorithm)
+    val decrypted2 = SymmetricEncryption.decrypt(encrypted2, key, iv, algorithm)
 
     println("decrypted2: " + decrypted2)
 

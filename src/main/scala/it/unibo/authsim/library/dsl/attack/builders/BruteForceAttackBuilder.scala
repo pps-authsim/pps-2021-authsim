@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
 import it.unibo.authsim.library.dsl.attack.logspecification.{LogCategory, LogSpec}
-import it.unibo.authsim.library.dsl.{HashFunction, Proxy}
+import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.user.model.User
 
@@ -17,7 +17,7 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder {
   def executeNow(): Unit = this.save().start()
 }
 
-class BruteForceAttack(private val target: Proxy, private val hashFunction: HashFunction, private val logTo: Option[LogSpec], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack {
+class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val logTo: Option[LogSpec], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack {
 
   override def start(): Unit = {
     var jobResults: List[Future[Statistics]] = List.empty

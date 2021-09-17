@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.attack.builders
 
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.attack.logspecification.*
-import it.unibo.authsim.library.dsl.{HashFunction, Logger, Proxy}
+import it.unibo.authsim.library.dsl.{HashFunction, Logger, UserProvider}
 import it.unibo.authsim.library.user.model.{SaltInformation, UserInformation}
 
 import scala.concurrent.duration.Duration
@@ -22,7 +22,7 @@ class BruteForceAttackBuilderTest extends AnyWordSpec {
     def getCrackStatus: Boolean = this.isCracked
   }
 
-  val myProxy = new Proxy {
+  val myProxy = new UserProvider {
     override def getUserInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("abc"), SaltInformation(Option.empty, Option.empty, Option.empty), Map.empty))
   }
   private val myLogger = new TestLogger()

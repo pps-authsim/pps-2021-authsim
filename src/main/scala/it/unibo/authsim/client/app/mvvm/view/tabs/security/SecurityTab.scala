@@ -65,6 +65,9 @@ class SecurityTab extends VBox :
     }
   )
 
+  def fireSelectPolicy(position: Int): Unit = securityPoliciesList.selectionModel.value.select(position)
   def bindOnPolicyChange(listener: ChangeListener[SecurityPolicyEntry]) = securityPoliciesListSelectedProperty.addListener(listener)
+
+  def fireSelectCredentialsSource(position: Int): Unit = credentialsSourceList.selectionModel.value.select(position)
   def bindOnCredentialsSourceChange(listener: ChangeListener[CredentialsSourceEntry]) = credentialsSourceListSelectedProperty.addListener(listener)
 

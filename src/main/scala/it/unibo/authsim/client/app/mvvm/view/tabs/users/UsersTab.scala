@@ -26,7 +26,7 @@ class UsersTab() extends SplitPane :
   private val saveButton = new Button("Save")
 
   private val quantityField = AuthsimView.makeNumberTextField()
-  
+
   // TODO define enum when lib is ready
   private val presetSelect = new ChoiceBox[String] {
     items = ObservableBuffer[String](
@@ -35,7 +35,7 @@ class UsersTab() extends SplitPane :
       "Preset3"
     )
   }
-  
+
   private val generateButton = new Button("Generate")
 
   private val usersList = new ListView[UserEntry]()
@@ -65,9 +65,16 @@ class UsersTab() extends SplitPane :
     )
   }
 
+  def fireSave(): Unit = saveButton.fire()
   def bindOnSave(handler: EventHandler[javafx.event.ActionEvent]) = saveButton.setOnAction(handler)
+
+  def fireGenerate(): Unit = generateButton.fire()
   def bindOnGenerate(handler: EventHandler[javafx.event.ActionEvent]) = generateButton.setOnAction(handler)
+
+  def fireDelete(): Unit = deleteSelectedButton.fire()
   def bindOnDeleteSelected(handler: EventHandler[javafx.event.ActionEvent]) = deleteSelectedButton.setOnAction(handler)
+
+  def fireReset(): Unit = resetButton.fire()
   def bindOnReset(handler: EventHandler[javafx.event.ActionEvent]) = resetButton.setOnAction(handler)
 
 class AddUserForm(usernameField: TextField, passwordField: TextField, saveButton: Button) extends GridPane :

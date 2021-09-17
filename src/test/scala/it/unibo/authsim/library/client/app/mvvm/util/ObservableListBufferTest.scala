@@ -6,7 +6,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import scala.collection.mutable.ListBuffer
 
 
-class ObservableListBufferTest extends AnyWordSpec {
+class ObservableListBufferTest extends AnyWordSpec:
 
   "An ObservableListBuffer" when {
 
@@ -126,4 +126,3 @@ class ObservableListBufferTest extends AnyWordSpec {
 
   }
 
-}

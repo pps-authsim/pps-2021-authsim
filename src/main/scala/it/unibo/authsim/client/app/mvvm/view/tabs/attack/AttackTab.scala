@@ -60,7 +60,10 @@ class AttackTab extends VBox :
     },
   )
 
+  def fireSelectSequence(position: Int): Unit = attackSequenceList.selectionModel.value.select(position)
   def bindOnSequenceChange(listener: ChangeListener[AttackSequenceEntry]) = attackSequenceListSelectedValueProperty.addListener(listener)
+
+  def fireAttackLaunch(): Unit = launchAttackButton.fire()
   def bindOnAttackLaunch(handler: EventHandler[javafx.event.ActionEvent]) = launchAttackButton.setOnAction(handler)
 
 

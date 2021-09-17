@@ -1,9 +1,11 @@
 package it.unibo.authsim.library.user.model
 
 trait User:
-  def username: String
-  def password: String
+  val username: String
+  val password: String
 
 object User:
-  def apply(username:String, password:String)= new UserImpl(username,password)
-  case class UserImpl(val username:String, val password:String) extends User
+  def apply(_username:String, _password:String): User=
+    new User:
+      override val username:String=_username
+      override val password:String=_password

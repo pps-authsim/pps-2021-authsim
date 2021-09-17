@@ -42,6 +42,7 @@ class BruteForceAttack(private val target: Proxy, private val hashFunction: Hash
     totalResults = totalResults + new Statistics(Set(), attempts = 0, elapsedTime / jobs)
     // TODO: refine logging
     logTo.foreach(logSpec => {
+
       if (logSpec.getCategories()(LogCategory.SUCCESS) || logSpec.getCategories()(LogCategory.ALL)) then
         logSpec.getTargetLogger().foreach(logger => logger.receiveCracked(true))
       end if
@@ -63,8 +64,8 @@ class BruteForceAttack(private val target: Proxy, private val hashFunction: Hash
       val hashedPassword = hashFunction.hash(nextPasswordString)
       localStatistics = localStatistics + new Statistics(hashedPassword == targetUser.password match {
         case true => Set(new User {
-          override def username: String = targetUser.username
-          override def password: String = nextPasswordString
+          override val username: String = targetUser.username
+          override val password: String = nextPasswordString
         })
         case false => Set()
       }, attempts = 1, Duration.Zero)

@@ -18,4 +18,3 @@ object UserInformation:
                                     saltInformation: SaltInformation,
                                     additionalInformation: Map[String, String]=Map.empty)
                                    extends UserInformation(saltInformation, additionalInformation)
-

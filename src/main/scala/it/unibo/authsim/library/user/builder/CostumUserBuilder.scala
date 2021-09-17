@@ -6,17 +6,18 @@ import it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 
 class UserCostumBuilder extends UserBuilder[User]:
-  def withName(userName:String):UserCostumBuilder=
+  def withName(userName:String):this.type=
     this._userName = userName
     this
 
-  def withPassword(password:String):UserCostumBuilder=
+  def withPassword(password:String):this.type=
     this._password = password
     this
 
   def build(): Option[User]=
-    if(this.checkPolicy()) then
+    if(checkPolicy()) then
       val user= User(_userName, _password)
       Some(user)
     else
       None
+

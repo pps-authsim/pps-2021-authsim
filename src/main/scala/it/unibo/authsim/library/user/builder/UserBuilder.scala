@@ -12,13 +12,13 @@ abstract class UserBuilder[U] extends Builder[U]:
   protected var _password:String=generateRandomString()
 
   protected def checkPolicy(): Boolean=
-    !_credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy])).map(e=>
+    _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy])).map(e=>
       if(e.isInstanceOf[PasswordPolicy]) then
         StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check _password
-      else if (e.isInstanceOf[UserIDPolicy]) then
+      else
         StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check _userName
-    ).contains(false)
+    ).contains(false).unary_!
 
-  def withPolicy(policy:CredentialPolicy):UserBuilder[U]=
+  def withPolicy(policy:CredentialPolicy):this.type =
     this._credentialPolicies = policy +: this._credentialPolicies
     this

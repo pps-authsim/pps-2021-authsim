@@ -11,7 +11,7 @@ class UserAutoBuilder extends UserBuilder[User]{
       .map(e=>
         if(e.isInstanceOf[PasswordPolicy]) then
           this._password= e.asInstanceOf[PasswordPolicy].generate
-        else if (e.isInstanceOf[UserIDPolicy]) then
+        else
           this._userName= e.asInstanceOf[UserIDPolicy].generate)
     User(_userName, _password)
 

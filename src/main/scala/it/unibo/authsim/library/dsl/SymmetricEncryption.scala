@@ -3,6 +3,7 @@ package it.unibo.authsim.library.dsl
 import org.apache.commons.codec.binary.Hex
 
 import java.security.Security
+import java.util.Base64
 import javax.crypto.spec.SecretKeySpec
 import javax.crypto.{Cipher, Mac}
 import javax.crypto.spec.IvParameterSpec
@@ -15,15 +16,14 @@ object Util:
     case key if(key.length<16) => key.concat("0")
     case _=> key
   }
-def toMultiple(key: String): String=key.foldLeft(key) { (acc, next) =>
-  if (key.length<16) next :: acc else acc
-}.reverse
+
 
 object SymmetricEncryption:
   //DES,
-  private def generateKey(algorithm: String):String=
-    val keyGen: KeyGenerator = KeyGenerator.getInstance(algorithm).init(64)
-    Base64.encode(keyGen.generateKey())
+  //private def generateKey(algorithm: String):String=
+    //val keyGen: KeyGenerator = KeyGenerator.getInstance(algorithm).init(64)
+    //Base64.encode(keyGen.generateKey())
+  implicit def stringToByteArray(value : String):Array[Byte] = Hex.decodeHex(value.toCharArray)
 
   def encrypt(input: Array[Byte], key: Array[Byte], iv: Array[Byte]): Array[Byte] =
     val keySpec = new SecretKeySpec(key, "AES")
@@ -53,10 +53,8 @@ object SymmetricEncryption:
 
   def decrypt2(passwordEcrypted: String, key: String, iv:String, algorithm: String): String=
     val input = passwordEcrypted.getBytes("UTF-8")
-    val key2 = Hex.decodeHex(key.toCharArray)
-    val iv2 = Hex.decodeHex(iv.toCharArray)
-    val keySpec = new SecretKeySpec(key2, algorithm)
-    val ivSpec = new IvParameterSpec(iv2)
+    val keySpec = new SecretKeySpec(key, algorithm)
+    val ivSpec = new IvParameterSpec(iv)
     val cipher = Cipher.getInstance(algorithm+"/CTR/NoPadding")
     cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
     cipher.doFinal(input)

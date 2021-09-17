@@ -36,8 +36,8 @@ class ObservableListBufferTest extends AnyWordSpec {
     }
 
     "Value is added with attached listener" should {
-      "Have listener be called" in {
-        var mirrorList = ListBuffer[Int]()
+      "Have listener from constructor be called" in {
+        val mirrorList = ListBuffer[Int]()
         val copyAction: (Int => Unit) = value => mirrorList += value
 
         var observableList = ObservableListBuffer[Int](copyAction, copyAction)
@@ -45,10 +45,21 @@ class ObservableListBufferTest extends AnyWordSpec {
 
         assert(mirrorList(0) == 42)
       }
+
+      "Have listener from setter be called" in {
+        val mirrorList = ListBuffer[Int]()
+        val copyAction: (Int => Unit) = value => mirrorList += value
+
+        var observableList = ObservableListBuffer[Int]()
+        observableList.onAdd(copyAction)
+        observableList += 42
+
+        assert(mirrorList(0) == 42)
+      }
     }
 
     "Value is removed" should {
-      "Have not removed value" in {
+      "Have removed value" in {
         var observableList = ObservableListBuffer(42)
         observableList -= 42
 
@@ -56,16 +67,60 @@ class ObservableListBufferTest extends AnyWordSpec {
       }
     }
 
-
     "Value is removed with attached listener" should {
-      "Have listener be called" in {
-        var mirrorList = ListBuffer[Int](42)
+      "Have constructor listener be called" in {
+        val mirrorList = ListBuffer[Int](42)
         val copyAction: (Int => Unit) = value => mirrorList -= value
 
         var observableList = ObservableListBuffer[Int](copyAction, copyAction, 42)
         observableList -= 42
 
         assert(mirrorList.size == 0)
+      }
+
+      "Have listener be called" in {
+        val mirrorList = ListBuffer[Int](42)
+        val copyAction: (Int => Unit) = value => mirrorList -= value
+
+        var observableList = ObservableListBuffer[Int](42)
+        observableList.onRemove(copyAction)
+        observableList -= 42
+
+        assert(mirrorList.size == 0)
+      }
+    }
+
+    "List is cleared" should {
+      "Have no elements" in {
+        val observableList = ObservableListBuffer[Int](42)
+
+        observableList.clear()
+
+        assert(observableList.value.size == 0)
+      }
+    }
+
+    "List equaled" should {
+      "Be equal to another list with same content" in {
+        val observableListBuffer = ObservableListBuffer(1, 2, 3)
+        val anotherObservableListBuffer = ObservableListBuffer(1, 2, 3)
+
+        assert(observableListBuffer.hasSameValues(anotherObservableListBuffer))
+      }
+
+      "Be not equal to another list with different content" in {
+        val observableListBuffer = ObservableListBuffer(1, 2, 3)
+        val anotherObservableListBuffer = ObservableListBuffer(4, 5)
+
+        assert(!observableListBuffer.hasSameValues(anotherObservableListBuffer))
+      }
+    }
+
+    "To string called" should {
+      "Be as expected" in {
+        val observableListBuffer = ObservableListBuffer("foo", "bar", "fizz")
+
+        assert(observableListBuffer.toString().equals("ListBuffer(foo, bar, fizz)"))
       }
     }
 

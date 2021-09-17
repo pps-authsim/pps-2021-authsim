@@ -1,5 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.util
 
+import scala.collection.Seq
 import scala.collection.mutable.ListBuffer
 
 object ObservableListBuffer:
@@ -61,9 +62,13 @@ class ObservableListBuffer[A](
    */
   def value: ListBuffer[A] = ListBuffer.from(wrappedList)
 
-  override def toString(): String = wrappedList.toString()
+  /**
+   * @param observableListBuffer equaled list
+   * @return true if both buffer lists have same values
+   */
+  def hasSameValues(observableListBuffer: ObservableListBuffer[A]) = this.wrappedList.equals(observableListBuffer.wrappedList)
 
-  override def equals(o: Any): Boolean = wrappedList.equals(o)
+  override def toString(): String = wrappedList.toString()
 
   override def hashCode(): Int = wrappedList.hashCode()
 

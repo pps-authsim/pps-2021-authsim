@@ -23,9 +23,9 @@ object StringPolicies:
     def minimumSymbols: Int
     def minimumNumbers: Int
 
-  sealed trait CredentialPolicy
-  trait PasswordPolicy extends CredentialPolicy with StringPolicy with RestrictStringPolicy with MoreRestrictStringPolicy
-  trait UserIDPolicy extends CredentialPolicy with StringPolicy with RestrictStringPolicy with MoreRestrictStringPolicy
-  trait OTPPolicy extends CredentialPolicy with StringPolicy with RestrictStringPolicy
+  sealed trait CredentialPolicy extends StringPolicy
+  trait PasswordPolicy extends CredentialPolicy with RestrictStringPolicy with MoreRestrictStringPolicy
+  trait UserIDPolicy extends CredentialPolicy with RestrictStringPolicy with MoreRestrictStringPolicy
+  trait OTPPolicy extends CredentialPolicy with RestrictStringPolicy
 
   trait SaltPolicy extends StringPolicy with RestrictStringPolicy with MoreRestrictStringPolicy

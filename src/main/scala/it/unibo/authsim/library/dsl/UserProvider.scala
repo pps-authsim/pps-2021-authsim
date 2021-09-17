@@ -8,5 +8,5 @@ trait UserProvider :
 object UserProvider:
   def apply(): UserProvider= new UserProvider:
     private var _userInformations: List[UserInformation] = List.empty
-    override def UserInformations() = _userInformations
-    //TODO discuti con Alex riguardo al setter
+    override def userInformations(): List[UserInformation]= _userInformations
+    //TODO discuti con Alex riguardo al setter: per me dovrebbe fornire un modo per agggiungere utenti esattamente come succede per i builder

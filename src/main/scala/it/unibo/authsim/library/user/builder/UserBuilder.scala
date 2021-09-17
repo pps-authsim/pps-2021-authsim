@@ -3,10 +3,9 @@ package it.unibo.authsim.library.user.builder
 import  it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
-import it.unibo.authsim.library.user.builder.Builder
 import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 
-abstract class UserBuilder[U] extends Builder[U]:
+abstract class UserBuilder[U]:
   protected var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
   protected var _userName: String=generateRandomString()
   protected var _password:String=generateRandomString()

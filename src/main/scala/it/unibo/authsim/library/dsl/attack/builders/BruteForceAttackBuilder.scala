@@ -30,7 +30,7 @@ class BruteForceAttack(private val target: UserProvider, private val hashFunctio
     val maxPasswordLength = 4
     val monitor = new ConcurrentStringProvider(alphabet, maxPasswordLength)
     val startTime = System.nanoTime()
-    (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.getUserInformations().head, monitor)) :: jobResults)
+    (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.userInformations().head, monitor)) :: jobResults)
     // TODO: refine timeout
     try {
       jobResults.foreach(future => totalResults = totalResults + Await.result(future, timeout.getOrElse(Duration.Inf)))

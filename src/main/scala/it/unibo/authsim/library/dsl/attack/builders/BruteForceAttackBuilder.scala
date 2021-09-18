@@ -1,12 +1,11 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-import it.unibo.authsim.library.dsl.attack.logspecification.{LogCategory, LogSpec}
-import it.unibo.authsim.library.dsl.{HashFunction, Proxy}
+import it.unibo.authsim.library.dsl.{HashFunction, Proxy, StatisticsConsumer}
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.user.User
 
 import scala.concurrent.duration.{Duration, MILLISECONDS}
-import scala.concurrent.{Future, Await}
+import scala.concurrent.{Await, Future}
 import scala.concurrent.TimeoutException
 import concurrent.ExecutionContext.Implicits.global
 
@@ -28,12 +27,12 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder {
 
   def getMaximumLength: Int = this.maximumLength
 
-  def save(): BruteForceAttack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getAlphabet(), this.getMaximumLength, this.getLogSpecification(), this.getTimeout(), this.getNumberOfWorkers)
+  def save(): BruteForceAttack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getAlphabet(), this.getMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
 
   def executeNow(): Unit = this.save().start()
 }
 
-class BruteForceAttack(private val target: Proxy, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[LogSpec], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack {
+class BruteForceAttack(private val target: Proxy, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack {
 
   override def start(): Unit = {
     var jobResults: List[Future[Statistics]] = List.empty
@@ -50,18 +49,7 @@ class BruteForceAttack(private val target: Proxy, private val hashFunction: Hash
     val endTime = System.nanoTime()
     val elapsedTime = Duration(endTime - startTime, MILLISECONDS)
     totalResults = totalResults + new Statistics(Set(), attempts = 0, elapsedTime / jobs)
-    // TODO: refine logging
-    logTo.foreach(logSpec => {
-      if (logSpec.getCategories()(LogCategory.SUCCESS) || logSpec.getCategories()(LogCategory.ALL)) then
-        logSpec.getTargetLogger().foreach(logger => logger.receiveCracked(true))
-      end if
-      if (logSpec.getCategories()(LogCategory.ATTEMPTS) || logSpec.getCategories()(LogCategory.ALL)) then
-        logSpec.getTargetLogger().foreach(logger => logger.receiveStatistics(Map("attempts" -> totalResults.attempts.toString, "Users" -> totalResults.successfulBreaches.map(u => u.username + " - " + u.password).toString())))
-      end if
-      if (logSpec.getCategories()(LogCategory.TIME) || logSpec.getCategories()(LogCategory.ALL)) then
-        logSpec.getTargetLogger().foreach(logger => logger.receiveExecutionTime(elapsedTime.toMillis))
-      end if
-    })
+    logTo.foreach(logSpec => logSpec.consume(totalResults))
   }
 
   private def futureJob(targetUser: User, stringProvider: ConcurrentStringCombinator): Statistics = {

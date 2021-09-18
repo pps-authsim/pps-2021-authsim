@@ -1,17 +1,17 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
 import scala.concurrent.duration.Duration
-import it.unibo.authsim.library.dsl.attack.logspecification.LogSpec
+import it.unibo.authsim.library.dsl.StatisticsConsumer
 
 trait AttackBuilder {
-  private var logSpecification: Option[LogSpec] = Option.empty
+  private var statisticsConsumer: Option[StatisticsConsumer] = Option.empty
   private var timeout: Option[Duration] = Option.empty
 
-  final def getLogSpecification() = this.logSpecification
+  final def getStatisticsConsumer() = this.statisticsConsumer
   final def getTimeout() = this.timeout
 
-  def log(logSpecification: LogSpec): this.type = {
-    this.logSpecification = Option(logSpecification)
+  def logTo(statisticsConsumer: StatisticsConsumer): this.type = {
+    this.statisticsConsumer = Option(statisticsConsumer)
     this
   }
 

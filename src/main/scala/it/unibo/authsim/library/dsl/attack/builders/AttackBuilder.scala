@@ -1,7 +1,8 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
+import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
+
 import scala.concurrent.duration.Duration
-import it.unibo.authsim.library.dsl.StatisticsConsumer
 
 trait AttackBuilder {
   private var statisticsConsumer: Option[StatisticsConsumer] = Option.empty

@@ -2,7 +2,8 @@ package it.unibo.authsim.library.dsl.attack.builders
 
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
-import it.unibo.authsim.library.dsl.{HashFunction, Proxy, StatisticsConsumer}
+import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
+import it.unibo.authsim.library.dsl.{HashFunction, Proxy}
 import it.unibo.authsim.library.user.{SaltInformation, UserInformation}
 
 import scala.concurrent.duration.Duration

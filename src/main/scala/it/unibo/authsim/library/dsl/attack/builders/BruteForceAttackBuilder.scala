@@ -54,7 +54,7 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder:
 
   override def executeNow(): Unit = this.save().start()
 
-class BruteForceAttack(private val target: Proxy, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
+private class BruteForceAttack(private val target: Proxy, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
 
   override def start(): Unit =
     var jobResults: List[Future[Statistics]] = List.empty

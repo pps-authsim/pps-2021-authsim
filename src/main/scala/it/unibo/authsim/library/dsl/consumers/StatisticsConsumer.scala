@@ -1,7 +1,6 @@
 package it.unibo.authsim.library.dsl.consumers
 
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
-import it.unibo.authsim.library.dsl.{Consumer, StatisticsConsumer}
 
 trait StatisticsConsumer extends Consumer[Statistics]:
   override def consume(consumable: Statistics): Unit

@@ -33,7 +33,7 @@ object ViewPropertiesBinder:
 
     val addUserFormProperties = new AddUserFormProperties(tab.usernameProperty, tab.passwordProperty);
     val generateUsersForm = new GenerateUsersFormProperties(tab.quantityProperty, tab.presetProperty);
-    val usersListProperties = new UsersListViewProperties(tab.usersListProperty, tab.usersListSelectionModel);
+    val usersListProperties = new UsersListViewProperties(tab.usersListProperty, tab.usersListSelectedProperty);
 
     val usersViewModel = new UsersViewModel(addUserFormProperties, generateUsersForm, usersListProperties)
 

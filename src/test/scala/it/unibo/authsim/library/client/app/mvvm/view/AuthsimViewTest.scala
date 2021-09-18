@@ -6,6 +6,7 @@ import it.unibo.authsim.client.app.mvvm.view.tabs.security.SecurityTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
 import org.scalatest.wordspec.AnyWordSpec
 import javafx.embed.swing.JFXPanel
+import scalafx.application.JFXApp3
 
 object AuthsimViewTest:
   def setUpViewTest() =
@@ -36,12 +37,6 @@ class AuthsimViewTest extends AnyWordSpec:
         val text = numberInput.text.value
         assert(text == "")
       }
-
-    }
-
-    "view is constructed" should {
-
-      // TODO instancing view in test causes nullpointer exception in stage title set
 
     }
 

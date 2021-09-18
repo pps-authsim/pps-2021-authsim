@@ -1,6 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.util
 
-import scala.collection.Seq
+import scala.collection.{IterableOnce, Seq}
 import scala.collection.mutable.ListBuffer
 
 object ObservableListBuffer:
@@ -66,7 +66,7 @@ class ObservableListBuffer[A](
    * @param observableListBuffer equaled list
    * @return true if both buffer lists have same values
    */
-  def hasSameValues(observableListBuffer: ObservableListBuffer[A]) = this.wrappedList.equals(observableListBuffer.wrappedList)
+  def hasSameValues(elements: IterableOnce[A]) = this.wrappedList.sameElements(elements)
 
   override def toString(): String = wrappedList.toString()
 

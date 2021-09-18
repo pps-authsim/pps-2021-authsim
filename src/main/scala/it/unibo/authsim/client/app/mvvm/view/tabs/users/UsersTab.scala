@@ -3,6 +3,7 @@ package it.unibo.authsim.client.app.mvvm.view.tabs.users
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{AddUserForm, GenerateUsersForm, UsersList}
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
+import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.collections.ObservableList
 import javafx.event.EventHandler
 import javafx.scene.control.CheckBox
@@ -47,7 +48,7 @@ class UsersTab() extends SplitPane :
   val quantityProperty: StringProperty = quantityField.text
   val presetProperty: ObjectProperty[String] = presetSelect.value
   val usersListProperty: ObjectProperty[ObservableList[UserEntry]] = usersList.items
-  val usersListSelectionModel: ObjectProperty[javafx.scene.control.MultipleSelectionModel[UserEntry]] = usersList.selectionModel
+  val usersListSelectedProperty: ReadOnlyObjectProperty[UserEntry] = usersList.selectionModel.value.selectedItemProperty()
 
   items.add(makeUserCreationPane())
   items.add(makeUserManagementPane())
@@ -64,6 +65,8 @@ class UsersTab() extends SplitPane :
       new UsersList(usersList, deleteSelectedButton, resetButton)
     )
   }
+
+  def fireSelectUser(position: Int): Unit = usersList.selectionModel.value.select(position)
 
   def fireSave(): Unit = saveButton.fire()
   def bindOnSave(handler: EventHandler[javafx.event.ActionEvent]) = saveButton.setOnAction(handler)

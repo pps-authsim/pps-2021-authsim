@@ -103,16 +103,14 @@ class ObservableListBufferTest extends AnyWordSpec:
     "List equaled" should {
       "Be equal to another list with same content" in {
         val observableListBuffer = ObservableListBuffer(1, 2, 3)
-        val anotherObservableListBuffer = ObservableListBuffer(1, 2, 3)
 
-        assert(observableListBuffer.hasSameValues(anotherObservableListBuffer))
+        assert(observableListBuffer.hasSameValues(Seq(1, 2, 3)))
       }
 
       "Be not equal to another list with different content" in {
         val observableListBuffer = ObservableListBuffer(1, 2, 3)
-        val anotherObservableListBuffer = ObservableListBuffer(4, 5)
 
-        assert(!observableListBuffer.hasSameValues(anotherObservableListBuffer))
+        assert(!observableListBuffer.hasSameValues(Seq(4, 5)))
       }
     }
 

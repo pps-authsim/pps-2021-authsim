@@ -16,9 +16,9 @@ import it.unibo.authsim.library.client.app.mvvm.view.AuthsimViewTest
 class UsersTabTest extends AnyWordSpec :
 
   "Users tab" when {
-    
+
     AuthsimViewTest.setUpViewTest()
-    
+
     "user tab is constructed" should {
 
       val usersTab = new UsersTab()
@@ -47,9 +47,9 @@ class UsersTabTest extends AnyWordSpec :
         usersTab.usersListProperty.value.add(user1)
         usersTab.usersListProperty.value.add(user2)
 
-        usersTab.usersListSelectionModel.value.selectFirst()
+        usersTab.fireSelectUser(0)
 
-        usersTab.bindOnDeleteSelected((e: ActionEvent) => usersTab.usersListProperty.value.remove(usersTab.usersListSelectionModel.value.getSelectedItem()))
+        usersTab.bindOnDeleteSelected((e: ActionEvent) => usersTab.usersListProperty.value.remove(usersTab.usersListSelectedProperty.get()))
 
         usersTab.fireDelete()
 
@@ -64,7 +64,7 @@ class UsersTabTest extends AnyWordSpec :
         usersTab.usersListProperty.value.add(user1)
         usersTab.usersListProperty.value.add(user2)
 
-        usersTab.usersListSelectionModel.value.selectFirst()
+        usersTab.fireSelectUser(0)
 
         usersTab.bindOnReset((e: ActionEvent) => usersTab.usersListProperty.value.clear())
 

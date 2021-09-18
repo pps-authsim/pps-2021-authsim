@@ -38,6 +38,7 @@ class SecurityTab extends VBox :
   val credentialsSourceListProperty: ObjectProperty[ObservableList[CredentialsSourceEntry]] = credentialsSourceList.items
   val credentialsSourceListSelectedProperty: ReadOnlyObjectProperty[CredentialsSourceEntry] = credentialsSourceList.selectionModel.value.selectedItemProperty()
   val credentialsSourceDescriptionProperty: StringProperty = credentialsSourceDescription.text
+  
   val securityPoliciesListProperty: ObjectProperty[ObservableList[SecurityPolicyEntry]] = securityPoliciesList.items
   val securityPoliciesListSelectedProperty: ReadOnlyObjectProperty[SecurityPolicyEntry] = securityPoliciesList.selectionModel.value.selectedItemProperty()
   val securityPoliciesDescriptionProperty: StringProperty = securityPolicyDescription.text

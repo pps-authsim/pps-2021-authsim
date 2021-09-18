@@ -24,7 +24,7 @@ object AuthsimViewModel:
  * @param view view
  * @param model model
  */
-class AuthsimViewModel(val view: AuthsimView, val model: AuthsimModel):
+class AuthsimViewModel(private val view: AuthsimView, private val model: AuthsimModel):
 
   private val usersViewModel: UsersViewModel = ViewPropertiesBinder.bindUsersTab(view, this)
   ModelBinder.bindUsersViewModel(model.usersModel, usersViewModel)
@@ -52,10 +52,10 @@ class AuthsimViewModel(val view: AuthsimView, val model: AuthsimModel):
 
 
   def deleteSelectedUsers(): Unit =
-    val userEntry = usersViewModel.usersListProperties.usersListSelectionModel.value.getSelectedItem
-    val user = new User(userEntry.username, userEntry.password)
-
-    model.usersModel.usersList -= user
+    val userEntry = usersViewModel.usersListProperties.usersListSelectedProperty.getValue
+    if userEntry != null then
+      val user = new User(userEntry.username, userEntry.password)
+      model.usersModel.usersList -= user
 
 
   def resetUsers(): Unit =

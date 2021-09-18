@@ -1,10 +1,12 @@
-package it.unibo.authsim.library.dsl
+package it.unibo.authsim.library.dsl.encryption.hash
 
-import java.nio.charset.StandardCharsets
-import org.apache.commons.codec.binary.Hex
-import org.apache.commons.codec.digest.DigestUtils
 import com.google.common.hash.Hashing
 import com.google.common.io.BaseEncoding
+import it.unibo.authsim.library.dsl.encryption.Encryption
+import org.apache.commons.codec.binary.Hex
+import org.apache.commons.codec.digest.DigestUtils
+
+import java.nio.charset.StandardCharsets
 
 trait HashFunction extends Encryption:
   def hash(str: String): String

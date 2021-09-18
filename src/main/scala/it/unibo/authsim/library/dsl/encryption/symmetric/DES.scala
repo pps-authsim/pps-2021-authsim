@@ -1,10 +1,13 @@
-import it.unibo.authsim.library.dsl.SymmetricEncryption
-import it.unibo.authsim.library.dsl.util.Util.EncryptionMode
+package it.unibo.authsim.library.dsl.encryption.symmetric
+
+import it.unibo.authsim.library.dsl.encryption.symmetric.util.Util.EncryptionMode
+import it.unibo.authsim.library.dsl.encryption.SymmetricEncryption
+
+import java.io.*
+import java.security.spec.*
 import java.util.Base64
 import javax.crypto.*
 import javax.crypto.spec.*
-import java.security.spec.*
-import java.io.*
 
 trait DES extends SymmetricEncryption:
   override def encrypt(password: String, secret:String): String
@@ -12,8 +15,7 @@ trait DES extends SymmetricEncryption:
   def secreSalt_ (key:Array[Byte]): Unit
   def iterationCount_ (key:Int): Unit
 
-object DES :
-  import it.unibo.authsim.library.dsl.util.Util
+object DES:
   def apply()= new DES() :
     var _salt: Array[Byte] = Array(0xA9.asInstanceOf[Byte], 0x9B.asInstanceOf[Byte], 0xC8.asInstanceOf[Byte], 0x32.asInstanceOf[Byte], 0x56.asInstanceOf[Byte], 0x35.asInstanceOf[Byte], 0xE3.asInstanceOf[Byte], 0x03.asInstanceOf[Byte])
     var _iterationCount: Int = 19
@@ -47,7 +49,7 @@ object DES :
     override def secreSalt_(key: Array[Byte]): Unit =
       _salt = key
 
-object App:
+object App2:
   def main(args: Array[String]): Unit =
     val PASSPHRASE_API_KEY: String = "some pass phrase"
     val SESSION_SECRET_KEY: String = "another even longer phrase to be used"

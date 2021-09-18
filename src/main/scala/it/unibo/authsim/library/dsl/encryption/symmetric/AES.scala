@@ -1,13 +1,14 @@
-package it.unibo.authsim.library.dsl
-import it.unibo.authsim.library.dsl.util.Util.{EncryptionMode, toMultiple}
+package it.unibo.authsim.library.dsl.encryption.symmetric
+
+import it.unibo.authsim.library.dsl.encryption.symmetric.util.Util.{EncryptionMode, toMultiple}
+import it.unibo.authsim.library.dsl.encryption.SymmetricEncryption
 
 import org.apache.commons.codec.binary.Hex
 
 import java.security.Security
 import java.util.Base64
-import javax.crypto.spec.SecretKeySpec
-import javax.crypto.{Cipher, KeyGenerator, Mac, SecretKey, SecretKeyFactory}
-import javax.crypto.spec.IvParameterSpec
+import javax.crypto.*
+import javax.crypto.spec.{IvParameterSpec, SecretKeySpec}
 
 trait AES extends SymmetricEncryption:
   override def encrypt(password: String, secret:String): String

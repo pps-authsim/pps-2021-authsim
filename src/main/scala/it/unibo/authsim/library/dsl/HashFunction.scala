@@ -6,7 +6,7 @@ import org.apache.commons.codec.digest.DigestUtils
 import com.google.common.hash.Hashing
 import com.google.common.io.BaseEncoding
 
-trait HashFunction:
+trait HashFunction extends Encryption:
   def hash(str: String): String
 
 

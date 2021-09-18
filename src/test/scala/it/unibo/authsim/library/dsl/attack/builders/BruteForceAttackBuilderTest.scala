@@ -8,19 +8,17 @@ import it.unibo.authsim.library.user.{SaltInformation, UserInformation}
 
 import scala.concurrent.duration.Duration
 
-class BruteForceAttackBuilderTest extends AnyWordSpec {
-  private class TestStatisticsConsumer extends StatisticsConsumer {
+class BruteForceAttackBuilderTest extends AnyWordSpec:
+  private class TestStatisticsConsumer extends StatisticsConsumer:
     private var statistics: Statistics = Statistics.zero
 
     def getStatistics: Statistics = this.statistics
 
-    override def consume(consumable: Statistics): Unit = {
+    override def consume(consumable: Statistics): Unit =
       this.statistics = consumable
       println("Attempts: " + consumable.attempts)
       println("Elapsed time: " + consumable.elapsedTime.toMillis + " ms")
       println("Breached credentials: " + consumable.successfulBreaches.map(u => u.username + " - " + u.password).reduceOption((u1, u2) => u1 + "\n" + u2).getOrElse("No credentials breached"))
-    }
-  }
 
   val myProxy = new Proxy {
     override def getUserInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("abc"), SaltInformation(Option.empty, Option.empty, Option.empty), Map.empty))
@@ -65,4 +63,4 @@ class BruteForceAttackBuilderTest extends AnyWordSpec {
       assert(!myLogger.getStatistics.successfulBreaches.isEmpty)
     }
   }
-}
+

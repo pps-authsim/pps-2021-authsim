@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-class DictionaryAttackBuilder extends BruteForceAttackBuilder {
+class DictionaryAttackBuilder extends BruteForceAttackBuilder:
 
   def withDictionary(dictionary: List[String]): DictionaryAttackBuilder = super.usingAlphabet(dictionary)
 
@@ -8,4 +8,3 @@ class DictionaryAttackBuilder extends BruteForceAttackBuilder {
 
   def getDictionary: List[String] = super.getAlphabet()
   def getMaximumCombinationLength: Int = super.getMaximumLength
-}

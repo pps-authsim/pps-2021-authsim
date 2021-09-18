@@ -4,7 +4,7 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import java.util.stream.Collectors
 
-class StringBuilderTest extends AnyWordSpec {
+class StringBuilderTest extends AnyWordSpec:
   val alphabet = List("a", "b")
   val concurrentStringProvider = new ConcurrentStringCombinator(alphabet, 2)
 
@@ -23,4 +23,4 @@ class StringBuilderTest extends AnyWordSpec {
       }
     }
   }
-}
+

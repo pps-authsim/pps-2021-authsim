@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.attack.builders
 
 import it.unibo.authsim.library.dsl.{HashFunction, Proxy}
 
-trait OfflineAttackBuilder extends AttackBuilder {
+trait OfflineAttackBuilder extends AttackBuilder:
   private var target: Proxy = null
   private var hashFunction: HashFunction = null
   private var numberOfWorkers: Int = 1
@@ -11,22 +11,16 @@ trait OfflineAttackBuilder extends AttackBuilder {
   final def getHashFunction() = this.hashFunction
   final def getNumberOfWorkers = this.numberOfWorkers
 
-  def against(target: Proxy): this.type = {
+  def against(target: Proxy): this.type =
     this.target = target
     this
-  }
 
-  def jobs(numberOfWorkers: Int): this.type = {
+  def jobs(numberOfWorkers: Int): this.type =
     this.numberOfWorkers = numberOfWorkers
     this
-  }
 
-  def hashingWith(hashFunction: HashFunction): this.type = {
+  def hashingWith(hashFunction: HashFunction): this.type =
     this.hashFunction = hashFunction
     this
-  }
-}
 
-trait OfflineAttack extends Attack {
-
-}
+trait OfflineAttack extends Attack

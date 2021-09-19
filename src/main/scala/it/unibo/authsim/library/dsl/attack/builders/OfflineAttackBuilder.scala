@@ -11,17 +11,17 @@ trait OfflineAttackBuilder extends AttackBuilder {
   final def getHashFunction() = this.hashFunction
   final def getNumberOfWorkers = this.numberOfWorkers
 
-  def against(target: UserProvider): OfflineAttackBuilder = {
+  def against(target: UserProvider): this.type = {
     this.target = target
     this
   }
 
-  def jobs(numberOfWorkers: Int): OfflineAttackBuilder = {
+  def jobs(numberOfWorkers: Int): this.type = {
     this.numberOfWorkers = numberOfWorkers
     this
   }
 
-  def hashingWith(hashFunction: HashFunction): OfflineAttackBuilder = {
+  def hashingWith(hashFunction: HashFunction): this.type = {
     this.hashFunction = hashFunction
     this
   }

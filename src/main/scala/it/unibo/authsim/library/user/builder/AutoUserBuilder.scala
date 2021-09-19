@@ -10,9 +10,9 @@ class UserAutoBuilder extends UserBuilder[User]{
     _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy]))
       .map(e=>
         if(e.isInstanceOf[PasswordPolicy]) then
-          this._password= e.asInstanceOf[PasswordPolicy].generate
+          this._password= e.generate
         else
-          this._userName= e.asInstanceOf[UserIDPolicy].generate)
+          this._userName= e.generate)
     User(_userName, _password)
 
 

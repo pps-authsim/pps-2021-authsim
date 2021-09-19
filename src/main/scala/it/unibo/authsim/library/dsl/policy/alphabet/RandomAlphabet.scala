@@ -8,7 +8,7 @@ trait RandomAlphabet extends Alphabet:
   def randomUppers: LazyList[Char] = this.createLazyListFromAlphabets(this.uppers)
   def randomDigits: LazyList[Char] = this.createLazyListFromAlphabets(this.digits)
   def randomSymbols: LazyList[Char] = this.createLazyListFromAlphabets(this.symbols)
-  def randomAlphanumericsymbols: LazyList[Char] = randomLowers ++ randomUppers ++ randomDigits ++ randomSymbols
+  def randomAlphanumericsymbols: LazyList[Char] = this.createLazyListFromAlphabets(this.lowers ++ this.uppers ++ this.digits ++ this.symbols)
   private def createLazyListFromAlphabets(alphabet: Seq[Char]): LazyList[Char] =
     def next: Char =
       val chars = alphabet.mkString

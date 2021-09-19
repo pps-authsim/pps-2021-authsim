@@ -7,7 +7,7 @@ package it.unibo.authsim.library.dsl.attack.builders
  * @param alphabet The alphabet to use to generate the strings
  * @param maxLength The maximum length of the strings to generate
  */
-class ConcurrentStringProvider(val alphabet: List[String], val maxLength: Int) {
+class ConcurrentStringCombinator(val alphabet: List[String], val maxLength: Int) {
   private var stringList: LazyList[String] = getAllStringsUpToLength(maxLength)
 
   /**
@@ -30,7 +30,7 @@ class ConcurrentStringProvider(val alphabet: List[String], val maxLength: Int) {
 /**
  * This companion object provides some shorthands for standard alphabets.
  */
-object ConcurrentStringProvider {
+object ConcurrentStringCombinator {
   def lowercaseLetters: List[String] = List("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
   def uppercaseLetters: List[String] = lowercaseLetters.map(l => l.toUpperCase)
   def numbers: List[String] = (0 to 9).map(i => i.toString).toList

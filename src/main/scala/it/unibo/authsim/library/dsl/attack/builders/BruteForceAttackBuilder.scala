@@ -11,24 +11,34 @@ import scala.concurrent.TimeoutException
 import concurrent.ExecutionContext.Implicits.global
 
 class BruteForceAttackBuilder extends OfflineAttackBuilder {
+  private var alphabet: List[String] = null
+  private var maximumLength = 1
 
-  def save(): BruteForceAttack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getLogSpecification(), this.getTimeout(), this.getNumberOfWorkers)
+  def usingAlphabet(alphabet: List[String]): this.type = {
+    this.alphabet = alphabet
+    this
+  }
+
+  def getAlphabet(): List[String] = this.alphabet
+
+  def maximumLength(maximumLength: Int): this.type = {
+    this.maximumLength = maximumLength
+    this
+  }
+
+  def getMaximumLength: Int = this.maximumLength
+
+  def save(): BruteForceAttack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getAlphabet(), this.getMaximumLength, this.getLogSpecification(), this.getTimeout(), this.getNumberOfWorkers)
 
   def executeNow(): Unit = this.save().start()
 }
 
-class BruteForceAttack(private val target: Proxy, private val hashFunction: HashFunction, private val logTo: Option[LogSpec], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack {
+class BruteForceAttack(private val target: Proxy, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[LogSpec], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack {
 
   override def start(): Unit = {
     var jobResults: List[Future[Statistics]] = List.empty
     var totalResults = Statistics.zero
-    // TODO: refine alphabet and max length
-    val alphabet = ConcurrentStringProvider.lowercaseLetters
-                   // ++ ConcurrentStringProvider.uppercaseLetters
-                   // ++ ConcurrentStringProvider.numbers
-                   // ++ ConcurrentStringProvider.symbols
-    val maxPasswordLength = 4
-    val monitor = new ConcurrentStringProvider(alphabet, maxPasswordLength)
+    val monitor = new ConcurrentStringCombinator(alphabet, maximumLength)
     val startTime = System.nanoTime()
     (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.getUserInformations().head, monitor)) :: jobResults)
     // TODO: refine timeout
@@ -54,7 +64,7 @@ class BruteForceAttack(private val target: Proxy, private val hashFunction: Hash
     })
   }
 
-  private def futureJob(targetUser: User, stringProvider: ConcurrentStringProvider): Statistics = {
+  private def futureJob(targetUser: User, stringProvider: ConcurrentStringCombinator): Statistics = {
     var localStatistics = Statistics.zero
     var nextPassword = stringProvider.getNextString()
     while !nextPassword.isEmpty do

@@ -5,7 +5,7 @@ import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{PasswordPolicy,
 import it.unibo.authsim.library.user.model.User
 
 class UserAutoBuilder extends UserBuilder[User]{
-
+  //TODO override properties when Marica creates default policies
   def build(): User=
     _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy]))
       .map(e=>
@@ -14,6 +14,4 @@ class UserAutoBuilder extends UserBuilder[User]{
         else
           this._userName= e.generate)
     User(_userName, _password)
-
-
 }

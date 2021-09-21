@@ -1,9 +1,9 @@
-package it.unibo.authsim.components.registry
+package it.unibo.authsim.client.app.components.registry
 
-import it.unibo.authsim.components.config.{PropertiesService, PropertiesServiceComponent}
-import it.unibo.authsim.components.persistence.UserRepository
-import it.unibo.authsim.components.persistence.sql.UserSqlRepositoryComponent
-import it.unibo.authsim.components.persistence.mongo.UserMongoRepositoryComponent
+import it.unibo.authsim.client.app.components.config.{PropertiesService, PropertiesServiceComponent}
+import it.unibo.authsim.client.app.components.persistence.UserRepository
+import it.unibo.authsim.client.app.components.persistence.sql.UserSqlRepositoryComponent
+import it.unibo.authsim.client.app.components.persistence.mongo.UserMongoRepositoryComponent
 
 import java.io.FileInputStream
 

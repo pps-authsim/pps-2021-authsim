@@ -1,7 +1,7 @@
-package it.unibo.authsim.components.persistence.mongo
+package it.unibo.authsim.client.app.components.persistence.mongo
 
-import it.unibo.authsim.components.config.PropertiesServiceComponent
-import it.unibo.authsim.components.persistence.{UserEntity, UserRepository}
+import it.unibo.authsim.client.app.components.config.PropertiesServiceComponent
+import it.unibo.authsim.client.app.components.persistence.{UserEntity, UserRepository}
 
 trait UserMongoRepositoryComponent:
 

@@ -1,4 +1,4 @@
-package it.unibo.authsim.components.persistence
+package it.unibo.authsim.client.app.components.persistence
 
 trait UserRepository:
 

@@ -1,4 +1,4 @@
-package it.unibo.authsim.components.config
+package it.unibo.authsim.client.app.components.config
 
 import java.io.InputStream
 import java.util.Properties

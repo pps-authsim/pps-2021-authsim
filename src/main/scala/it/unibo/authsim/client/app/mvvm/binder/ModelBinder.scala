@@ -12,6 +12,7 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
+import javafx.beans.property.ReadOnlyProperty
 import javafx.collections.ObservableList
 
 /**
@@ -39,10 +40,18 @@ object ModelBinder:
     val anotherCredentialsSourceDescription = "This is another cred source"
 
     ModelBinder.bindPropertiesWithObservableList(securityModel.securityPolicyList, viewModel.securityPoliciesProperties.securityPoliciesList.value, policy => new SecurityPolicyEntry(policy.policy, policy.description))
+    viewModel.securityPoliciesProperties.securityPoliciesListSelectedValue.addListener((observable, oldValue, newValue) => securityModel.selectedSecurityPolicy =
+      Option(new SecurityPolicy(newValue.policy, newValue.description))
+    )
+
     securityModel.securityPolicyList += new SecurityPolicy(policyName, policyDescription)
     securityModel.securityPolicyList += new SecurityPolicy(anotherPolicyName, anotherPolicyDescription)
 
     ModelBinder.bindPropertiesWithObservableList(securityModel.credentialsSourceList, viewModel.credentialsSourceProperties.credentialsSourceList.value, source => new CredentialsSourceEntry(source.source, source.description))
+    viewModel.credentialsSourceProperties.credentialsSourceListSelectedValue.addListener((observable, oldValue, newValue) => securityModel.selectedCredentialsSource =
+      Option(new CredentialsSource(newValue.source, newValue.description))
+    )
+
     securityModel.credentialsSourceList += new CredentialsSource(credentialsSource, credentialsSourceDescription)
     securityModel.credentialsSourceList += new CredentialsSource(anotherCredentialsSource, anotherCredentialsSourceDescription)
 
@@ -53,6 +62,10 @@ object ModelBinder:
     val anotherSequenceDescription = "Even better attack sequence"
 
     ModelBinder.bindPropertiesWithObservableList(attackModel.attackSequenceList, viewModel.attackSequenceProperties.attackSequenceList.value, (sequence => new AttackSequenceEntry(sequence.sequence, sequence.description)))
+    viewModel.attackSequenceProperties.attackSequenceListSelectedValue.addListener((observable, oldValue, newValue) => attackModel.selectedAttackSequence =
+      Option(new AttackSequence(newValue.sequence, newValue.description))
+    )
+
     attackModel.attackSequenceList += new AttackSequence(sequenceName, sequenceDescription)
     attackModel.attackSequenceList += new AttackSequence(anotherSequenceName, anotherSequenceDescription)
 

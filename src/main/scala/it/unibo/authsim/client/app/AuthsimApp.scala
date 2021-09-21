@@ -31,7 +31,7 @@ object AuthsimApp extends JFXApp3 :
 
     val view = makeAuthsimView()
     val model = makeAuthsimModel()
-    
+
     new AuthsimViewModel(view, model)
 
     stage = view

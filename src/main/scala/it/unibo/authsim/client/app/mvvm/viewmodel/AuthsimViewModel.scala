@@ -9,6 +9,7 @@ import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
 import it.unibo.authsim.client.app.mvvm.model.users.User
+import it.unibo.authsim.client.app.mvvm.simulation.AttackSimulation
 import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
@@ -64,14 +65,16 @@ class AuthsimViewModel(private val view: AuthsimView, private val model: Authsim
 
 
   def launchAttack(): Unit =
-    val users = usersViewModel.usersListProperties.usersListProperty.value
-    val policy = securityViewModel.securityPoliciesProperties.securityPoliciesListSelectedValue.getValue
-    val credentialsSource = securityViewModel.credentialsSourceProperties.credentialsSourceListSelectedValue.getValue
-    val selectedProcedure = attackViewModel.attackSequenceProperties.attackSequenceListSelectedValue.getValue
+    val users = model.usersModel.usersList.value
+    val policy = model.securityModel.selectedSecurityPolicy
+    val credentialsSource = model.securityModel.selectedCredentialsSource
+    val selectedProcedure = model.attackModel.selectedAttackSequence
 
-    // TODO hook client when ready
-    if users != null && !users.isEmpty && policy != null && credentialsSource != null && selectedProcedure != null then
-      attackViewModel.attackSequenceProperties.attackLog.value = " " + users + " " + policy + " " + credentialsSource + " " + selectedProcedure
+    if !users.isEmpty && policy.nonEmpty && credentialsSource.nonEmpty && selectedProcedure.nonEmpty then
+      attackViewModel.attackSequenceProperties.attackLog.value = ""
+      val simulation = new AttackSimulation(users, policy.get, credentialsSource.get, selectedProcedure.get)
+      simulation.messageProperty().addListener((observable, oldValue, newValue) => attackViewModel.attackSequenceProperties.attackLog.value += newValue)
+      new Thread(simulation).start()
     else
       attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModel.ATTACK_MISSING_VALUE_TEXT
 

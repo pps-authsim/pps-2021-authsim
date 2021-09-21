@@ -29,10 +29,26 @@ lazy val root = project
 
     libraryDependencies += "org.scalatestplus" %% "mockito-3-4" % "3.2.9.0" % "test",
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test ,
+
     libraryDependencies += "org.apache.commons" % "commons-configuration2" % "2.7",
+
     libraryDependencies += "commons-codec" % "commons-codec" % "20041127.091804",
     libraryDependencies += "commons-io" % "commons-io" % "20030203.000550",
+
     libraryDependencies += "com.google.guava" % "guava" % "25.1-jre",
 
-    libraryDependencies += "com.h2database" % "h2" % "1.4.200"
+    libraryDependencies += "com.h2database" % "h2" % "1.4.200",
+
+    libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
+    libraryDependencies ++= {
+      // Determine OS version of JavaFX binaries
+      lazy val osName = System.getProperty("os.name") match {
+        case n if n.startsWith("Linux") => "linux"
+        case n if n.startsWith("Mac") => "mac"
+        case n if n.startsWith("Windows") => "win"
+        case _ => throw new Exception("Unknown platform!")
+      }
+      Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
+        .map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName)
+    }
 )

@@ -31,7 +31,7 @@ class UserTest extends AnyWordSpec{
         assert(user.password == "Pippa")
       }
       "one could choose to not salt user's password, in this case the salt information should take the default values" in {
-        assert(user.saltInformation == CryptoInformation(algorithmPolicy))
+        assert(user.cryptoInformation == CryptoInformation(algorithmPolicy))
       }
     }
   }
@@ -43,7 +43,7 @@ class UserTest extends AnyWordSpec{
       assert(user2.password == "Cody")
     }
     "the salt value if provided should be" in {
-      assert(user2.saltInformation == cryptoInfo)
+      assert(user2.cryptoInformation == cryptoInfo)
     }
   }
 

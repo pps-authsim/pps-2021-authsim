@@ -1,17 +1,17 @@
 package it.unibo.authsim.library.dsl.encryption
 
-//import it.unibo.authsim.library.dsl.encryption.symmetric.{AES, DES}
+import it.unibo.authsim.library.dsl.encryption.symmetric.{AES, DES}
 import it.unibo.authsim.library.dsl.encryption.util.Util.toMultiple
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 
 
-class SymmetricEncryptionTest extends AnyWordSpec with Matchers {/*
+class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
   val des = DES()
   val secret: String = "12345678123456781234567812345678"
   val password: String ="password"
   val passwordEncryptedDES: String ="UhcmgOGbLqg1vi4OK4cDeA=="
-  val passwordEncryptedAES: String ="RThVlNUqRLqusPIKaRvl8w=="
+  val passwordEncryptedAES: String ="8h+0CcFUODz2Im9juBffCw=="
   val aes = AES()
   "DES encryption" should {
     /*"return a string type" in {
@@ -32,5 +32,5 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {/*
       "that should be equal to the result of the decryption operation" in{
         aes.decrypt(passwordEncryptedAES, secret).equals(password) shouldBe true
       }
-  }*/
+  }
 }

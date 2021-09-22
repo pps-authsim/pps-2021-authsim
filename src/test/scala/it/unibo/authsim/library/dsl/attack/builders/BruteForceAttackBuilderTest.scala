@@ -2,8 +2,11 @@ package it.unibo.authsim.library.dsl.attack.builders
 
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.attack.logspecification.*
+import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.{HashFunction, Logger, UserProvider}
-import it.unibo.authsim.library.user.model.{SaltInformation, UserInformation}
+import it.unibo.authsim.library.user.model.{CryptoInformation, UserInformation}
+import org.mockito.Mock
+import org.scalatestplus.mockito.MockitoSugar.mock
 
 import scala.concurrent.duration.Duration
 
@@ -21,9 +24,12 @@ class BruteForceAttackBuilderTest extends AnyWordSpec {
 
     def getCrackStatus: Boolean = this.isCracked
   }
+  //TODO Alex appena abbiamo le policy degli algoritmi togli sta roba, te l'ho messa se no non compilava più nulla
+  @Mock abstract class AlgorithmPolicy extends Policy
+  @Mock val algorithmPolicy = mock[AlgorithmPolicy]
 
   val myProxy = new UserProvider {
-    override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("abc"), SaltInformation(Option.empty, Option.empty, Option.empty), Map.empty))
+    override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("abc"), CryptoInformation(algorithmPolicy), Map.empty))
   }
   private val myLogger = new TestLogger()
   private val myAlphabet = ConcurrentStringCombinator.lowercaseLetters

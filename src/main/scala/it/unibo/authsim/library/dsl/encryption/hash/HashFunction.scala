@@ -8,9 +8,8 @@ import org.apache.commons.codec.digest.DigestUtils
 
 import java.nio.charset.StandardCharsets
 
-trait HashFunction extends Encryption:
+trait HashFunction:
   def hash(str: String): String
-
 
 object HashFunction:
   case class SHA1() extends HashFunction:

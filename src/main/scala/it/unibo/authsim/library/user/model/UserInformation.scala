@@ -13,6 +13,7 @@ trait UserInformation (cryptoInformation: CryptoInformation) extends User
 object UserInformation:
   /**
    * Apply method for User
+   * 
    * @param username            Name of the user
    * @param password            Encrypted password of the user
    * @param cryptoInformation     Information about the algorithm used to encrypt the password

@@ -1,32 +1,30 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-import it.unibo.authsim.library.dsl.attack.logspecification.{LogCategory, LogSpec}
-import it.unibo.authsim.library.dsl.{HashFunction, Logger, Proxy}
+import it.unibo.authsim.library.dsl.attack.statistics.Statistics
+import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
+import it.unibo.authsim.library.dsl.{HashFunction, Proxy}
 import it.unibo.authsim.library.user.{SaltInformation, UserInformation}
 import org.scalatest.wordspec.AnyWordSpec
 
 import scala.concurrent.duration.Duration
 
-class DictionaryAttackBuilderTest extends AnyWordSpec {
-  private class TestLogger extends Logger {
-    private var execTime = 0L
-    private var statistics: Map[String, String] = Map.empty
-    private var isCracked: Boolean = false
+class DictionaryAttackBuilderTest extends AnyWordSpec:
+  private class TestStatisticsConsumer extends StatisticsConsumer:
+    private var statistics: Statistics = Statistics.zero
 
-    override def receiveExecutionTime(executionTime: Long): Unit = this.execTime = executionTime
+    def getStatistics: Statistics = this.statistics
 
-    override def receiveStatistics(map: Map[String, String]): Unit = this.statistics = map
-
-    override def receiveCracked(flag: Boolean): Unit = this.isCracked = flag
-
-    def getCrackStatus: Boolean = this.isCracked
-  }
+    override def consume(consumable: Statistics): Unit =
+      this.statistics = consumable
+      println("Attempts: " + consumable.attempts)
+      println("Elapsed time: " + consumable.elapsedTime.toMillis + " ms")
+      println("Breached credentials: " + consumable.successfulBreaches.map(u => u.username + " - " + u.password).reduceOption((u1, u2) => u1 + "\n" + u2).getOrElse("No credentials breached"))
 
   val myProxy = new Proxy {
     override def getUserInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("hunter2"), SaltInformation(Option.empty, Option.empty, Option.empty), Map.empty))
   }
 
-  private val myLogger = new TestLogger()
+  private val myLogger = new TestStatisticsConsumer()
 
   private val myDictionary = List("password", "1", "2", "3", "4", "hunter", "user", "admin")
   val myDictionaryAttackBuilder: DictionaryAttackBuilder = new DictionaryAttackBuilder()
@@ -47,8 +45,8 @@ class DictionaryAttackBuilderTest extends AnyWordSpec {
   it can {
     myDictionaryAttackBuilder against myProxy
     "specify where to log" in {
-      myDictionaryAttackBuilder log (LogCategory.ALL to myLogger)
-      assert(!myDictionaryAttackBuilder.getLogSpecification().isEmpty)
+      myDictionaryAttackBuilder logTo myLogger
+      assert(!myDictionaryAttackBuilder.getStatisticsConsumer().isEmpty)
     }
     "specify a timeout time" in {
       myDictionaryAttackBuilder timeout Duration.apply(2, scala.concurrent.duration.HOURS)
@@ -63,8 +61,7 @@ class DictionaryAttackBuilderTest extends AnyWordSpec {
 
   "A dictionary attack" should {
     "crack a simple password" in {
-      (new DictionaryAttackBuilder() withDictionary myDictionary maximumCombinedWords 2 against myProxy hashingWith HashFunction.MD5() jobs 4 log (LogCategory.ALL to myLogger)).executeNow()
-      assert(myLogger.getCrackStatus)
+      (new DictionaryAttackBuilder() withDictionary myDictionary maximumCombinedWords 2 against myProxy hashingWith HashFunction.MD5() jobs 4 logTo myLogger).executeNow()
+      assert(!myLogger.getStatistics.successfulBreaches.isEmpty)
     }
   }
-}

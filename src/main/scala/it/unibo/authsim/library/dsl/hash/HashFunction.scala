@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.encryption.hash
+package it.unibo.authsim.library.dsl.hash
 
 import com.google.common.hash.Hashing
 import com.google.common.io.BaseEncoding

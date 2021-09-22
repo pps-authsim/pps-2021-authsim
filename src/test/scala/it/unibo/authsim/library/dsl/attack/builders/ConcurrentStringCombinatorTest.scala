@@ -4,11 +4,11 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import java.util.stream.Collectors
 
-class StringBuilderTest extends AnyWordSpec {
+class ConcurrentStringCombinatorTest extends AnyWordSpec:
   val alphabet = List("a", "b")
   val concurrentStringProvider = new ConcurrentStringCombinator(alphabet, 2)
 
-  "A string provider" when {
+  "A string combinator" when {
     "the max length is > 0" should {
       "have available strings" in {
         assert(!concurrentStringProvider.getNextString().isEmpty)
@@ -23,4 +23,4 @@ class StringBuilderTest extends AnyWordSpec {
       }
     }
   }
-}
+

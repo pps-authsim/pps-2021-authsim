@@ -1,8 +1,9 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-import it.unibo.authsim.library.dsl.attack.logspecification.{LogCategory, LogSpec}
+
 import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
+import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.user.model.User
 
 import scala.concurrent.duration.{Duration, MILLISECONDS}
@@ -10,33 +11,53 @@ import scala.concurrent.{Await, Future}
 import scala.concurrent.TimeoutException
 import concurrent.ExecutionContext.Implicits.global
 
-class BruteForceAttackBuilder extends OfflineAttackBuilder {
+/**
+ * A builder of bruteforce attacks.
+ */
+class BruteForceAttackBuilder extends OfflineAttackBuilder:
   private var alphabet: List[String] = null
   private var maximumLength = 1
 
-  def usingAlphabet(alphabet: List[String]): this.type = {
+  /**
+   * Sets the alphabet to use for the attack.
+   *
+   * A bare bruteforce attack should have an alphabet with only 1-length symbols,
+   * while other attacks can use a different alphabet
+   * (for example, a dictionary attack uses the dictionary itself as the alphabet).
+   * @param alphabet The alphabet to use.
+   * @return The builder.
+   */
+  def usingAlphabet(alphabet: List[String]): this.type =
     this.alphabet = alphabet
     this
-  }
 
+  /**
+   * @return The used alphabet.
+   */
   def getAlphabet(): List[String] = this.alphabet
 
-  def maximumLength(maximumLength: Int): this.type = {
+  /**
+   * Sets the maximum number of combinations of symbols from the alphabet.
+   * Defaults to 1 (which means the attack only uses the provided symbols, without combining them).
+   * @param maximumLength The maximum combination number.
+   * @return The builder.
+   */
+  def maximumLength(maximumLength: Int): this.type =
     this.maximumLength = maximumLength
     this
-  }
 
+  /**
+   * @return The maximum combination number.
+   */
   def getMaximumLength: Int = this.maximumLength
 
-  def save(): BruteForceAttack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getAlphabet(), this.getMaximumLength, this.getLogSpecification(), this.getTimeout(), this.getNumberOfWorkers)
+  override def save(): Attack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getAlphabet(), this.getMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
 
-  def executeNow(): Unit = this.save().start()
-}
+  override def executeNow(): Unit = this.save().start()
 
-class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[LogSpec], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack {
+private class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
 
-
-  override def start(): Unit = {
+  override def start(): Unit =
     var jobResults: List[Future[Statistics]] = List.empty
     var totalResults = Statistics.zero
     val monitor = new ConcurrentStringCombinator(alphabet, maximumLength)
@@ -51,23 +72,9 @@ class BruteForceAttack(private val target: UserProvider, private val hashFunctio
     val endTime = System.nanoTime()
     val elapsedTime = Duration(endTime - startTime, MILLISECONDS)
     totalResults = totalResults + new Statistics(Set(), attempts = 0, elapsedTime / jobs)
-    // TODO: refine logging
-    logTo.foreach(logSpec => {
+    logTo.foreach(logSpec => logSpec.consume(totalResults))
 
-      if (logSpec.getCategories()(LogCategory.SUCCESS) || logSpec.getCategories()(LogCategory.ALL)) then
-        logSpec.getTargetLogger().foreach(logger => logger.receiveCracked(true))
-      end if
-
-      if (logSpec.getCategories()(LogCategory.ATTEMPTS) || logSpec.getCategories()(LogCategory.ALL)) then
-        logSpec.getTargetLogger().foreach(logger => logger.receiveStatistics(Map("attempts" -> totalResults.attempts.toString, "Users" -> totalResults.successfulBreaches.map(u => u.username + " - " + u.password).toString())))
-      end if
-      if (logSpec.getCategories()(LogCategory.TIME) || logSpec.getCategories()(LogCategory.ALL)) then
-        logSpec.getTargetLogger().foreach(logger => logger.receiveExecutionTime(elapsedTime.toMillis))
-      end if
-    })
-  }
-
-  private def futureJob(targetUser: User, stringProvider: ConcurrentStringCombinator): Statistics = {
+  private def futureJob(targetUser: User, stringProvider: ConcurrentStringCombinator): Statistics =
     var localStatistics = Statistics.zero
     var nextPassword = stringProvider.getNextString()
     while !nextPassword.isEmpty do
@@ -83,5 +90,3 @@ class BruteForceAttack(private val target: UserProvider, private val hashFunctio
       nextPassword = stringProvider.getNextString()
     end while
     localStatistics
-  }
-}

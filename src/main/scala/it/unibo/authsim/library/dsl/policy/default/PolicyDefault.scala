@@ -1,5 +1,6 @@
 package it.unibo.authsim.library.dsl.policy.default
 
+import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.Protocol.*
 import it.unibo.authsim.library.dsl.HashFunction.*
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
@@ -7,53 +8,46 @@ import it.unibo.authsim.library.dsl.policy.model.Policy
 
 import scala.language.postfixOps
 
-object PolicyDefault:
-
+trait PolicyDefault:
   /**
    * A Policy with credential policy:
    *
    *  - userID policy ''Super Simple'' (@see [[UserIDPolicyDefault#SUPER_SIMPLE]]) and
    *  - password policy ''Simple'' (@see [[PasswordPolicyDefault#SIMPLE]])
-   *
-   *  transmit with [[Http HTTP]] protocol
    */
-  val SUPER_SIMPLE: Policy = PolicyBuilder("SuperSimple") of (UserIDPolicyDefault.SUPER_SIMPLE, PasswordPolicyDefault.SIMPLE) transmitWith Http() build
+  def superSimple: Policy
   /**
    * A Policy with credential policy:
    *
    *  - userID policy ''Simple'' (@see [[UserIDPolicyDefault#SIMPLE]]) and
    *  - password policy ''Simple'' (@see [[PasswordPolicyDefault#SIMPLE]])
-   *
-   *  transmit with [[Local Local]] protocol
    */
-  val SIMPLE: Policy = PolicyBuilder("Simple") of (UserIDPolicyDefault.SIMPLE, PasswordPolicyDefault.SIMPLE) transmitWith Local() build
+  def simple: Policy
   /**
    * A Policy with credential policy:
    *
    *  - userID policy ''Medium'' (@see [[UserIDPolicyDefault#MEDIUM]]) and
    *  - password policy ''Medium'' (@see [[PasswordPolicyDefault#MEDIUM]])
-   *
-   *  transmit with [[Ssh SSH]] protocol
    */
-  val MEDIUM: Policy = PolicyBuilder("Medium") of (UserIDPolicyDefault.MEDIUM, PasswordPolicyDefault.MEDIUM) transmitWith Ssh() build
+  def medium: Policy
   /**
    * A Policy with credential policy:
    *
    *  - userID policy ''Hard'' (@see [[UserIDPolicyDefault#HARD]]) and
    *  - password policy ''Hard'' (@see [[PasswordPolicyDefault#HARD]])
    *
-   *  transmit with [[Local Local]] protocol and store with [[SHA1 Sha1]]
+   *  store with [[SHA1 Sha1]]
    */
-  val HARD: Policy = PolicyBuilder("Hard") of (UserIDPolicyDefault.HARD, PasswordPolicyDefault.HARD) transmitWith Local() storeWith(SHA1()) build
+  def hard: Policy
   /**
    * A Policy with credential policy:
    *
    *  - userID policy ''Hard'' (@see [[UserIDPolicyDefault#HARD]]) and
    *  - password policy ''Super Hard'' (@see [[PasswordPolicyDefault#SUPER_HARD]])
    *
-   *  transmit with [[Ssh SSH]] protocol and store with [[SHA256 Sha256]] and salt policy ''Hard'' (@see [[SaltPolicyDefault#HARD]])
+   *  store with [[SHA256 Sha256]] and salt policy ''Hard'' (@see [[SaltPolicyDefault#HARD]])
    */
-  val SUPER_HARD: Policy = PolicyBuilder("SuperHard") of (UserIDPolicyDefault.HARD, PasswordPolicyDefault.SUPER_HARD) transmitWith Ssh() storeWith (SHA256(), SaltPolicyDefault.HARD) build
+  def hardHard: Policy
   /**
    * A Policy with credential policy:
    *
@@ -61,6 +55,44 @@ object PolicyDefault:
    *  - password policy ''Super Hard Hard'' (@see [[PasswordPolicyDefault#SUPER_HARD_HARD]]) and
    *  - opt policy ''Hard'' (@see [[OTPPolicyDefault#HARD]])
    *
-   *  transmit with [[Https HTTPS]] protocol and store with [[SHA384 Sha384]] and salt policy ''Super Hard Hard'' (@see [[SaltPolicyDefault#SUPER_HARD_HARD]])
+   *  store with [[SHA384 Sha384]] and salt policy ''Super Hard Hard'' (@see [[SaltPolicyDefault#SUPER_HARD_HARD]])
    */
-  val SUPER_HARD_HARD: Policy = PolicyBuilder("SuperHardHard") of (UserIDPolicyDefault.HARD, PasswordPolicyDefault.SUPER_HARD_HARD) and OTPPolicyDefault.HARD transmitWith Https() storeWith (SHA384(), SaltPolicyDefault.SUPER_HARD_HARD) build
+  def superHardHard: Policy
+
+object PolicyDefault:
+
+  // FOR ATTACKS OFFLINE
+  def apply(): PolicyDefault = new PolicyDefaultImpl()
+
+  // FOR ATTACKS ONLINE
+  def apply(protocol: Protocol): PolicyDefault = new PolicyDefaultImpl(Some(protocol))
+
+  private class PolicyDefaultImpl(private val protocol: Option[Protocol] = None) extends PolicyDefault:
+    private val superSimpleBuilder: PolicyBuilder = PolicyBuilder("SuperSimple") of (UserIDPolicyDefault.SUPER_SIMPLE, PasswordPolicyDefault.SIMPLE)
+    private val simpleBuilder: PolicyBuilder = PolicyBuilder("Simple") of (UserIDPolicyDefault.SIMPLE, PasswordPolicyDefault.SIMPLE)
+    private val mediumBuilder: PolicyBuilder = PolicyBuilder("Medium") of (UserIDPolicyDefault.MEDIUM, PasswordPolicyDefault.MEDIUM)
+    private val hardBuilder: PolicyBuilder = PolicyBuilder("Hard") of (UserIDPolicyDefault.HARD, PasswordPolicyDefault.HARD) storeWith(SHA1())
+    private val hardHardBuilder: PolicyBuilder = PolicyBuilder("SuperHard") of (UserIDPolicyDefault.HARD, PasswordPolicyDefault.SUPER_HARD) storeWith (SHA256(), SaltPolicyDefault.HARD)
+    private val superHardHardBuilder: PolicyBuilder = PolicyBuilder("SuperHardHard") of (UserIDPolicyDefault.HARD, PasswordPolicyDefault.SUPER_HARD_HARD) and OTPPolicyDefault.HARD storeWith (SHA384(), SaltPolicyDefault.SUPER_HARD_HARD)
+
+    private def addProtocol(policyBuilder: PolicyBuilder): Unit =
+      if this.protocol.isDefined then policyBuilder transmitWith this.protocol.get
+
+    override def superSimple: Policy =
+      this.addProtocol(superSimpleBuilder);
+      superSimpleBuilder build
+    override def simple: Policy =
+      this.addProtocol(simpleBuilder);
+      simpleBuilder build
+    override def medium: Policy =
+      this.addProtocol(mediumBuilder);
+      mediumBuilder build
+    override def hard: Policy =
+      this.addProtocol(hardBuilder);
+      hardBuilder build
+    override def hardHard: Policy =
+      this.addProtocol(hardHardBuilder);
+      hardHardBuilder build
+    override def superHardHard: Policy =
+      this.addProtocol(superHardHardBuilder);
+      superHardHardBuilder build

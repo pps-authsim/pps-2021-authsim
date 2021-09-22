@@ -1,12 +1,12 @@
 package it.unibo.authsim.library.dsl.encryption.asymmetric
 
-import it.unibo.authsim.library.dsl.encryption.util.CostumBase64
+import it.unibo.authsim.library.dsl.encryption.util.CostumBase64 as Base64
 import it.unibo.authsim.library.dsl.encryption.{Algorithm, AsymmetricEncryption, EncryptionMode, Keys, SymmetricEncryption}
 
 import java.security.*
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
-import java.util.Base64
 import javax.crypto.Cipher
+import java.util.Base64 as JavaBase64
 
 trait RSA extends AsymmetricEncryption with Algorithm:
   def generateKeys(): Keys
@@ -23,22 +23,22 @@ object RSA:
       keysGenerator.generateKeys()
 
     private def privateKeyFromString(privateKeyString: String): PrivateKey =
-      val bytes = Base64.getDecoder.decode(privateKeyString)
+      val bytes = JavaBase64.getDecoder.decode(privateKeyString)
       val spec = new PKCS8EncodedKeySpec(bytes)
       keyFactory.generatePrivate(spec)
 
     private def publicKeyFromString(publicKeyString: String): PublicKey =
-      val bytes = Base64.getDecoder.decode(publicKeyString)
+      val bytes = JavaBase64.getDecoder.decode(publicKeyString)
       val spec = new X509EncodedKeySpec(bytes)
       keyFactory.generatePublic(spec)
 
     private def publicKeyStringFromKeyPair(kp: KeyPair): String =
       val bytes: Array[Byte] = kp.getPublic.getEncoded
-      CostumBase64.encodeToString(bytes)
+      Base64.encodeToString(bytes)
 
     private def privateKeyStringFromKeyPair(kp: KeyPair): String =
       val bytes: Array[Byte] = kp.getPrivate.getEncoded
-      CostumBase64.encodeToString(bytes)
+      Base64.encodeToString(bytes)
 
     override def decrypt(encrypted: String, privateKey: String): String =
       crypto(EncryptionMode.Decryption, encrypted, privateKey)
@@ -52,11 +52,11 @@ object RSA:
         case EncryptionMode.Encryption =>
           val key = publicKeyFromString(inputKey)
           cipher.init(Cipher.ENCRYPT_MODE, key)
-          CostumBase64.encodeToString(cipher.doFinal(password.getBytes("UTF8")))
+          Base64.encodeToString(cipher.doFinal(password.getBytes("UTF8")))
         case EncryptionMode.Decryption =>
           val key = privateKeyFromString(inputKey)
           cipher.init(Cipher.DECRYPT_MODE, key)
-          new String(cipher.doFinal(CostumBase64.decodeToBytes(password)))
+          new String(cipher.doFinal(Base64.decodeToBytes(password)))
       }
 
 object App4:
@@ -66,9 +66,10 @@ object App4:
     val rsa = RSA()
     val pk = rsa.generateKeys()
     println("private key"+ pk)
-    val (publ, priv) = (pk.asInstanceOf[KeyPair].getPublic.toString, pk.asInstanceOf[KeyPair].getPrivate.toString)
-    println("private pair"+ (publ, priv))
+    val priv = pk.privateKey
+    val publ= pk.publicKey
+    println("private pair "+ (publ, priv))
     val encrypted = rsa.encrypt(secret, publ)
-    println("private key"+ encrypted)
+    println("password encrypted: "+ encrypted)
     val decrypted = rsa.decrypt(encrypted, priv)
-    println("private key "+ decrypted)
+    println("password encrypted: "+ decrypted)

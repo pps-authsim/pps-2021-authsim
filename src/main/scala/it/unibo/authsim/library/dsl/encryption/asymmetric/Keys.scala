@@ -1,12 +1,12 @@
 package it.unibo.authsim.library.dsl.encryption.asymmetric
 
 import it.unibo.authsim.library.dsl.encryption.{Keys,PersistentKeyGenerator}
-import it.unibo.authsim.library.dsl.encryption.util.{CostumBase64, DiskManager as Disk}
+import it.unibo.authsim.library.dsl.encryption.util.{CostumBase64 as Base64, DiskManager as Disk}
 
 import java.security.{KeyPair, KeyPairGenerator}
 
 import java.security.spec.PKCS8EncodedKeySpec
-import java.util.Base64
+
 
 class PersistentKeysGeneratorImpl extends PersistentKeyGenerator {
   private val bitLength: Int =  2048
@@ -27,12 +27,12 @@ class PersistentKeysGeneratorImpl extends PersistentKeyGenerator {
     new Keys:
       def publicKey: String=
         val bytes: Array[Byte] = keypair.getPublic.getEncoded
-        _publicKey = CostumBase64.encodeToString(bytes)
+        _publicKey = Base64.encodeToString(bytes)
         _publicKey
 
       def privateKey: String=
         val bytes: Array[Byte] = keypair.getPrivate.getEncoded
-        _privateKey= CostumBase64.encodeToString(bytes)
+        _privateKey= Base64.encodeToString(bytes)
         _privateKey
 
   override def generateKeys(): Keys =

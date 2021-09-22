@@ -7,7 +7,7 @@ import java.security.*
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
-trait RSA extends AsymmetricEncryption with CryptographicAlgorithm:
+trait RSA extends AsymmetricEncryption:
   def generateKeys(): Keys
 
 object RSA:

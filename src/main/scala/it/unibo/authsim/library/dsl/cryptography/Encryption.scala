@@ -10,9 +10,9 @@ trait Encryption:
   def encrypt(password: String, secret:String): String
   def decrypt(password: String, secret:String): String
 
-trait SymmetricEncryption extends Encryption
+trait SymmetricEncryption extends Encryption with CryptographicAlgorithm
 
-trait AsymmetricEncryption extends Encryption
+trait AsymmetricEncryption extends Encryption with CryptographicAlgorithm
 
 trait CryptographicAlgorithm:
   def algorithmName: String

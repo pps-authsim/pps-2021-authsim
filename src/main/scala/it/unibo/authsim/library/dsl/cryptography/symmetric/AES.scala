@@ -12,7 +12,7 @@ import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 import javax.crypto.spec.{PBEKeySpec, SecretKeySpec}
 
 
-trait AES extends SymmetricEncryption with CryptographicAlgorithm :
+trait AES extends SymmetricEncryption:
   override def algorithmName: String
   override def encrypt(password: String, secret:String): String
   override def decrypt(password: String, secret:String): String

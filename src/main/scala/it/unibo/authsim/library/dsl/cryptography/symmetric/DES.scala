@@ -9,7 +9,7 @@ import java.security.spec.*
 import javax.crypto.*
 import javax.crypto.spec.*
 
-trait DES extends SymmetricEncryption with CryptographicAlgorithm:
+trait DES extends SymmetricEncryption:
   override def algorithmName: String
   override def encrypt(password: String, secret:String): String
   override def decrypt(password: String, secret:String): String

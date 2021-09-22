@@ -3,14 +3,14 @@ package it.unibo.authsim.library.dsl.encryption.symmetric
 import it.unibo.authsim.library.dsl.encryption.{Algorithm, EncryptionMode,SymmetricEncryption}
 import it.unibo.authsim.library.dsl.encryption.util.Util.{toMultiple}
 import it.unibo.authsim.library.dsl.encryption.hash.HashFunction
-import it.unibo.authsim.library.dsl.encryption.util.CostumBase64
+import it.unibo.authsim.library.dsl.encryption.util.CostumBase64 as Base64
 
 import java.security.MessageDigest
 import java.security.spec.KeySpec
 import java.util
 import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 import javax.crypto.spec.{PBEKeySpec, SecretKeySpec}
-import java.util.Base64
+
 
 trait AES extends SymmetricEncryption with Algorithm :
   override def algorithmName: String
@@ -37,10 +37,10 @@ object AES:
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, keyToSpec(secret))
-          new String(CostumBase64.encodeToBytes(cipher.doFinal(password.getBytes("UTF8"))))
+          new String(Base64.encodeToBytes(cipher.doFinal(password.getBytes("UTF8"))))
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, keyToSpec(secret))
-          new String(cipher.doFinal(CostumBase64.decodeToBytes(password)))
+          new String(cipher.doFinal(Base64.decodeToBytes(password)))
       }
 
     implicit def ArrayByteToString(value :Array[Byte]):String =value.toString

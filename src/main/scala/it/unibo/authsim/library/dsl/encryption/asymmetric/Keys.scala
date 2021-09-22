@@ -14,6 +14,11 @@ class PersistentKeysGeneratorImpl extends PersistentKeyGenerator {
   private var _publicKey =""
   private var _privateKey =""
   override def algorithmName= _algorithmName
+
+  override def generateKeys(): Keys =
+    val keypair = generateKeyPair
+    key(keypair)
+
   override def algorithmName_(newAlgorithmName:String)=
     //TODO check if algorithm exists
     _algorithmName=newAlgorithmName
@@ -35,9 +40,7 @@ class PersistentKeysGeneratorImpl extends PersistentKeyGenerator {
         _privateKey= Base64.encodeToString(bytes)
         _privateKey
 
-  override def generateKeys(): Keys =
-    val keypair = generateKeyPair
-    key(keypair)
+
 
   def loadOrCreate(fileName: String = "key.ser"): Keys =
     val keyPair =
@@ -61,3 +64,7 @@ object App5:
     val keypair=keyGenerator.generateKeys()
     println(keypair.publicKey)
     println(keypair.privateKey)
+
+    val keyPair2=keyGenerator.loadOrCreate()
+    println(keyPair2.publicKey)
+    println(keyPair2.privateKey)

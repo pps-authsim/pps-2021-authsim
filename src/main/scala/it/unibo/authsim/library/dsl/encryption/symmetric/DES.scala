@@ -1,11 +1,11 @@
 package it.unibo.authsim.library.dsl.encryption.symmetric
 
 import it.unibo.authsim.library.dsl.encryption.{Algorithm, EncryptionMode, SymmetricEncryption}
-import it.unibo.authsim.library.dsl.encryption.util.CostumBase64
+import it.unibo.authsim.library.dsl.encryption.util.CostumBase64 as Base64
 
 import java.io.*
 import java.security.spec.*
-import java.util.Base64
+
 import javax.crypto.*
 import javax.crypto.spec.*
 
@@ -43,10 +43,10 @@ object DES:
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(CostumBase64.encodeToBytes(cipher.doFinal(password)), "UTF8")
+          new String(Base64.encodeToBytes(cipher.doFinal(password)), "UTF8")
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(cipher.doFinal(CostumBase64.decodeToBytes(password)), "UTF8")
+          new String(cipher.doFinal(Base64.decodeToBytes(password)), "UTF8")
       }
 
     override def iterationCount_(key: Int): Unit =

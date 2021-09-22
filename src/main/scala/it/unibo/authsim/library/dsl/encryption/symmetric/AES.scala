@@ -1,8 +1,9 @@
 package it.unibo.authsim.library.dsl.encryption.symmetric
 
-import it.unibo.authsim.library.dsl.encryption.SymmetricEncryption
-import it.unibo.authsim.library.dsl.encryption.symmetric.util.Util.{EncryptionMode, toMultiple}
+import it.unibo.authsim.library.dsl.encryption.{Algorithm, EncryptionMode,SymmetricEncryption}
+import it.unibo.authsim.library.dsl.encryption.util.Util.{toMultiple}
 import it.unibo.authsim.library.dsl.encryption.hash.HashFunction
+import it.unibo.authsim.library.dsl.encryption.util.CostumBase64
 
 import java.security.MessageDigest
 import java.security.spec.KeySpec
@@ -11,13 +12,20 @@ import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 import javax.crypto.spec.{PBEKeySpec, SecretKeySpec}
 import java.util.Base64
 
-trait AES extends SymmetricEncryption:
+trait AES extends SymmetricEncryption with Algorithm :
+  override def algorithmName: String
   override def encrypt(password: String, secret:String): String
   override def decrypt(password: String, secret:String): String
-  def secretSalt_(key:String): Unit
+  def secretSalt(): String
 
 object AES:
   def apply()= new AES() :
+    private val _name="AES"
+    private var _salt: String = "123456789"
+
+    override def algorithmName: String = _name
+    override def secretSalt(): String= _salt
+
     def encrypt(password: String, secret: String): String =
       crypto(EncryptionMode.Encryption, password, secret)
 
@@ -29,27 +37,19 @@ object AES:
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, keyToSpec(secret))
-          new String(Base64.getEncoder.encode(cipher.doFinal(password.getBytes("UTF8"))))
+          new String(CostumBase64.encodeToBytes(cipher.doFinal(password.getBytes("UTF8"))))
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, keyToSpec(secret))
-          new String(cipher.doFinal(Base64.getDecoder.decode(password)))
+          new String(cipher.doFinal(CostumBase64.decodeToBytes(password)))
       }
 
-    implicit def stringToArrayByte(value :Array[Byte]):String =value.toString
+    implicit def ArrayByteToString(value :Array[Byte]):String =value.toString
 
-    def keyToSpec(secret: String): SecretKeySpec =
-      var keyBytes: Array[Byte] = (_salt + secret).getBytes("UTF8")
+    private def keyToSpec(secret: String): SecretKeySpec =
       var hashFunctionSHA256 = new HashFunction.SHA256
-      hashFunctionSHA256.hash(keyBytes)
+      var keyBytes: Array[Byte] = hashFunctionSHA256.hash(_salt + secret).getBytes("UTF8")
       keyBytes = util.Arrays.copyOf(keyBytes, 16)
-      new SecretKeySpec(keyBytes, "AES")
-
-    override def secretSalt_(salt: String): Unit =
-        _salt = salt
-
-    private var _salt: String =
-      "jMhKlOuJnM34G6NHkqo9V010GhLAqOpF0BePojHgh1HgNg8^72k"
-
+      new SecretKeySpec(keyBytes, _name)
 
 object App3:
   def main(args: Array[String]): Unit =

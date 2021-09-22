@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.dsl.encryption.symmetric
 
-import it.unibo.authsim.library.dsl.encryption.symmetric.util.Util.EncryptionMode
-import it.unibo.authsim.library.dsl.encryption.SymmetricEncryption
+import it.unibo.authsim.library.dsl.encryption.{Algorithm, EncryptionMode, SymmetricEncryption}
+import it.unibo.authsim.library.dsl.encryption.util.CostumBase64
 
 import java.io.*
 import java.security.spec.*
@@ -9,20 +9,26 @@ import java.util.Base64
 import javax.crypto.*
 import javax.crypto.spec.*
 
-trait DES extends SymmetricEncryption:
+trait DES extends SymmetricEncryption with Algorithm:
+  override def algorithmName: String
   override def encrypt(password: String, secret:String): String
   override def decrypt(password: String, secret:String): String
-  def secretSalt_(key:Array[Byte]): Unit
+  def secretSalt(): String
   def iterationCount_ (key:Int): Unit
 
 object DES:
   def apply()= new DES() :
     private var _salt: Array[Byte] = Array(0xA9.asInstanceOf[Byte], 0x9B.asInstanceOf[Byte], 0xC8.asInstanceOf[Byte], 0x32.asInstanceOf[Byte], 0x56.asInstanceOf[Byte], 0x35.asInstanceOf[Byte], 0xE3.asInstanceOf[Byte], 0x03.asInstanceOf[Byte])
     private var _iterationCount: Int = 19
-    private var _paramSpec: AlgorithmParameterSpec = new PBEParameterSpec(_salt, _iterationCount)
+    private val _name: String = "DES"
 
     implicit def stringToCharArray(value : String):Array[Char] =value.toCharArray
-    implicit  def stringToArrayByte(value : String):Array[Byte] =value.getBytes("UTF8")
+    implicit def stringToArrayByte(value : String):Array[Byte] =value.getBytes("UTF8")
+    implicit def ArrayByteToString(value :Array[Byte]):String =value.toString
+
+    def secretSalt()=_salt
+
+    override def algorithmName: String = _name
 
     override def encrypt(password: String, secret: String): String =
       crypto(EncryptionMode.Encryption, password, secret)
@@ -31,24 +37,25 @@ object DES:
       crypto(EncryptionMode.Decryption, encryptedPassword, secret)
 
     private def crypto(mode:EncryptionMode, password: String, secret: String): String=
-      var keySpec: KeySpec = new PBEKeySpec(secret, _salt, _iterationCount)
-      var secretKeySpec: SecretKey = SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(keySpec)
+      var secretKeySpec: SecretKey = keyToSpec(secret)
       var cipher = Cipher.getInstance(secretKeySpec.getAlgorithm)
+      var _paramSpec: AlgorithmParameterSpec = new PBEParameterSpec(_salt, _iterationCount)
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(Base64.getEncoder.encode(cipher.doFinal(password)), "UTF8")
+          new String(CostumBase64.encodeToBytes(cipher.doFinal(password)), "UTF8")
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(cipher.doFinal(Base64.getDecoder.decode(password)), "UTF8")
+          new String(cipher.doFinal(CostumBase64.decodeToBytes(password)), "UTF8")
       }
 
     override def iterationCount_(key: Int): Unit =
       _iterationCount = key
 
-    override def secretSalt_(salt: Array[Byte]): Unit =
-      _salt = salt
-    
+    private def keyToSpec(secret: String): SecretKey =
+      var keySpec: KeySpec = new PBEKeySpec(secret, _salt, _iterationCount)
+      SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(keySpec)
+
 object App2:
   def main(args: Array[String]): Unit =
     val secret: String = "12345678123456781234567812345678"
@@ -59,3 +66,4 @@ object App2:
     println("password: "+ password)
     println("value encrypted: "+ enc)
     println("value decrypted: "+ dec)
+

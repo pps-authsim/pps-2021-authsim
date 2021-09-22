@@ -59,5 +59,5 @@ object App5:
   def  main(args: Array[String]): Unit =
     val keyGenerator= new PersistentKeysGeneratorImpl()
     val keypair=keyGenerator.generateKeys()
-    println(keypair.publicKey.toString)
-    println(keypair.privateKey.toString)
+    println(keypair.publicKey)
+    println(keypair.privateKey)

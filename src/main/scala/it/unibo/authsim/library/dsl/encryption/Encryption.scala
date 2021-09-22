@@ -6,15 +6,13 @@ import java.util.Base64
 import javax.crypto.spec.{PBEKeySpec, PBEParameterSpec}
 import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 
-trait Encryption 
+trait Encryption:
+  def encrypt(password: String, secret:String): String
+  def decrypt(password: String, secret:String): String
 
-trait SymmetricEncryption extends Encryption:
-  def encrypt(password: String, secret:String): String
-  def decrypt(password: String, secret:String): String
-  
-trait AsymmetricEncryption extends Encryption:
-  def encrypt(password: String, secret:String): String
-  def decrypt(password: String, secret:String): String
+trait SymmetricEncryption extends Encryption
+
+trait AsymmetricEncryption extends Encryption
 
 trait Algorithm:
   def algorithmName: String

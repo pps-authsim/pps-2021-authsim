@@ -6,7 +6,6 @@ import it.unibo.authsim.library.dsl.encryption.{Algorithm, AsymmetricEncryption,
 import java.security.*
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
-import java.util.Base64 as JavaBase64
 
 trait RSA extends AsymmetricEncryption with Algorithm:
   def generateKeys(): Keys
@@ -23,12 +22,12 @@ object RSA:
       keysGenerator.generateKeys()
 
     private def privateKeyFromString(privateKeyString: String): PrivateKey =
-      val bytes = JavaBase64.getDecoder.decode(privateKeyString)
+      val bytes = Base64.decodeToBytes(privateKeyString)
       val spec = new PKCS8EncodedKeySpec(bytes)
       keyFactory.generatePrivate(spec)
 
     private def publicKeyFromString(publicKeyString: String): PublicKey =
-      val bytes = JavaBase64.getDecoder.decode(publicKeyString)
+      val bytes = Base64.decodeToBytes(publicKeyString)
       val spec = new X509EncodedKeySpec(bytes)
       keyFactory.generatePublic(spec)
 

@@ -7,8 +7,7 @@ import java.security.{KeyPair, KeyPairGenerator}
 
 import java.security.spec.PKCS8EncodedKeySpec
 
-
-class PersistentKeysGeneratorImpl extends PersistentKeyGenerator {
+class PersistentKeysGeneratorImpl extends PersistentKeyGenerator:
   private val bitLength: Int =  2048
   var _algorithmName:String="RSA"
   private var _publicKey =""
@@ -46,17 +45,14 @@ class PersistentKeysGeneratorImpl extends PersistentKeyGenerator {
     val keyPair =
       if (Disk.isExisting(fileName))then
         Disk.loadObject[KeyPair](fileName)
-      else {
+      else
         val kp = generateKeys()
         Disk.saveObject(kp, fileName)
         kp
-      }
     key(keyPair.asInstanceOf[KeyPair])
 
   def privateKey: String = _privateKey
   def publicKey: String = _publicKey
-
-}
 
 object App5:
   def  main(args: Array[String]): Unit =

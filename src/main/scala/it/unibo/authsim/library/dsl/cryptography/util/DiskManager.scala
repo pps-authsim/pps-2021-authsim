@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.encryption.util
+package it.unibo.authsim.library.dsl.cryptography.util
 
 import java.io.ObjectInputStream
 

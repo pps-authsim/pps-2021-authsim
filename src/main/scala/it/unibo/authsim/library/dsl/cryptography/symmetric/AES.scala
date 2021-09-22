@@ -1,9 +1,9 @@
-package it.unibo.authsim.library.dsl.encryption.symmetric
+package it.unibo.authsim.library.dsl.cryptography.symmetric
 
-import it.unibo.authsim.library.dsl.encryption.{Algorithm, EncryptionMode, SymmetricEncryption}
-import it.unibo.authsim.library.dsl.encryption.util.Util.toMultiple
-import it.unibo.authsim.library.dsl.encryption.util.CostumBase64 as Base64
-import it.unibo.authsim.library.dsl.hash.HashFunction
+import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, EncryptionMode, SymmetricEncryption}
+import it.unibo.authsim.library.dsl.cryptography.util.Util.toMultiple
+import it.unibo.authsim.library.dsl.cryptography.util.CostumBase64 as Base64
+import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
 
 import java.security.MessageDigest
 import java.security.spec.KeySpec
@@ -12,7 +12,7 @@ import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 import javax.crypto.spec.{PBEKeySpec, SecretKeySpec}
 
 
-trait AES extends SymmetricEncryption with Algorithm :
+trait AES extends SymmetricEncryption with CryptographicAlgorithm :
   override def algorithmName: String
   override def encrypt(password: String, secret:String): String
   override def decrypt(password: String, secret:String): String

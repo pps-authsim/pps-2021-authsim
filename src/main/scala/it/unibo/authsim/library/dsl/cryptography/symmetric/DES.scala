@@ -1,7 +1,7 @@
-package it.unibo.authsim.library.dsl.encryption.symmetric
+package it.unibo.authsim.library.dsl.cryptography.symmetric
 
-import it.unibo.authsim.library.dsl.encryption.{Algorithm, EncryptionMode, SymmetricEncryption}
-import it.unibo.authsim.library.dsl.encryption.util.CostumBase64 as Base64
+import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, EncryptionMode, SymmetricEncryption}
+import it.unibo.authsim.library.dsl.cryptography.util.CostumBase64 as Base64
 
 import java.io.*
 import java.security.spec.*
@@ -9,7 +9,7 @@ import java.security.spec.*
 import javax.crypto.*
 import javax.crypto.spec.*
 
-trait DES extends SymmetricEncryption with Algorithm:
+trait DES extends SymmetricEncryption with CryptographicAlgorithm:
   override def algorithmName: String
   override def encrypt(password: String, secret:String): String
   override def decrypt(password: String, secret:String): String

@@ -1,7 +1,7 @@
-package it.unibo.authsim.library.dsl.encryption.asymmetric
+package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
-import it.unibo.authsim.library.dsl.encryption.{Keys,PersistentKeyGenerator}
-import it.unibo.authsim.library.dsl.encryption.util.{CostumBase64 as Base64, DiskManager as Disk}
+import it.unibo.authsim.library.dsl.cryptography.{Keys,PersistentKeyGenerator}
+import it.unibo.authsim.library.dsl.cryptography.util.{CostumBase64 as Base64, DiskManager as Disk}
 
 import java.security.{KeyPair, KeyPairGenerator}
 

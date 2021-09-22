@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.encryption
+package it.unibo.authsim.library.dsl.cryptography
 
 import java.security.KeyPair
 import java.security.spec.{AlgorithmParameterSpec, KeySpec}
@@ -14,14 +14,14 @@ trait SymmetricEncryption extends Encryption
 
 trait AsymmetricEncryption extends Encryption
 
-trait Algorithm:
+trait CryptographicAlgorithm:
   def algorithmName: String
 
 trait Keys:
   def publicKey: String
   def privateKey: String
 
-trait KeyGenerator extends Keys with Algorithm :
+trait KeyGenerator extends Keys with CryptographicAlgorithm :
   def generateKeys(): Keys
   def algorithmName_(algorithmName:String): Unit
   

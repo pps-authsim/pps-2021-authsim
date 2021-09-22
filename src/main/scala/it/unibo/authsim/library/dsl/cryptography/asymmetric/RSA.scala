@@ -1,13 +1,13 @@
-package it.unibo.authsim.library.dsl.encryption.asymmetric
+package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
-import it.unibo.authsim.library.dsl.encryption.util.CostumBase64 as Base64
-import it.unibo.authsim.library.dsl.encryption.{Algorithm, AsymmetricEncryption, EncryptionMode, Keys, SymmetricEncryption}
+import it.unibo.authsim.library.dsl.cryptography.util.CostumBase64 as Base64
+import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, AsymmetricEncryption, EncryptionMode, Keys, SymmetricEncryption}
 
 import java.security.*
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
-trait RSA extends AsymmetricEncryption with Algorithm:
+trait RSA extends AsymmetricEncryption with CryptographicAlgorithm:
   def generateKeys(): Keys
 
 object RSA:

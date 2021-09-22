@@ -20,7 +20,7 @@ class UserTest extends AnyWordSpec{
   @Mock val algorithmPolicy = mock[AlgorithmPolicy]
   private val cryptoInfo = CryptoInformation(algorithmPolicy)
   private val user = UserInformation("Alexandra", "Pippa", CryptoInformation(algorithmPolicy))
-  private val user2 = UserInformation("Lorenzo", "Cody", cryptoInfo, Map.empty)
+  private val user2 = UserInformation("Lorenzo", "Cody", cryptoInfo)
 
   "A user" when {
     "created" should {
@@ -33,9 +33,6 @@ class UserTest extends AnyWordSpec{
       "one could choose to not salt user's password, in this case the salt information should take the default values" in {
         assert(user.saltInformation == CryptoInformation(algorithmPolicy))
       }
-      "the same would happen id users's additional information could not be provided" in{
-        assert(user.additionalInformation == Map.empty)
-      }
     }
   }
   "however one could also create a user whithout null values" when{
@@ -47,9 +44,6 @@ class UserTest extends AnyWordSpec{
     }
     "the salt value if provided should be" in {
       assert(user2.saltInformation == cryptoInfo)
-    }
-    "finally users's additional information if set should be" in{
-      assert(user2.additionalInformation == Map.empty)
     }
   }
 

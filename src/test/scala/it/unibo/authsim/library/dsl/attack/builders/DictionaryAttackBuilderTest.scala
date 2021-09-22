@@ -31,7 +31,7 @@ class DictionaryAttackBuilderTest extends AnyWordSpec:
       println("Breached credentials: " + consumable.successfulBreaches.map(u => u.username + " - " + u.password).reduceOption((u1, u2) => u1 + "\n" + u2).getOrElse("No credentials breached"))
 
     val myProxy = new UserProvider {
-      override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("hunter2"), CryptoInformation(algorithmPolicy), Map.empty))
+      override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("hunter2"), CryptoInformation(algorithmPolicy)))
 
     }
 

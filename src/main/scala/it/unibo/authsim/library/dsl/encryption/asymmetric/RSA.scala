@@ -62,7 +62,6 @@ object RSA:
 object App4:
   def main(args: Array[String]): Unit =
     val secret = "The Earth is Flat"
-    //val pk = RSA.PersistentKeys.loadOrCreate(fileName = "keys.ser")
     val rsa = RSA()
     val pk = rsa.generateKeys()
     println("private key"+ pk)
@@ -73,3 +72,4 @@ object App4:
     println("password encrypted: "+ encrypted)
     val decrypted = rsa.decrypt(encrypted, priv)
     println("password encrypted: "+ decrypted)
+    //TODO check load method

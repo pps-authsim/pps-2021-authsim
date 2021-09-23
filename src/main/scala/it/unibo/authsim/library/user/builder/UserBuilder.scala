@@ -4,7 +4,7 @@ import  it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.util.RandomStringGenerator.generateRandomString
-//ANche qui non sono troppo sicura sull'iso
+
 abstract class UserBuilder[U]:
   protected var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
   protected var _userName: String=generateRandomString()

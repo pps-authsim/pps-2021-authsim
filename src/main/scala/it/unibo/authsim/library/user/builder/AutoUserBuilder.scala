@@ -9,7 +9,6 @@ import it.unibo.authsim.library.user.model.User
  * Class that represent an automatic builder for a user
  */
 class UserAutoBuilder extends UserBuilder[User]{
-  //TODO override properties when Marica creates default policies
 
   /**
    * Method that create a user whose credentials meet the provided policies
@@ -20,8 +19,8 @@ class UserAutoBuilder extends UserBuilder[User]{
     _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy]))
       .map(e=>
         if(e.isInstanceOf[PasswordPolicy]) then
-          this._password= e.generate
+          this._password= e.asInstanceOf[PasswordPolicy].generate
         else
-          this._userName= e.generate)
+          this._userName= e.asInstanceOf[UserIDPolicy].generate)
     User(_userName, _password)
 }

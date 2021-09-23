@@ -5,7 +5,6 @@ import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolic
 import it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.user.builder.util.RandomStringGenerator.generateRandomString
 
-//TODO controlla se con i metodi del builder si può parlare di setter
 /**
  * Class that represent a costum builder for a user
  */
@@ -40,4 +39,3 @@ class UserCostumBuilder extends UserBuilder[User]:
       Some(user)
     else
       None
-

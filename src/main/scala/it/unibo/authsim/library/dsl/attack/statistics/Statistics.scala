@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.attack.statistics
 
-import it.unibo.authsim.library.user.User
+import it.unibo.authsim.library.user.model.User
 
 import scala.concurrent.duration.Duration
 

@@ -1,9 +1,10 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-import it.unibo.authsim.library.dsl.{HashFunction, Proxy}
+
+import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
-import it.unibo.authsim.library.user.User
+import it.unibo.authsim.library.user.model.User
 
 import scala.concurrent.duration.{Duration, MILLISECONDS}
 import scala.concurrent.{Await, Future}
@@ -54,14 +55,14 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder:
 
   override def executeNow(): Unit = this.save().start()
 
-private class BruteForceAttack(private val target: Proxy, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
+private class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
 
   override def start(): Unit =
     var jobResults: List[Future[Statistics]] = List.empty
     var totalResults = Statistics.zero
     val monitor = new ConcurrentStringCombinator(alphabet, maximumLength)
     val startTime = System.nanoTime()
-    (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.getUserInformations().head, monitor)) :: jobResults)
+    (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.userInformations().head, monitor)) :: jobResults)
     // TODO: refine timeout
     try {
       jobResults.foreach(future => totalResults = totalResults + Await.result(future, timeout.getOrElse(Duration.Inf)))
@@ -80,10 +81,7 @@ private class BruteForceAttack(private val target: Proxy, private val hashFuncti
       val nextPasswordString = nextPassword.get
       val hashedPassword = hashFunction.hash(nextPasswordString)
       localStatistics = localStatistics + new Statistics(hashedPassword == targetUser.password match {
-        case true => Set(new User {
-          override def username: String = targetUser.username
-          override def password: String = nextPasswordString
-        })
+        case true => Set(User(targetUser.username, nextPasswordString))
         case false => Set()
       }, attempts = 1, Duration.Zero)
       nextPassword = stringProvider.getNextString()

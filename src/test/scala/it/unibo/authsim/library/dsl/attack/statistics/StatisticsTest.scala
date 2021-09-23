@@ -1,9 +1,9 @@
 package it.unibo.authsim.library.dsl.attack.statistics
 
+import it.unibo.authsim.library.user.model.User
 import org.scalatest.wordspec.AnyWordSpec
 
 import scala.concurrent.duration.{Duration, MINUTES}
-import it.unibo.authsim.library.user.User
 
 class StatisticsTest extends AnyWordSpec {
   class SimpleUser(val username: String, val password: String) extends User {}

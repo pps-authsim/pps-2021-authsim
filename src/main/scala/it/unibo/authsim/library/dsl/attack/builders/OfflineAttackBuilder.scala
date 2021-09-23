@@ -1,12 +1,12 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-import it.unibo.authsim.library.dsl.{HashFunction, Proxy}
+import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
 
 /**
  * Builder for offline attacks. It allows to configure a UserProvider, the used hash function and the number of concurrent workers.
  */
 trait OfflineAttackBuilder extends AttackBuilder:
-  private var target: Proxy = null
+  private var target: UserProvider = null
   private var hashFunction: HashFunction = null
   private var numberOfWorkers: Int = 1
 
@@ -30,7 +30,7 @@ trait OfflineAttackBuilder extends AttackBuilder:
    * @param target The UserProvider
    * @return The builder
    */
-  def against(target: Proxy): this.type =
+  def against(target: UserProvider): this.type =
     this.target = target
     this
 

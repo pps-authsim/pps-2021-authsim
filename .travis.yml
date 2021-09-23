@@ -5,3 +5,14 @@ services:
 language: scala
 scala:
   - 3.0.1
+
+notifications:
+  email:
+    recipients:
+      - alex.speranza@studio.unibo.it
+      - kyrillos.ntronov@studio.unibo.it
+      - marica.pasquali@studio.unibo.it
+      - giulia.brugnatti@studio.unibo.it
+
+    on_success: never # default: change
+    on_failure: always # default: always

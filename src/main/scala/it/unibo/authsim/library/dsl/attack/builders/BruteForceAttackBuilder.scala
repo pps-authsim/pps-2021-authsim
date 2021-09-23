@@ -81,10 +81,7 @@ private class BruteForceAttack(private val target: UserProvider, private val has
       val nextPasswordString = nextPassword.get
       val hashedPassword = hashFunction.hash(nextPasswordString)
       localStatistics = localStatistics + new Statistics(hashedPassword == targetUser.password match {
-        case true => Set(new User {
-          override val username: String = targetUser.username
-          override val password: String = nextPasswordString
-        })
+        case true => Set(User(targetUser.username, nextPasswordString))
         case false => Set()
       }, attempts = 1, Duration.Zero)
       nextPassword = stringProvider.getNextString()

@@ -14,5 +14,5 @@ notifications:
       - marica.pasquali@studio.unibo.it
       - giulia.brugnatti@studio.unibo.it
 
-    on_success: never # default: change
-    on_failure: always # default: always
+    on_success: always
+    on_failure: always

@@ -12,23 +12,23 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 import scala.concurrent.duration.Duration
 
 class BruteForceAttackBuilderTest extends AnyWordSpec:
+
   private class TestStatisticsConsumer extends StatisticsConsumer:
     private var statistics: Statistics = Statistics.zero
 
     def getStatistics: Statistics = this.statistics
-
-
-    //TODO Alex appena abbiamo le policy degli algoritmi togli sta roba, te l'ho messa se no non compilava più nulla
-    @Mock
-    abstract class AlgorithmPolicy extends Policy
-    @Mock
-    val algorithmPolicy = mock[AlgorithmPolicy]
 
     override def consume(consumable: Statistics): Unit =
       this.statistics = consumable
       println("Attempts: " + consumable.attempts)
       println("Elapsed time: " + consumable.elapsedTime.toMillis + " ms")
       println("Breached credentials: " + consumable.successfulBreaches.map(u => u.username + " - " + u.password).reduceOption((u1, u2) => u1 + "\n" + u2).getOrElse("No credentials breached"))
+
+  //TODO Alex appena abbiamo le policy degli algoritmi togli sta roba, te l'ho messa se no non compilava più nulla
+  @Mock
+  abstract class AlgorithmPolicy extends Policy
+  @Mock
+  val algorithmPolicy = mock[AlgorithmPolicy]
 
     val myProxy = new UserProvider {
       override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("abc"), CryptoInformation(algorithmPolicy)))

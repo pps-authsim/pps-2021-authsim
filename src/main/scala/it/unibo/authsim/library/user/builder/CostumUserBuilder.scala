@@ -3,7 +3,7 @@ import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.model.User
-import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
+import it.unibo.authsim.library.user.builder.util.RandomStringGenerator.generateRandomString
 
 //TODO controlla se con i metodi del builder si può parlare di setter
 /**

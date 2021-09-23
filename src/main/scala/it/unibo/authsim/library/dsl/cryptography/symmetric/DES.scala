@@ -48,7 +48,8 @@ object DES:
           cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, _paramSpec)
           new String(cipher.doFinal(Base64.decodeToBytes(password)), "UTF8")
       }
-
+    override def toString: String = "DES"
+    
     override def iterationCount_(key: Int): Unit =
       _iterationCount = key
 

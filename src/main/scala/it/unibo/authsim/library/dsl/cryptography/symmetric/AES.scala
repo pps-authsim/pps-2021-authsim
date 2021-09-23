@@ -45,6 +45,8 @@ object AES:
 
     implicit def ArrayByteToString(value :Array[Byte]):String =value.toString
 
+    override def toString: String = "AES"
+
     private def keyToSpec(secret: String): SecretKeySpec =
       var hashFunctionSHA256 = new HashFunction.SHA256
       var keyBytes: Array[Byte] = hashFunctionSHA256.hash(_salt + secret).getBytes("UTF8")

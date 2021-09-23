@@ -21,9 +21,8 @@ class CryptographicAlgorithmTest extends AnyFlatSpec with Matchers {
     sha256.algorithmName shouldBe sha256.toString
     sha384.algorithmName shouldBe sha384.toString
     md5.algorithmName shouldBe md5.toString
-    //des.algorithmName shouldBe des.toString
-    //aes.algorithmName shouldBe aes.toString
-    //rsa.algorithmName shouldBe rsa.toString
-
+    des.algorithmName shouldBe des.toString
+    aes.algorithmName shouldBe aes.toString
+    rsa.algorithmName shouldBe rsa.toString
   }
 }

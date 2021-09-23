@@ -57,6 +57,7 @@ object RSA:
           cipher.init(Cipher.DECRYPT_MODE, key)
           new String(cipher.doFinal(Base64.decodeToBytes(password)))
       }
+    override def toString: String = "RSA"
 
 object App4:
   def main(args: Array[String]): Unit =

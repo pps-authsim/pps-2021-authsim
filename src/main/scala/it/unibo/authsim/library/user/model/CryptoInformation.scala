@@ -17,5 +17,4 @@ per me qui ci sta di più l'algoritmo(hash, (a)symmetric estenderanno da un trai
 object CryptoInformation:
   //TODO documentation when implementation is stable
   def apply(algorithmPolicy: Policy): CryptoInformation = CryptoInformationImpl(algorithmPolicy)
-  //non sono sicura abbia senso tenere una case class per sta roba
-  case class CryptoInformationImpl(algorithmPolicy: Policy) extends CryptoInformation(algorithmPolicy)
+  private case class CryptoInformationImpl(algorithmPolicy: Policy) extends CryptoInformation(algorithmPolicy)

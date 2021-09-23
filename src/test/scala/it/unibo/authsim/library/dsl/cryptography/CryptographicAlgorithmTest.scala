@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.cryptography
 
 import it.unibo.authsim.library.dsl.cryptography.asymmetric.RSA
 import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
-import it.unibo.authsim.library.dsl.cryptography.symmetric.{AES, DES}
+import it.unibo.authsim.library.dsl.cryptography.symmetric.{AES, DES, CaesarCipher}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -14,6 +14,7 @@ class CryptographicAlgorithmTest extends AnyFlatSpec with Matchers {
   val des = DES()
   val aes = AES()
   val rsa = RSA()
+  val caesarCipher = CaesarCipher()
 
   "A cryptographic algorithm" should "provide a name" in {
     sha1.algorithmName shouldBe sha1.toString
@@ -23,5 +24,6 @@ class CryptographicAlgorithmTest extends AnyFlatSpec with Matchers {
     //des.algorithmName shouldBe des.toString
     //aes.algorithmName shouldBe aes.toString
     //rsa.algorithmName shouldBe rsa.toString
+
   }
 }

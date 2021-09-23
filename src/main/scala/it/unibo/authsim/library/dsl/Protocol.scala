@@ -1,9 +1,8 @@
 package it.unibo.authsim.library.dsl
 
-sealed trait Protocol(val port: Option[Int])
+sealed trait Protocol(val port: Int)
 object Protocol:
-  case class Local() extends Protocol(None)
-  case class Http() extends Protocol(Some(80))
-  case class Https() extends Protocol(Some(43))
-  case class Ssh() extends Protocol(Some(22))
+  case class Http() extends Protocol(80)
+  case class Https() extends Protocol(43)
+  case class Ssh() extends Protocol(22)
 

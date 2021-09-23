@@ -14,11 +14,11 @@ object User:
   /**
    * Apply method for  a user
    * 
-   * @param _username     name of the user
-   * @param _password     password in clear of the user
+   * @param name     name of the user
+   * @param watchword     password in clear of the user
    * @return              a new user
    */
-  def apply(_username:String, _password:String): User=
+  def apply(name:String, watchword:String): User=
     new User:
-      override val username:String=_username
-      override val password:String=_password
+      override val username:String=name
+      override val password:String=watchword

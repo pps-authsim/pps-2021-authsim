@@ -27,9 +27,7 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder:
    * @param alphabet The alphabet to use.
    * @return The builder.
    */
-  def usingAlphabet(alphabet: List[String]): this.type =
-    this.alphabet = alphabet
-    this
+  def usingAlphabet(alphabet: List[String]): this.type = this.builderMethod[List[String]](alphabet => this.alphabet = alphabet)(alphabet)
 
   /**
    * @return The used alphabet.
@@ -42,9 +40,7 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder:
    * @param maximumLength The maximum combination number.
    * @return The builder.
    */
-  def maximumLength(maximumLength: Int): this.type =
-    this.maximumLength = maximumLength
-    this
+  def maximumLength(maximumLength: Int): this.type = this.builderMethod[Int](l => this.maximumLength = l)(maximumLength)
 
   /**
    * @return The maximum combination number.
@@ -52,8 +48,6 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder:
   def getMaximumLength: Int = this.maximumLength
 
   override def save(): Attack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getAlphabet(), this.getMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
-
-  override def executeNow(): Unit = this.save().start()
 
 private class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
 

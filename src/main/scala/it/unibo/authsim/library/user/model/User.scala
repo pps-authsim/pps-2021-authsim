@@ -11,14 +11,19 @@ trait User:
  * Object that represent a user
  */
 object User:
+
   /**
-   * Apply method for  a user
-   * 
-   * @param name     name of the user
-   * @param watchword     password in clear of the user
-   * @return              a new user
+   * Class to implement a simple version of the User trait
+   * @param username      username of the user
+   * @param password      password to associated with the username
    */
-  def apply(name:String, watchword:String): User=
-    new User:
-      override val username:String=name
-      override val password:String=watchword
+  private case class BasicUser(override val username:String, override val password:String) extends User
+
+  /**
+   * Apply method for a user
+   *
+   * @param username     name of the user
+   * @param password     password in clear of the user
+   * @return              a BasicUser
+   */
+  def apply(username:String, password:String): User = BasicUser(username, password)

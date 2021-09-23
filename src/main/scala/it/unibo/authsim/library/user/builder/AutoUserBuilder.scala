@@ -17,11 +17,11 @@ class UserAutoBuilder extends UserBuilder[User]{
    * @return  a User which credentials are complaint with the input policies
    */
   def build(): User=
-    _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy]))
-      .map(e=>
-        if(e.isInstanceOf[PasswordPolicy]) then
-          this._password= e.generate
-        else
-          this._userName= e.generate)
+    _credentialPolicies.map(c =>
+      c match
+        case _: UserIDPolicy => this._userName = c.generate
+        case _: PasswordPolicy => this._password = c.generate
+        case _ => ""
+    )
     User(_userName, _password)
 }

@@ -1,25 +1,27 @@
 package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
 import it.unibo.authsim.library.dsl.cryptography.util.CostumBase64 as Base64
-import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, AsymmetricEncryption, EncryptionMode, Keys, SymmetricEncryption}
+import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, AsymmetricEncryption, EncryptionMode, Keys, SymmetricEncryption, KeyGenerator}
 
 import java.security.*
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
-trait RSA extends AsymmetricEncryption:
+trait RSA extends AsymmetricEncryption with KeyGenerator:
   def generateKeys(): Keys
 
 object RSA:
   def apply()= new RSA() :
     private var _name = "RSA"
     private val keyFactory = KeyFactory.getInstance(_name)
-    private val keysGenerator= new PersistentKeysGeneratorImpl()
-    override def algorithmName: String= _name
+    private val keysGenerator= RSAPersistentKeysGenerator
 
+    override  def algorithmName: String= this.toString
     override def generateKeys():Keys=
-      keysGenerator.algorithmName_(_name)
       keysGenerator.generateKeys()
+
+    def loadKeys(fileName: String = "key.ser"):Keys=
+      keysGenerator.loadKeys()
 
     private def privateKeyFromString(privateKeyString: String): PrivateKey =
       val bytes = Base64.decodeToBytes(privateKeyString)
@@ -72,5 +74,11 @@ object App4:
     println("password encrypted: "+ encrypted)
     val decrypted = rsa.decrypt(encrypted, priv)
     println("password encrypted: "+ decrypted)
-
-    //TODO check load method
+    val pk2=rsa.loadKeys("ket.ser")
+    val priv2 = pk2.privateKey
+    val publ2= pk2.publicKey
+    println("private pair "+ (publ2, priv2))
+    val encrypted2 = rsa.encrypt(secret, publ2)
+    println("password encrypted: "+ encrypted2)
+    val decrypted2 = rsa.decrypt(encrypted2, priv2)
+    println("password encrypted: "+ decrypted2)

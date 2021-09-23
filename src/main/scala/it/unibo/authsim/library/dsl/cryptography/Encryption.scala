@@ -21,13 +21,10 @@ trait Keys:
   def publicKey: String
   def privateKey: String
 
-trait KeyGenerator extends Keys with CryptographicAlgorithm :
+trait KeyGenerator:
   def generateKeys(): Keys
-  def algorithmName_(algorithmName:String): Unit
+  def loadKeys(fileName: String):Keys
   
-trait PersistentKeyGenerator extends KeyGenerator:
-  def loadOrCreate(fileName: String): Keys
-
 enum EncryptionMode:
     case Decryption, Encryption
 

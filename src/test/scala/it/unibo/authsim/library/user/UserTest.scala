@@ -25,7 +25,7 @@ class UserTest extends AnyWordSpec{
   "A user" when {
     "created" should {
       "have a name" in{
-        assert(user.username == "")
+        assert(user.username == "Alexandra")
       }
       "and a password" in {
         assert(user.password == "Pippa")

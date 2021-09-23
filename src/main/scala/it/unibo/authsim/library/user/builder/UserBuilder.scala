@@ -16,11 +16,13 @@ abstract class UserBuilder[U]:
    * @return true if the the credentials are complaint with the policy or false if they are not
    */
   protected def checkPolicy(): Boolean=
-    _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy])).map(e=>
-      if(e.isInstanceOf[PasswordPolicy]) then
-        StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check _password
-      else
-        StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check _userName
+    _credentialPolicies.map(c =>
+      StringPolicyChecker(c) check (
+        c match
+          case _: UserIDPolicy => _userName
+          case _: PasswordPolicy => _password
+          case _ => ""
+        )
     ).contains(false).unary_!
     
   /**

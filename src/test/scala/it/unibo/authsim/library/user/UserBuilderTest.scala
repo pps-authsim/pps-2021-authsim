@@ -9,6 +9,7 @@ import it.unibo.authsim.library.user.model.User
 import org.scalatest.matchers.should
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
+import it.unibo.authsim.library.user.builder.util.RandomStringGenerator
 
 
 class UserBuilderTest extends AnyWordSpec with should.Matchers{
@@ -34,11 +35,7 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
   private val autoUserBuilder2= UserAutoBuilder() withPolicy(userIDPolicy) withPolicy(passwordPolicy)
   private val autoUser2:User = autoUserBuilder2.asInstanceOf[UserAutoBuilder].build()
 
-  println(costumUser1)
-  println(costumUser2)
-  println(autoUser1)
-  println(autoUser2)
-
+  private val seq=autoUserBuilder1.asInstanceOf[UserAutoBuilder].numberOfUsers(2)
   s"A user created with name '${name}' and password '{$password}'" should {
     "have name" in{
       costumUser1.get.username should be (name)
@@ -71,9 +68,8 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
 
   s"User" should{
     "be able to create multiple users" in{
-      val seq=autoUserBuilder1.asInstanceOf[UserAutoBuilder].numberOfUsers(2)
-      println("prova  " + seq)
       assert(seq.length==2)
     }
+    //TODO demostrate that they are created using different credentials
   }
 }

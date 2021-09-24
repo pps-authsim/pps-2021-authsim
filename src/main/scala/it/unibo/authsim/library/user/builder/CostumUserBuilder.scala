@@ -3,12 +3,13 @@ import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.model.User
-import it.unibo.authsim.library.user.builder.util.RandomStringGenerator.generateRandomString
+import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 
 /**
  * Class that represent a costum builder for a user
  */
 class UserCostumBuilder extends UserBuilder[User]:
+  
   /**
    * Setter for the username of the user
    * 
@@ -18,6 +19,7 @@ class UserCostumBuilder extends UserBuilder[User]:
   def withName(userName:String):this.type=
     this._userName = userName
     this
+    
   /**
    * Setter for the username of the User
    *

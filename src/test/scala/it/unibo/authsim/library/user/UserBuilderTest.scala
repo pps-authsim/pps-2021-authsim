@@ -9,17 +9,16 @@ import it.unibo.authsim.library.user.model.User
 import org.scalatest.matchers.should
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
-import it.unibo.authsim.library.user.builder.util.RandomStringGenerator
-
+import it.unibo.authsim.library.user.builder.util.Util
 
 class UserBuilderTest extends AnyWordSpec with should.Matchers{
   private val min: Int=2
   private val max: Int=5
   private val userIDPolicy: CredentialPolicy = UserIDPolicyBuilder() minimumLength max build
   private val passwordPolicy: CredentialPolicy = PasswordPolicyBuilder() minimumUpperChars min minimumLength max build
-  private val name: String= RandomStringGenerator.generateRandomString(max)
-  private val shortName: String= RandomStringGenerator.generateRandomString(min)
-  private val password: String= RandomStringGenerator.generateRandomString(max)
+  private val name: String= Util.generateRandomString(max)
+  private val shortName: String= Util.generateRandomString(min)
+  private val password: String= Util.generateRandomString(max)
 
   private val costumUserBuilder1:UserCostumBuilder = UserCostumBuilder() withName(name) withPassword(password)
   private val costumUser1 :Option[User]= costumUserBuilder1.build()
@@ -37,13 +36,8 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
   private val autoUser2:User = autoUserBuilder2.build()
 
   private var seq:Seq[User]= autoUserBuilder2.numberOfUsers(min)
-  private var listUser:Seq[String]=Seq.empty[String]
-  private var listPassword:Seq[String]=Seq.empty[String]
-  seq.map(e=>
-      listUser= e.username +:listUser
-      listPassword= e.password +:listPassword
-  )
-
+  private var listUser:Seq[String] = for(e<-seq) yield e.username
+  private var listPassword:Seq[String]  = for(e<-seq) yield e.password
 
   s"A user created with name '${name}' and password '{$password}'" should {
     "have name" in{
@@ -79,11 +73,12 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
     "be able to create a given number of users" in{
       assert(seq.length == min)
     }
+
     "which should have different username" in{
-      assert(RandomStringGenerator.countDuplicates(listUser) == 0)
+      assert(Util.countDuplicates(listUser) == 0)
     }
     "and different password" in{
-      assert(RandomStringGenerator.countDuplicates(listPassword) == 0)
+      assert(Util.countDuplicates(listPassword) == 0)
     }
   }
 }

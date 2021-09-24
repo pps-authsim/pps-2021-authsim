@@ -3,7 +3,7 @@ package it.unibo.authsim.library.user.builder
 import it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
-import it.unibo.authsim.library.user.builder.util.RandomStringGenerator.generateRandomString
+import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 
 /**
  * Abstract class for building users, it provides basic method to add policies and check if user credentials are complaint with them.

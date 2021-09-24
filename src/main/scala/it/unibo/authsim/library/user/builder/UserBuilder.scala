@@ -1,10 +1,14 @@
 package it.unibo.authsim.library.user.builder
 
-import  it.unibo.authsim.library.user.model.User
+import it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.util.RandomStringGenerator.generateRandomString
 
+/**
+ * Abstract class for building users, it provides basic method to add policies and check if user credentials are complaint with them.
+ * @tparam U
+ */
 abstract class UserBuilder[U]:
   protected var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
   protected var _userName: String=generateRandomString()
@@ -16,11 +20,13 @@ abstract class UserBuilder[U]:
    * @return true if the the credentials are complaint with the policy or false if they are not
    */
   protected def checkPolicy(): Boolean=
-    _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy])).map(e=>
-      if(e.isInstanceOf[PasswordPolicy]) then
-        StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check _password
-      else
-        StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check _userName
+    _credentialPolicies.map(c =>
+      StringPolicyChecker(c) check (
+        c match
+          case _: UserIDPolicy => _userName
+          case _: PasswordPolicy => _password
+          case _ => ""
+        )
     ).contains(false).unary_!
     
   /**

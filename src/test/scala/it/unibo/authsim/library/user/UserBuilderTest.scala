@@ -69,7 +69,11 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
     }
   }
 
-/*
-TODO generation policy default when Marica creates them
- */
+  s"User" should{
+    "be able to create multiple users" in{
+      val seq=autoUserBuilder1.asInstanceOf[UserAutoBuilder].numberOfUsers(2)
+      println("prova  " + seq)
+      assert(seq.length==2)
+    }
+  }
 }

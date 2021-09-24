@@ -8,7 +8,6 @@ import it.unibo.authsim.library.user.model.User
  * Class that represent an automatic builder for a user
  */
 class UserAutoBuilder extends UserBuilder[User]:
-  private var usersSeq:Seq[User]=Seq.empty[User]
   /**
    * Method that create a user whose credentials meet the provided policies
    * 
@@ -29,7 +28,4 @@ class UserAutoBuilder extends UserBuilder[User]:
    * @return
    */
   def numberOfUsers(numberOfUsers: Int): Seq[User] =
-    for (w<-0 until numberOfUsers.abs)
-      var user = build()
-      this.usersSeq = user +: this.usersSeq
-    usersSeq
+    List.fill(numberOfUsers.abs)(build()).toSeq

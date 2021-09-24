@@ -13,11 +13,13 @@ import it.unibo.authsim.library.user.builder.util.RandomStringGenerator
 
 
 class UserBuilderTest extends AnyWordSpec with should.Matchers{
-  private val userIDPolicy: CredentialPolicy = UserIDPolicyBuilder() minimumLength 5 build
-  private val passwordPolicy: CredentialPolicy = PasswordPolicyBuilder() minimumUpperChars 3 minimumLength 8 build
-  private val name: String= RandomStringGenerator.generateRandomString(5)
-  private val shortName: String= RandomStringGenerator.generateRandomString(2)
-  private val password: String= RandomStringGenerator.generateRandomString(8)
+  private val min: Int=2
+  private val max: Int=5
+  private val userIDPolicy: CredentialPolicy = UserIDPolicyBuilder() minimumLength max build
+  private val passwordPolicy: CredentialPolicy = PasswordPolicyBuilder() minimumUpperChars min minimumLength max build
+  private val name: String= RandomStringGenerator.generateRandomString(max)
+  private val shortName: String= RandomStringGenerator.generateRandomString(min)
+  private val password: String= RandomStringGenerator.generateRandomString(max)
 
   private val costumUserBuilder1:UserCostumBuilder = UserCostumBuilder() withName(name) withPassword(password)
   private val costumUser1 :Option[User]= costumUserBuilder1.build()
@@ -34,7 +36,15 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
   private val autoUserBuilder2:UserAutoBuilder= UserAutoBuilder() withPolicy(userIDPolicy) withPolicy(passwordPolicy)
   private val autoUser2:User = autoUserBuilder2.build()
 
-  private val seq:Seq[User]=autoUserBuilder1.asInstanceOf[UserAutoBuilder].numberOfUsers(2)
+  private var seq:Seq[User]= autoUserBuilder2.numberOfUsers(min)
+  private var listUser:Seq[String]=Seq.empty[String]
+  private var listPassword:Seq[String]=Seq.empty[String]
+  seq.map(e=>
+      listUser= e.username +:listUser
+      listPassword= e.password +:listPassword
+  )
+
+
   s"A user created with name '${name}' and password '{$password}'" should {
     "have name" in{
       costumUser1.get.username should be (name)
@@ -64,21 +74,16 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
       assert(StringPolicyChecker(userIDPolicy.asInstanceOf[UserIDPolicy]) check (autoUser1.password))
     }
   }
-  println("seq"+ seq)
-  var listUser:List[String]= List.empty[String]
-  var listPassword:List[String]= List.empty[String]
-  seq.map(e=>
-    listUser= e.username +:listUser
-    listPassword= e.password +:listPassword
-  )
-  val number1=RandomStringGenerator.countDuplicates(listUser.toSeq)
-  val number2=RandomStringGenerator.countDuplicates(listPassword.toSeq)
-  println("List users " + (listUser, number1))
-  println("List passwords " +(listPassword, number2))
+
   s"User" should{
-    "be able to create multiple users" in{
-      assert(seq.length==2)
+    "be able to create a given number of users" in{
+      assert(seq.length == min)
     }
-    //TODO demostrate that they are created using different credentials
+    "which should have different username" in{
+      assert(RandomStringGenerator.countDuplicates(listUser) == 0)
+    }
+    "and different password" in{
+      assert(RandomStringGenerator.countDuplicates(listPassword) == 0)
+    }
   }
 }

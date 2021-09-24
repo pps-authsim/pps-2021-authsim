@@ -4,14 +4,50 @@ import it.unibo.authsim.library.dsl.{HashFunction, Protocol}
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
 import it.unibo.authsim.library.dsl.policy.model.Policy
 
+/**
+ * ''PolicyBuilder'' is a trait that is used to build a new policy
+ */
 trait PolicyBuilder extends Builder[Policy]:
+  /**
+   * Set a [[UserIDPolicy userId policy]] and a [[PasswordPolicy password policy]]
+   * @param credentialPolicy tuple of userID policy and a password policy to set
+   * @return instance of policy builder
+   */
   def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): PolicyBuilder
+  /**
+   * Set a [[CredentialPolicy credential policy]]
+   * @param credentialPolicy credential policy to set
+   * @return instance of policy builder
+   */
   def of(credentialPolicy: CredentialPolicy): PolicyBuilder
+  /**
+   * Set a [[CredentialPolicy credential policy]]
+   * @param credentialPolicy credential policy to set
+   * @return instance of policy builder
+   */
   def and(credentialPolicy: CredentialPolicy): PolicyBuilder
+  /**
+   * Set a [[Protocol protocol]]
+   * @param protocol protocol to set
+   * @return instance of policy builder
+   */
   def transmitWith(protocol: Protocol): PolicyBuilder
+  /**
+   * Set a [[HashFunction hash function]]
+   * @param hashFunction hash function to set
+   * @return instance of policy builder
+   */
   def storeWith(hashFunction: HashFunction): PolicyBuilder
+  /**
+   * Set a [[HashFunction hash function]] and [[SaltPolicy salt policy]]
+   * @param hashFunctionSalted tuple of hash function and salt policy to set
+   * @return instance of policy builder
+   */
   def storeWith(hashFunctionSalted: (HashFunction, SaltPolicy)): PolicyBuilder
 
+/**
+ *  PolicyBuilder is an implementation of policy builder
+ */
 object PolicyBuilder:
   def apply(): PolicyBuilder = new PolicyBuilderImpl();
   def apply(policyName: String): PolicyBuilder = new PolicyBuilderImpl(policyName);

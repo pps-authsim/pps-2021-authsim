@@ -22,12 +22,6 @@ object StringPoliciesBuilders:
      */
     def addAlphabet(alphabetPolicy: PolicyAlphabet): this.type
     /**
-     * Set a [[Regex regular expression]]
-     * @param regex regular expression to set
-     * @return instance of the actual builder
-     */
-    def addPatterns(regex: Regex): this.type
-    /**
      * Check if the given value is valid for a policy of type string
      * @param value value to check
      * @param policyChecker (@see [[PolicyChecker#stringPolicyChecker]])
@@ -104,7 +98,7 @@ object StringPoliciesBuilders:
       this.alphabetPolicy = alphabetPolicy
       this
 
-    override def addPatterns(regex: Regex): this.type  =
+    protected def addPatterns(regex: Regex): this.type  =
       patterns += regex
       this
 

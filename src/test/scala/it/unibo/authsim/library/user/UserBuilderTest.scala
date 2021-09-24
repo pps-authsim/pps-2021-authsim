@@ -14,6 +14,7 @@ import it.unibo.authsim.library.user.builder.util.Util
 class UserBuilderTest extends AnyWordSpec with should.Matchers{
   private val min: Int=2
   private val max: Int=5
+
   private val userIDPolicy: CredentialPolicy = UserIDPolicyBuilder() minimumLength max build
   private val passwordPolicy: CredentialPolicy = PasswordPolicyBuilder() minimumUpperChars min minimumLength max build
   private val name: String= Util.generateRandomString(max)
@@ -35,7 +36,7 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
   private val autoUserBuilder2:UserAutoBuilder= UserAutoBuilder() withPolicy(userIDPolicy) withPolicy(passwordPolicy)
   private val autoUser2:User = autoUserBuilder2.build()
 
-  private var seq:Seq[User]= autoUserBuilder2.numberOfUsers(min)
+  private var seq:Seq[User]= autoUserBuilder2.build(min)
   private var listUser:Seq[String] = for(e<-seq) yield e.username
   private var listPassword:Seq[String]  = for(e<-seq) yield e.password
 

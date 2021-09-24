@@ -1,14 +1,27 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
+import it.unibo.authsim.library.dsl.policy.checkers.PolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 
+import java.util.regex.Matcher
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
+/**
+ * A ''PolicyAutoBuilder'' is a trait that is used to generate a type T given a policy
+ * @tparam T the type to generate
+ */
 trait PolicyAutoBuilder[T]:
+  /**
+   * Generate a random value of type T based a given policy
+   * @return generated value of type T
+   */
   def generate: T
 
 object PolicyAutoBuilder:
+  /**
+   *  Implicitly converts a [[StringPolicy string policy]] into an instance of [[PolicyAutoBuilder policy auto builder]] of type String
+   */
   implicit val stringPolicyAutoBuilder: StringPolicy => PolicyAutoBuilder[String] =
     (policy: StringPolicy) =>
       new PolicyAutoBuilder[String]:

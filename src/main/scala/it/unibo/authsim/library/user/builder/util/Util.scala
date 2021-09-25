@@ -1,8 +1,5 @@
 package it.unibo.authsim.library.user.builder.util
 
-import org.apache.commons.lang3.StringUtils
-import scala.collection.immutable.Map
-
 /**
  * Object to provide usefull function
  */
@@ -11,7 +8,7 @@ object Util:
    * Method that generate a randomic string composed by letter and numbers
    *
    * @param length    length of the string to be created, default value is 5
-   * @return          new randomic string of the given length 
+   * @return          new randomic string of the given length
    */
   def generateRandomString(length:Int=5): String=
     import org.apache.commons.lang3.RandomStringUtils
@@ -23,6 +20,7 @@ object Util:
    * @return          the number of elments that occures multiple times in the input sequence
    */
   def countDuplicates[A](list: Seq[A]): Int =
+    import scala.collection.immutable.Map
     list.foldLeft(Map.empty[A, Int]) { (map, item) =>
       map + (item -> (map.getOrElse(item, 0) + 1))
     }.count(_._2 > 1)

@@ -56,7 +56,7 @@ private class BruteForceAttack(private val target: UserProvider, private val has
     var totalResults = Statistics.zero
     val monitor = new ConcurrentStringCombinator(alphabet, maximumLength)
     val startTime = System.nanoTime()
-    (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.userInformations().head, monitor)) :: jobResults)
+    (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.userInformations(), monitor)) :: jobResults)
     try {
       Await.result(Future.sequence(jobResults), timeout.getOrElse(Duration.Inf)).foreach(stats => totalResults = totalResults + stats)
     } catch {
@@ -64,19 +64,22 @@ private class BruteForceAttack(private val target: UserProvider, private val has
     }
     val endTime = System.nanoTime()
     val elapsedTime = Duration(endTime - startTime, MILLISECONDS)
-    totalResults = totalResults + new Statistics(Set(), attempts = 0, elapsedTime, timedOut = false)
+    totalResults = totalResults + Statistics.onlyElapsedTime(elapsedTime)
     logTo.foreach(logSpec => logSpec.consume(totalResults))
 
-  private def futureJob(targetUser: User, stringProvider: ConcurrentStringCombinator): Statistics =
+  private def futureJob(targetUsers: List[User], stringProvider: ConcurrentStringCombinator): Statistics =
     var localStatistics = Statistics.zero
     var nextPassword = stringProvider.getNextString()
     while !nextPassword.isEmpty do
       val nextPasswordString = nextPassword.get
       val hashedPassword = hashFunction.hash(nextPasswordString)
-      localStatistics = localStatistics + new Statistics(hashedPassword == targetUser.password match {
-        case true => Set(User(targetUser.username, nextPasswordString))
-        case false => Set()
-      }, attempts = 1, Duration.Zero, timedOut = false)
+      targetUsers.foreach(user => {
+        localStatistics = localStatistics + Statistics.onlyBreaches(hashedPassword == user.password match {
+          case true => Set(User(user.username, nextPasswordString))
+          case false => Set()
+        })
+      })
+      localStatistics = localStatistics + Statistics.onlyAttempts(attempts = 1)
       nextPassword = stringProvider.getNextString()
     end while
     localStatistics

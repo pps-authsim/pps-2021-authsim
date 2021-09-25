@@ -27,4 +27,26 @@ object Statistics:
    * @return A 'zero' Statistics with an empty Set, 0 attempts and a zero duration.
    */
   def zero: Statistics = new Statistics(Set(), attempts = 0, elapsedTime = Duration.Zero, timedOut = false)
+
+  /**
+   * @return An empty Statistics which has timed out.
+   */
   def timedOut: Statistics = new Statistics(Set(), attempts = 0, elapsedTime = Duration.Zero, timedOut = true)
+
+  /**
+   * @param successfulBreaches The set of successfully breached users.
+   * @return A zero-statistics with only the set of breached users.
+   */
+  def onlyBreaches(successfulBreaches: Set[User]) = new Statistics(successfulBreaches, attempts = 0, elapsedTime = Duration.Zero, timedOut = false)
+
+  /**
+   * @param attempts The number of attempts.
+   * @return A statistics with only the number of attempts-
+   */
+  def onlyAttempts(attempts: Long) = new Statistics(Set(), attempts, elapsedTime = Duration.Zero, timedOut = false)
+
+  /**
+   * @param elapsedTime The elapsed time Duration.
+   * @return A statistics with only the elapsed time.
+   */
+  def onlyElapsedTime(elapsedTime: Duration) = new Statistics(Set(), attempts = 0, elapsedTime, timedOut = false)

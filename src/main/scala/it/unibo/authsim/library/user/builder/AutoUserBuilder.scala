@@ -1,9 +1,11 @@
 package it.unibo.authsim.library.user.builder
 
+import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{PasswordPolicyBuilder, UserIDPolicyBuilder}
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.model.User
-
+import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
+import scala.language.postfixOps
 /**
  * Class that represent an automatic builder for a user
  */
@@ -15,12 +17,8 @@ class UserAutoBuilder extends UserBuilder[User]:
    * @return  a User which credentials are complaint with the input policies
    */
   def build(): User=
-    _credentialPolicies.map(c =>
-      c match
-        case _: UserIDPolicy => this._userName = c.generate
-        case _: PasswordPolicy => this._password = c.generate
-        case _ => ""
-    )
+    this._userName=this._credentialPolicies.find(c=> c.isInstanceOf[UserIDPolicy]).map(c=>c.generate).getOrElse(generateRandomString(5))
+    this._password=this._credentialPolicies.find(c=> c.isInstanceOf[PasswordPolicy]).map(c=>c.generate).getOrElse(generateRandomString(5))
     User(_userName, _password)
     
   /**
@@ -31,3 +29,7 @@ class UserAutoBuilder extends UserBuilder[User]:
    */
   def build(numberOfUsers: Int): Seq[User] =
     List.fill(numberOfUsers.abs)(build()).toSeq
+
+  private def checkCredentials():Unit=
+    if(this._userName.isEmpty) then (UserIDPolicyBuilder() minimumLength 5 build).generate
+    else if (this._password.isEmpty) then (PasswordPolicyBuilder() minimumLength 5 build).generate

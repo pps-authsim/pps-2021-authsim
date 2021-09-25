@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.user.builder.util
 
-import scala.util.Random
+import org.apache.commons.lang3.StringUtils
 import scala.collection.immutable.Map
 
 /**
@@ -14,7 +14,8 @@ object Util:
    * @return          new randomic string of the given length 
    */
   def generateRandomString(length:Int=5): String=
-    Random.alphanumeric.take(length).mkString
+    import org.apache.commons.lang3.RandomStringUtils
+    RandomStringUtils.randomAlphanumeric(length)
 
   /**
    * Method to count the occurence of the elements of Sequence
@@ -30,7 +31,7 @@ object Util:
    * Object to provide implicit conversion to a list
    */
   object ImplicitToList:
-    
+
     /**
      * Method that convert an array to a list
      *
@@ -42,7 +43,7 @@ object Util:
 
     /**
      * Method that convert a sequence to a list
-     * 
+     *
      * @param seq     input sequence to convert
      * @tparam A      Generic parameter
      * @return        a list of the given generic parameter
@@ -55,7 +56,7 @@ object Util:
   object ImplicitToSeq:
     /**
      * Method that convert an array to a list
-     * 
+     *
      * @param array   input array to convert
      * @tparam A      Generic parameter
      * @return        a sequence of the given generic parameter
@@ -64,7 +65,7 @@ object Util:
 
     /**
      * Method that convert an array to a list
-     * 
+     *
      * @param list    input list to convert
      * @tparam A      Generic parameter
      * @return        a sequence of the given generic parameter
@@ -76,10 +77,10 @@ object Util:
    */
   object ImplicitToArray:
     import scala.reflect.ClassTag
-    
+
     /**
      * Method that convert a list into an array
-     * 
+     *
      * @param list    input list to convert
      * @tparam A      Generic parameter
      * @return        an array of the given generic parameter
@@ -88,7 +89,7 @@ object Util:
 
     /**
      * Method that convert a sequence into an array
-     * 
+     *
      * @param seq     input sequence to convert
      * @tparam A      Generic parameter
      * @return        an array of the given generic parameter

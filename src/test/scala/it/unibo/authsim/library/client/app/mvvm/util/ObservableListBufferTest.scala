@@ -51,7 +51,7 @@ class ObservableListBufferTest extends AnyWordSpec:
         val copyAction: (Int => Unit) = value => mirrorList += value
 
         var observableList = ObservableListBuffer[Int]()
-        observableList.onAdd(copyAction)
+        observableList.addOnAddSubscriber(copyAction)
         observableList += 42
 
         assert(mirrorList(0) == 42)
@@ -83,7 +83,7 @@ class ObservableListBufferTest extends AnyWordSpec:
         val copyAction: (Int => Unit) = value => mirrorList -= value
 
         var observableList = ObservableListBuffer[Int](42)
-        observableList.onRemove(copyAction)
+        observableList.addOnRemoveSubscriber(copyAction)
         observableList -= 42
 
         assert(mirrorList.size == 0)

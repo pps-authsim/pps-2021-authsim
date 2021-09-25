@@ -20,7 +20,6 @@ class AttackSimulation(
 
   override def call(): Unit =
     printInitialMessage()
-    // todo make pipeline with failure catching
     var inserUsersResult = insertUsersIntoDatabase()
     inserUsersResult match
       case Failure(error) => printErrorMessage(error.getMessage)

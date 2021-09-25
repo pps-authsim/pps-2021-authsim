@@ -132,9 +132,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
 
         viewModel.launchAttack()
 
-        val logValue = mockView.attackTab.attackLogProperty.value
-        assert(logValue.equals(" [user password] policy1 source1 Sequence1"))
-        // TODO changeme when library is hooked
+        // TODO Test with mock params
       }
 
       "display error message with selected properties incomplete" in {

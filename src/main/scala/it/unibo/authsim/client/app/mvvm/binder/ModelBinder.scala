@@ -71,7 +71,7 @@ object ModelBinder:
     attackModel.attackSequenceList += new AttackSequence(anotherSequenceName, anotherSequenceDescription)
 
   private def bindPropertiesWithObservableList[A, B](observableListBuffer: ObservableListBuffer[A], propertiesList: ObservableList[B], mapper: (A => B)) =
-    observableListBuffer.onAdd(o => propertiesList.add(mapper.apply(o)))
-    observableListBuffer.onRemove(o => propertiesList.remove(mapper.apply(o)))
+    observableListBuffer.addOnAddSubscriber(o => propertiesList.add(mapper.apply(o)))
+    observableListBuffer.addOnRemoveSubscriber(o => propertiesList.remove(mapper.apply(o)))
 
 

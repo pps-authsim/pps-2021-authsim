@@ -29,7 +29,3 @@ class UserAutoBuilder extends UserBuilder[User]:
    */
   def build(numberOfUsers: Int): Seq[User] =
     List.fill(numberOfUsers.abs)(build()).toSeq
-
-  private def checkCredentials():Unit=
-    if(this._userName.isEmpty) then (UserIDPolicyBuilder() minimumLength 5 build).generate
-    else if (this._password.isEmpty) then (PasswordPolicyBuilder() minimumLength 5 build).generate

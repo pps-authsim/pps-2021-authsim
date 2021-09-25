@@ -1,4 +1,4 @@
-package it.unibo.authsim.client.app.components.simulation
+package it.unibo.authsim.client.app.mvvm.simulation
 
 import it.unibo.authsim.client.app.components.persistence.{UserEntity, UserRepository}
 import it.unibo.authsim.client.app.components.registry.ComponentRegistry
@@ -20,6 +20,7 @@ class AttackSimulation(
 
   override def call(): Unit =
     printInitialMessage()
+    // todo make pipeline with failure catching
     var inserUsersResult = insertUsersIntoDatabase()
     inserUsersResult match
       case Failure(error) => printErrorMessage(error.getMessage)

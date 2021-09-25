@@ -3,8 +3,9 @@ package it.unibo.authsim.library.dsl.builder
 /**
  * This trait gives builders a method to simplify the definition of building methods
  * by returning automatically the self type.
+ * @tparam S The type of the constructed object.
  */
-trait Builder:
+trait Builder[+S]:
   /**
    * Applies the given function with the given value and returns the builder itself.
    *
@@ -16,3 +17,8 @@ trait Builder:
   final protected def builderMethod[T](f: T => Unit)(value: T): this.type =
     f(value)
     this
+
+  /**
+   * @return The built object.
+   */
+  def build: S

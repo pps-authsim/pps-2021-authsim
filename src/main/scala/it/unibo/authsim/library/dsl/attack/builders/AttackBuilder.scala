@@ -8,7 +8,7 @@ import scala.concurrent.duration.Duration
 /**
  * A builder for attacks, which can specify a timeout and to which StatisticsConsumer to log.
  */
-trait AttackBuilder extends Builder:
+trait AttackBuilder extends Builder[Attack]:
   private var statisticsConsumer: Option[StatisticsConsumer] = Option.empty
   private var timeout: Option[Duration] = Option.empty
 
@@ -30,15 +30,9 @@ trait AttackBuilder extends Builder:
   def timeout(time: Duration): this.type = this.builderMethod[Duration](time => this.timeout = Option(time))(time)
 
   /**
-   * Builds the Attack with the defined parameters.
-   * @return The built Attack
-   */
-  def save(): Attack
-
-  /**
    * Builds the Attack and runs it.
    */
-  def executeNow(): Unit = this.save().start()
+  def executeNow(): Unit = this.build.start()
 
 /**
  * An attack, which can be started.

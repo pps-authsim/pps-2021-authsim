@@ -6,15 +6,16 @@ import it.unibo.authsim.client.app.components.persistence.sql.UserSqlRepositoryC
 import it.unibo.authsim.client.app.components.persistence.mongo.UserMongoRepositoryComponent
 
 import java.io.FileInputStream
+import scala.io.Source
 
 /**
- * An idiomatic implementation of the Dependency Injection pattern via the "Cake Pattern" from Scalable Component Abstractions
+ * An idiomatic implementation of the Dependency Injection pattern via the "Cake Pattern" from Scalable Component Abstractions paper
  */
 object ComponentRegistry extends UserMongoRepositoryComponent
   with UserSqlRepositoryComponent
   with PropertiesServiceComponent:
 
-  override val propertiesService: PropertiesService = new PropertiesServiceImpl(new FileInputStream("./src/main/scala/application.properties"))
+  override val propertiesService: PropertiesService = new PropertiesServiceImpl(Source.fromResource("application.properties"))
 
   override val userSqlRepository: UserRepository = new UserSqlRepository
 

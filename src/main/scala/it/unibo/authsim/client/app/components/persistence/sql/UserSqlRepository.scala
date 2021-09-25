@@ -1,10 +1,10 @@
 package it.unibo.authsim.client.app.components.persistence.sql
 
-import it.unibo.authsim.client.app.components.persistence.{UserEntity, UserRepository}
+import it.unibo.authsim.client.app.components.persistence.{PersistenceException, UserEntity, UserRepository}
 import it.unibo.authsim.client.app.components.config.PropertiesServiceComponent
 
 import java.sql.{Connection, DriverManager, PreparedStatement, Statement}
-import scala.util.Using
+import scala.util.{Failure, Success, Try, Using}
 
 trait UserSqlRepositoryComponent:
 
@@ -16,7 +16,8 @@ trait UserSqlRepositoryComponent:
 
     val createTableSql =
       """
-        |create table users(ID INT PRIMARY KEY, USERNAME VARCHAR(500), PASSWORD VARCHAR(500));
+        |drop table users;
+        |create table users(ID INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(500), PASSWORD VARCHAR(500));
       """.stripMargin
 
     val saveUsersSql =
@@ -44,48 +45,50 @@ trait UserSqlRepositoryComponent:
     initializeDatabase()
 
     private def initializeDatabase(): Unit =
-      usingStatement(
+      var initializationResult = usingStatement(
         UserSqlRepository.createTableSql,
-        statement => statement.executeUpdate(UserSqlRepository.createTableSql)
+        statement => statement.executeUpdate()
       )
+      initializationResult match
+        case Success(_) =>
+        case Failure(error) => throw new PersistenceException("Db initialization failed: " + error.getMessage)
 
-    def saveUsers(users: Seq[UserEntity]): Unit =
+
+    def saveUsers(users: Seq[UserEntity]): Try[Unit] =
       usingStatement(
         UserSqlRepository.saveUsersSql,
-        statement => {
-          users.foreach(user => {
+        statement =>
+          users.foreach(user =>
             statement.setString(1, user.username)
             statement.setString(2, user.password)
 
             statement.addBatch()
-          })
+          )
           statement.executeUpdate()
-        }
+
       )
 
-    def resetUsers(): Unit =
+    def resetUsers(): Try[Unit] =
       usingStatement(
         UserSqlRepository.resetUsersSql,
         statement => statement.executeUpdate()
       )
 
-    def retrieveUser(username: String, password: String): Option[UserEntity] =
-      var result: Option[UserEntity] = Option.empty
+    def retrieveUser(username: String, password: String): Try[UserEntity] =
       usingStatement(
         UserSqlRepository.selectUserSql,
-        statement => {
+        statement =>
           val resultSet = statement.executeQuery()
           if resultSet.next() then
             val username = resultSet.getString("USERNAME")
             val password = resultSet.getString("PASSWORD")
-            result = Option[UserEntity](new UserEntity(username, password))
-        }
-      )
-      result
+            new UserEntity(username, password)
+          else
+            throw new PersistenceException(s"Could not retrieve user $username $password from DB")
 
-    def usingStatement[T](sql: String, statementConsumer: (PreparedStatement => T)): Unit =
-      Using(DriverManager.getConnection(databaseUrl)) {
-        (connection) => Using(connection.prepareStatement(sql)){
-          (statement) => statementConsumer.apply(statement)
-        }
+      )
+
+    def usingStatement[T](sql: String, statementFunction: (PreparedStatement => T)): Try[T] =
+      Using(DriverManager.getConnection(databaseUrl).prepareStatement(sql)) {
+        (statement) => statementFunction.apply(statement)
       }

@@ -7,6 +7,7 @@ import javafx.event.ActionEvent
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry, SecurityTab}
 import javafx.beans.value.ObservableValue
+import it.unibo.authsim.client.app.mvvm.common.CredentialsSourceType
 
 class SecurityTabTest extends AnyWordSpec :
 
@@ -32,7 +33,7 @@ class SecurityTabTest extends AnyWordSpec :
         }
 
         "allow credentials source selection" in {
-          val source = new CredentialsSourceEntry("entry", "description")
+          val source = new CredentialsSourceEntry(CredentialsSourceType.Sql, "description")
 
           var capturedSource: CredentialsSourceEntry = null
           securityTab.bindOnCredentialsSourceChange((o: ObservableValue[_ <: CredentialsSourceEntry], oldValue: CredentialsSourceEntry, newValue: CredentialsSourceEntry) => capturedSource = newValue)

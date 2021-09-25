@@ -27,8 +27,12 @@ lazy val root = project
       "-new-syntax", // Require then and do in control expressions
     ),
 
+    // test
+
     libraryDependencies += "org.scalatestplus" %% "mockito-3-4" % "3.2.9.0" % "test",
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test ,
+
+    // util
 
     libraryDependencies += "org.apache.commons" % "commons-configuration2" % "2.7",
 
@@ -37,8 +41,13 @@ lazy val root = project
 
     libraryDependencies += "com.google.guava" % "guava" % "25.1-jre",
 
+    // in-memory databases
     libraryDependencies += "com.h2database" % "h2" % "1.4.200",
+    libraryDependencies += "de.flapdoodle.embed" % "de.flapdoodle.embed.mongo" % "3.0.0",
+    libraryDependencies += "org.immutables" % "value" % "2.8.8" % "provided",
+    libraryDependencies += ("org.mongodb.scala" %% "mongo-scala-driver" % "4.3.2").cross(CrossVersion.for3Use2_13),
 
+    // gui
     libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
     libraryDependencies ++= {
       // Determine OS version of JavaFX binaries

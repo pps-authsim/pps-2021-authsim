@@ -1,7 +1,8 @@
 package it.unibo.authsim.client.app.components.config
 
-import java.io.InputStream
+import java.io.{ByteArrayInputStream, InputStream}
 import java.util.Properties
+import scala.io.Source
 
 trait PropertiesService:
 
@@ -16,7 +17,10 @@ trait PropertiesServiceComponent:
    * Serivice responsible for reading and exposing application properties
    * @param inputStream input stream of the readable java properties. Importantly, this stream will be closed after reading its contents
    */
-  class PropertiesServiceImpl(inputStream: InputStream) extends PropertiesService:
+  class PropertiesServiceImpl(source: Source) extends PropertiesService:
+
+    val lines = source.getLines.reduce((a, b) => a + "\n" + b)
+    val inputStream = new ByteArrayInputStream(lines.getBytes)
 
     val properties = loadPropertiesFromInputStream(inputStream)
 
@@ -29,8 +33,8 @@ trait PropertiesServiceComponent:
       properties
 
     private def getPropertyOrFail(key: String): String =
-      val value = properties.getProperty(key)
-      if value == null then
-        value
+      val value = Option[String](properties.getProperty(key))
+      if value.nonEmpty then
+        value.get
       else
         throw new IllegalArgumentException(s"Could not load property for key $key")

@@ -9,7 +9,7 @@ import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
 import it.unibo.authsim.client.app.mvvm.model.users.User
-import it.unibo.authsim.client.app.mvvm.simulation.AttackSimulation
+import it.unibo.authsim.client.app.components.simulation.AttackSimulation
 import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
@@ -72,8 +72,10 @@ class AuthsimViewModel(private val view: AuthsimView, private val model: Authsim
 
     if !users.isEmpty && policy.nonEmpty && credentialsSource.nonEmpty && selectedProcedure.nonEmpty then
       attackViewModel.attackSequenceProperties.attackLog.value = ""
-      val simulation = new AttackSimulation(users, policy.get, credentialsSource.get, selectedProcedure.get)
+
+      val simulation = new AttackSimulation(users, policy.get.policy, credentialsSource.get.source, selectedProcedure.get.sequence)
       simulation.messageProperty().addListener((observable, oldValue, newValue) => attackViewModel.attackSequenceProperties.attackLog.value += newValue)
+
       new Thread(simulation).start()
     else
       attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModel.ATTACK_MISSING_VALUE_TEXT

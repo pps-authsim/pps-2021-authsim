@@ -1,9 +1,11 @@
 package it.unibo.authsim.client.app.components.persistence
 
+import scala.util.Try
+
 trait UserRepository:
 
-  def saveUsers(users: Seq[UserEntity]): Unit
+  def saveUsers(users: Seq[UserEntity]): Try[Unit]
   
-  def resetUsers(): Unit
+  def resetUsers(): Try[Unit]
 
-  def retrieveUser(username: String, password: String): Option[UserEntity]
+  def retrieveUser(username: String, password: String): Try[UserEntity]

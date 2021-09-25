@@ -1,4 +1,4 @@
-package it.unibo.authsim.client.app.mvvm.simulation
+package it.unibo.authsim.client.app.components.simulation
 
 import it.unibo.authsim.client.app.components.persistence.{UserEntity, UserRepository}
 import it.unibo.authsim.client.app.components.registry.ComponentRegistry
@@ -21,9 +21,10 @@ class AttackSimulation(
   override def call(): Unit =
     printInitialMessage()
     // todo make pipeline with failure catching
-    insertUsersIntoDatabase() match
+    var inserUsersResult = insertUsersIntoDatabase()
+    inserUsersResult match
       case Failure(error) => printErrorMessage(error.getMessage)
-      case Success(value) => // TODO continue pipeline
+      case Success(value) => // TODO continue pipeline with match
 
 
   def printInitialMessage(): Unit =
@@ -37,9 +38,13 @@ class AttackSimulation(
       case CredentialsSourceType.Sql => ComponentRegistry.userSqlRepository
       case CredentialsSourceType.Mongo => ComponentRegistry.userMongoRepository
 
-    database.saveUsers(userEntities)
+    var operationResult = database.saveUsers(userEntities)
+    operationResult match
+      case Success(_) =>
+      case Failure(error) => throw new SimulationException(error.getMessage)
+
   }
 
   def printErrorMessage(message:String) =
-    updateMessage(s"Could not launch attack, an error has occured: $message")
+    updateMessage(s"\nCould not launch attack, an error has occured: $message")
 

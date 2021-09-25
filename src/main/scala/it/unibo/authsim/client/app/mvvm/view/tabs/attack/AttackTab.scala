@@ -31,12 +31,14 @@ class AttackTab extends VBox :
 
   private def makeAttackSequenceDescription(): TextArea = new TextArea() {
     text = ""
-    editable = false;
+    editable = false
+    wrapText = true
   }
 
   private def makeAttackLog(): TextArea = new TextArea() {
     text = "This is the attack log, the informations regarding the attack are going to be displayed here."
-    editable = false;
+    editable = false
+    wrapText = true
   }
 
   children = Seq(

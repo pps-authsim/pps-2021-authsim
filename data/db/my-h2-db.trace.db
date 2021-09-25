@@ -1,0 +1,8 @@
+2021-09-23 20:24:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" already exists; SQL statement:
+
+create table users(ID INT PRIMARY KEY, USERNAME VARCHAR(500), PASSWORD VARCHAR(500)); [42101-200]
+2021-09-23 20:25:51 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" already exists; SQL statement:
+
+create table users(ID INT PRIMARY KEY, USERNAME VARCHAR(500), PASSWORD VARCHAR(500)); [42101-200]

@@ -6,6 +6,7 @@ import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{PasswordPolicy,
 import it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 import scala.language.postfixOps
+
 /**
  * Class that represent an automatic builder for a user
  */

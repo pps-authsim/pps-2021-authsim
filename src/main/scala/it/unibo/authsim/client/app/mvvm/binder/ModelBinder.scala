@@ -3,7 +3,7 @@ package it.unibo.authsim.client.app.mvvm.binder
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.attack.{AttackModel, AttackSequence}
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityModel, SecurityPolicy}
-import it.unibo.authsim.client.app.mvvm.model.users.{User, UsersModel}
+import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
@@ -12,6 +12,7 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
+import it.unibo.authsim.library.user.model.User
 import javafx.collections.ObservableList
 
 /**
@@ -24,7 +25,7 @@ object ModelBinder:
     val password = "password"
 
     ModelBinder.bindPropertiesWithObservableList(usersModel.usersList, viewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
-    usersModel.usersList += new User(username, password)
+    usersModel.usersList += User(username, password)
 
 
   def bindSecurityViewModel(securityModel: SecurityModel, viewModel: SecurityViewModel): Unit =

@@ -11,7 +11,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.user.builder.util.Util
 
-class UserBuilderTest extends AnyWordSpec with should.Matchers{
+class UserOptionalBuilderTest extends AnyWordSpec with should.Matchers{
   private val min: Int=2
   private val max: Int=5
 

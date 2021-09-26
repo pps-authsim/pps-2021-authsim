@@ -6,7 +6,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 import scala.language.postfixOps
 
-class StringPolicyAutoBuilderTests extends AnyFunSuite with BeforeAndAfter:
+class StringPolicyAutoOptionalBuilderTests extends AnyFunSuite with BeforeAndAfter:
 
   private var userID = UserIDPolicyBuilder()
   private var password = PasswordPolicyBuilder()

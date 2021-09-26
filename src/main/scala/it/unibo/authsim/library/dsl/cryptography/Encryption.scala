@@ -17,8 +17,11 @@ enum EncryptionMode:
   case Decryption, Encryption
 
 trait AsymmetricEncryption extends Encryption with CryptographicAlgorithm
+/*
 trait HashFunction extends CryptographicAlgorithm:
   def hash(str: String): String
+  
+*/
 trait CryptographicAlgorithm:
   def algorithmName: String
 

@@ -38,7 +38,6 @@ object RSAPersistentKeysGenerator:
     Disk.saveObject(keypair, "key.ser")
     key(keypair)
 
-
 object App5:
   def  main(args: Array[String]): Unit =
     val keyGenerator= RSAPersistentKeysGenerator

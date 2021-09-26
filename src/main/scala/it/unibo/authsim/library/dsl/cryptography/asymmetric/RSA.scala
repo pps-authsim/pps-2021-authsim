@@ -1,7 +1,8 @@
 package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
 import it.unibo.authsim.library.dsl.cryptography.util.CostumBase64 as Base64
-import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, AsymmetricEncryption, EncryptionMode, Keys, KeyGenerator}
+import it.unibo.authsim.library.dsl.cryptography.{AsymmetricEncryption, CryptographicAlgorithm, EncryptionMode, KeyGenerator, Keys}
+import it.unibo.authsim.library.dsl.cryptography.asymmetric.RSAPersistentKeysGenerator
 
 import java.security.*
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
@@ -9,7 +10,7 @@ import javax.crypto.Cipher
 
 trait RSA extends AsymmetricEncryption with KeyGenerator:
   def generateKeys(): Keys
-
+  
 object RSA:
   def apply()= new RSA() :
     private var _name = "RSA"
@@ -64,6 +65,7 @@ object RSA:
 object App4:
   def main(args: Array[String]): Unit =
     val secret = "password"
+    
     val rsa = RSA()
     val pk = rsa.generateKeys()
     println("private key"+ pk)
@@ -82,3 +84,5 @@ object App4:
     println("password encrypted: "+ encrypted2)
     val decrypted2 = rsa.decrypt(encrypted2, priv2)
     println("password encrypted: "+ decrypted2)
+    println("\n\n\n")
+    

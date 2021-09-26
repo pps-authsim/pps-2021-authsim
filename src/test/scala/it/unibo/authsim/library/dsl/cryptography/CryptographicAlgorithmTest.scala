@@ -7,7 +7,6 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class CryptographicAlgorithmTest extends AnyFlatSpec with Matchers {
-  /*
   val sha1 = new HashFunction.SHA1
   val md5 = new HashFunction.MD5
   val sha256 = new HashFunction.SHA256
@@ -26,6 +25,4 @@ class CryptographicAlgorithmTest extends AnyFlatSpec with Matchers {
     aes.algorithmName shouldBe aes.toString
     rsa.algorithmName shouldBe rsa.toString
   }
-
-   */
 }

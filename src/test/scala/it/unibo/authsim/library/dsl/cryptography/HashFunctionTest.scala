@@ -4,7 +4,7 @@ import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 
-class CryptofraphicAlgorithmTest extends AnyWordSpec with Matchers {
+class HashFunctionTest extends AnyWordSpec with Matchers {
   val password = "foo"
   val sha1 = new HashFunction.SHA1
   val md5 = new HashFunction.MD5

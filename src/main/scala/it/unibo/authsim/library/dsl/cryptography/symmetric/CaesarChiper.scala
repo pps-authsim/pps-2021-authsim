@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.cryptography.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.SymmetricEncryption
+import it.unibo.authsim.library.dsl.cryptography.symmetric.SymmetricEncryption
 import sun.security.util.Password
 
 trait CaesarCipher extends SymmetricEncryption

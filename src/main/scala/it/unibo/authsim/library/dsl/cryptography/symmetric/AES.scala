@@ -1,6 +1,7 @@
 package it.unibo.authsim.library.dsl.cryptography.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, EncryptionMode, SymmetricEncryption}
+import it.unibo.authsim.library.dsl.cryptography.symmetric.SymmetricEncryption
+import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, EncryptionMode}
 import it.unibo.authsim.library.dsl.cryptography.util.Util.toMultiple
 import it.unibo.authsim.library.dsl.cryptography.util.CostumBase64 as Base64
 import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction

@@ -2,15 +2,12 @@ package it.unibo.authsim.library.dsl.cryptography.hash
 
 import com.google.common.hash.Hashing
 import com.google.common.io.BaseEncoding
-import it.unibo.authsim.library.dsl.cryptography.Encryption
+import it.unibo.authsim.library.dsl.cryptography.HashFunction
+import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
+
 import java.nio.charset.StandardCharsets
-
-import it.unibo.authsim.library.dsl.cryptography.CryptographicAlgorithm
-
-trait HashFunction extends CryptographicAlgorithm:
-  def hash(str: String): String
 
 object HashFunction:
   case class SHA1() extends HashFunction:

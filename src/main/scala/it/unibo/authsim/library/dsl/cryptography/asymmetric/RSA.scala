@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
 import it.unibo.authsim.library.dsl.cryptography.util.CostumBase64 as Base64
-import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, AsymmetricEncryption, EncryptionMode, Keys, SymmetricEncryption, KeyGenerator}
+import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, AsymmetricEncryption, EncryptionMode, Keys, KeyGenerator}
 
 import java.security.*
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}

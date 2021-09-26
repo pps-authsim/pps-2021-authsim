@@ -34,7 +34,7 @@ object ModelBinder:
     val anotherCredentialsSourceDescription = "This is another cred source"
 
     ModelBinder.bindPropertiesWithObservableList(securityModel.securityPolicyList, viewModel.securityPoliciesProperties.securityPoliciesList.value, policy => new SecurityPolicyEntry(policy.policy, policy.description))
-    SecurityPolicy.Default.values.map(d => SecurityPolicy(d.name, d.description)).foreach(securityModel.securityPolicyList += _)
+    SecurityPolicy.Default.all.foreach(securityModel.securityPolicyList += _)
 
     ModelBinder.bindPropertiesWithObservableList(securityModel.credentialsSourceList, viewModel.credentialsSourceProperties.credentialsSourceList.value, source => new CredentialsSourceEntry(source.source, source.description))
     securityModel.credentialsSourceList += new CredentialsSource(credentialsSource, credentialsSourceDescription)

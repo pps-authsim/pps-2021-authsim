@@ -30,7 +30,7 @@ class UsersTab() extends SplitPane :
   private val quantityField = AuthsimView.makeNumberTextField()
 
   private val presetSelect = new ChoiceBox[String] {
-    items = SecurityPolicy.Default.values map {_.policy.name} to(ObservableBuffer)
+    items = SecurityPolicy.Default.withoutProtocol map {_.policy.name} to(ObservableBuffer)
   }
 
   private val generateButton = new Button("Generate")

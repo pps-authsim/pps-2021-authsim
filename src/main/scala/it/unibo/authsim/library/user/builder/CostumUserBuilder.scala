@@ -31,7 +31,7 @@ class UserCostumBuilder extends UserBuilder[User]:
     this
 
   /**
-   * Method that create a user if the credential provided meet the input policy or an optional of None if they does not
+   * Method that create an optional of user if the credential provided meet the input policy or an optional of None if they does not
    * 
    * @return      an optional of User
    */

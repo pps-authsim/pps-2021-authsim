@@ -30,12 +30,3 @@ object HashFunction:
     override def algorithmName: String = this.toString
 
     override def hash(password: String): String = DigestUtils.md5Hex(password.getBytes(StandardCharsets.UTF_8))
-
-object App1:
-  def main(args: Array[String]): Unit =
-    val md5= HashFunction.MD5
-    val sha384= HashFunction.SHA384
-    val sha256= HashFunction.SHA256
-    val sha1= HashFunction.SHA1
-
-    println("to string"+ (sha1, sha256, sha384, md5))

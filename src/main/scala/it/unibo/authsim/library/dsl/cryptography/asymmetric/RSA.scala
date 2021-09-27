@@ -61,28 +61,3 @@ object RSA:
           new String(cipher.doFinal(Base64.decodeToBytes(password)))
       }
     override def toString: String = "RSA"
-
-object App4:
-  def main(args: Array[String]): Unit =
-    val secret = "password"
-    
-    val rsa = RSA()
-    val pk = rsa.generateKeys()
-    println("private key"+ pk)
-    val priv = pk.privateKey
-    val publ= pk.publicKey
-    println("private pair "+ (publ, priv))
-    val encrypted = rsa.encrypt(secret, publ)
-    println("password encrypted: "+ encrypted)
-    val decrypted = rsa.decrypt(encrypted, priv)
-    println("password encrypted: "+ decrypted)
-    val pk2=rsa.loadKeys("ket.ser")
-    val priv2 = pk2.privateKey
-    val publ2= pk2.publicKey
-    println("private pair "+ (publ2, priv2))
-    val encrypted2 = rsa.encrypt(secret, publ2)
-    println("password encrypted: "+ encrypted2)
-    val decrypted2 = rsa.decrypt(encrypted2, priv2)
-    println("password encrypted: "+ decrypted2)
-    println("\n\n\n")
-    

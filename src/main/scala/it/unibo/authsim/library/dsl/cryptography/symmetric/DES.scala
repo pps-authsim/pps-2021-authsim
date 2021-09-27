@@ -57,15 +57,3 @@ object DES:
     private def keyToSpec(secret: String): SecretKey =
       var keySpec: KeySpec = new PBEKeySpec(secret, _salt, _iterationCount)
       SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(keySpec)
-
-object App2:
-  def main(args: Array[String]): Unit =
-    val secret: String = "12345678123456781234567812345678"
-    val password: String = "password"
-    val des = DES()
-    val enc=des.encrypt(password, secret)
-    val dec=des.decrypt(enc, secret)
-    println("password: "+ password)
-    println("value encrypted: "+ enc)
-    println("value decrypted: "+ dec)
-

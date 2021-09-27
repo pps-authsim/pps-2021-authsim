@@ -23,16 +23,3 @@ object CaesarCipher:
     override def algorithmName: String = this.toString
 
     private def shift(a:IndexedSeq[Char], c:Char, key:Int)=a((c-a.head+key+a.size)%a.size)
-
-
-object App5:
-  def main(args: Array[String]): Unit =
-    val key: String = "2"
-    val password: String = "password"
-    val caesarCipher = CaesarCipher()
-    val enc=caesarCipher.encrypt(password, key)
-    val dec=caesarCipher.decrypt(enc, key)
-    println("password: "+ password)
-    println("value encrypted: "+ enc)
-    println("value decrypted: "+ dec)
-    println(caesarCipher.algorithmName)

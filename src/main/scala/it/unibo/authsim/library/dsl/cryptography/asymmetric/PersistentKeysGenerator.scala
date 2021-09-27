@@ -55,12 +55,3 @@ object PersistentKeysGenerator:
   private def saveKeys(keypair:KeyPair):Keys=
     Disk.saveObject(keypair, "prova.ser")
     key(keypair)
-
-object App5:
-  def  main(args: Array[String]): Unit =
-    PersistentKeysGenerator.bitLength_(2222)
-    println(PersistentKeysGenerator.bitLength)
-    PersistentKeysGenerator.bitLength_(4096)
-    println(PersistentKeysGenerator.bitLength)
-    val keypair=PersistentKeysGenerator.generateKeys()
-    val keyPair2=PersistentKeysGenerator.loadKeys()

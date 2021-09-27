@@ -53,14 +53,3 @@ object AES:
       var keyBytes: Array[Byte] = hashFunctionSHA256.hash(_salt + secret).getBytes("UTF8")
       keyBytes = util.Arrays.copyOf(keyBytes, 16)
       new SecretKeySpec(keyBytes, _name)
-
-object App3:
-  def main(args: Array[String]): Unit =
-    val secret = "12345678123456781234567812345678"
-    val password="password"
-    val aes= AES()
-    val enc=aes.encrypt(password, secret)
-    val dec=aes.decrypt(enc, secret)
-    println("password: "+ password)
-    println("value encrypted: "+ enc)
-    println("value decrypted: "+ dec)

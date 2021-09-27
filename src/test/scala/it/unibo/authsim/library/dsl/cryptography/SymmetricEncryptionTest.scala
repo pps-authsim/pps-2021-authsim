@@ -1,7 +1,6 @@
 package it.unibo.authsim.library.dsl.cryptography
 
 import it.unibo.authsim.library.dsl.cryptography.symmetric.{AES, CaesarCipher, DES}
-import .toMultiple
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -18,10 +17,10 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
   val passwordEncryptedCaesarCipher: String ="rcuuyqtf"
 
   "DES encryption" should {
-    /*"return a string type" in {
+    "return a string type" in {
       des.encrypt(password, secret).isInstanceOf[String] shouldBe true
     }
-     */
+
     "be " in {
       des.encrypt(password, secret).equals(passwordEncryptedDES) shouldBe true
     }

@@ -6,10 +6,11 @@ import it.unibo.authsim.library.dsl.cryptography.util.{CostumBase64 as Base64, D
 import java.io.{File, FileInputStream, FileOutputStream, ObjectOutputStream, PrintWriter}
 import scala.io.Source
 import java.security.{KeyPair, KeyPairGenerator}
-
 import java.security.spec.PKCS8EncodedKeySpec
+import it.unibo.authsim.library.dsl.cryptography.KeyGenerator
+
 //Singleton
-object PersistentKeysGenerator:
+object PersistentKeysGenerator extends KeyGenerator:
   private var algorithmSet =Set("RSA", "DiffieHellman")
   private var keySet = Set(1024, 2048, 4096)
   private var _bitlength= 2048

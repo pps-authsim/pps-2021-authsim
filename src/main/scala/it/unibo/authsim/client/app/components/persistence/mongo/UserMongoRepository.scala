@@ -1,6 +1,6 @@
 package it.unibo.authsim.client.app.components.persistence.mongo
 
-import de.flapdoodle.embed.mongo.MongodStarter
+import de.flapdoodle.embed.mongo.{MongodProcess, MongodStarter}
 import de.flapdoodle.embed.mongo.config.{MongodConfig, Net}
 import de.flapdoodle.embed.mongo.distribution.Version
 import de.flapdoodle.embed.process.runtime.Network
@@ -21,7 +21,7 @@ trait UserMongoRepositoryComponent:
 
   val userMongoRepository: UserRepository
 
-  class UserMongoRepository extends UserRepository :
+  object UserMongoRepository:
 
     private val mongoIp = "localhost"
     private val mongoPort = 27017
@@ -31,7 +31,22 @@ trait UserMongoRepositoryComponent:
 
     private val databaseName = "authsim"
 
-    private val mongoClient = initializeDatabase()
+    private val starter = MongodStarter.getDefaultInstance;
+    private val mongoExecutable = initializeDatabase()
+
+    private def initializeDatabase(): MongodProcess =
+      val mongodConfig = MongodConfig
+        .builder()
+        .version(Version.Main.PRODUCTION)
+        .net(new Net(mongoIp, mongoPort, Network.localhostIsIPv6()))
+        .build()
+
+      val mongodExecutable = starter.prepare(mongodConfig)
+      mongodExecutable.start()
+
+  class UserMongoRepository extends UserRepository :
+
+    private val mongoClient = MongoClient()
 
     def saveUsers(users: Seq[UserEntity]): Try[Unit] =
       return usingCollection[Unit]("users",
@@ -40,18 +55,18 @@ trait UserMongoRepositoryComponent:
           val resultObservable: SingleObservable[InsertManyResult] = collection.insertMany(documents)
           val promise = Promise[Unit]
             resultObservable.subscribe(saveUsersObserverFromPromise(promise))
-          Await.result(promise.future, operationTimeout)
+          Await.result(promise.future, UserMongoRepository.operationTimeout)
       )
 
     private def saveUsersObserverFromPromise(promise: Promise[Unit]): Observer[InsertManyResult] = new Observer[InsertManyResult] {
       def onNext(result: InsertManyResult): Unit =
-        promise.success(())
+        return // do nothing
 
       def onError(e: Throwable): Unit =
         promise.failure(e)
 
       def onComplete(): Unit =
-        return // do nothing
+        promise.success(())
     }
 
     def resetUsers(): Try[Unit] =
@@ -60,18 +75,18 @@ trait UserMongoRepositoryComponent:
           val dropObservable = collection.drop
           val promise = Promise[Unit]
             dropObservable.subscribe(resetUsersObservableFromPromise(promise))
-          Await.result(promise.future, operationTimeout)
+          Await.result(promise.future, UserMongoRepository.operationTimeout)
       )
 
     private def resetUsersObservableFromPromise(promise: Promise[Unit]): Observer[Void] = new Observer[Void] {
       def onNext(result: Void): Unit =
-        promise.success(())
+        return // do nothing
 
       def onError(e: Throwable): Unit =
         promise.failure(e)
 
       def onComplete(): Unit =
-        return // do nothing
+        promise.success(())
     }
 
     def retrieveUser(username: String, password: String): Try[UserEntity] =
@@ -80,15 +95,18 @@ trait UserMongoRepositoryComponent:
           val findObservable = collection.find(and(equal("username", username), equal("password", password)))
           val promise = Promise[UserEntity]
           findObservable.subscribe(retrieveUserObservableFromPromise(promise))
-          Await.result(promise.future, operationTimeout)
+          Await.result(promise.future, UserMongoRepository.operationTimeout)
       )
 
     private def retrieveUserObservableFromPromise(promise: Promise[UserEntity]): Observer[Document] = new Observer[Document] {
       override def onNext(result: Document): Unit =
-        val username = result.get("username").asInstanceOf[String]
-        val password = result.get("password").asInstanceOf[String]
-        val userEntity = new UserEntity(username, password)
-        promise.success(userEntity)
+        val usernameWrapper = result.get("username")
+        val passwordWrapper = result.get("password")
+        if usernameWrapper.isDefined && passwordWrapper.isDefined then
+          val userEntity = new UserEntity(usernameWrapper.get.asString.getValue, passwordWrapper.get.asString.getValue)
+          promise.success(userEntity)
+        else
+          promise.failure(new PersistenceException("Could not parse user from " + usernameWrapper + " " + passwordWrapper))
 
       override def onError(e: Throwable): Unit =
         promise.failure(e)
@@ -99,19 +117,6 @@ trait UserMongoRepositoryComponent:
 
     private def usingCollection[T](collectionName: String, collectionFunction: (MongoCollection[Document] => T)): Try[T] =
       Try {
-        val collection = mongoClient.getDatabase(databaseName).getCollection(collectionName)
+        val collection = mongoClient.getDatabase(UserMongoRepository.databaseName).getCollection(collectionName)
         collectionFunction.apply(collection)
       }
-
-    private def initializeDatabase(): MongoClient =
-      val mongodConfig = MongodConfig
-        .builder()
-        .version(Version.Main.PRODUCTION)
-        .net(new Net(mongoIp, mongoPort, Network.localhostIsIPv6()))
-        .build()
-
-      val starter = MongodStarter.getDefaultInstance;
-      val mongodExecutable = starter.prepare(mongodConfig)
-      mongodExecutable.start()
-
-      MongoClient()

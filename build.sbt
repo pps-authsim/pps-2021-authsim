@@ -43,6 +43,7 @@ lazy val root = project
 
     // in-memory databases
     libraryDependencies += "com.h2database" % "h2" % "1.4.200",
+    libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.25",
     libraryDependencies += "de.flapdoodle.embed" % "de.flapdoodle.embed.mongo" % "3.0.0",
     libraryDependencies += "org.immutables" % "value" % "2.8.8" % "provided",
     libraryDependencies += ("org.mongodb.scala" %% "mongo-scala-driver" % "4.3.2").cross(CrossVersion.for3Use2_13),

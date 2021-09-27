@@ -14,33 +14,33 @@ trait UserSqlRepositoryComponent:
 
   object UserSqlRepository :
 
-    val createTableSql =
+    private val createTableSql =
       """
         |drop table users;
         |create table users(ID INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(500), PASSWORD VARCHAR(500));
       """.stripMargin
 
-    val saveUsersSql =
+    private val saveUsersSql =
       """
         |insert into users (USERNAME, PASSWORD) values (?, ?)
       """.stripMargin
 
-    val resetUsersSql =
+    private val resetUsersSql =
       """
         |truncate table users
        """.stripMargin
 
-    val selectUserSql =
+    private val selectUserSql =
       """
         |select * from users where username = ? and password = ?
       """.stripMargin
 
   class UserSqlRepository extends UserRepository:
 
-    val baseDirectory: String = propertiesService.databaseBasePathFolder
-    val databaseName: String = "my-h2-db"
-    val databaseDirectory: String = s"$baseDirectory/$databaseName"
-    val databaseUrl: String = s"jdbc:h2:$databaseDirectory"
+    private val baseDirectory = propertiesService.databaseBasePathFolder
+    private val databaseName = "my-h2-db"
+    private val databaseDirectory = s"$baseDirectory/$databaseName"
+    private val databaseUrl = s"jdbc:h2:$databaseDirectory"
 
     initializeDatabase()
 
@@ -54,7 +54,7 @@ trait UserSqlRepositoryComponent:
         case Failure(error) => throw new PersistenceException("Db initialization failed: " + error.getMessage)
 
 
-    def saveUsers(users: Seq[UserEntity]): Try[Unit] =
+    override def saveUsers(users: Seq[UserEntity]): Try[Unit] =
       usingStatement(
         UserSqlRepository.saveUsersSql,
         statement =>
@@ -68,16 +68,18 @@ trait UserSqlRepositoryComponent:
 
       )
 
-    def resetUsers(): Try[Unit] =
+    override def resetUsers(): Try[Unit] =
       usingStatement(
         UserSqlRepository.resetUsersSql,
         statement => statement.executeUpdate()
       )
 
-    def retrieveUser(username: String, password: String): Try[UserEntity] =
+    override def retrieveUser(username: String, password: String): Try[UserEntity] =
       usingStatement(
         UserSqlRepository.selectUserSql,
         statement =>
+          statement.setString(1, username)
+          statement.setString(2, password)
           val resultSet = statement.executeQuery()
           if resultSet.next() then
             val username = resultSet.getString("USERNAME")
@@ -88,7 +90,7 @@ trait UserSqlRepositoryComponent:
 
       )
 
-    def usingStatement[T](sql: String, statementFunction: (PreparedStatement => T)): Try[T] =
+    private def usingStatement[T](sql: String, statementFunction: (PreparedStatement => T)): Try[T] =
       Using(DriverManager.getConnection(databaseUrl).prepareStatement(sql)) {
         (statement) => statementFunction.apply(statement)
       }

@@ -9,6 +9,9 @@ trait PropertiesService:
   val databaseBasePathFolder: String
 
 
+object PropertiesServiceComponent:
+  private def databaseBasePathFolderKey = "db.base.path"
+
 trait PropertiesServiceComponent:
 
   val propertiesService: PropertiesService
@@ -19,12 +22,12 @@ trait PropertiesServiceComponent:
    */
   class PropertiesServiceImpl(source: Source) extends PropertiesService:
 
-    val lines = source.getLines.reduce((a, b) => a + "\n" + b)
-    val inputStream = new ByteArrayInputStream(lines.getBytes)
+    private val lines = source.getLines.reduce((a, b) => a + "\n" + b)
+    private val inputStream = new ByteArrayInputStream(lines.getBytes)
 
-    val properties = loadPropertiesFromInputStream(inputStream)
+    private val properties = loadPropertiesFromInputStream(inputStream)
 
-    override val databaseBasePathFolder = getPropertyOrFail("db.base.path")
+    override val databaseBasePathFolder = getPropertyOrFail(PropertiesServiceComponent.databaseBasePathFolderKey)
 
     private def loadPropertiesFromInputStream(inputStream: InputStream): Properties =
       val properties = new Properties()

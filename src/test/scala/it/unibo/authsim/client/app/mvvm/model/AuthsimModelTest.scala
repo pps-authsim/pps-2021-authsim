@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.client.app.mvvm.model
+package it.unibo.authsim.client.app.mvvm.model
 
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackModel
 import it.unibo.authsim.client.app.mvvm.model.security.SecurityModel

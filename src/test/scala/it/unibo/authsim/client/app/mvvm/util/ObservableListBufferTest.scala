@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.client.app.mvvm.util
+package it.unibo.authsim.client.app.mvvm.util
 
 import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import org.scalatest.wordspec.AnyWordSpec

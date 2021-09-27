@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.client.app.mvvm.viewmodel
+package it.unibo.authsim.client.app.mvvm.viewmodel
 
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView

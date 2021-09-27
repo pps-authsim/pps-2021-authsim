@@ -1,8 +1,7 @@
-package it.unibo.authsim.library.client.app.mvvm.view.security
+package it.unibo.authsim.client.app.mvvm.view.security
 
-import it.unibo.authsim.client.app.mvvm.view.AuthsimView
+import it.unibo.authsim.client.app.mvvm.view.{AuthsimView, AuthsimViewTest}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UsersTab}
-import it.unibo.authsim.library.client.app.mvvm.view.AuthsimViewTest
 import javafx.event.ActionEvent
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry, SecurityTab}

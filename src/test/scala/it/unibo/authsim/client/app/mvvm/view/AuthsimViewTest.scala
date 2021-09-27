@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.client.app.mvvm.view
+package it.unibo.authsim.client.app.mvvm.view
 
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab

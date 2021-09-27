@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.dsl.cryptography
 
 import it.unibo.authsim.library.dsl.cryptography.symmetric.{AES, CaesarCipher, DES}
-import it.unibo.authsim.library.dsl.cryptography.util.Util.toMultiple
+import .toMultiple
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 

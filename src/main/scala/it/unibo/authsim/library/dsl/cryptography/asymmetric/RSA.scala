@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
 import it.unibo.authsim.library.dsl.cryptography.util.CostumBase64 as Base64
 import it.unibo.authsim.library.dsl.cryptography.{AsymmetricEncryption, CryptographicAlgorithm, EncryptionMode, KeyGenerator, Keys}
-import it.unibo.authsim.library.dsl.cryptography.asymmetric.RSAPersistentKeysGenerator
+import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
 
 import java.security.*
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
@@ -12,17 +12,17 @@ trait RSA extends AsymmetricEncryption with KeyGenerator:
   def generateKeys(): Keys
   
 object RSA:
+  import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
   def apply()= new RSA() :
     private var _name = "RSA"
     private val keyFactory = KeyFactory.getInstance(_name)
-    private val keysGenerator= RSAPersistentKeysGenerator
 
     override  def algorithmName: String= this.toString
     override def generateKeys():Keys=
-      keysGenerator.generateKeys()
+      PersistentKeysGenerator.generateKeys()
 
     def loadKeys(fileName: String = "key.ser"):Keys=
-      keysGenerator.loadKeys()
+      PersistentKeysGenerator.loadKeys()
 
     private def privateKeyFromString(privateKeyString: String): PrivateKey =
       val bytes = Base64.decodeToBytes(privateKeyString)

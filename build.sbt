@@ -34,6 +34,5 @@ lazy val root = project
     libraryDependencies += "org.apache.commons" % "commons-configuration2" % "2.7",
     libraryDependencies += "commons-codec" % "commons-codec" % "20041127.091804",
     libraryDependencies += "commons-io" % "commons-io" % "20030203.000550",
-    libraryDependencies += "com.google.guava" % "guava" % "25.1-jre"
-
+    libraryDependencies += "com.google.guava" % "guava" % "25.1-jre",
 )

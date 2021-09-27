@@ -16,7 +16,7 @@ class UserAutoBuilder extends UserBuilder[User]{
    * 
    * @return  a User which credentials are complaint with the input policies
    */
-  def build(): User=
+  def build: User=
     _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy]))
       .map(e=>
         if(e.isInstanceOf[PasswordPolicy]) then

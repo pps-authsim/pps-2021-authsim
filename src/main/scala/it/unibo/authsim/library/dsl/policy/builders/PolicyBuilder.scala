@@ -3,6 +3,7 @@ package it.unibo.authsim.library.dsl.policy.builders
 import it.unibo.authsim.library.dsl.{HashFunction, Protocol}
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
 import it.unibo.authsim.library.dsl.policy.model.Policy
+import it.unibo.authsim.library.dsl.builder.Builder
 
 trait PolicyBuilder extends Builder[Policy]:
   def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): PolicyBuilder
@@ -23,30 +24,24 @@ object PolicyBuilder:
     private var _saltPolicy: Option[SaltPolicy] = Option.empty
 
     override def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): PolicyBuilder =
-      this.of(credentialPolicy._1)
-      this.of(credentialPolicy._2)
-      this
+      this of credentialPolicy._1 and credentialPolicy._2
 
     override def of(credentialPolicy: CredentialPolicy): PolicyBuilder =
-      this._credentialPolicies = credentialPolicy +: this._credentialPolicies
-      this
+      this.builderMethod((credentialPolicy: CredentialPolicy) => this._credentialPolicies = credentialPolicy +: this._credentialPolicies)(credentialPolicy)
 
-    override def and(credentialPolicy: CredentialPolicy): PolicyBuilder =
-      this.of(credentialPolicy)
-      this
+    override def and(credentialPolicy: CredentialPolicy): PolicyBuilder = this of credentialPolicy
 
     override def transmitWith(protocol: Protocol): PolicyBuilder =
-      this._protocol = Some(protocol)
-      this
+      this.builderMethod((protocol: Protocol) => this._protocol = Some(protocol))(protocol)
 
     override def storeWith(hashFunction: HashFunction): PolicyBuilder =
-      this._hashFunction = Some(hashFunction)
-      this
+      this.builderMethod((hashFunction: HashFunction) => this._hashFunction = Some(hashFunction))(hashFunction)
 
     override def storeWith(hashFunctionSalted: (HashFunction, SaltPolicy)): PolicyBuilder =
-      this._hashFunction = Some(hashFunctionSalted._1)
-      this._saltPolicy = Some(hashFunctionSalted._2)
-      this
+      this.builderMethod((hashFunctionSalted: (HashFunction, SaltPolicy)) => {
+        this._hashFunction = Some(hashFunctionSalted._1)
+        this._saltPolicy = Some(hashFunctionSalted._2)
+      })(hashFunctionSalted)
 
     override def build: Policy = new Policy:
 

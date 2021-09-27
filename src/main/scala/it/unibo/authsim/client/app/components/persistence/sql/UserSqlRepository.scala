@@ -16,7 +16,7 @@ trait UserSqlRepositoryComponent:
 
     private val createTableSql =
       """
-        |drop table users;
+        |drop table if exists users;
         |create table users(ID INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(500), PASSWORD VARCHAR(500));
       """.stripMargin
 
@@ -64,8 +64,7 @@ trait UserSqlRepositoryComponent:
 
             statement.addBatch()
           )
-          statement.executeUpdate()
-
+          statement.executeBatch()
       )
 
     override def resetUsers(): Try[Unit] =

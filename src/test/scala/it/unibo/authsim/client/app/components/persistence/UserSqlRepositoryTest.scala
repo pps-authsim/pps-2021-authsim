@@ -55,17 +55,18 @@ class UserSqlRepositoryTest extends AnyWordSpec with UserSqlRepositoryComponent 
 
     "User is retrieved" should {
 
-      setUpUsersInDb()
-
       "Retrieve user if present in DB" in {
+        setUpUsersInDb()
 
         val retrieveResult = userSqlRepository.retrieveUser("testUser", "1234")
 
         assert(retrieveResult.isSuccess)
-        assert(retrieveResult.get.eq(new UserEntity("testUser", "1234")))
+        assert(retrieveResult.get.equals(new UserEntity("testUser", "1234")))
       }
 
       "Retrieve nothing if not present in DB" in {
+        setUpUsersInDb()
+
         val retrieveResult = userSqlRepository.retrieveUser("noUser", "pass")
 
         assert(retrieveResult.isFailure)

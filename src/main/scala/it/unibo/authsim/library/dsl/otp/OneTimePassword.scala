@@ -39,6 +39,8 @@ object OneTimePassword:
     private var policy: Option[OTPPolicy] = None
     private var _secret: String = Random.alphanumeric.take(10).mkString
 
+    import OTPHelpers.*
+
     override def secret(secret: SecretValue) =
       this._secret = s"${secret._1}-${secret._2}"
       this
@@ -50,11 +52,11 @@ object OneTimePassword:
     override def generate: String =
       val min: Int = if this.policy.isDefined then this.policy.get.minimumLength else this.minLenDefault;
       val max: Int = if this.policy.isDefined then this.policy.get.maximumLength else this.maxLenDefault;
-      val hotp = OTPHelpers.truncate(this.hashFunction, this._secret, Random.between(min, max))(OTPHelpers.hmac)
+      val hotp = truncate(this.hashFunction, this._secret, Random.between(min, max))(hmac)
       pinsGenerated += hotp -> this._secret
       hotp
 
-    override def check(pincode: String): Boolean = (this.pinsGenerated contains pincode) && OTPHelpers.truncate(this.hashFunction, this.pinsGenerated.get(pincode).get, pincode.length)(OTPHelpers.hmac) == pincode
+    override def check(pincode: String): Boolean = (this.pinsGenerated contains pincode) && truncate(this.hashFunction, this.pinsGenerated.get(pincode).get, pincode.length)(hmac) == pincode
 
   private class TOTPImpl(override val timeout: Duration, override val hashFunction: HashFunction) extends HOTPImpl(HashFunction.SHA256()) with TOTP:
 
@@ -75,12 +77,15 @@ object OneTimePassword:
 
   private object OTPHelpers:
 
+    private implicit class RichInt(base: Byte):
+      def toUInt: Int = base & 0xff
+
     def hmac(hashFunction: HashFunction, secret: String): Array[Byte] =
-      val algorithm: String = s"Hmac${hashFunction.toString.replace("()", "")}"
+      val algorithm: String = s"Hmac${hashFunction.getClass.getSimpleName}"
       val mac: Mac = Mac.getInstance(algorithm)
       mac.init(new SecretKeySpec(secret.getBytes, algorithm))
       mac.doFinal()
 
     def truncate(hashFunction: HashFunction, secret: String, digits: Int)(hmacFunction: (HashFunction, String) => Array[Byte]): String =
-      val hmacStr: String = hmacFunction(hashFunction, secret).map(_.toInt & 0xff).mkString
+      val hmacStr: String = hmacFunction(hashFunction, secret).map(_.toUInt).mkString
       hmacStr.slice(hmacStr.length - digits, hmacStr.length)

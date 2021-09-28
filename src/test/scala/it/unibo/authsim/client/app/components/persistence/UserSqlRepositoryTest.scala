@@ -3,6 +3,7 @@ package it.unibo.authsim.client.app.components.persistence
 import it.unibo.authsim.client.app.components.persistence.sql.UserSqlRepositoryComponent
 import it.unibo.authsim.client.app.components.config.{PropertiesService, PropertiesServiceComponent}
 import it.unibo.authsim.client.app.components.testutils.PropertiesServiceStub
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.sql.DriverManager
@@ -16,10 +17,13 @@ object UserSqlRepositoryTest:
   private val databaseDirectory= s"$baseDirectory/$databaseName"
   private val databaseUrl = s"jdbc:h2:$databaseDirectory"
 
-class UserSqlRepositoryTest extends AnyWordSpec with UserSqlRepositoryComponent with PropertiesServiceComponent:
+class UserSqlRepositoryTest extends AnyWordSpec with BeforeAndAfterEach with UserSqlRepositoryComponent with PropertiesServiceComponent:
 
   override val propertiesService: PropertiesService = PropertiesServiceStub()
   override val userSqlRepository: UserRepository = UserSqlRepository()
+
+  override def beforeEach(): Unit =
+    clearDB()
 
   "Sql User Repository" when {
 
@@ -107,3 +111,9 @@ class UserSqlRepositoryTest extends AnyWordSpec with UserSqlRepositoryComponent 
       val statement = connection.createStatement()
       statement.executeUpdate(sql)
     )
+
+  private def clearDB(): Unit =
+    val sql = "truncate table users"
+    val connection = DriverManager.getConnection(UserSqlRepositoryTest.databaseUrl)
+    val statement = connection.createStatement()
+    statement.executeUpdate(sql)

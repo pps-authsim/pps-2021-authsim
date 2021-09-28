@@ -19,10 +19,6 @@ import scala.concurrent.{Await, Promise}
 import scala.concurrent.duration.Duration
 
 object UserMongoRepositoryTest:
-  private val mongoIp = "localhost"
-  private val mongoPort = 27017
-  private val connectionString = s"mongodb://$mongoIp:$mongoPort"
-
   private val operationTimeout = Duration(5, TimeUnit.SECONDS)
 
   private val databaseName = "authsim"
@@ -33,43 +29,37 @@ class UserMongoRepositoryTest extends AnyWordSpec with BeforeAndAfterAll with Be
   override val propertiesService: PropertiesService = PropertiesServiceStub()
   override val userMongoRepository: UserRepository = UserMongoRepository()
 
-  private val starter = MongodStarter.getDefaultInstance;
-  private var mongoExecutable = initializeDatabase()
   private val mongoClient = MongoClient()
 
   override def beforeEach(): Unit =
     val collection = mongoClient.getDatabase(UserMongoRepositoryTest.databaseName).getCollection(UserMongoRepositoryTest.collectionName)
-    collection.drop
+    val promise = Promise[Unit]
+    val observable = collection.drop()
+    observable.subscribe(new Observer[Void] {
+      def onNext(result: Void): Unit =
+        return // do nothing
 
-  override def afterAll(): Unit =
-    mongoExecutable.stop()
+      def onError(e: Throwable): Unit =
+        promise.failure(e)
 
-  private def initializeDatabase(): MongodProcess  =
-    val mongodConfig = MongodConfig
-      .builder()
-      .version(Version.Main.PRODUCTION)
-      .net(new Net(UserMongoRepositoryTest.mongoIp, UserMongoRepositoryTest.mongoPort, Network.localhostIsIPv6()))
-      .build()
-
-    val mongodExecutable = starter.prepare(mongodConfig)
-    mongodExecutable.start()
+      def onComplete(): Unit =
+        promise.success(())
+    })
+    Await.result(promise.future, UserMongoRepositoryTest.operationTimeout)
 
   "Mongo User Repository" when {
 
     "User is saved" should {
 
       "Have users saved in DB" in {
-        val collection = mongoClient.getDatabase(UserMongoRepositoryTest.databaseName).getCollection(UserMongoRepositoryTest.collectionName)
-        collection.drop
-
         val userEntity1 = new UserEntity("testUser", "1234")
         val userEntity2 = new UserEntity("anotherUser", "abcd1234")
 
         val insertResult = userMongoRepository.saveUsers(List(userEntity1, userEntity2))
 
+        // FIXME runs well first time, then gets dirtied, then stays the same
         val snapshot = getDatabaseSnapshot()
         assert(insertResult.isSuccess)
-        println(snapshot)
         assert(snapshot.sameElements(List(userEntity1, userEntity2)))
       }
 

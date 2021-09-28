@@ -3,6 +3,7 @@ package it.unibo.authsim.client.app.components.persistence
 import it.unibo.authsim.client.app.components.persistence.sql.UserSqlRepositoryComponent
 import it.unibo.authsim.client.app.components.config.{PropertiesService, PropertiesServiceComponent}
 import it.unibo.authsim.client.app.components.testutils.PropertiesServiceStub
+import it.unibo.authsim.testing.DataBaseTest
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -29,7 +30,7 @@ class UserSqlRepositoryTest extends AnyWordSpec with BeforeAndAfterEach with Use
 
     "User is saved" should {
 
-      "Have users saved in DB" in {
+      "Have users saved in DB" taggedAs (DataBaseTest) in {
         val userEntity1 = new UserEntity("testUser", "1234")
         val userEntity2 = new UserEntity("anotherUser", "abcd1234")
 
@@ -44,7 +45,7 @@ class UserSqlRepositoryTest extends AnyWordSpec with BeforeAndAfterEach with Use
 
     "Users are reset" should {
 
-      "Have no more users in DB" in {
+      "Have no more users in DB" taggedAs (DataBaseTest) in {
         setUpUsersInDb()
 
         val resetResult = userSqlRepository.resetUsers()
@@ -59,7 +60,7 @@ class UserSqlRepositoryTest extends AnyWordSpec with BeforeAndAfterEach with Use
 
     "User is retrieved" should {
 
-      "Retrieve user if present in DB" in {
+      "Retrieve user if present in DB" taggedAs (DataBaseTest) in {
         setUpUsersInDb()
 
         val retrieveResult = userSqlRepository.retrieveUser("testUser", "1234")
@@ -68,7 +69,7 @@ class UserSqlRepositoryTest extends AnyWordSpec with BeforeAndAfterEach with Use
         assert(retrieveResult.get.equals(new UserEntity("testUser", "1234")))
       }
 
-      "Retrieve nothing if not present in DB" in {
+      "Retrieve nothing if not present in DB" taggedAs (DataBaseTest) in {
         setUpUsersInDb()
 
         val retrieveResult = userSqlRepository.retrieveUser("noUser", "pass")

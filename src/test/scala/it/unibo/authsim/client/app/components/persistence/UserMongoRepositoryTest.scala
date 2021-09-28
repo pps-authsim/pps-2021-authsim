@@ -7,6 +7,7 @@ import de.flapdoodle.embed.process.runtime.Network
 import it.unibo.authsim.client.app.components.config.{PropertiesService, PropertiesServiceComponent}
 import it.unibo.authsim.client.app.components.persistence.mongo.UserMongoRepositoryComponent
 import it.unibo.authsim.client.app.components.testutils.PropertiesServiceStub
+import it.unibo.authsim.testing.DataBaseTest
 import org.mongodb.scala.{Document, MongoClient, Observer, SingleObservable}
 import org.mongodb.scala.model.Filters.{and, equal}
 import org.mongodb.scala.result.InsertManyResult
@@ -19,7 +20,7 @@ import scala.concurrent.{Await, Promise}
 import scala.concurrent.duration.Duration
 
 object UserMongoRepositoryTest:
-  private val operationTimeout = Duration(5, TimeUnit.MINUTES)
+  private val operationTimeout = Duration(10, TimeUnit.SECONDS)
 
   private val databaseName = "authsim"
   private val collectionName = "users"
@@ -51,7 +52,7 @@ class UserMongoRepositoryTest extends AnyWordSpec with BeforeAndAfterAll with Be
 
     "User is saved" should {
 
-      "Have users saved in DB" in {
+      "Have users saved in DB" taggedAs (DataBaseTest) in {
         val userEntity1 = new UserEntity("testUser", "1234")
         val userEntity2 = new UserEntity("anotherUser", "abcd1234")
 
@@ -67,7 +68,7 @@ class UserMongoRepositoryTest extends AnyWordSpec with BeforeAndAfterAll with Be
 
     "Users are reset" should {
 
-      "Have no more users in DB" in {
+      "Have no more users in DB" taggedAs (DataBaseTest) in {
         setUpUsersInDb()
 
         val resetResult = userMongoRepository.resetUsers()
@@ -82,7 +83,7 @@ class UserMongoRepositoryTest extends AnyWordSpec with BeforeAndAfterAll with Be
 
     "User is retrieved" should {
 
-      "Retrieve user if present in DB" in {
+      "Retrieve user if present in DB" taggedAs (DataBaseTest) in {
         setUpUsersInDb()
 
         val retrieveResult = userMongoRepository.retrieveUser("testUser", "1234")
@@ -91,7 +92,7 @@ class UserMongoRepositoryTest extends AnyWordSpec with BeforeAndAfterAll with Be
         assert(retrieveResult.get.equals(new UserEntity("testUser", "1234")))
       }
 
-      "Retrieve nothing if not present in DB" in {
+      "Retrieve nothing if not present in DB" taggedAs (DataBaseTest) in {
         val retrieveResult = userMongoRepository.retrieveUser("noUser", "pass")
 
         assert(retrieveResult.isFailure)

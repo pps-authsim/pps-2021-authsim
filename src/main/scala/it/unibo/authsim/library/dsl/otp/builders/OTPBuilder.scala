@@ -40,10 +40,7 @@ object OTPBuilder:
 
     override def hashFunction(hashFunction: HashFunction) = this.builderMethod[HashFunction](hashFunction => this._hashFunction = hashFunction)(hashFunction)
 
-  abstract class AbstractTOTPBuilder extends AbstractOTPBuilder[TOTP] with HmacOTPBuilder with TimeOTPBuilder:
+  abstract class AbstractTOTPBuilder extends AbstractHOTPBuilder with TimeOTPBuilder:
     protected var _timeout: Duration = Duration(1, TimeUnit.MINUTES)
-    protected var _hashFunction: HashFunction = HashFunction.SHA256()
-
-    override def hashFunction(hashFunction: HashFunction) = this.builderMethod[HashFunction](hashFunction => this._hashFunction = hashFunction)(hashFunction)
 
     override def timeout(timeout: Duration) = this.builderMethod[Duration](timeout => this._timeout = timeout)(timeout)

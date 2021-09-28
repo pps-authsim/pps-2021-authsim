@@ -4,6 +4,7 @@ import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
 import it.unibo.authsim.library.dsl.policy.checkers.PolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
+import it.unibo.authsim.library.dsl.builder.Builder
 
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
@@ -94,39 +95,36 @@ object StringPoliciesBuilders:
       val index: Int = patterns.indexWhere(r => r.toString == regexString)
       if index != -1 then patterns.remove(index)
 
-    override def addAlphabet(alphabetPolicy: PolicyAlphabet): this.type  =
-      this.alphabetPolicy = alphabetPolicy
-      this
+    override def addAlphabet(alphabetPolicy: PolicyAlphabet) =
+      this.builderMethod((alphabetPolicy: PolicyAlphabet) => this.alphabetPolicy = alphabetPolicy)(alphabetPolicy)
 
-    protected def addPatterns(regex: Regex): this.type  =
-      patterns += regex
-      this
+    protected def addPatterns(regex: Regex) = this.builderMethod((regex: Regex) => patterns += regex)(regex)
 
     /**
      * @param number maximum length of string to set
      * @return instance of the actual builder
      * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is less than minimum value
      */
-    override def maximumLength(number: Int): this.type  =
+    override def maximumLength(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.rangeLength(this.minLen, this.maxLen))
       require(number >= this.minLen , s"number must be >= ${this.minLen}")
       this.maxLen = number
       this.addPatterns(this.alphabetPolicy.rangeLength(this.minLen, number))
-      this
+    })(number)
 
     /**
      * @param number minimum length of string to set
      * @return instance of the actual builder
      * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is greater than maximum value
      */
-    override def minimumLength(number: Int): this.type =
+    override def minimumLength(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.minimumLength(this.minLen))
       require(number <= this.maxLen, s"number must be <= ${this.maxLen}")
       this.minLen = number
       this.addPatterns(this.alphabetPolicy.minimumLength(number))
-      this
+    })(number)
 
     override def check(value: String)(implicit policyChecker: List[Regex] => PolicyChecker[String]): Boolean = policyChecker(patterns.toList).check(value)
 
@@ -140,48 +138,48 @@ object StringPoliciesBuilders:
     protected var minSymbols: Int = 0
     protected var minNumbers: Int = 0
 
-    override def minimumLowerChars(number: Int): this.type =
+    override def minimumLowerChars(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.minimumLowerCharacters(this.minLowerChars))
       this.minLowerChars = number
       this.patterns += this.alphabetPolicy.minimumLowerCharacters(number)
-      this
+    })(number)
 
     /**
      * @param number minimum number of uppercase characters to set
      * @return instance of the actual builder
      * @throws IllegalArgumentException whether number is less than or equal to 0
      */
-    override def minimumUpperChars(number: Int): this.type =
+    override def minimumUpperChars(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.minimumUpperCharacters(this.minUpperChars))
       this.minUpperChars = number
       this.addPatterns(this.alphabetPolicy.minimumUpperCharacters(number))
-      this
+    })(number)
 
     /**
      * @param number minimum number of symbols to set
      * @return instance of the actual builder
      * @throws IllegalArgumentException whether number is less than or equal to 0
      */
-    override def minimumSymbols(number: Int): this.type =
+    override def minimumSymbols(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.minimumSymbols(this.minSymbols))
       this.minSymbols = number
       this.addPatterns(this.alphabetPolicy.minimumSymbols(number))
-      this
+    })(number)
 
     /**
      * @param number minimum number of digits to set
      * @return instance of the actual builder
      * @throws IllegalArgumentException whether number is less than or equal to 0
      */
-    override def minimumNumbers(number: Int): this.type =
+    override def minimumNumbers(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.minimumNumbers(this.minNumbers))
       this.minNumbers = number
       this.addPatterns(this.alphabetPolicy.minimumNumbers(number))
-      this
+    })(number)
 
   /**
    * ''UserIDPolicyBuilder'' is userID policy builder

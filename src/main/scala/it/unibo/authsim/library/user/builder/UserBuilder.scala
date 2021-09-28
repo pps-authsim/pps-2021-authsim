@@ -4,8 +4,10 @@ import  it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.util.RandomStringGenerator.generateRandomString
+import it.unibo.authsim.library.dsl.builder.Builder
+
 //ANche qui non sono troppo sicura sull'iso
-abstract class UserBuilder[U]:
+abstract class UserBuilder[U] extends Builder[U]:
   protected var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
   protected var _userName: String=generateRandomString()
   protected var _password:String=generateRandomString()
@@ -29,6 +31,5 @@ abstract class UserBuilder[U]:
    * @param policy      a policy to apply to the credential of the user
    * @return            a UserCostumBuilder where the in the policy field is added the provided value
    */
-  def withPolicy(policy:CredentialPolicy):this.type =
-    this._credentialPolicies = policy +: this._credentialPolicies
-    this
+  def withPolicy(policy:CredentialPolicy) =
+    this.builderMethod((policy: CredentialPolicy) => this._credentialPolicies = policy +: this._credentialPolicies)(policy)

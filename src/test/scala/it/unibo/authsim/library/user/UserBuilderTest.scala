@@ -20,19 +20,19 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
   private val password: String= "password1"
 
   private val costumUserBuilder1 = UserCostumBuilder() withName(name) withPassword(password)
-  private val costumUser1 :Option[User]= costumUserBuilder1.build()
+  private val costumUser1 :Option[User]= costumUserBuilder1.build
 
   private val costumUserBuilder2 =  UserCostumBuilder() withName(name) withPassword(password) withPolicy(userIDPolicy)
-  private val costumUser2:Option[User] = costumUserBuilder2.build()
+  private val costumUser2:Option[User] = costumUserBuilder2.build
 
   private val costumUserBuilder3 =  UserCostumBuilder() withName(shortName) withPassword(password) withPolicy(userIDPolicy)
-  private val costumUser3:Option[User] = costumUserBuilder3.build()
+  private val costumUser3:Option[User] = costumUserBuilder3.build
 
   private val autoUserBuilder1= UserAutoBuilder() withPolicy(userIDPolicy)
-  private val autoUser1:User = autoUserBuilder1.asInstanceOf[UserAutoBuilder].build()
+  private val autoUser1:User = autoUserBuilder1.build
 
-  private val autoUserBuilder2= UserAutoBuilder() withPolicy(userIDPolicy) withPolicy(passwordPolicy)
-  private val autoUser2:User = autoUserBuilder2.asInstanceOf[UserAutoBuilder].build()
+  private val autoUserBuilder2 = UserAutoBuilder() withPolicy(userIDPolicy) withPolicy(passwordPolicy)
+  private val autoUser2:User = autoUserBuilder2.build
 
   println(costumUser1)
   println(costumUser2)

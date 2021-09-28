@@ -1,16 +1,44 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
+import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
 import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.*
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{RestrictStringPolicy, StringPolicy}
 import org.scalatest.*
 import org.scalatest.funsuite.AnyFunSuite
 
+import scala.collection.mutable.ListBuffer
 import scala.language.postfixOps
+import scala.util.matching.Regex
 
 class StringPolicyAutoBuilderTests extends AnyFunSuite with BeforeAndAfter:
 
   private var userID = UserIDPolicyBuilder()
   private var password = PasswordPolicyBuilder()
   private var otp = OTPPolicyBuilder()
+
+  private var myPolicy: StringPolicy = new StringPolicy {
+    override def alphabet: PolicyAlphabet = new PolicyAlphabet {
+      override def lowers: Seq[Char] = Seq('a', 'e', 'i', 'o', 'u')
+      override def uppers: Seq[Char] = this.lowers.map { _.toUpper }
+      override def digits: Seq[Char] = Seq.empty
+      override def symbols: Seq[Char] = Seq.empty
+    }
+    override def patterns: ListBuffer[Regex] = ListBuffer.empty
+  }
+
+  private var myRestrictedPolicy: StringPolicy = new StringPolicy with RestrictStringPolicy {
+    override def alphabet: PolicyAlphabet = new PolicyAlphabet {
+      override def lowers: Seq[Char] = Seq('c', 'e', 'i', 'o', 'u')
+      override def uppers: Seq[Char] = this.lowers.map { _.toUpper }
+      override def digits: Seq[Char] = Seq('0', '3')
+      override def symbols: Seq[Char] = Seq.empty
+    }
+    override def patterns: ListBuffer[Regex] = ListBuffer.empty
+
+    override def minimumLength: Int = 3
+
+    override def maximumLength: Int = 10
+  }
 
   import StringPolicyAutoBuilderTestHelpers.*
 
@@ -19,6 +47,15 @@ class StringPolicyAutoBuilderTests extends AnyFunSuite with BeforeAndAfter:
     password = PasswordPolicyBuilder()
     otp = OTPPolicyBuilder()
   }
+
+  test("A String was created from myPolicy formed by between 1 and 30 characters long and an alphabet contains the following characters: a e i o u A E I O U"){
+    assert(testAutoBuilder(myPolicy))
+  }
+
+  test("A String was created from myRestrictedPolicy formed by between 3 and 10 characters long and an alphabet contains the following characters: c e i o u C  E I O U 0 3"){
+    assert(testAutoBuilder(myRestrictedPolicy))
+  }
+
 
   test("UserID was generated from a policy formed by at least 3 uppercase characters and between 5 and 8 characters long"){
     assert(testAutoBuilder(userID minimumUpperChars 3 minimumLength 5 maximumLength 8 build))

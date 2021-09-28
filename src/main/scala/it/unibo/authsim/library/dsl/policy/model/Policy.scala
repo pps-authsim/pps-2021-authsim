@@ -3,9 +3,30 @@ package it.unibo.authsim.library.dsl.policy.model
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, SaltPolicy}
 import it.unibo.authsim.library.dsl.{HashFunction, Protocol}
 
+import scala.collection.mutable.ListBuffer
+import scala.util.matching.Regex
+
+/**
+ * A ''Policy'' is a trait that is used to define a new policy
+ */
 trait Policy:
+  /**
+   * @return name of the policy
+   */
   def name: String
+  /**
+   * @return sequence of [[CredentialPolicy credential policies]]
+   */
   def credentialPolicies: Seq[CredentialPolicy]
+  /**
+   * @return an optional [[HashFunction hash function]] used to store the credentials on database
+   */
   def hashFunction: Option[HashFunction]
+  /**
+   * @return an optional [[SaltPolicy salt policy]] used to check an eventual salt value to encrypt credential
+   */
   def saltPolicy: Option[SaltPolicy]
+  /**
+   * @return an optional [[Protocol protocol]] of transmission of the credentials on network
+   */
   def transmissionProtocol: Option[Protocol]

@@ -1,16 +1,16 @@
 package it.unibo.authsim.library.dsl.attack.statistics
 
+import it.unibo.authsim.library.user.model.User
 import org.scalatest.wordspec.AnyWordSpec
 
 import scala.concurrent.duration.{Duration, MINUTES}
-import it.unibo.authsim.library.user.User
 
 class StatisticsTest extends AnyWordSpec {
   class SimpleUser(val username: String, val password: String) extends User {}
 
   val invariantStats = Statistics.zero
-  val simpleStats = new Statistics(Set(new SimpleUser("mario", "authsim")), 1_000_000, Duration(2, MINUTES))
-  val anotherStats = new Statistics(Set(new SimpleUser("luca", "pps2021")), 3_000_000, Duration(7, MINUTES))
+  val simpleStats = new Statistics(Set(new SimpleUser("mario", "authsim")), 1_000_000, Duration(2, MINUTES), false)
+  val anotherStats = new Statistics(Set(new SimpleUser("luca", "pps2021")), 3_000_000, Duration(7, MINUTES), true)
 
   "The invariant stats" when {
     "summed to another statistics" must {
@@ -18,7 +18,8 @@ class StatisticsTest extends AnyWordSpec {
       "not change the other statistics values" in {
         assert(sumStats.successfulBreaches.equals(simpleStats.successfulBreaches) &&
           sumStats.attempts.equals(simpleStats.attempts) &&
-          sumStats.elapsedTime.equals(simpleStats.elapsedTime))
+          sumStats.elapsedTime.equals(simpleStats.elapsedTime) &&
+          sumStats.timedOut.equals(simpleStats.timedOut))
       }
     }
     "summed to itself" must {
@@ -26,7 +27,8 @@ class StatisticsTest extends AnyWordSpec {
       "return itself" in {
         assert(summedInvariants.successfulBreaches.equals(invariantStats.successfulBreaches) &&
           summedInvariants.attempts.equals(invariantStats.attempts) &&
-          summedInvariants.elapsedTime.equals(invariantStats.elapsedTime))
+          summedInvariants.elapsedTime.equals(invariantStats.elapsedTime) &&
+          summedInvariants.timedOut.equals(invariantStats.timedOut))
       }
     }
   }
@@ -37,7 +39,8 @@ class StatisticsTest extends AnyWordSpec {
       "include the union of results" in {
         assert(summedStatistics.successfulBreaches.equals(simpleStats.successfulBreaches ++ anotherStats.successfulBreaches) &&
           summedStatistics.attempts.equals(simpleStats.attempts + anotherStats.attempts) &&
-          summedStatistics.elapsedTime.equals(simpleStats.elapsedTime + anotherStats.elapsedTime))
+          summedStatistics.elapsedTime.equals(simpleStats.elapsedTime + anotherStats.elapsedTime) &&
+          summedStatistics.timedOut.equals(simpleStats.timedOut || anotherStats.timedOut))
       }
     }
   }

@@ -1,5 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.view.tabs.users
 
+import it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{AddUserForm, GenerateUsersForm, UsersList}
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
@@ -28,13 +29,8 @@ class UsersTab() extends SplitPane :
 
   private val quantityField = AuthsimView.makeNumberTextField()
 
-  // TODO define enum when lib is ready
   private val presetSelect = new ChoiceBox[String] {
-    items = ObservableBuffer[String](
-      "Preset1",
-      "Preset2",
-      "Preset3"
-    )
+    items = SecurityPolicy.Default.withoutProtocol map {_.policy.name} to(ObservableBuffer)
   }
 
   private val generateButton = new Button("Generate")

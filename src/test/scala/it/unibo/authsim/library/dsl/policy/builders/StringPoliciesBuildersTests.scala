@@ -16,7 +16,6 @@ class StringPoliciesBuildersTests extends AnyWordSpec:
 
   private var passwordPolicy: PasswordPolicy = null
   private var userIDPolicy: UserIDPolicy = null
-  private var otpPolicy: OTPPolicy = null
 
   "A Policy Builder" when {
     "set nothing" should{

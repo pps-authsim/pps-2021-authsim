@@ -1,84 +1,85 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-import it.unibo.authsim.library.dsl.attack.logspecification.{LogCategory, LogSpec}
-import it.unibo.authsim.library.dsl.{HashFunction, Proxy}
+
+import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
-import it.unibo.authsim.library.user.User
+import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
+import it.unibo.authsim.library.user.model.User
 
 import scala.concurrent.duration.{Duration, MILLISECONDS}
-import scala.concurrent.{Future, Await}
+import scala.concurrent.{Await, Future}
 import scala.concurrent.TimeoutException
 import concurrent.ExecutionContext.Implicits.global
 
-class BruteForceAttackBuilder extends OfflineAttackBuilder {
+/**
+ * A builder of bruteforce attacks.
+ */
+class BruteForceAttackBuilder extends OfflineAttackBuilder:
   private var alphabet: List[String] = null
   private var maximumLength = 1
 
-  def usingAlphabet(alphabet: List[String]): this.type = {
-    this.alphabet = alphabet
-    this
-  }
+  /**
+   * Sets the alphabet to use for the attack.
+   *
+   * A bare bruteforce attack should have an alphabet with only 1-length symbols,
+   * while other attacks can use a different alphabet
+   * (for example, a dictionary attack uses the dictionary itself as the alphabet).
+   * @param alphabet The alphabet to use.
+   * @return The builder.
+   */
+  def usingAlphabet(alphabet: List[String]): this.type = this.builderMethod[List[String]](alphabet => this.alphabet = alphabet)(alphabet)
 
+  /**
+   * @return The used alphabet.
+   */
   def getAlphabet(): List[String] = this.alphabet
 
-  def maximumLength(maximumLength: Int): this.type = {
-    this.maximumLength = maximumLength
-    this
-  }
+  /**
+   * Sets the maximum number of combinations of symbols from the alphabet.
+   * Defaults to 1 (which means the attack only uses the provided symbols, without combining them).
+   * @param maximumLength The maximum combination number.
+   * @return The builder.
+   */
+  def maximumLength(maximumLength: Int): this.type = this.builderMethod[Int](l => this.maximumLength = l)(maximumLength)
 
+  /**
+   * @return The maximum combination number.
+   */
   def getMaximumLength: Int = this.maximumLength
 
-  def save(): BruteForceAttack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getAlphabet(), this.getMaximumLength, this.getLogSpecification(), this.getTimeout(), this.getNumberOfWorkers)
+  override def build: Attack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getAlphabet(), this.getMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
 
-  def executeNow(): Unit = this.save().start()
-}
+private class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
 
-class BruteForceAttack(private val target: Proxy, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[LogSpec], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack {
-
-  override def start(): Unit = {
+  override def start(): Unit =
     var jobResults: List[Future[Statistics]] = List.empty
     var totalResults = Statistics.zero
     val monitor = new ConcurrentStringCombinator(alphabet, maximumLength)
     val startTime = System.nanoTime()
-    (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.getUserInformations().head, monitor)) :: jobResults)
-    // TODO: refine timeout
+    (1 to jobs).foreach(_ => jobResults = Future(futureJob(target.userInformations(), monitor)) :: jobResults)
     try {
-      jobResults.foreach(future => totalResults = totalResults + Await.result(future, timeout.getOrElse(Duration.Inf)))
+      Await.result(Future.sequence(jobResults), timeout.getOrElse(Duration.Inf)).foreach(stats => totalResults = totalResults + stats)
     } catch {
-      case e: TimeoutException => println("Timeout")
+      case e: TimeoutException => totalResults = totalResults + Statistics.timedOut
     }
     val endTime = System.nanoTime()
     val elapsedTime = Duration(endTime - startTime, MILLISECONDS)
-    totalResults = totalResults + new Statistics(Set(), attempts = 0, elapsedTime / jobs)
-    // TODO: refine logging
-    logTo.foreach(logSpec => {
-      if (logSpec.getCategories()(LogCategory.SUCCESS) || logSpec.getCategories()(LogCategory.ALL)) then
-        logSpec.getTargetLogger().foreach(logger => logger.receiveCracked(true))
-      end if
-      if (logSpec.getCategories()(LogCategory.ATTEMPTS) || logSpec.getCategories()(LogCategory.ALL)) then
-        logSpec.getTargetLogger().foreach(logger => logger.receiveStatistics(Map("attempts" -> totalResults.attempts.toString, "Users" -> totalResults.successfulBreaches.map(u => u.username + " - " + u.password).toString())))
-      end if
-      if (logSpec.getCategories()(LogCategory.TIME) || logSpec.getCategories()(LogCategory.ALL)) then
-        logSpec.getTargetLogger().foreach(logger => logger.receiveExecutionTime(elapsedTime.toMillis))
-      end if
-    })
-  }
+    totalResults = totalResults + Statistics.onlyElapsedTime(elapsedTime)
+    logTo.foreach(logSpec => logSpec.consume(totalResults))
 
-  private def futureJob(targetUser: User, stringProvider: ConcurrentStringCombinator): Statistics = {
+  private def futureJob(targetUsers: List[User], stringProvider: ConcurrentStringCombinator): Statistics =
     var localStatistics = Statistics.zero
     var nextPassword = stringProvider.getNextString()
     while !nextPassword.isEmpty do
       val nextPasswordString = nextPassword.get
       val hashedPassword = hashFunction.hash(nextPasswordString)
-      localStatistics = localStatistics + new Statistics(hashedPassword == targetUser.password match {
-        case true => Set(new User {
-          override def username: String = targetUser.username
-          override def password: String = nextPasswordString
+      targetUsers.foreach(user => {
+        localStatistics = localStatistics + Statistics.onlyBreaches(hashedPassword == user.password match {
+          case true => Set(User(user.username, nextPasswordString))
+          case false => Set()
         })
-        case false => Set()
-      }, attempts = 1, Duration.Zero)
+      })
+      localStatistics = localStatistics + Statistics.onlyAttempts(attempts = 1)
       nextPassword = stringProvider.getNextString()
     end while
     localStatistics
-  }
-}

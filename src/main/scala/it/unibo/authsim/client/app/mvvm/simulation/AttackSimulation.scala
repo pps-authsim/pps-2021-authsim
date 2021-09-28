@@ -5,7 +5,7 @@ import it.unibo.authsim.client.app.components.registry.ComponentRegistry
 import it.unibo.authsim.client.app.mvvm.common.CredentialsSourceType
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
-import it.unibo.authsim.client.app.mvvm.model.users.User
+import it.unibo.authsim.library.user.model.User
 import javafx.concurrent.Task
 
 import scala.collection.mutable.ListBuffer

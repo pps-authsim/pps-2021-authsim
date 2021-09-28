@@ -8,12 +8,13 @@ import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
-import it.unibo.authsim.client.app.mvvm.model.users.User
+import it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.client.app.mvvm.simulation.AttackSimulation
 import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
+import it.unibo.authsim.library.user.model.User
 import javafx.collections.ObservableList
 import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
 
@@ -41,7 +42,7 @@ class AuthsimViewModel(private val view: AuthsimView, private val model: Authsim
     val password = usersViewModel.addUserFormProperties.passwordProperty.getValue()
 
     if username != null && !username.isBlank && password != null && !password.isBlank then
-      val user = new User(username, password)
+      val user = User(username, password)
       model.usersModel.usersList += user
 
 
@@ -50,12 +51,14 @@ class AuthsimViewModel(private val view: AuthsimView, private val model: Authsim
     val preset = usersViewModel.generateUsersFormProperties.presetProperty.getValue();
 
     println(quantity + " " + preset) // TODO hook client when ready
+    val credentialsPolicies = SecurityPolicy.Default.credentialsPoliciesFrom(preset) //TODO: use to generate Users
+    println(credentialsPolicies)
 
 
   def deleteSelectedUsers(): Unit =
     val userEntry = usersViewModel.usersListProperties.usersListSelectedProperty.getValue
     if userEntry != null then
-      val user = new User(userEntry.username, userEntry.password)
+      val user = User(userEntry.username, userEntry.password)
       model.usersModel.usersList -= user
 
 

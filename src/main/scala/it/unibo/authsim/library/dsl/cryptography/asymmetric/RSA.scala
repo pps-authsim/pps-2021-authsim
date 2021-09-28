@@ -1,15 +1,17 @@
 package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
 import it.unibo.authsim.library.dsl.cryptography.util.CostumBase64 as Base64
-import it.unibo.authsim.library.dsl.cryptography.{AsymmetricEncryption, CryptographicAlgorithm, EncryptionMode, KeyGenerator, Keys}
+import it.unibo.authsim.library.dsl.cryptography.asymmetric.KeyPair
+import it.unibo.authsim.library.dsl.cryptography.{AsymmetricEncryption, CryptographicAlgorithm, EncryptionMode}
 import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
 
 import java.security.*
+import java.security.{KeyPair as JavaKeyPair, KeyPairGenerator}
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
 trait RSA extends AsymmetricEncryption with KeyGenerator:
-  def generateKeys(): Keys
+  def generateKeys(): KeyPair
   
 object RSA:
   import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
@@ -18,10 +20,10 @@ object RSA:
     private val keyFactory = KeyFactory.getInstance(_name)
 
     override  def algorithmName: String= this.toString
-    override def generateKeys():Keys=
+    override def generateKeys():KeyPair=
       PersistentKeysGenerator.generateKeys()
 
-    def loadKeys(fileName: String = "key.ser"):Keys=
+    def loadKeys(fileName: String = "key.ser"):KeyPair=
       PersistentKeysGenerator.loadKeys()
 
     private def privateKeyFromString(privateKeyString: String): PrivateKey =
@@ -34,11 +36,11 @@ object RSA:
       val spec = new X509EncodedKeySpec(bytes)
       keyFactory.generatePublic(spec)
 
-    private def publicKeyStringFromKeyPair(kp: KeyPair): String =
+    private def publicKeyStringFromKeyPair(kp: JavaKeyPair): String =
       val bytes: Array[Byte] = kp.getPublic.getEncoded
       Base64.encodeToString(bytes)
 
-    private def privateKeyStringFromKeyPair(kp: KeyPair): String =
+    private def privateKeyStringFromKeyPair(kp: JavaKeyPair): String =
       val bytes: Array[Byte] = kp.getPrivate.getEncoded
       Base64.encodeToString(bytes)
 

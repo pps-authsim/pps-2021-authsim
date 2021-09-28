@@ -3,7 +3,6 @@ import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
 import it.unibo.authsim.library.dsl.cryptography.asymmetric.RSA
 import it.unibo.authsim.library.dsl.cryptography.symmetric.{AES, DES, CaesarCipher}
 
-import java.security.KeyPair
 import java.security.spec.{AlgorithmParameterSpec, KeySpec}
 import java.util.Base64
 import javax.crypto.spec.{PBEKeySpec, PBEParameterSpec}
@@ -20,11 +19,3 @@ trait AsymmetricEncryption extends Encryption with CryptographicAlgorithm
 
 trait CryptographicAlgorithm:
   def algorithmName: String
-
-trait Keys:
-  def publicKey: String
-  def privateKey: String
-
-trait KeyGenerator:
-  def generateKeys(): Keys
-  def loadKeys(fileName: String):Keys

@@ -1,13 +1,17 @@
 package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
-import it.unibo.authsim.library.dsl.cryptography.{Keys}
+import it.unibo.authsim.library.dsl.cryptography.asymmetric.KeyPair
 import it.unibo.authsim.library.dsl.cryptography.util.{CostumBase64 as Base64, DiskManager as Disk}
 
 import java.io.{File, FileInputStream, FileOutputStream, ObjectOutputStream, PrintWriter}
 import scala.io.Source
-import java.security.{KeyPair, KeyPairGenerator}
+import java.security.{KeyPair as JavaKeyPair, KeyPairGenerator}
 import java.security.spec.PKCS8EncodedKeySpec
-import it.unibo.authsim.library.dsl.cryptography.KeyGenerator
+
+
+trait KeyGenerator:
+  def generateKeys(): KeyPair
+  def loadKeys(fileName: String):KeyPair
 
 //Singleton
 object PersistentKeysGenerator extends KeyGenerator:
@@ -27,13 +31,13 @@ object PersistentKeysGenerator extends KeyGenerator:
       this._algorithmName=name
     else println("Invalid algorithm name")
 
-  private def generateKeyPair: KeyPair=
+  private def generateKeyPair: JavaKeyPair=
     val keyGen = KeyPairGenerator.getInstance(_algorithmName)
     keyGen.initialize(_bitlength)
     keyGen.generateKeyPair
 
-  private def key(keypair:KeyPair): Keys =
-    new Keys:
+  private def key(keypair:JavaKeyPair): KeyPair =
+    new KeyPair:
       def publicKey: String=
         val bytes: Array[Byte] = keypair.getPublic.getEncoded
         Base64.encodeToString(bytes)
@@ -42,17 +46,17 @@ object PersistentKeysGenerator extends KeyGenerator:
         val bytes: Array[Byte] = keypair.getPrivate.getEncoded
         Base64.encodeToString(bytes)
 
-  def generateKeys(): Keys =
+  def generateKeys(): KeyPair =
     val keypair = generateKeyPair
-    saveKeys(keypair:KeyPair)
+    saveKeys(keypair:JavaKeyPair)
 
-  def loadKeys(fileName: String = "key.ser"): Keys =
+  def loadKeys(fileName: String = "key.ser"): KeyPair =
     if (Disk.isExisting(fileName))then
-      val kp=Disk.loadObject[KeyPair](fileName)
-      key(kp.asInstanceOf[KeyPair])
+      val kp=Disk.loadObject[JavaKeyPair](fileName)
+      key(kp.asInstanceOf[JavaKeyPair])
     else
       generateKeys()
 
-  private def saveKeys(keypair:KeyPair):Keys=
+  private def saveKeys(keypair:JavaKeyPair) : KeyPair=
     Disk.saveObject(keypair, "prova.ser")
     key(keypair)

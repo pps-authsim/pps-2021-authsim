@@ -6,6 +6,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.apache.commons.io.FileUtils
 import java.io.{File, FileInputStream, FileOutputStream, ObjectOutputStream, PrintWriter}
 import scala.io.Source
+import  it.unibo.authsim.library.dsl.cryptography.asymmetric.KeyPair
 
 class AsymmetricEncryptionTest extends AnyWordSpec with Matchers {
   val rsa= RSA()
@@ -17,11 +18,11 @@ class AsymmetricEncryptionTest extends AnyWordSpec with Matchers {
 
    "RSA encryption" should {
     "be able to create Key pair"in{
-      rsa.generateKeys().isInstanceOf[Keys] shouldBe true
+      rsa.generateKeys().isInstanceOf[KeyPair] shouldBe true
     }
 
     "be le to load keys from a local file or generate a new one if it does not exist" in {
-      rsa.loadKeys(fileName).isInstanceOf[Keys] shouldBe true
+      rsa.loadKeys(fileName).isInstanceOf[KeyPair] shouldBe true
     }
 
     "be equal to the result of the decryption operation" in {

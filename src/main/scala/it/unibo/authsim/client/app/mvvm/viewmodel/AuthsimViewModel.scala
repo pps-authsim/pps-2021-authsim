@@ -49,6 +49,8 @@ class AuthsimViewModel(private val view: AuthsimView, private val model: Authsim
     val preset = usersViewModel.generateUsersFormProperties.presetProperty.getValue();
 
     println(quantity + " " + preset) // TODO hook client when ready
+    val credentialsPolicies = SecurityPolicy.Default.credentialsPoliciesFrom(preset) //TODO: use to generate Users
+    println(credentialsPolicies)
 
 
   def deleteSelectedUsers(): Unit =

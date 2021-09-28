@@ -4,7 +4,7 @@ import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackModel
-import it.unibo.authsim.client.app.mvvm.model.security.SecurityModel
+import it.unibo.authsim.client.app.mvvm.model.security.{SecurityModel, SecurityPolicy}
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityTab}
@@ -46,7 +46,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
       }
 
       "have default policy" in {
-        // TODO implement when policies are finalized
+        assert(mockModel.securityModel.securityPolicyList.hasSameValues(SecurityPolicy.Default.all))
       }
 
       "have default credentials source" in {
@@ -133,7 +133,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
         viewModel.launchAttack()
 
         val logValue = mockView.attackTab.attackLogProperty.value
-        assert(logValue.equals(" [user password] policy1 source1 Sequence1"))
+        assert(logValue.equals(" [user password] SuperSimple source1 Sequence1"))
         // TODO changeme when library is hooked
       }
 

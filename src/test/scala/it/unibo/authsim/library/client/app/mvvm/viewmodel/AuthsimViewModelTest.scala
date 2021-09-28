@@ -4,7 +4,7 @@ import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
 import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackModel
-import it.unibo.authsim.client.app.mvvm.model.security.SecurityModel
+import it.unibo.authsim.client.app.mvvm.model.security.{SecurityModel, SecurityPolicy}
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityTab}
@@ -15,7 +15,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.mockito.Mockito
 import org.mockito.Mockito.*
-import it.unibo.authsim.client.app.mvvm.model.users.User
+import it.unibo.authsim.library.user.model.User
 import org.scalatest.BeforeAndAfterEach
 
 import scala.collection.mutable.ListBuffer
@@ -46,7 +46,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
       }
 
       "have default policy" in {
-        // TODO implement when policies are finalized
+        assert(mockModel.securityModel.securityPolicyList.hasSameValues(SecurityPolicy.Default.all))
       }
 
       "have default credentials source" in {
@@ -67,7 +67,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
 
         viewModel.saveUser()
 
-        assert(mockModel.usersModel.usersList.value.sameElements(Seq(new User("user", "password"), new User("1234", "5678"))))
+        assert(mockModel.usersModel.usersList.value.sameElements(Seq(User("user", "password"), User("1234", "5678"))))
         assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))
         assert(mockView.usersTab.usersListProperty.value.get(1).equals(new UserEntry("1234", "5678")))
       }
@@ -133,7 +133,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
         viewModel.launchAttack()
 
         val logValue = mockView.attackTab.attackLogProperty.value
-        assert(logValue.equals(" [user password] policy1 source1 Sequence1"))
+        assert(logValue.equals(" [user password] SuperSimple source1 Sequence1"))
         // TODO changeme when library is hooked
       }
 
@@ -162,5 +162,5 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
     mock
 
   def assertUserTabHasDefaultValues(): Unit =
-    assert(mockModel.usersModel.usersList.value.sameElements(Seq(new User("user", "password"))))
+    assert(mockModel.usersModel.usersList.value.sameElements(Seq(User("user", "password"))))
     assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))

@@ -35,7 +35,7 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
     PolicyBuilder("Simple") of (userIDPolicy1, passwordPolicy1) build;
 
   private val policy1: Policy =
-    PolicyBuilder() of (userIDPolicy1, passwordPolicy1) transmitWith Local() build;
+    PolicyBuilder() of (userIDPolicy1, passwordPolicy1) build;
 
   private val policy2: Policy =
     PolicyBuilder("Medium") of userIDPolicy and passwordPolicy storeWith (SHA256(), saltPolicy) transmitWith Https() build;
@@ -44,7 +44,7 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
     PolicyBuilder() of userIDPolicy and passwordPolicy storeWith SHA1() transmitWith Https() build;
 
   private val policy4: Policy =
-    PolicyBuilder("2FA") of (userIDPolicy1, passwordPolicy1) and optPolicy transmitWith Local() build;
+    PolicyBuilder("2FA") of (userIDPolicy1, passwordPolicy1) and optPolicy build;
 
   private val policy5: Policy =
     PolicyBuilder("HardOTP") of optPolicy1 storeWith (SHA384(), saltPolicy1) transmitWith Https() build;
@@ -63,9 +63,6 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
 
   s"A policy was created with with credential policies: $userIDPolicy1 and $passwordPolicy1" should s"contain $CREDENTIALS_POLICY_1" in {
     policy1.credentialPolicies should be (CREDENTIALS_POLICY_1)
-  }
-  it should "transmitted in Local" in {
-    policy1.transmissionProtocol should be (Some(Local()))
   }
 
   s"Policy '${policy2.name}' was created with with credential policies: $userIDPolicy and $passwordPolicy" should s"contain $CREDENTIALS_POLICY" in {
@@ -91,9 +88,6 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
 
   s"Policy '${policy4.name}' was created with with credential policies: $userIDPolicy1, $passwordPolicy1 and $optPolicy" should s"contain $CREDENTIALS_POLICY_2" in {
       policy4.credentialPolicies should be (CREDENTIALS_POLICY_2)
-  }
-  it should "transmitted in Local" in {
-    policy4.transmissionProtocol should be (Some(Local()))
   }
 
   s"Policy '${policy5.name}' was created with with credential policies: $optPolicy1" should s"contain $optPolicy1" in {

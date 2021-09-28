@@ -30,27 +30,21 @@ trait OfflineAttackBuilder extends AttackBuilder:
    * @param target The UserProvider
    * @return The builder
    */
-  def against(target: UserProvider): this.type =
-    this.target = target
-    this
+  def against(target: UserProvider): this.type = this.builderMethod[UserProvider](provider => this.target = provider)(target)
 
   /**
    * Sets the number of maximum concurrent workers.
    * @param numberOfWorkers Maximum number of workers to set.
    * @return The builder
    */
-  def jobs(numberOfWorkers: Int): this.type =
-    this.numberOfWorkers = numberOfWorkers
-    this
+  def jobs(numberOfWorkers: Int): this.type = this.builderMethod[Int](n => this.numberOfWorkers = n)(numberOfWorkers)
 
   /**
    * Sets the hash function to use in the attack.
    * @param hashFunction The hash function.
    * @return The builder.
    */
-  def hashingWith(hashFunction: HashFunction): this.type =
-    this.hashFunction = hashFunction
-    this
+  def hashingWith(hashFunction: HashFunction): this.type = this.builderMethod[HashFunction](fun => this.hashFunction = fun)(hashFunction)
 
 /**
  * An offline attack.

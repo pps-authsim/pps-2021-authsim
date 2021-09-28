@@ -5,6 +5,7 @@ import it.unibo.authsim.library.dsl.builder.Builder
 import it.unibo.authsim.library.dsl.otp.checkers.OTPChecker
 import it.unibo.authsim.library.dsl.otp.generators.OTPGenerator
 import it.unibo.authsim.library.dsl.otp.model.*
+import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.{generatorLength, generatorSeed}
 import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.OTPPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 
@@ -14,7 +15,7 @@ import scala.language.postfixOps
 import scala.util.Random
 
 trait OTPBuilder[T] extends Builder[T]:
-  def withPolicy(policy: OTPPolicy): this.type
+  def withPolicy(policy: OTPPolicy)(implicit generateLength: OTPPolicy => Int): this.type
   def secret(secret: OTPBuilder.SecretValue): this.type
 
 object OTPBuilder:
@@ -28,10 +29,22 @@ object OTPBuilder:
 
   abstract class AbstractOTPBuilder[T] extends OTPBuilder[T]:
     protected val SEPARATOR_SECRET = '-'
-    protected var _policy: OTPPolicy = OTPPolicyBuilder() minimumLength 4 maximumLength 10 build
+    protected var _policy: OTPPolicy = null
     protected var _secret: String = Random.alphanumeric.take(10).mkString
 
-    override def withPolicy(policy: OTPPolicy) = this.builderMethod[OTPPolicy](policy => this._policy = policy)(policy)
+    protected var _length: Int = 0
+    this.withPolicy(OTPPolicyBuilder() minimumLength 4 maximumLength 10 build)
+
+    protected var _seed: Int = 0
+    this.generateSeed
+
+    protected def generateSeed(implicit seedGenerator: () => Int): Unit = this._seed = seedGenerator() //TODO: CHECK IF THE NEW SEED IS EQUALS PREVIOUS ONE
+
+    override def withPolicy(policy: OTPPolicy)(implicit lengthGenerator: OTPPolicy => Int) =
+      this.builderMethod[OTPPolicy](policy =>
+        this._policy = policy;
+        this._length = lengthGenerator(policy)
+      )(policy)
 
     override def secret(secret: SecretValue) = this.builderMethod[SecretValue](secret => this._secret = s"${secret._1}$SEPARATOR_SECRET${secret._2}")(secret)
 

@@ -8,5 +8,5 @@ trait OTPChecker:
 
 object OTPChecker:
 
-  implicit val hotpChecker: HOTP => OTPChecker = (hotp: HOTP) =>  new OTPChecker:
-    override def check(pincode: String): Boolean = truncate(hotp.hashFunction, hotp.secret, pincode.length)(hmac) == pincode
+  implicit val hotpChecker: (HOTP, Int) => OTPChecker = (hotp: HOTP, seed: Int) =>  new OTPChecker:
+    override def check(pincode: String): Boolean = truncate(hotp.hashFunction, hotp.secret, pincode.length, seed)(hmac) == pincode

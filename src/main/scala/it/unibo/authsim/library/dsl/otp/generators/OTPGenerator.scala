@@ -10,5 +10,5 @@ trait OTPGenerator:
 
 object OTPGenerator:
 
-  implicit val hotpGenerator: HOTP => OTPGenerator = (hotp: HOTP) => new OTPGenerator:
-    override def generate: String = truncate(hotp.hashFunction, hotp.secret, Random.between(hotp.policy.minimumLength, hotp.policy.maximumLength))(hmac)
+  implicit val hotpGenerator: (HOTP, Int) => OTPGenerator = (hotp: HOTP, seed: Int) => new OTPGenerator:
+    override def generate: String = truncate(hotp.hashFunction, hotp.secret, hotp.length, seed)(hmac)

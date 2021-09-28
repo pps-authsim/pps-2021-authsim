@@ -1,11 +1,12 @@
 package it.unibo.authsim.library.dsl.otp
 
 import it.unibo.authsim.library.dsl.HashFunction
-import it.unibo.authsim.library.dsl.policy.checkers.PolicyChecker
-import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
+import it.unibo.authsim.library.dsl.otp.builders.*
+import it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.*
+import it.unibo.authsim.library.dsl.otp.model.*
+import it.unibo.authsim.library.dsl.policy.checkers.{PolicyChecker, StringPolicyChecker}
 import it.unibo.authsim.library.dsl.policy.defaults.stringpolicy.OTPPolicyDefault
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
-import it.unibo.authsim.library.dsl.otp.OneTimePassword.*
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.util.concurrent.TimeUnit
@@ -20,6 +21,8 @@ class OneTimePasswordTests extends AnyWordSpec:
   private val duration: Duration = Duration(5, TimeUnit.SECONDS)
   private val hashFunction: HashFunction = HashFunction.SHA256()
   private val pincodeWrong: String = "12345"
+  private val secret1: SecretValue = ("lucaverdi", "my-password")
+  private val secret2: SecretValue = ("mario-rossi", "my-password")
 
   private var totp: TOTP = null
   private var tOTPGenerated: String = null
@@ -30,14 +33,14 @@ class OneTimePasswordTests extends AnyWordSpec:
   private val not = afterWord("not")
 
   "A HOTP" when {
-    hotp = OneTimePassword(hashFunction).secret(("lucaverdi", "my-password"))
+    hotp = HOTPBuilder().hashFunction(hashFunction).secret(secret1).withPolicy(policy).build
+    println(hotp)
     "is defined" should {
       s"have like hash function: ${hashFunction}" in {
         assert(hotp.hashFunction == hashFunction)
       }
     }
     "a policy is set " should {
-      hotp.withPolicy(policy);
       hmacOTPGenerated = hotp.generate
       "generate a value that respects it" in {
         assert(policyChecker check hmacOTPGenerated)
@@ -57,14 +60,14 @@ class OneTimePasswordTests extends AnyWordSpec:
 
 
   "A TOTP " when {
-    totp = OneTimePassword(duration).secret(("mario-rossi", "my-password"))
+    totp =  TOTPBuilder().timeout(duration).secret(secret2).withPolicy(policy).build
+    println(totp)
     "is defined" should {
       s"have be valid for ${duration.toSeconds} seconds" in {
         assert(totp.asInstanceOf[TOTP].timeout.toSeconds == duration.toSeconds)
       }
     }
     "a policy is set " should {
-      totp.withPolicy(policy);
       tOTPGenerated = totp.generate
       "generate a value that respects it" in {
         assert(policyChecker check tOTPGenerated)

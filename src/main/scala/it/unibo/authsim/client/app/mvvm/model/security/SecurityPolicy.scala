@@ -11,6 +11,9 @@ case class SecurityPolicy(val policy: String, val description: String)
 
 object SecurityPolicy:
 
+  /**
+   * ''Default'' is a rappresentation of default policy
+   */
   object Default extends Enumeration:
     type Default = Value
 
@@ -151,10 +154,20 @@ object SecurityPolicy:
     val SSH_HARDHARD = DefaultVal(policiesDefaultsSSH.hardHard)
     val SSH_SUPERHARDHARD = DefaultVal(policiesDefaultsSSH.superHardHard)
 
+    /**
+     * @return a set value of defined default policy that do not have a transmission protocol
+     */
     def withoutProtocol: SecurityPolicy.Default.ValueSet = this.values.filter(_.policy.transmissionProtocol.isEmpty)
 
+    /**
+     * @return a sequence of all defined defualt policies mapped in [[SecurityPolicy]]
+     */
     def all: Seq[SecurityPolicy] = (for default <- this.values.toSeq yield SecurityPolicy(default.name, default.description))
 
+    /**
+     * @param name name of selected default policy
+     * @return a optional sequence of [[CredentialPolicy credential policies]] of selected default policy
+     */
     def credentialsPoliciesFrom(name: String): Option[Seq[CredentialPolicy]] =
       val default = this.values.find(_.name == name)
       if default.isDefined then Some(default.get.policy.credentialPolicies) else None

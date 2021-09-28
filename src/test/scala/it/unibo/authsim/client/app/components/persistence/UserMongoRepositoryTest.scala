@@ -19,7 +19,7 @@ import scala.concurrent.{Await, Promise}
 import scala.concurrent.duration.Duration
 
 object UserMongoRepositoryTest:
-  private val operationTimeout = Duration(30, TimeUnit.SECONDS)
+  private val operationTimeout = Duration(5, TimeUnit.MINUTES)
 
   private val databaseName = "authsim"
   private val collectionName = "users"

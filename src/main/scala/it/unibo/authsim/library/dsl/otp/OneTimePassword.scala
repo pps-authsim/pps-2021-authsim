@@ -1,6 +1,7 @@
 package it.unibo.authsim.library.dsl.otp
 
 import it.unibo.authsim.library.dsl.HashFunction
+import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.OTPPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 
 import java.util.concurrent.TimeUnit
@@ -9,6 +10,8 @@ import javax.crypto.Mac
 import scala.concurrent.duration.Duration
 import scala.collection.mutable.Map as MutableMap
 import scala.util.Random
+
+import scala.language.postfixOps
 
 trait OneTimePassword:
   def withPolicy(policy: OTPPolicy): this.type
@@ -32,11 +35,7 @@ object OneTimePassword:
 
   private class HOTPImpl(override val hashFunction: HashFunction) extends HOTP:
     private val pinsGenerated: MutableMap[String, String] = MutableMap.empty
-
-    private val minLenDefault: Int = 4
-    private val maxLenDefault: Int = 10
-
-    private var policy: Option[OTPPolicy] = None
+    private var policy: OTPPolicy = OTPPolicyBuilder() minimumLength 4 maximumLength 10 build
     private var _secret: String = Random.alphanumeric.take(10).mkString
 
     import OTPHelpers.*
@@ -46,13 +45,11 @@ object OneTimePassword:
       this
 
     override def withPolicy(policy: OTPPolicy) =
-      this.policy = Some(policy)
+      this.policy = policy
       this
 
     override def generate: String =
-      val min: Int = if this.policy.isDefined then this.policy.get.minimumLength else this.minLenDefault;
-      val max: Int = if this.policy.isDefined then this.policy.get.maximumLength else this.maxLenDefault;
-      val hotp = truncate(this.hashFunction, this._secret, Random.between(min, max))(hmac)
+      val hotp = truncate(this.hashFunction, this._secret, Random.between(this.policy.minimumLength , this.policy.maximumLength))(hmac)
       pinsGenerated += hotp -> this._secret
       hotp
 

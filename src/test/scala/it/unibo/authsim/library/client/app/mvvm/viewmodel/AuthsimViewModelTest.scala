@@ -15,7 +15,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.mockito.Mockito
 import org.mockito.Mockito.*
-import it.unibo.authsim.client.app.mvvm.model.users.User
+import it.unibo.authsim.library.user.model.User
 import org.scalatest.BeforeAndAfterEach
 
 import scala.collection.mutable.ListBuffer
@@ -67,7 +67,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
 
         viewModel.saveUser()
 
-        assert(mockModel.usersModel.usersList.value.sameElements(Seq(new User("user", "password"), new User("1234", "5678"))))
+        assert(mockModel.usersModel.usersList.value.sameElements(Seq(User("user", "password"), User("1234", "5678"))))
         assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))
         assert(mockView.usersTab.usersListProperty.value.get(1).equals(new UserEntry("1234", "5678")))
       }
@@ -162,5 +162,5 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
     mock
 
   def assertUserTabHasDefaultValues(): Unit =
-    assert(mockModel.usersModel.usersList.value.sameElements(Seq(new User("user", "password"))))
+    assert(mockModel.usersModel.usersList.value.sameElements(Seq(User("user", "password"))))
     assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))

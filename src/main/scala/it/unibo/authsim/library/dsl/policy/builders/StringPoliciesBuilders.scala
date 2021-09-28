@@ -11,21 +11,77 @@ import scala.util.matching.Regex
 
 object StringPoliciesBuilders:
 
+  /**
+   * ''StringPolicyBuilder'' is a trait that is used to build a new policy of type string
+   * @tparam T the type to build
+   */
   trait StringPolicyBuilder[T] extends Builder[T]:
+    /**
+     * Set a [[PolicyAlphabet policy alphabet]]
+     * @param alphabetPolicy policy alphabet to set
+     * @return instance of the actual builder
+     */
     def addAlphabet(alphabetPolicy: PolicyAlphabet): this.type
-    def addPatterns(regex: Regex): this.type
+    /**
+     * Check if the given value is valid for a policy of type string
+     * @param value value to check
+     * @param policyChecker (@see [[PolicyChecker#stringPolicyChecker]])
+     * @return instance of the actual builder
+     */
     def check(value: String)(implicit policyChecker: List[Regex] => PolicyChecker[String]): Boolean
 
+  /**
+   * ''RestrictStringPolicyBuilder'' rappresent an extension to build a new restricted policy of type string
+   * @tparam T the type to build
+   */
   trait RestrictStringPolicyBuilder[T] extends Builder[T]:
+    /**
+     * Set the maximum length a string must have.
+     * @param number maximum length of string to set
+     * @return instance of the actual builder
+     */
     def maximumLength(number: Int): this.type
+    /**
+     * Set the minimum length a string must have.
+     * @param number minimum length of string to set
+     * @return instance of the actual builder
+     */
     def minimumLength(number: Int): this.type
 
+  /**
+   * ''MoreRestrictStringPolicyBuilder'' rappresent an extension to build a new more restricted policy of type string
+   * @tparam T the type to build
+   */
   trait MoreRestrictStringPolicyBuilder[T] extends Builder[T]:
+    /**
+     * Set the minimum number of lowercase characters a string must have.
+     * @param number minimum number of lowercase characters to set
+     * @return instance of the actual builder
+     */
     def minimumLowerChars(number: Int): this.type
+    /**
+     * Set the minimum number of uppercase characters a string must have.
+     * @param number minimum number of uppercase characters to set
+     * @return instance of the actual builder
+     */
     def minimumUpperChars(number: Int): this.type
+    /**
+     * Set the minimum number of symbols a string must have.
+     * @param number minimum number of symbols to set
+     * @return instance of the actual builder
+     */
     def minimumSymbols(number: Int): this.type
+    /**
+     * Set the minimum number of digits a string must have.
+     * @param number minimum number of digits to set
+     * @return instance of the actual builder
+     */
     def minimumNumbers(number: Int): this.type
 
+  /**
+   * ''AbstractStringPolicyBuilder'' is an abstract builder that implements [[StringPolicyBuilder]] and [[RestrictStringPolicyBuilder]] methods
+   * @tparam T the type to build
+   */
   abstract class AbstractStringPolicyBuilder[T] extends StringPolicyBuilder[T] with RestrictStringPolicyBuilder[T]:
     protected var minLen: Int = 1
     protected var maxLen: Int = 20
@@ -42,9 +98,13 @@ object StringPoliciesBuilders:
     override def addAlphabet(alphabetPolicy: PolicyAlphabet) =
       this.builderMethod((alphabetPolicy: PolicyAlphabet) => this.alphabetPolicy = alphabetPolicy)(alphabetPolicy)
 
-    override def addPatterns(regex: Regex) =
-      this.builderMethod((regex: Regex) => patterns += regex)(regex)
+    protected def addPatterns(regex: Regex) = this.builderMethod((regex: Regex) => patterns += regex)(regex)
 
+    /**
+     * @param number maximum length of string to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is less than minimum value
+     */
     override def maximumLength(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.rangeLength(this.minLen, this.maxLen))
@@ -53,6 +113,11 @@ object StringPoliciesBuilders:
       this.addPatterns(this.alphabetPolicy.rangeLength(this.minLen, number))
     })(number)
 
+    /**
+     * @param number minimum length of string to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is greater than maximum value
+     */
     override def minimumLength(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.minimumLength(this.minLen))
@@ -63,6 +128,10 @@ object StringPoliciesBuilders:
 
     override def check(value: String)(implicit policyChecker: List[Regex] => PolicyChecker[String]): Boolean = policyChecker(patterns.toList).check(value)
 
+  /**
+   * ''AbstractMoreRestrictStringPolicyBuilder'' is an abstract builder that extends [[AbstractStringPolicyBuilder]] and implements [[MoreRestrictStringPolicyBuilder]] methods
+   * @tparam T the type to build
+   */
   abstract class AbstractMoreRestrictStringPolicyBuilder[T] extends AbstractStringPolicyBuilder[T] with MoreRestrictStringPolicyBuilder[T]:
     protected var minUpperChars: Int = 0
     protected var minLowerChars: Int = 0
@@ -76,6 +145,11 @@ object StringPoliciesBuilders:
       this.patterns += this.alphabetPolicy.minimumLowerCharacters(number)
     })(number)
 
+    /**
+     * @param number minimum number of uppercase characters to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0
+     */
     override def minimumUpperChars(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.minimumUpperCharacters(this.minUpperChars))
@@ -83,6 +157,11 @@ object StringPoliciesBuilders:
       this.addPatterns(this.alphabetPolicy.minimumUpperCharacters(number))
     })(number)
 
+    /**
+     * @param number minimum number of symbols to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0
+     */
     override def minimumSymbols(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.minimumSymbols(this.minSymbols))
@@ -90,6 +169,11 @@ object StringPoliciesBuilders:
       this.addPatterns(this.alphabetPolicy.minimumSymbols(number))
     })(number)
 
+    /**
+     * @param number minimum number of digits to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0
+     */
     override def minimumNumbers(number: Int) = this.builderMethod((number: Int) => {
       this.checkNegativeNumbers(number)
       this.checkReCall(this.alphabetPolicy.minimumNumbers(this.minNumbers))
@@ -97,6 +181,9 @@ object StringPoliciesBuilders:
       this.addPatterns(this.alphabetPolicy.minimumNumbers(number))
     })(number)
 
+  /**
+   * ''UserIDPolicyBuilder'' is userID policy builder
+   */
   case class UserIDPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[UserIDPolicy]:
     override def build: UserIDPolicy = new UserIDPolicy:
       override def minimumLength: Int = UserIDPolicyBuilder.this.minLen
@@ -109,6 +196,9 @@ object StringPoliciesBuilders:
       override def minimumNumbers: Int = UserIDPolicyBuilder.this.minNumbers
       override def toString: String = Helpers.buildToString("UseIDPolicy", this)
 
+  /**
+   * ''PasswordPolicyBuilder'' is password policy builder
+   */
   case class PasswordPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[PasswordPolicy]:
     override def build: PasswordPolicy = new PasswordPolicy:
       override def minimumLength: Int = PasswordPolicyBuilder.this.minLen
@@ -121,6 +211,9 @@ object StringPoliciesBuilders:
       override def minimumNumbers: Int = PasswordPolicyBuilder.this.minNumbers
       override def toString: String = Helpers.buildToString("PasswordPolicy", this)
 
+  /**
+   * ''OTPPolicyBuilder'' is OTP policy builder
+   */
   case class OTPPolicyBuilder() extends AbstractStringPolicyBuilder[OTPPolicy]:
     this.alphabetPolicy.onlyNumbers +=: this.patterns
     override def build: OTPPolicy = new OTPPolicy:
@@ -130,6 +223,9 @@ object StringPoliciesBuilders:
       override def patterns: ListBuffer[Regex] = OTPPolicyBuilder.this.patterns
       override def toString: String = Helpers.buildToString("OTPPolicy", this)
 
+  /**
+   * ''SaltPolicyBuilder'' is salt policy builder
+   */
   case class SaltPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[SaltPolicy]:
     override def build: SaltPolicy = new SaltPolicy:
       override def minimumLength: Int = SaltPolicyBuilder.this.minLen

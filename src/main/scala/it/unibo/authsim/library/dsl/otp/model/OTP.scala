@@ -5,5 +5,7 @@ import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 trait OTP:
   def policy: OTPPolicy
   def secret: String
+  def length: Int
+  def reset: Unit
   def generate: String
   def check(pincode: String): Boolean

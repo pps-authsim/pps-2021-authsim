@@ -4,6 +4,7 @@ import it.unibo.authsim.library.dsl.HashFunction
 import it.unibo.authsim.library.dsl.otp.builders.*
 import it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.*
 import it.unibo.authsim.library.dsl.otp.model.*
+import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.generatorLength
 import it.unibo.authsim.library.dsl.policy.checkers.{PolicyChecker, StringPolicyChecker}
 import it.unibo.authsim.library.dsl.policy.defaults.stringpolicy.OTPPolicyDefault
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy

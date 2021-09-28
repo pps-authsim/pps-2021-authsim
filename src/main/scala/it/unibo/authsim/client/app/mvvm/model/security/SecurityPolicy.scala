@@ -14,7 +14,7 @@ object SecurityPolicy:
   object Default extends Enumeration:
     type Default = Value
 
-    implicit class Descriptor(base: String):
+    implicit class RichString(base: String):
       def descriptor(defaultVal: DefaultVal) =
         s"""${base}\n
             ${if defaultVal.policy.transmissionProtocol.isDefined then s"Credentials are trasmitted with protocol ${defaultVal.policy.transmissionProtocol.get.getClass.getSimpleName.toUpperCase}." else "No protocol." }\n

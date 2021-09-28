@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.cryptography.util
 
-object CostumBase64:
+object Base64:
   import java.util.Base64.{getDecoder, getEncoder}
   def decodeToBytes(s: String): Array[Byte] = getDecoder.decode(s)
   def decodeToBytes(bytes: Array[Byte]): Array[Byte] = getDecoder.decode(bytes)

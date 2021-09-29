@@ -10,8 +10,7 @@ import java.security.{KeyPair as JavaKeyPair, KeyPairGenerator}
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
-trait RSA extends AsymmetricEncryption with KeyGenerator:
-  def generateKeys(): KeyPair
+trait RSA extends AsymmetricEncryption with KeyGenerator
   
 object RSA:
   import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator

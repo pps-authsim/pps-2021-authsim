@@ -22,9 +22,11 @@ object DES:
     private var _salt: Array[Byte] = Array(0xA9.asInstanceOf[Byte], 0x9B.asInstanceOf[Byte], 0xC8.asInstanceOf[Byte], 0x32.asInstanceOf[Byte], 0x56.asInstanceOf[Byte], 0x35.asInstanceOf[Byte], 0xE3.asInstanceOf[Byte], 0x03.asInstanceOf[Byte])
     private var _iterationCount: Int = 19
     private val _name: String = "DES"
-
+    private val _algorithm : String = "PBEWithMD5AndDES"
+    private val charset: String = "UTF8"
+      
     implicit def stringToCharArray(value : String):Array[Char] =value.toCharArray
-    implicit def stringToArrayByte(value : String):Array[Byte] =value.getBytes("UTF8")
+    implicit def stringToArrayByte(value : String):Array[Byte] =value.getBytes(charset)
     implicit def ArrayByteToString(value :Array[Byte]):String =value.toString
 
     def secretSalt()=_salt
@@ -44,16 +46,15 @@ object DES:
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(Base64.encodeToBytes(cipher.doFinal(password)), "UTF8")
+          new String(Base64.encodeToBytes(cipher.doFinal(password)), charset)
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(cipher.doFinal(Base64.decodeToBytes(password)), "UTF8")
+          new String(cipher.doFinal(Base64.decodeToBytes(password)), charset)
       }
     override def toString: String = "DES"
     
-    override def iterationCount_(key: Int): Unit =
-      _iterationCount = key
+    override def iterationCount_(key: Int): Unit = _iterationCount = key
 
     private def keyToSpec(secret: String): SecretKey =
       var keySpec: KeySpec = new PBEKeySpec(secret, _salt, _iterationCount)
-      SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(keySpec)
+      SecretKeyFactory.getInstance(_algorithm).generateSecret(keySpec)

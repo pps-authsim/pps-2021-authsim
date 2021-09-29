@@ -13,15 +13,18 @@ import javax.crypto.spec.{PBEKeySpec, SecretKeySpec}
 
 
 trait AES extends SymmetricEncryption:
-  override def algorithmName: String
-  override def encrypt(password: String, secret:String): String
-  override def decrypt(password: String, secret:String): String
+  def algorithmName: String
+  def encrypt(password: String, secret:String): String
+  def decrypt(password: String, secret:String): String
   def secretSalt(): String
 
 object AES:
   def apply()= new AES() :
-    private val _name="AES"
+    private val _length : Int = 16 
+    private val _name : String ="AES"
     private var _salt: String = "123456789"
+    private val _charset: String = "UTF8"
+    private val _trasformation: String = "AES/ECB/PKCS5PADDING"
 
     override def algorithmName: String = _name
     override def secretSalt(): String= _salt
@@ -33,11 +36,11 @@ object AES:
       crypto(EncryptionMode.Decryption, encryptedPassword, secret)
 
     private def crypto(mode:EncryptionMode, password: String, secret: String): String=
-      val cipher: Cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING")
+      val cipher: Cipher = Cipher.getInstance(_trasformation)
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, keyToSpec(secret))
-          new String(Base64.encodeToBytes(cipher.doFinal(password.getBytes("UTF8"))))
+          new String(Base64.encodeToBytes(cipher.doFinal(password.getBytes(_charset))))
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, keyToSpec(secret))
           new String(cipher.doFinal(Base64.decodeToBytes(password)))
@@ -49,6 +52,6 @@ object AES:
 
     private def keyToSpec(secret: String): SecretKeySpec =
       var hashFunctionSHA256 = new HashFunction.SHA256
-      var keyBytes: Array[Byte] = hashFunctionSHA256.hash(_salt + secret).getBytes("UTF8")
-      keyBytes = util.Arrays.copyOf(keyBytes, 16)
+      var keyBytes: Array[Byte] = hashFunctionSHA256.hash(_salt + secret).getBytes(_charset)
+      keyBytes = util.Arrays.copyOf(keyBytes, _length)
       new SecretKeySpec(keyBytes, _name)

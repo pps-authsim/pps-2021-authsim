@@ -7,13 +7,16 @@ trait CaesarCipher extends SymmetricEncryption
 
 object CaesarCipher:
   def apply() = new CaesarCipher():
-    private val alphaL=('a' to 'z') ++ ('A' to 'Z')
+    private var alphaL=('a' to 'z') ++ ('A' to 'Z')
 
     private def crypto(password: String, key:Int)=
       password.map{
         case c if alphaL.contains(c) => shift(alphaL, c, key)
         case c => c
       }
+    
+    def alphabet_(newAlphabet:String) : Unit = alphaL = newAlphabet
+      
     override def toString: String = "CaesarCipher"
 
     override def encrypt(password: String, key: String): String = crypto(password.toLowerCase, key.toInt)

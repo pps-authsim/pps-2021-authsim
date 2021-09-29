@@ -7,7 +7,7 @@ trait CaesarCipher extends SymmetricEncryption
 
 object CaesarCipher:
   def apply() = new CaesarCipher():
-    import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.{objectToString, objectToInt}
+    import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.{genericToString, objectToInt}
 
     private var alphaL=('a' to 'z') ++ ('A' to 'Z') 
 

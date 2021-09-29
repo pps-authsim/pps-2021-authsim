@@ -6,7 +6,7 @@ import it.unibo.authsim.library.dsl.cryptography.{AsymmetricEncryption, Cryptogr
 import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
 
 import java.security.*
-import java.security.{KeyPair as JavaKeyPair, KeyPairGenerator}
+import java.security.{KeyPairGenerator, KeyPair as JavaKeyPair}
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
@@ -28,12 +28,12 @@ object RSA:
       PersistentKeysGenerator.loadKeys()
 
     private def privateKeyFromString(privateKeyString: String): PrivateKey =
-      val bytes = Base64.decodeToBytes(privateKeyString)
+      val bytes = Base64.decodeToArray(privateKeyString)
       val spec = new PKCS8EncodedKeySpec(bytes)
       keyFactory.generatePrivate(spec)
 
     private def publicKeyFromString(publicKeyString: String): PublicKey =
-      val bytes = Base64.decodeToBytes(publicKeyString)
+      val bytes = Base64.decodeToArray(publicKeyString)
       val spec = new X509EncodedKeySpec(bytes)
       keyFactory.generatePublic(spec)
 
@@ -61,7 +61,7 @@ object RSA:
         case EncryptionMode.Decryption =>
           val key = privateKeyFromString(inputKey)
           cipher.init(Cipher.DECRYPT_MODE, key)
-          new String(cipher.doFinal(Base64.decodeToBytes(password)))
+          new String(cipher.doFinal(Base64.decodeToArray(password)))
       }
-      
+
     override def toString: String = "RSA"

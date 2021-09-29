@@ -7,10 +7,9 @@ import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
 
 import java.security.MessageDigest
 import java.security.spec.KeySpec
-import java.util
 import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 import javax.crypto.spec.{PBEKeySpec, SecretKeySpec}
-
+import java.util._
 
 trait AES extends SymmetricEncryption:
   def secretSalt(): String
@@ -38,10 +37,10 @@ object AES:
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, keyToSpec(secret))
-          new String(Base64.encodeToBytes(cipher.doFinal(password)))
+          new String(Base64.encodeToArray(cipher.doFinal(password)))
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, keyToSpec(secret))
-          new String(cipher.doFinal(Base64.decodeToBytes(password)))
+          new String(cipher.doFinal(Base64.decodeToArray(password)))
       }
 
     override def toString: String = "AES"
@@ -49,5 +48,5 @@ object AES:
     private def keyToSpec(secret: String): SecretKeySpec =
       var hashFunctionSHA256 = new HashFunction.SHA256
       var keyBytes: Array[Byte] = hashFunctionSHA256.hash(_salt + secret)
-      keyBytes = util.Arrays.copyOf(keyBytes, _length)
+      keyBytes = Arrays.copyOf(keyBytes, _length)
       new SecretKeySpec(keyBytes, _name)

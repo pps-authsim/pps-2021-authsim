@@ -38,10 +38,10 @@ object DES:
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(Base64.encodeToBytes(cipher.doFinal(password)))
+          new String(Base64.encodeToArray(cipher.doFinal(password)))
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(cipher.doFinal(Base64.decodeToBytes(password)))
+          new String(cipher.doFinal(Base64.decodeToArray(password)))
       }
     override def toString: String = "DES"
     

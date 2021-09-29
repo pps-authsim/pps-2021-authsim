@@ -5,7 +5,7 @@ import it.unibo.authsim.library.dsl.builder.Builder
 import it.unibo.authsim.library.dsl.otp.checkers.OTPChecker
 import it.unibo.authsim.library.dsl.otp.generators.OTPGenerator
 import it.unibo.authsim.library.dsl.otp.model.*
-import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.{generatorLength, generatorSeed}
+import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.*
 import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.OTPPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 
@@ -38,7 +38,9 @@ object OTPBuilder:
     protected var _seed: Int = 0
     this.generateSeed
 
-    protected def generateSeed(implicit seedGenerator: () => Int): Unit = this._seed = seedGenerator() //TODO: CHECK IF THE NEW SEED IS EQUALS PREVIOUS ONE
+    protected def generateSeed(implicit seedGenerator: () => Int): Unit =
+      val genSeed: Int = seedGenerator()
+      this._seed = if genSeed == this._seed then genSeed++ else genSeed
 
     override def withPolicy(policy: OTPPolicy)(implicit lengthGenerator: OTPPolicy => Int) =
       this.builderMethod[OTPPolicy](policy =>

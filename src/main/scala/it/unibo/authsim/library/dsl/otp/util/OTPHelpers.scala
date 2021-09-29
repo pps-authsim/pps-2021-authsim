@@ -7,7 +7,12 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import scala.util.Random
 
+import scala.language.postfixOps
+
 object OTPHelpers:
+
+  implicit class RichInt(base: Int):
+    def ++ : Int = base + 1
 
   private implicit class RichByte(base: Byte):
     def toUInt: Int = base & 0xff

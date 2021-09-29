@@ -25,16 +25,17 @@ class OneTimePasswordTests extends AnyWordSpec:
   private val secret1: SecretValue = ("lucaverdi", "my-password")
   private val secret2: SecretValue = ("mario-rossi", "my-password")
 
-  private var totp: TOTP = null
+  private var totp: TOTP = TOTPBuilder().timeout(duration).secret(secret2).withPolicy(policy).build
   private var tOTPGenerated: String = null
 
-  private var hotp: HOTP = null
+  private var hotp: HOTP = HOTPBuilder().hashFunction(hashFunction).secret(secret1).withPolicy(policy).build
   private var hmacOTPGenerated: String = null
 
   private val not = afterWord("not")
 
+  import Helpers.*
+
   "A HOTP" when {
-    hotp = HOTPBuilder().hashFunction(hashFunction).secret(secret1).withPolicy(policy).build
     println(hotp)
     "is defined" should {
       s"have like hash function: ${hashFunction}" in {
@@ -61,7 +62,6 @@ class OneTimePasswordTests extends AnyWordSpec:
 
 
   "A TOTP " when {
-    totp =  TOTPBuilder().timeout(duration).secret(secret2).withPolicy(policy).build
     println(totp)
     "is defined" should {
       s"have be valid for ${duration.toSeconds} seconds" in {
@@ -81,3 +81,33 @@ class OneTimePasswordTests extends AnyWordSpec:
       }
     }
   }
+
+  "HOTP" when {
+    generateFirstPincode(hotp)
+    "is resetted for more time" should {
+      "generate always a different pincode" in {
+        checkNewPincodes(hotp)
+      }
+    }
+  }
+
+  "TOTP" when {
+    generateFirstPincode(totp)
+    "is resetted for more time" should {
+      "generate always a different pincode" in {
+        checkNewPincodes(totp)
+      }
+    }
+  }
+
+  private object Helpers:
+    private var pincode: String = null
+
+    def generateFirstPincode(otp: OTP): Unit = pincode = otp.generate
+
+    def checkNewPincodes(otp: OTP): Unit =
+      (0 to 1000).foreach(_ =>
+        otp.reset
+        assert(pincode != otp.generate)
+        pincode = otp.generate
+      )

@@ -1,8 +1,7 @@
 package it.unibo.authsim.library.dsl.cryptography.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, EncryptionMode}
-
-import it.unibo.authsim.library.dsl.cryptography.util.Base64 as Base64
+import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm}
+import it.unibo.authsim.library.dsl.cryptography.util.Base64 
 
 import java.io.*
 import java.security.spec.*

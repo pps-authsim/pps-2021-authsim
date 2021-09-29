@@ -1,8 +1,8 @@
 package it.unibo.authsim.library.dsl.cryptography.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.symmetric.SymmetricEncryption
-import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm, EncryptionMode}
-import it.unibo.authsim.library.dsl.cryptography.util.Base64 as Base64
+import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm}
+import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
 
 import java.security.MessageDigest
@@ -44,7 +44,7 @@ object AES:
           cipher.init(Cipher.DECRYPT_MODE, keyToSpec(secret))
           new String(cipher.doFinal(Base64.decodeToBytes(password)))
       }
-    
+
     override def toString: String = "AES"
 
     private def keyToSpec(secret: String): SecretKeySpec =

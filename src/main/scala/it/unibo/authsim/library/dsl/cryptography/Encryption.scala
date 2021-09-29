@@ -9,11 +9,11 @@ import javax.crypto.spec.{PBEKeySpec, PBEParameterSpec}
 import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 
 trait Encryption:
+  protected enum EncryptionMode:
+    case Decryption, Encryption
+
   def encrypt[A, B](password: A, secret:B): String
   def decrypt[A, B](password: A, secret:B): String
-
-enum EncryptionMode:
-  case Decryption, Encryption
 
 trait AsymmetricEncryption extends Encryption with CryptographicAlgorithm
 

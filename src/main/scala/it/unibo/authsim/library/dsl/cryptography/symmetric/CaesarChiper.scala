@@ -9,7 +9,7 @@ object CaesarCipher:
   def apply() = new CaesarCipher():
     import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.{objectToString, objectToInt}
 
-    private var alphaL=('a' to 'z') ++ ('A' to 'Z')
+    private var alphaL=('a' to 'z') ++ ('A' to 'Z') 
 
     private def crypto(password: String, key:Int)=
       password.map{

@@ -28,5 +28,4 @@ object HashFunction:
   
   case class MD5() extends HashFunction:
     override def algorithmName: String = this.toString
-
     override def hash(password: String): String = DigestUtils.md5Hex(password.getBytes(StandardCharsets.UTF_8))

@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
-import it.unibo.authsim.library.dsl.cryptography.util.Base64 as Base64
+import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import it.unibo.authsim.library.dsl.cryptography.asymmetric.KeyPair
 import it.unibo.authsim.library.dsl.cryptography.{AsymmetricEncryption, CryptographicAlgorithm, EncryptionMode}
 import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
@@ -15,7 +15,7 @@ trait RSA extends AsymmetricEncryption with KeyGenerator
 object RSA:
   import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
   def apply()= new RSA() :
-    import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.objectToString
+    import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
     private var _name = "RSA"
     private val keyFactory = KeyFactory.getInstance(_name)

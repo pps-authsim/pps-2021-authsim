@@ -44,9 +44,7 @@ object AES:
           cipher.init(Cipher.DECRYPT_MODE, keyToSpec(secret))
           new String(cipher.doFinal(Base64.decodeToBytes(password)))
       }
-
-    implicit def ArrayByteToString(value :Array[Byte]):String =value.toString
-
+    
     override def toString: String = "AES"
 
     private def keyToSpec(secret: String): SecretKeySpec =

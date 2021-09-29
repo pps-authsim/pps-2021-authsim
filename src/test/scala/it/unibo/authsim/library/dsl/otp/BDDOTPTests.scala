@@ -77,6 +77,7 @@ class BDDOTPTests extends AnyFeatureSpec with GivenWhenThen:
       totp = TOTPBuilder() timeout timeout secret sec1 withPolicy policy1 build;
       assert(totp.hashFunction == HashFunction.SHA256())
       assert(totp.policy === policy1)
+      assert(totp.timeout === timeout)
       assert(totp.secret === s"${sec1._1}-${sec1._2}")
       When(" a otp value is generated")
       generatedPin = totp.generate

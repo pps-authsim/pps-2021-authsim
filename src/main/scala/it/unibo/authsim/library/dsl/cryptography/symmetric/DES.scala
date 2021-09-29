@@ -11,9 +11,6 @@ import javax.crypto.*
 import javax.crypto.spec.*
 
 trait DES extends SymmetricEncryption:
-  override def algorithmName: String
-  override def encrypt(password: String, secret:String): String
-  override def decrypt(password: String, secret:String): String
   def secretSalt(): String
   def iterationCount_ (key:Int): Unit
 

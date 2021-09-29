@@ -13,9 +13,6 @@ import javax.crypto.spec.{PBEKeySpec, SecretKeySpec}
 
 
 trait AES extends SymmetricEncryption:
-  def algorithmName: String
-  def encrypt(password: String, secret:String): String
-  def decrypt(password: String, secret:String): String
   def secretSalt(): String
 
 object AES:

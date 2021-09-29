@@ -15,6 +15,8 @@ trait RSA extends AsymmetricEncryption with KeyGenerator
 object RSA:
   import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
   def apply()= new RSA() :
+    import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.objectToString
+
     private var _name = "RSA"
     private val keyFactory = KeyFactory.getInstance(_name)
 
@@ -43,10 +45,10 @@ object RSA:
       val bytes: Array[Byte] = kp.getPrivate.getEncoded
       Base64.encodeToString(bytes)
 
-    override def decrypt(encrypted: String, privateKey: String): String =
+    override def decrypt[A, B](encrypted: A, privateKey: B): String =
       crypto(EncryptionMode.Decryption, encrypted, privateKey)
 
-    override def encrypt(secret: String, publicKey: String): String =
+    override def encrypt[A, B](secret: A, publicKey: B): String =
       crypto(EncryptionMode.Encryption, secret, publicKey)
 
     private def crypto(mode:EncryptionMode, password: String, inputKey: String): String=

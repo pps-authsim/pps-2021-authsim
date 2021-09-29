@@ -36,6 +36,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
         aes.decrypt(passwordEncryptedAES, secret).equals(password) shouldBe true
       }
   }
+  /*
   "A password encrypted with a Caesar cipher" should{
     "be " in{
       caesarCipher.encrypt(password, rotation).equals(passwordEncryptedCaesarCipher) shouldBe true
@@ -48,5 +49,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
     "if rotation is 0 then encryption with Caesar cipher should work as identity function" in{
       caesarCipher.encrypt(password, "0").equals(password) shouldBe true
     }
+
   }
+    */
 }

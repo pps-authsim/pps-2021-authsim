@@ -17,7 +17,9 @@ trait AES extends SymmetricEncryption:
 
 object AES:
   def apply()= new AES() :
-    private val _length : Int = 16 
+    import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
+
+    private val _length : Int = 16
     private val _name : String ="AES"
     private var _salt: String = "123456789"
     private val _charset: String = "UTF8"
@@ -26,10 +28,10 @@ object AES:
     override def algorithmName: String = _name
     override def secretSalt(): String= _salt
 
-    def encrypt(password: String, secret: String): String =
+    def encrypt[A,B](password: A, secret: B): String =
       crypto(EncryptionMode.Encryption, password, secret)
 
-    def decrypt(encryptedPassword: String, secret:String): String =
+    def decrypt[A,B](encryptedPassword: A, secret:B): String =
       crypto(EncryptionMode.Decryption, encryptedPassword, secret)
 
     private def crypto(mode:EncryptionMode, password: String, secret: String): String=

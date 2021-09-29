@@ -9,7 +9,7 @@ import scala.util.Random
 
 object OTPHelpers:
 
-  private implicit class RichInt(base: Byte):
+  private implicit class RichByte(base: Byte):
     def toUInt: Int = base & 0xff
 
   implicit val generatorSeed: () => Int = () => Random.between(0, 10)

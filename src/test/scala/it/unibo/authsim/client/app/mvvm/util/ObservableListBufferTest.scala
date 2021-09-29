@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.client.app.mvvm.util
+package it.unibo.authsim.client.app.mvvm.util
 
 import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import org.scalatest.wordspec.AnyWordSpec
@@ -51,7 +51,7 @@ class ObservableListBufferTest extends AnyWordSpec:
         val copyAction: (Int => Unit) = value => mirrorList += value
 
         var observableList = ObservableListBuffer[Int]()
-        observableList.onAdd(copyAction)
+        observableList.addOnAddSubscriber(copyAction)
         observableList += 42
 
         assert(mirrorList(0) == 42)
@@ -83,7 +83,7 @@ class ObservableListBufferTest extends AnyWordSpec:
         val copyAction: (Int => Unit) = value => mirrorList -= value
 
         var observableList = ObservableListBuffer[Int](42)
-        observableList.onRemove(copyAction)
+        observableList.addOnRemoveSubscriber(copyAction)
         observableList -= 42
 
         assert(mirrorList.size == 0)

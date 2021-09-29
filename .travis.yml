@@ -5,3 +5,6 @@ services:
 language: scala
 scala:
   - 3.0.1
+
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION "testOnly * -- -l it.unibo.authsim.testing.DataBaseTest"

@@ -11,15 +11,15 @@ object ObservableListBuffer:
 
   def apply[A](onAdd: (A => Unit), onRemove: (A => Unit)) =
     val observableListBuffer = new ObservableListBuffer[A]()
-    observableListBuffer.onAdd = Option(onAdd)
-    observableListBuffer.onRemove = Option(onRemove)
+    observableListBuffer.onAddSubscribers += onAdd
+    observableListBuffer.onRemoveSubscribers += onRemove
     observableListBuffer
 
 
   def apply[A](onAdd: (A => Unit), onRemove: (A => Unit), elems: A*) =
     val observableListBuffer = new ObservableListBuffer[A](ListBuffer.from(elems))
-    observableListBuffer.onAdd = Option(onAdd)
-    observableListBuffer.onRemove = Option(onRemove)
+    observableListBuffer.onAddSubscribers += onAdd
+    observableListBuffer.onRemoveSubscribers += onRemove
     observableListBuffer
 
 
@@ -32,29 +32,29 @@ object ObservableListBuffer:
  */
 class ObservableListBuffer[A](
                                private val wrappedList: ListBuffer[A] = ListBuffer[A](),
-                               private var onAdd: Option[(A => Unit)] = Option.empty,
-                               private var onRemove: Option[(A => Unit)] = Option.empty
+                               private var onAddSubscribers: ListBuffer[(A => Unit)] = ListBuffer[(A => Unit)](),
+                               private var onRemoveSubscribers: ListBuffer[(A => Unit)] = ListBuffer[(A => Unit)]()
                              ):
 
   def +(element: A): ObservableListBuffer[A] =
     wrappedList += element
-    onAdd.map(_.apply(element))
+    onAddSubscribers.foreach(_.apply(element))
     return this
 
 
   def -(element: A): ObservableListBuffer[A] =
     wrappedList -= element
-    onRemove.map(_.apply(element))
+    onRemoveSubscribers.foreach(_.apply(element))
     return this
 
   def clear(): Unit =
     wrappedList.clear()
 
-  def onAdd(onAdd: (A => Unit)): Unit =
-    this.onAdd = Option(onAdd)
+  def addOnAddSubscriber(onAddSubscriber: (A => Unit)): Unit =
+    this.onAddSubscribers += onAddSubscriber
 
-  def onRemove(onRemove: (A => Unit)): Unit =
-    this.onRemove = Option(onRemove)
+  def addOnRemoveSubscriber(onRemoveSubscriber: (A => Unit)): Unit =
+    this.onRemoveSubscribers += onRemoveSubscriber
 
   /**
    * Deep copy of the current wrapper list state

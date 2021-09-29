@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.client.app.mvvm.viewmodel
+package it.unibo.authsim.client.app.mvvm.viewmodel
 
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimView
@@ -132,8 +132,6 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
 
         viewModel.launchAttack()
 
-        val logValue = mockView.attackTab.attackLogProperty.value
-        assert(logValue.equals(" [user password] SuperSimple source1 Sequence1"))
         // TODO changeme when library is hooked
       }
 

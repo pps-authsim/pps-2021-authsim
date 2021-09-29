@@ -1,6 +1,6 @@
-package it.unibo.authsim.library.client.app.mvvm.view.users
+package it.unibo.authsim.client.app.mvvm.view.users
 
-import it.unibo.authsim.client.app.mvvm.view.AuthsimView
+import it.unibo.authsim.client.app.mvvm.view.{AuthsimView, AuthsimViewTest}
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UsersTab}
 import javafx.collections.ObservableList
@@ -11,7 +11,6 @@ import org.scalatest.wordspec.AnyWordSpec
 import scalafx.application.JFXApp3
 import scalafx.scene.control.{Button, TextField}
 import scalafx.scene.input.KeyCode
-import it.unibo.authsim.library.client.app.mvvm.view.AuthsimViewTest
 
 class UsersTabTest extends AnyWordSpec :
 

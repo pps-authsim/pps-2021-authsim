@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.client.app.mvvm.view.attack
+package it.unibo.authsim.client.app.mvvm.view.attack
 
+import it.unibo.authsim.client.app.mvvm.view.AuthsimViewTest
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.{AttackSequenceEntry, AttackTab}
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.SecurityPolicyEntry
-import it.unibo.authsim.library.client.app.mvvm.view.AuthsimViewTest
 import javafx.beans.value.ObservableValue
 import javafx.event.ActionEvent
 import org.scalatest.wordspec.AnyWordSpec

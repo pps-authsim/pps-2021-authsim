@@ -1,8 +1,8 @@
 package it.unibo.authsim.library.dsl.cryptography.util
 
 object ImplicitConversion:
-  private val charset: String = "UTF8" //TODO da sistemare: come gestisco il fatto che qualuno cambi il charset dalla classe che chiama il metodo? Parametro implicito?Boh
-
+  private val charset: String = "UTF8" 
+  
   implicit def objectToString[A](inputObject: A): String = inputObject.toString
 
   implicit def objectToInt [A] (inputObject: A): Int =

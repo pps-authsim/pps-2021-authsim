@@ -22,7 +22,6 @@ object AES:
     private val _length : Int = 16
     private val _name : String ="AES"
     private var _salt: String = "123456789"
-    private val _charset: String = "UTF8"
     private val _trasformation: String = "AES/ECB/PKCS5PADDING"
 
     override def algorithmName: String = _name
@@ -39,7 +38,7 @@ object AES:
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, keyToSpec(secret))
-          new String(Base64.encodeToBytes(cipher.doFinal(password.getBytes(_charset))))
+          new String(Base64.encodeToBytes(cipher.doFinal(password)))
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, keyToSpec(secret))
           new String(cipher.doFinal(Base64.decodeToBytes(password)))
@@ -49,6 +48,6 @@ object AES:
 
     private def keyToSpec(secret: String): SecretKeySpec =
       var hashFunctionSHA256 = new HashFunction.SHA256
-      var keyBytes: Array[Byte] = hashFunctionSHA256.hash(_salt + secret).getBytes(_charset)
+      var keyBytes: Array[Byte] = hashFunctionSHA256.hash(_salt + secret)
       keyBytes = util.Arrays.copyOf(keyBytes, _length)
       new SecretKeySpec(keyBytes, _name)

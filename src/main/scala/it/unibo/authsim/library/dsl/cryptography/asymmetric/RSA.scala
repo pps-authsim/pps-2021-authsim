@@ -57,10 +57,11 @@ object RSA:
         case EncryptionMode.Encryption =>
           val key = publicKeyFromString(inputKey)
           cipher.init(Cipher.ENCRYPT_MODE, key)
-          Base64.encodeToString(cipher.doFinal(password.getBytes("UTF8")))
+          Base64.encodeToString(cipher.doFinal(password))
         case EncryptionMode.Decryption =>
           val key = privateKeyFromString(inputKey)
           cipher.init(Cipher.DECRYPT_MODE, key)
           new String(cipher.doFinal(Base64.decodeToBytes(password)))
       }
+      
     override def toString: String = "RSA"

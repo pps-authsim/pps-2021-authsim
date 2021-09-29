@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.dsl.cryptography.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm}
-import it.unibo.authsim.library.dsl.cryptography.util.Base64 
+import it.unibo.authsim.library.dsl.cryptography.util.Base64
 
 import java.io.*
 import java.security.spec.*
@@ -20,7 +20,6 @@ object DES:
     private var _iterationCount: Int = 19
     private val _name: String = "DES"
     private val _algorithm : String = "PBEWithMD5AndDES"
-    private val charset: String = "UTF8"
 
     def secretSalt()=_salt
 
@@ -39,10 +38,10 @@ object DES:
       mode match{
         case EncryptionMode.Encryption =>
           cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(Base64.encodeToBytes(cipher.doFinal(password)), charset)
+          new String(Base64.encodeToBytes(cipher.doFinal(password)))
         case EncryptionMode.Decryption =>
           cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, _paramSpec)
-          new String(cipher.doFinal(Base64.decodeToBytes(password)), charset)
+          new String(cipher.doFinal(Base64.decodeToBytes(password)))
       }
     override def toString: String = "DES"
     

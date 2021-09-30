@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography
+package it.unibo.authsim.library.dsl.cryptography.hash
 
 import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
-import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 class HashFunctionTest extends AnyWordSpec with Matchers {
   val password = "foo"

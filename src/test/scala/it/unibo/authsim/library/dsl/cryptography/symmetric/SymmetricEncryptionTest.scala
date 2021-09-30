@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography
+package it.unibo.authsim.library.dsl.cryptography.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.symmetric.{AES, CaesarCipher, DES}
-import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 
 class SymmetricEncryptionTest extends AnyWordSpec with Matchers {

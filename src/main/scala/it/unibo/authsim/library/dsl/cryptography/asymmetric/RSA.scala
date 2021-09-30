@@ -10,7 +10,7 @@ import java.security.{KeyPairGenerator, KeyPair as JavaKeyPair}
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
-trait RSA extends AsymmetricEncryption with KeyGenerator
+trait RSA extends AsymmetricEncryption with KeyGenerator[KeyPair]
   
 object RSA:
   import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
@@ -19,31 +19,24 @@ object RSA:
 
     private var _name = "RSA"
     private val keyFactory = KeyFactory.getInstance(_name)
+    private val defaultKeyFile="key.ser"
+    override def algorithmName: String= this.toString
 
-    override  def algorithmName: String= this.toString
-    override def generateKeys():KeyPair=
-      PersistentKeysGenerator.generateKeys()
+    override def generateKeys(fileName: String= defaultKeyFile):KeyPair=
+      PersistentKeysGenerator.generateKeys(fileName)
 
-    def loadKeys(fileName: String = "key.ser"):KeyPair=
-      PersistentKeysGenerator.loadKeys()
+    def loadKeys(fileName: String= defaultKeyFile):KeyPair=
+      PersistentKeysGenerator.loadKeys(fileName)
 
-    private def privateKeyFromString(privateKeyString: String): PrivateKey =
+    private def privateKeyFromString[A](privateKeyString: A): PrivateKey =
       val bytes = Base64.decodeToArray(privateKeyString)
       val spec = new PKCS8EncodedKeySpec(bytes)
       keyFactory.generatePrivate(spec)
 
-    private def publicKeyFromString(publicKeyString: String): PublicKey =
+    private def publicKeyFromString[A](publicKeyString: A): PublicKey =
       val bytes = Base64.decodeToArray(publicKeyString)
       val spec = new X509EncodedKeySpec(bytes)
       keyFactory.generatePublic(spec)
-
-    private def publicKeyStringFromKeyPair(kp: JavaKeyPair): String =
-      val bytes: Array[Byte] = kp.getPublic.getEncoded
-      Base64.encodeToString(bytes)
-
-    private def privateKeyStringFromKeyPair(kp: JavaKeyPair): String =
-      val bytes: Array[Byte] = kp.getPrivate.getEncoded
-      Base64.encodeToString(bytes)
 
     override def decrypt[A, B](encrypted: A, privateKey: B): String =
       crypto(EncryptionMode.Decryption, encrypted, privateKey)
@@ -51,7 +44,7 @@ object RSA:
     override def encrypt[A, B](secret: A, publicKey: B): String =
       crypto(EncryptionMode.Encryption, secret, publicKey)
 
-    private def crypto(mode:EncryptionMode, password: String, inputKey: String): String=
+    private def crypto[A,B](mode:EncryptionMode, password: A, inputKey: B): String=
       val cipher = Cipher.getInstance(_name);
       mode match{
         case EncryptionMode.Encryption =>
@@ -64,4 +57,4 @@ object RSA:
           new String(cipher.doFinal(Base64.decodeToArray(password)))
       }
 
-    override def toString: String = "RSA"
+    override def toString: String = _name

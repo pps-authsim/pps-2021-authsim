@@ -10,15 +10,16 @@ import  it.unibo.authsim.library.dsl.cryptography.asymmetric.KeyPair
 
 class AsymmetricEncryptionTest extends AnyWordSpec with Matchers {
   val rsa= RSA()
-  val password = "password"
-  val keypair= rsa.generateKeys()
-  val(pvt, pub)=(keypair.privateKey, keypair.publicKey)
-  val passwordEncrypted=rsa.encrypt(password, pub)
+  val password: String = "password"
   val fileName:String= "key.ser"
+  val keypair= rsa.generateKeys(fileName)
+  val(pvt, pub) = (keypair.privateKey, keypair.publicKey)
+  val passwordEncrypted = rsa.encrypt(password, pub)
+
 
    "RSA encryption" should {
     "be able to create Key pair"in{
-      rsa.generateKeys().isInstanceOf[KeyPair] shouldBe true
+      rsa.generateKeys(fileName).isInstanceOf[KeyPair] shouldBe true
     }
 
     "be le to load keys from a local file or generate a new one if it does not exist" in {

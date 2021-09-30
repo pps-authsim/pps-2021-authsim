@@ -22,3 +22,7 @@ bin/
 *.ipr
 *.iws
 .idea
+
+# test files
+#*.txt
+#*ser

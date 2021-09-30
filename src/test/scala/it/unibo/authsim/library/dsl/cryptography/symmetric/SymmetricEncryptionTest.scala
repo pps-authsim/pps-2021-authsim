@@ -9,7 +9,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
   val des = DES()
   val aes = AES()
   val caesarCipher= CaesarCipher()
-  val rotation:Int=2
+  val rotation:Int = 2
   val secret: String = "12345678123456781234567812345678"
   val password: String ="password"
 

@@ -22,15 +22,3 @@ object DiskManager:
     try {
       objectInputStream.readObject.asInstanceOf[T]
     } finally objectInputStream.close
-
-    /*
-      def saveObject[T](obj: T, fileName: String): Unit =
-      val file = new File(fileName)
-      val oos = new ObjectOutputStream(new FileOutputStream(file))
-      Try {
-        oos.writeObject(obj)
-      }.toEither match {
-        case Left(ex) => println("Error: "+ ex)
-        case Right(_) => println("Write operation succeded"); oos.close;
-      }
-    */

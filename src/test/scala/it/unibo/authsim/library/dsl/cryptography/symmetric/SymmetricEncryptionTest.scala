@@ -12,9 +12,6 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
   val rotation:String="2"
   val secret: String = "12345678123456781234567812345678"
   val password: String ="password"
-  val passwordEncryptedDES: String ="UhcmgOGbLqg1vi4OK4cDeA=="
-  val passwordEncryptedAES: String ="8h+0CcFUODz2Im9juBffCw=="
-  val passwordEncryptedCaesarCipher: String ="rcuuyqtf"
 
   "DES encryption" should {
     "return a string type" in {
@@ -22,28 +19,18 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
     }
 
     "be " in {
-      des.encrypt(password, secret).equals(passwordEncryptedDES) shouldBe true
-    }
-    "that should be equal to the result of the decryption operation" in {
-      des.decrypt(passwordEncryptedDES, secret).equals(password) shouldBe true
+      des.decrypt( des.encrypt(password, secret), secret).equals(password) shouldBe true
     }
   }
   "AES encryption" should{
       "be " in{
-        aes.encrypt(password, secret).equals(passwordEncryptedAES) shouldBe true
-      }
-      "that should be equal to the result of the decryption operation" in{
-        aes.decrypt(passwordEncryptedAES, secret).equals(password) shouldBe true
+        aes.decrypt(aes.encrypt(password, secret), secret).equals(password) shouldBe true
       }
   }
 
   "A password encrypted with a Caesar cipher" should{
     "be " in{
-      caesarCipher.encrypt(password, rotation).equals(passwordEncryptedCaesarCipher) shouldBe true
-    }
-
-    "that should be equal to the result of the decryption operation" in{
-      caesarCipher.decrypt(passwordEncryptedCaesarCipher, rotation).equals(password) shouldBe true
+      caesarCipher.decrypt( caesarCipher.encrypt(password, rotation), rotation).equals(password) shouldBe true
     }
 
     "if rotation is 0 then encryption with Caesar cipher should work as identity function" in{

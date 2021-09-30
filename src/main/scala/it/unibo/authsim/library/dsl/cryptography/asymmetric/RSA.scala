@@ -2,8 +2,8 @@ package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import it.unibo.authsim.library.dsl.cryptography.asymmetric.KeyPair
-import it.unibo.authsim.library.dsl.cryptography.CryptographicAlgorithm
-import it.unibo.authsim.library.dsl.cryptography.asymmetric.{PersistentKeysGenerator, AsymmetricEncryption}
+import it.unibo.authsim.library.dsl.cryptography.{BasicEcryption, CryptographicAlgorithm}
+import it.unibo.authsim.library.dsl.cryptography.asymmetric.{AsymmetricEncryption, PersistentKeysGenerator}
 
 import java.security.*
 import java.security.{KeyPairGenerator, KeyPair as JavaKeyPair}
@@ -14,13 +14,17 @@ trait RSA extends AsymmetricEncryption with KeyGenerator[KeyPair]
   
 object RSA:
   import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
-  def apply()= new RSA() :
+
+  def apply()= new BasicRSA()
+
+  class BasicRSA() extends BasicEcryption with RSA:
     import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
-    private var _name = "RSA"
+    override val _name = "RSA"
+
     private val keyFactory = KeyFactory.getInstance(_name)
+
     private val defaultKeyFile="key.ser"
-    override def algorithmName: String= this.toString
 
     override def generateKeys(fileName: String= defaultKeyFile):KeyPair=
       PersistentKeysGenerator.generateKeys(fileName)
@@ -38,13 +42,7 @@ object RSA:
       val spec = new X509EncodedKeySpec(bytes)
       keyFactory.generatePublic(spec)
 
-    override def decrypt[A, B](encrypted: A, privateKey: B): String =
-      crypto(EncryptionMode.Decryption, encrypted, privateKey)
-
-    override def encrypt[A, B](secret: A, publicKey: B): String =
-      crypto(EncryptionMode.Encryption, secret, publicKey)
-
-    private def crypto[A,B](mode:EncryptionMode, password: A, inputKey: B): String=
+    override def crypto[A,B](mode:EncryptionMode, password: A, inputKey: B): String=
       val cipher = Cipher.getInstance(_name);
       mode match{
         case EncryptionMode.Encryption =>
@@ -56,5 +54,3 @@ object RSA:
           cipher.init(Cipher.DECRYPT_MODE, key)
           new String(cipher.doFinal(Base64.decodeToArray(password)))
       }
-
-    override def toString: String = _name

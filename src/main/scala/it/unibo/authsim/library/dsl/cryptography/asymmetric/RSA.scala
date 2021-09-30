@@ -2,8 +2,8 @@ package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import it.unibo.authsim.library.dsl.cryptography.asymmetric.KeyPair
-import it.unibo.authsim.library.dsl.cryptography.{AsymmetricEncryption, CryptographicAlgorithm}
-import it.unibo.authsim.library.dsl.cryptography.asymmetric.PersistentKeysGenerator
+import it.unibo.authsim.library.dsl.cryptography.CryptographicAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.asymmetric.{PersistentKeysGenerator, AsymmetricEncryption}
 
 import java.security.*
 import java.security.{KeyPairGenerator, KeyPair as JavaKeyPair}

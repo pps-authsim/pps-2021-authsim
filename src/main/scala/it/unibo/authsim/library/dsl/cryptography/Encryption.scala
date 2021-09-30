@@ -15,7 +15,5 @@ trait Encryption:
   def encrypt[A, B](password: A, secret:B): String
   def decrypt[A, B](password: A, secret:B): String
 
-trait AsymmetricEncryption extends Encryption with CryptographicAlgorithm
-
 trait CryptographicAlgorithm:
   def algorithmName: String

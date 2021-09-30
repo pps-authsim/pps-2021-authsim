@@ -18,12 +18,19 @@ object DES:
   def apply()= new BasicDES()
     class BasicDES() extends BasicEcryption with DES:
       import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
-      private var _salt: Array[Byte] = Array(0xA9.asInstanceOf[Byte], 0x9B.asInstanceOf[Byte], 0xC8.asInstanceOf[Byte], 0x32.asInstanceOf[Byte], 0x56.asInstanceOf[Byte], 0x35.asInstanceOf[Byte], 0xE3.asInstanceOf[Byte], 0x03.asInstanceOf[Byte])
+
+      private val _salt: Array[Byte] = Array(0xA9.asInstanceOf[Byte], 0x9B.asInstanceOf[Byte], 0xC8.asInstanceOf[Byte], 0x32.asInstanceOf[Byte], 0x56.asInstanceOf[Byte], 0x35.asInstanceOf[Byte], 0xE3.asInstanceOf[Byte], 0x03.asInstanceOf[Byte])
+
       private var _iterationCount: Int = 19
+
       override val _name: String = "DES"
+
       private val _trasformation : String = "PBEWithMD5AndDES"
 
-      def secretSalt()=_salt
+      def secretSalt() = _salt
+
+      override def iterationCount_(key: Int): Unit =
+        _iterationCount = key
 
       override def crypto[A, B](mode:EncryptionMode, password: A, secret: B): String=
         var cipher = Cipher.getInstance(_trasformation)
@@ -37,8 +44,6 @@ object DES:
             cipher.init(Cipher.DECRYPT_MODE, _secretKey, paramSpec)
             new String(cipher.doFinal(Base64.decodeToArray(password)))
         }
-
-      override def iterationCount_(key: Int): Unit = _iterationCount = key
 
       private def secretKey(secret: String): SecretKey =
         var keySpec: KeySpec = new PBEKeySpec(secret, _salt, _iterationCount)

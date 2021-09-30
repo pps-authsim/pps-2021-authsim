@@ -19,7 +19,9 @@ trait CryptographicAlgorithm:
   def algorithmName: String
 
 abstract class BasicEcryption extends Encryption with CryptographicAlgorithm:
+  
   protected val _name: String
+  
   override def encrypt[A,B](password: A, secret: B): String =
     crypto(EncryptionMode.Encryption, password, secret)
 

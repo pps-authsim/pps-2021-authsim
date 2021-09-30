@@ -16,16 +16,20 @@ trait AES extends SymmetricEncryption:
 
 object AES:
   def apply()= new BasicAES()
-    class BasicAES() extends BasicEcryption with AES:
+  
+  class BasicAES() extends BasicEcryption with AES:
     import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
-
+  
     private val _length : Int = 16
+    
     override val _name : String ="AES"
+    
     private var _salt: String = "123456789"
+    
     private val _trasformation: String = "AES/ECB/PKCS5PADDING"
-
+  
     override def secretSalt(): String= _salt
-
+  
     override def crypto[A,B](mode:EncryptionMode, password: A, secret: B): String=
       val cipher: Cipher = Cipher.getInstance(_trasformation)
       mode match{
@@ -36,7 +40,7 @@ object AES:
           cipher.init(Cipher.DECRYPT_MODE, secretKeySpec(secret))
           new String(cipher.doFinal(Base64.decodeToArray(password)))
       }
-
+  
     private def secretKeySpec(secret: String): SecretKeySpec =
       var keyBytes: Array[Byte] = secret.concat(_salt)
       keyBytes = Arrays.copyOf(keyBytes, _length)

@@ -19,7 +19,7 @@ object CaesarCipher:
 
     private def crypto(password: String, rotation:Int)=
       password.toLowerCase.map {
-        case character if alpha.contains(character) => shift(alphaL, character, rotation)
+        case character if alpha.contains(character) => shift(alpha, character, rotation)
         case character => character
       }
 

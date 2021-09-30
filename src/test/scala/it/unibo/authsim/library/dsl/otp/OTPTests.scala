@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.Duration
 import scala.language.postfixOps
 
-class OneTimePasswordTests extends AnyWordSpec:
+class OTPTests extends AnyWordSpec:
 
   private val policy: OTPPolicy = OTPPolicyDefault.SIMPLE
   private val policyChecker: PolicyChecker[String] = StringPolicyChecker(policy)
@@ -32,8 +32,6 @@ class OneTimePasswordTests extends AnyWordSpec:
   private var hmacOTPGenerated: String = null
 
   private val not = afterWord("not")
-
-  import Helpers.*
 
   "A HOTP" when {
     println(hotp)
@@ -81,33 +79,3 @@ class OneTimePasswordTests extends AnyWordSpec:
       }
     }
   }
-
-  "HOTP" when {
-    generateFirstPincode(hotp)
-    "is resetted for more time" should {
-      "generate always a different pincode" in {
-        checkNewPincodes(hotp)
-      }
-    }
-  }
-
-  "TOTP" when {
-    generateFirstPincode(totp)
-    "is resetted for more time" should {
-      "generate always a different pincode" in {
-        checkNewPincodes(totp)
-      }
-    }
-  }
-
-  private object Helpers:
-    private var pincode: String = null
-
-    def generateFirstPincode(otp: OTP): Unit = pincode = otp.generate
-
-    def checkNewPincodes(otp: OTP): Unit =
-      (0 to 1000).foreach(_ =>
-        otp.reset
-        assert(pincode != otp.generate)
-        pincode = otp.generate
-      )

@@ -1,12 +1,12 @@
-package it.unibo.authsim.library.dsl.cryptography
+package it.unibo.authsim.library.dsl.cryptography.asymmetric
 
-import it.unibo.authsim.library.dsl.cryptography.asymmetric.RSA
+import it.unibo.authsim.library.dsl.cryptography.asymmetric.{KeyPair, RSA}
+import org.apache.commons.io.FileUtils
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.apache.commons.io.FileUtils
-import java.io.{File, FileInputStream, FileOutputStream, ObjectOutputStream, PrintWriter}
+
+import java.io.*
 import scala.io.Source
-import  it.unibo.authsim.library.dsl.cryptography.asymmetric.KeyPair
 
 class AsymmetricEncryptionTest extends AnyWordSpec with Matchers {
   val rsa= RSA()

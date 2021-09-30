@@ -1,10 +1,10 @@
-package it.unibo.authsim.library.dsl.cryptography
+package it.unibo.authsim.library.dsl.cryptography.util
 
-import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should.Matchers
 import it.unibo.authsim.library.dsl.cryptography.util.DiskManager
 import org.apache.commons.io.FileUtils
 import org.scalatest.BeforeAndAfter
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.io.File

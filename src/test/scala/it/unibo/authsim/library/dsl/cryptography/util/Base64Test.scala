@@ -1,9 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography
+package it.unibo.authsim.library.dsl.cryptography.util
 
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import it.unibo.authsim.library.dsl.cryptography.util.Base64
 class Base64Test extends AnyFlatSpec with Matchers {
   val testArrayByte: Array[Byte]= Array( 0x32.asInstanceOf[Byte], 0x72.asInstanceOf[Byte])
   private val charset: String = "UTF8"

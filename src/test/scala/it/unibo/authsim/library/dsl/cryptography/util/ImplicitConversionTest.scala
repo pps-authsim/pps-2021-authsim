@@ -1,9 +1,9 @@
-package it.unibo.authsim.library.dsl.cryptography
+package it.unibo.authsim.library.dsl.cryptography.util
+
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
+import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.*
-import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.genericToString
 
 class ImplicitConversionTest extends AnyFlatSpec with Matchers {
   val testString="foo"

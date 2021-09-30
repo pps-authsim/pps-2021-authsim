@@ -9,7 +9,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
   val des = DES()
   val aes = AES()
   val caesarCipher= CaesarCipher()
-  val rotation:String="2"
+  val rotation:Int=2
   val secret: String = "12345678123456781234567812345678"
   val password: String ="password"
 
@@ -22,6 +22,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
       des.decrypt( des.encrypt(password, secret), secret).equals(password) shouldBe true
     }
   }
+
   "AES encryption" should{
       "be " in{
         aes.decrypt(aes.encrypt(password, secret), secret).equals(password) shouldBe true
@@ -34,7 +35,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
     }
 
     "if rotation is 0 then encryption with Caesar cipher should work as identity function" in{
-      caesarCipher.encrypt(password, "0").equals(password) shouldBe true
+      caesarCipher.encrypt(password, 0).equals(password) shouldBe true
     }
 
   }

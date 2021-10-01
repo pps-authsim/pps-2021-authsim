@@ -2,8 +2,6 @@ package it.unibo.authsim.library.dsl.otp.builders
 
 import it.unibo.authsim.library.dsl.HashFunction
 import it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.AbstractTOTPBuilder
-import it.unibo.authsim.library.dsl.otp.checkers.OTPChecker
-import it.unibo.authsim.library.dsl.otp.generators.OTPGenerator
 import it.unibo.authsim.library.dsl.otp.model.{HOTP, TOTP}
 import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.{generatorSeed, hmac, truncate}
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy

@@ -1,4 +1,6 @@
-package it.unibo.authsim.library.dsl.attack.builders
+package it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce
+
+import it.unibo.authsim.library.dsl.attack.builders.BruteForceAttackBuilder
 
 /**
  * Builder of dictionary attacks.
@@ -11,6 +13,7 @@ class DictionaryAttackBuilder extends BruteForceAttackBuilder:
    * @param dictionary The dictionary to use.
    * @return The builder.
    */
+  // TODO: Change into a real Alphabet
   def withDictionary(dictionary: List[String]): DictionaryAttackBuilder = super.usingAlphabet(dictionary)
 
   /**

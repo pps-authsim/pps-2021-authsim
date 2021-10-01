@@ -1,19 +1,20 @@
-package it.unibo.authsim.library.dsl.attack.builders
+package it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce
 
-
-import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
+import it.unibo.authsim.library.dsl.attack.builders.offline.{OfflineAttack, OfflineAttackBuilder}
+import it.unibo.authsim.library.dsl.attack.builders.{Attack, BruteForceAttack, ConcurrentStringCombinator}
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
+import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
 import it.unibo.authsim.library.user.model.User
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.{Duration, MILLISECONDS}
-import scala.concurrent.{Await, Future}
-import scala.concurrent.TimeoutException
-import concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{Await, Future, TimeoutException}
 
 /**
  * A builder of bruteforce attacks.
  */
+// TODO: create abstract class to generalize Bruteforce and Dictionary attacks
 class BruteForceAttackBuilder extends OfflineAttackBuilder:
   private var alphabet: List[String] = null
   private var maximumLength = 1
@@ -27,6 +28,7 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder:
    * @param alphabet The alphabet to use.
    * @return The builder.
    */
+  // TODO: Change into a real Alphabet
   def usingAlphabet(alphabet: List[String]): this.type = this.builderMethod[List[String]](alphabet => this.alphabet = alphabet)(alphabet)
 
   /**

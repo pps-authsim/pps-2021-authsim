@@ -1,5 +1,6 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
+import it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce.BruteForceAttackBuilder
 import org.scalatest.wordspec.AnyWordSpec
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer

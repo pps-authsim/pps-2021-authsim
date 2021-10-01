@@ -5,7 +5,7 @@ import it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.AbstractHOTPBuilder
 import it.unibo.authsim.library.dsl.otp.checkers.OTPChecker
 import it.unibo.authsim.library.dsl.otp.generators.OTPGenerator
 import it.unibo.authsim.library.dsl.otp.model.HOTP
-import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.generatorSeed
+import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.{generatorSeed, hmac, truncate}
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 
 case class HOTPBuilder() extends AbstractHOTPBuilder:
@@ -16,12 +16,10 @@ case class HOTPBuilder() extends AbstractHOTPBuilder:
     override def hashFunction: HashFunction = HOTPBuilder.this._hashFunction
 
     override def policy: OTPPolicy = HOTPBuilder.this._policy
+    
+    override def generate: String = truncate(this.hashFunction, HOTPBuilder.this._secret, this.length, HOTPBuilder.this._seed)(hmac)
 
-    override def secret: String = HOTPBuilder.this._secret
-
-    override def generate: String = implicitly[(HOTP, Int) => OTPGenerator].apply(this, HOTPBuilder.this._seed).generate
-
-    override def check(pincode: String): Boolean = implicitly[(HOTP, Int) => OTPChecker].apply(this, HOTPBuilder.this._seed).check(pincode)
+    override def check(pincode: String): Boolean =  this.generate == pincode
 
     override def reset: Unit = HOTPBuilder.this.generateSeed
 

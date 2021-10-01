@@ -5,7 +5,7 @@ import it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.AbstractTOTPBuilder
 import it.unibo.authsim.library.dsl.otp.checkers.OTPChecker
 import it.unibo.authsim.library.dsl.otp.generators.OTPGenerator
 import it.unibo.authsim.library.dsl.otp.model.{HOTP, TOTP}
-import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.generatorSeed
+import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.{generatorSeed, hmac, truncate}
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 
 import scala.concurrent.duration.Duration
@@ -26,17 +26,15 @@ case class TOTPBuilder() extends AbstractTOTPBuilder:
 
     override def policy: OTPPolicy = TOTPBuilder.this._policy
 
-    override def secret: String = TOTPBuilder.this._secret
-
     override def generate: String =
-      val generated = implicitly[(HOTP, Int) => OTPGenerator].apply(this, TOTPBuilder.this._seed).generate
+      val generated = truncate(this.hashFunction, TOTPBuilder.this._secret, this.length, TOTPBuilder.this._seed)(hmac)
       this._createDate = Some(System.currentTimeMillis())
       generated
 
     override def check(pincode: String): Boolean =
       val validTime = this.createDate.isDefined && this.createDate.get + this.timeout.toMillis > System.currentTimeMillis()
       if !validTime then this.reset
-      validTime && implicitly[(HOTP, Int) => OTPChecker].apply(this, TOTPBuilder.this._seed).check(pincode)
+      validTime && truncate(this.hashFunction, TOTPBuilder.this._secret, pincode.length, TOTPBuilder.this._seed)(hmac) == pincode
 
     override def reset: Unit = TOTPBuilder.this.generateSeed
 

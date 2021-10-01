@@ -37,7 +37,6 @@ class BDDOTPTests extends AnyFeatureSpec with GivenWhenThen:
       hotp = HOTPBuilder() secret sec withPolicy policy build;
       assert(hotp.hashFunction == HashFunction.SHA256())
       assert(hotp.policy === policy)
-      assert(hotp.secret === s"${sec._1}-${sec._2}")
       When(" a otp value is generated")
       generatedPin = hotp.generate
       Then("the generated otp should respects the given policy")
@@ -78,7 +77,6 @@ class BDDOTPTests extends AnyFeatureSpec with GivenWhenThen:
       assert(totp.hashFunction == HashFunction.SHA256())
       assert(totp.policy === policy1)
       assert(totp.timeout === timeout)
-      assert(totp.secret === s"${sec1._1}-${sec1._2}")
       When(" a otp value is generated")
       generatedPin = totp.generate
       Then("the generated otp should respects the given policy")

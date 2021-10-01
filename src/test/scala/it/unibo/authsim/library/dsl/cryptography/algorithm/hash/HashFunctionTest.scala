@@ -1,6 +1,6 @@
-package it.unibo.authsim.library.dsl.cryptography.hash
+package it.unibo.authsim.library.dsl.cryptography.algorithm.hash
 
-import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

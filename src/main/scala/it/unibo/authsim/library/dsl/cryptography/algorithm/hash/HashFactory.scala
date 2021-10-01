@@ -1,6 +1,4 @@
-package it.unibo.authsim.library.dsl.cryptography.hash
-
-import it.unibo.authsim.library.dsl.cryptography.{CryptographicAlgorithm}
+package it.unibo.authsim.library.dsl.cryptography.algorithm.hash
 
 enum HashFunctionAlgorithm:
   case MD5, SHA1, SHA256, SHA384

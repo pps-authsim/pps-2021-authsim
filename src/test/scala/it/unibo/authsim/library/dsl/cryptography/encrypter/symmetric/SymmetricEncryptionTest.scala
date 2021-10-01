@@ -1,14 +1,14 @@
-package it.unibo.authsim.library.dsl.cryptography.symmetric
+package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.symmetric.{AES, CaesarCipher, DES}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+trait prova4
 
 
 class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
-  val des = DES()
-  val aes = AES()
-  val caesarCipher= CaesarCipher()
+  val des = DESEncrypter
+  val aes = AESEncrypter
+  val caesarCipher= CaesarCipherEncrypter
   val rotation:Int = 2
   val secret: String = "12345678123456781234567812345678"
   val password: String ="password"

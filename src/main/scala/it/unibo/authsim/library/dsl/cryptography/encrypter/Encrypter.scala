@@ -1,7 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography
-import it.unibo.authsim.library.dsl.cryptography.hash.HashFunction
-import it.unibo.authsim.library.dsl.cryptography.asymmetric.RSA
-import it.unibo.authsim.library.dsl.cryptography.symmetric.{AES, DES, CaesarCipher}
+package it.unibo.authsim.library.dsl.cryptography.encrypter
+
+import it.unibo.authsim.library.dsl.cryptography.algorithm.EncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
+import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeyPair
 
 import java.security.spec.{AlgorithmParameterSpec, KeySpec}
 import java.util.Base64
@@ -11,7 +12,9 @@ import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 /**
  * Trait that represent a basic encryption
  */
-trait Encryption:
+trait Encrypter:
+  def algorithm : EncryptionAlgorithm
+
   /**
    * Enumeration that specify in wich mode is to be used either encrypt or decrypt
    */
@@ -41,24 +44,30 @@ trait Encryption:
   def decrypt[A, B](encryptedPassword: A, secret:B): String
 
 /**
- * Trait that represent a crypthographic algorithm
+ * Trait for Asymmetric encrypter, it provides additional methods to manage the encryption operation
+ * using asymmetric encryption algorithms
  */
-trait CryptographicAlgorithm:
+trait AsymmetricEncrypter extends Encrypter:
   /**
-   * Method used to get the name of the crypthographic algorithm
-   * @return                        a string representing the name of crypthographic algorithm
+   * Method to load existing key from a user directory 
+   * 
+   * @param fileName                name of the file from which key should be loaded
+   * @return                        an istance of KeyPair
    */
-  def algorithmName: String
+  def loadKeys(fileName: String):KeyPair
 
+  /**
+   * Method to generate a new key pair and save it on the disk, overriding prexisting information present in the file
+   * 
+   * @param fileName                name of the file in which key pair should be saved
+   * @return                        the key pair generated
+   */
+  def generateKeys(fileName: String): KeyPair
+  
 /**
- * Abstract class for to create encryption algorithms
+ * Abstract class for to perform the encryption operation
  */
-abstract class BasicEcryption extends Encryption with CryptographicAlgorithm:
-  /**
-   * Variable representing the name of the algorithm
-   */
-  protected val _name: String
-
+abstract class BasicEcrypter extends Encrypter:
   /**
    * Method used to encrypt the password
    *
@@ -94,17 +103,3 @@ abstract class BasicEcryption extends Encryption with CryptographicAlgorithm:
    * @return                        A string representing the password either encrypted or decrypted
    */
   def crypto[A, B](mode:EncryptionMode, password: A, secret: B): String
-
-  /**
-   * Getter for the algorithm name
-   *  @return                       A string representing the name of crypthographic algorithm
-   */
-  override def algorithmName: String = _name
-
-  /**
-   * To string method for the object
-   *
-   * @return                         A string representing the name of crypthographic algorithm
-   */
-  override def toString: String = _name
-

@@ -17,4 +17,5 @@ object ImplicitConversion:
 
   implicit def genericToArrayByte[A](value :A):Array[Byte] = stringToArrayByte(genericToString(value))
   implicit def stringToCharArray(value : String):Array[Char] =value.toCharArray
+  implicit def stringToByte(value : String):Byte = Byte(value)
   implicit def stringToArrayByte(value : String):Array[Byte] =value.getBytes(charset)

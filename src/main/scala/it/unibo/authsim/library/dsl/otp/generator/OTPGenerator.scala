@@ -10,10 +10,9 @@ import scala.util.Random
 
 object OTPGenerator:
 
-  private case class PreviousGenerateOTP(seed: Int = 0, start: Int = 0, pin: String = ""):
-    def isChangeSeed(value: Int): Boolean = this.seed != value
-
-    def regeneratedSamePin(pin: String): Boolean = this.pin == pin
+  private case class PreviousGenerateOTP(seed: Option[Int] = None, start: Option[Int] = Some(0), pin: Option[String] = None):
+    def isChangeSeed(value: Int): Boolean = this.seed.isEmpty || this.seed.get != value
+    def regeneratedSamePin(pin: String): Boolean = this.pin.isDefined && this.pin.get == pin
 
   private var previous: MutableMap[String, PreviousGenerateOTP] = MutableMap.empty // secret -> PreviousGenerateOTP
 
@@ -30,7 +29,7 @@ object OTPGenerator:
       //      println(s"length of pin to generate = $digits")
       val hmacStr: String = this.hmac(hashFunction, secret).map(_.toUInt).mkString
       //      println(s"HMAC = $hmacStr, Len = ${hmacStr.length}")
-      val start: Int = Random.between(0, hmacStr.length, previousValues.start)
+      val start: Int = Random.between(0, hmacStr.length, previousValues.start.get)
       //      println(s"Start: $start")
       var pin = hmacStr.slice(start, start + digits)
       if pin.length < digits then
@@ -39,9 +38,9 @@ object OTPGenerator:
       if previousValues.regeneratedSamePin(pin) then
       //        println(s"Change one char.")
         pin = pin.change(('0' to '9'))
-      previous.update(secret, PreviousGenerateOTP(seed, start, pin))
+      previous.update(secret, PreviousGenerateOTP(Some(seed), Some(start), Some(pin)))
       //      println(s"Now = (seed = $seed, start = $start, pin = $pin)\n\n")
       pin
     else
     //      println(s"get previous pin = ${previousValues.pin}")
-      previousValues.pin
+      previousValues.pin.get

@@ -1,5 +1,7 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
+import it.unibo.authsim.library.dsl.alphabet.{Alphabet, SymbolicAlphabet}
+
 /**
  * A ConcurrentStringProvider lazily generates all the possible string given an alphabet and a maximum length.
  * It also ensure mutual exclusion for retrieving the next string.
@@ -7,7 +9,7 @@ package it.unibo.authsim.library.dsl.attack.builders
  * @param alphabet The alphabet to use to generate the strings
  * @param maxLength The maximum length of the strings to generate
  */
-class ConcurrentStringCombinator(val alphabet: List[String], val maxLength: Int):
+class ConcurrentStringCombinator(val alphabet: Alphabet[_], val maxLength: Int):
   private var stringList: LazyList[String] = getAllStringsUpToLength(maxLength)
 
   /**
@@ -30,7 +32,7 @@ class ConcurrentStringCombinator(val alphabet: List[String], val maxLength: Int)
  * This companion object provides some shorthands for standard alphabets.
  */
 object ConcurrentStringCombinator:
-  def lowercaseLetters: List[String] = List("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
-  def uppercaseLetters: List[String] = lowercaseLetters.map(l => l.toUpperCase)
-  def numbers: List[String] = (0 to 9).map(i => i.toString).toList
-  def symbols: List[String] = List(" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~")
+  def lowercaseLetters = SymbolicAlphabet(Set("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"))
+  def uppercaseLetters = SymbolicAlphabet(Set.from(lowercaseLetters.map(l => l.toUpperCase)))
+  def numbers = SymbolicAlphabet((0 to 9).map(i => i.toString).toSet)
+  def symbols = SymbolicAlphabet(Set(" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"))

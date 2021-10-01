@@ -1,28 +1,30 @@
 package it.unibo.authsim.library.dsl.policy.alphabet
 
+import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
+
 import scala.util.matching.Regex
 
 /**
  * An ''Alphabet'' is a trait that is used to define a new alphabet
  */
-trait Alphabet:
+trait AlphabetCommonClasses:
   /**
    * @return sequence of lowercase characters of alphabet
    */
-  def lowers: Seq[Char] = Seq.empty
+  def lowers: SymbolicAlphabet = SymbolicAlphabet(Set.empty)
   /**
    * @return sequence of uppercase characters of alphabet
    */
-  def uppers: Seq[Char] = Seq.empty
+  def uppers: SymbolicAlphabet = SymbolicAlphabet(Set.empty)
   /**
    * @return sequence of digits of alphabet
    */
-  def digits: Seq[Char] = Seq.empty
+  def digits: SymbolicAlphabet = SymbolicAlphabet(Set.empty)
   /**
    * @return sequence of symbols of alphabet
    */
-  def symbols: Seq[Char] = Seq.empty
+  def symbols: SymbolicAlphabet = SymbolicAlphabet(Set.empty)
   /**
    * @return sequence of all characters (lowercase and uppercase), digits and symbols of alphabet
    */
-  def alphanumericsymbols: Seq[Char] = lowers ++ uppers ++ digits ++ symbols
+  def alphanumericsymbols: SymbolicAlphabet = lowers and uppers and digits and symbols

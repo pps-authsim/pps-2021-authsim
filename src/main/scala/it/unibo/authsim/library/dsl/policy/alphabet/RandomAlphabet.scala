@@ -1,11 +1,13 @@
 package it.unibo.authsim.library.dsl.policy.alphabet
 
+import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
+
 import scala.util.Random
 
 /**
  * A ''RandomAlphabet'' a trait that is used to define a new alphabet with randomize methods
  */
-trait RandomAlphabet extends Alphabet:
+trait RandomAlphabet extends AlphabetCommonClasses:
   /**
    * @return stream of lowercase characters of alphabet
    */
@@ -25,13 +27,13 @@ trait RandomAlphabet extends Alphabet:
   /**
    * @return stream of all characters (lowercase and uppercase), digits and symbols of alphabet
    */
-  def randomAlphanumericsymbols: LazyList[Char] = this.createLazyListFromAlphabets(this.lowers ++ this.uppers ++ this.digits ++ this.symbols)
+  def randomAlphanumericsymbols: LazyList[Char] = this.createLazyListFromAlphabets(this.lowers and this.uppers and this.digits and this.symbols)
 
   /**
    * @param alphabet sequence of characters of the alphabet
    * @return stream of chracters of the given alphabet
    */
-  private def createLazyListFromAlphabets(alphabet: Seq[Char]): LazyList[Char] =
+  private def createLazyListFromAlphabets(alphabet: SymbolicAlphabet): LazyList[Char] =
     def next: Char =
       val chars = alphabet.mkString
       chars charAt (Random nextInt chars.length)

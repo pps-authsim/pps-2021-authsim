@@ -9,7 +9,7 @@ import java.io.*
 import scala.io.Source
 
 class AsymmetricEncryptionTest extends AnyWordSpec with Matchers {
-  val rsa= RSAEncrypter
+  val rsa= RSAEncrypter()
   val password: String = "password"
   val fileName:String= "key.ser"
   val keypair= rsa.generateKeys(fileName)

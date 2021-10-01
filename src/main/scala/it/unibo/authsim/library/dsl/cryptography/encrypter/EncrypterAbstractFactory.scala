@@ -9,8 +9,8 @@ object EncrypterAbstractFactory:
 
   def apply[A>: Encrypter](name: EncryptionAlgorithm): A =
     name match {
-      case EncryptionAlgorithm.CaesarCipher => CaesarCipherEncrypter
-      case EncryptionAlgorithm.AES => AESEncrypter
-      case EncryptionAlgorithm.DES => DESEncrypter
-      case EncryptionAlgorithm.RSA => RSAEncrypter
+      case EncryptionAlgorithm.CaesarCipher => CaesarCipherEncrypter()
+      case EncryptionAlgorithm.AES => AESEncrypter()
+      case EncryptionAlgorithm.DES => DESEncrypter()
+      case EncryptionAlgorithm.RSA => RSAEncrypter()
     }

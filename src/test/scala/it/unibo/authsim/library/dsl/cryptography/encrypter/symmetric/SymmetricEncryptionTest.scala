@@ -6,9 +6,9 @@ trait prova4
 
 
 class SymmetricEncryptionTest extends AnyWordSpec with Matchers {
-  val des = DESEncrypter
-  val aes = AESEncrypter
-  val caesarCipher= CaesarCipherEncrypter
+  val des = DESEncrypter()
+  val aes = AESEncrypter()
+  val caesarCipher= CaesarCipherEncrypter()
   val rotation:Int = 2
   val secret: String = "12345678123456781234567812345678"
   val password: String ="password"

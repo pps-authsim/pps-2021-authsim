@@ -63,11 +63,12 @@ trait AsymmetricEncrypter extends Encrypter:
    * @return                        the key pair generated
    */
   def generateKeys(fileName: String): KeyPair
-  
+
+trait SymmetricEncrypter extends Encrypter
 /**
  * Abstract class for to perform the encryption operation
  */
-abstract class BasicEcrypter extends Encrypter:
+abstract class BasicEncrypter extends Encrypter:
   /**
    * Method used to encrypt the password
    *

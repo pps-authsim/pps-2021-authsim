@@ -13,8 +13,6 @@ object CaesarCipher:
     private val _length : Int = 56 //8 bit inte
     private var _alphabet=('a' to 'z') ++ ('1' to '9')
 
-    //override def toString: String = _name
-
     override def salt: Option[String] = None
 
     override def keyLength: Int = _length

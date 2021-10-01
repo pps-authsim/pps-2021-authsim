@@ -1,13 +1,13 @@
-package it.unibo.authsim.library.dsl.attack.builders
+package it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce
 
-import it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce.BruteForceAttackBuilder
-import org.scalatest.wordspec.AnyWordSpec
+import it.unibo.authsim.library.dsl.attack.builders.ConcurrentStringCombinator
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
 import it.unibo.authsim.library.user.model.{CryptoInformation, UserInformation}
 import org.mockito.Mock
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 
 import scala.concurrent.duration.Duration
@@ -48,7 +48,7 @@ class BruteForceAttackBuilderTest extends AnyWordSpec:
         assert(myBruteForceBuilder.getHashFunction() != null)
       }
       "declare an alphabet to use" in {
-        assert(myBruteForceBuilder.getAlphabet() != null)
+        assert(myBruteForceBuilder.getAlphabet != null)
       }
     }
 

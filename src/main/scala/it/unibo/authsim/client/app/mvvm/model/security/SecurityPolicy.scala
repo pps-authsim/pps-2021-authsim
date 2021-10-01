@@ -155,12 +155,12 @@ object SecurityPolicy:
     val SSH_SUPERHARDHARD = DefaultVal(policiesDefaultsSSH.superHardHard)
 
     /**
-     * @return a set value of defined default policy that do not have a transmission protocol
+     * @return a sequence of defined default policies that do not have a transmission protocol
      */
-    def withoutProtocol: SecurityPolicy.Default.ValueSet = this.values.filter(_.policy.transmissionProtocol.isEmpty)
+    def withoutProtocol: Seq[Default.Value] = this.values.toSeq.filter(_.policy.transmissionProtocol.isEmpty)
 
     /**
-     * @return a sequence of all defined defualt policies mapped in [[SecurityPolicy]]
+     * @return a sequence of all defined default policies mapped in [[SecurityPolicy]]
      */
     def all: Seq[SecurityPolicy] = (for default <- this.values.toSeq yield SecurityPolicy(default.name, default.description))
 

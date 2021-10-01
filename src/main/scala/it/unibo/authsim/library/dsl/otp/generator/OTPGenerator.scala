@@ -14,7 +14,7 @@ object OTPGenerator:
     def isChangeSeed(value: Int): Boolean = this.seed.isEmpty || this.seed.get != value
     def regeneratedSamePin(pin: String): Boolean = this.pin.isDefined && this.pin.get == pin
 
-  private var previous: MutableMap[String, PreviousGenerateOTP] = MutableMap.empty // secret -> PreviousGenerateOTP
+  private val previous: MutableMap[String, PreviousGenerateOTP] = MutableMap.empty // secret -> PreviousGenerateOTP
 
   private def hmac(hashFunction: HashFunction, secret: String): Array[Byte] =
     val algorithm: String = s"Hmac${hashFunction.getClass.getSimpleName}"

@@ -30,7 +30,7 @@ class DiskTest  extends AnyWordSpec with Matchers with BeforeAndAfter {
       DiskManager.isExisting(fileName) shouldBe true
     }
     "and it be able to read it" in {
-      DiskManager.loadObject(fileName2) shouldBe testString
+      DiskManager.loadObject(fileName2).get shouldBe testString
     }
   }
 }

@@ -41,18 +41,18 @@ object PersistentKeysGenerator extends KeyGenerator[KeyPair] :
     keyPair
 
   override def loadKeys(fileName: String): KeyPair =
-    
     if (Disk.isExisting(fileName))then
-      Disk.loadObject(fileName)
+      val optKey=Disk.loadObject(fileName)
+      optKey.getOrElse(generateKeys(fileName))
     else
       generateKeys(fileName)
 
   private def saveKeys(keypair:KeyPair, fileName: String) : Unit=
-    
+
     Disk.saveObject(keypair, fileName)
 
   implicit class KeyPairImpl(keypair:JavaKeyPair) extends Serializable with KeyPair:
-    
+
     implicit def encode(key:  Array[Byte]): String = Base64.encodeToString(key)
 
     def publicKey: String= keypair.getPublic.getEncoded

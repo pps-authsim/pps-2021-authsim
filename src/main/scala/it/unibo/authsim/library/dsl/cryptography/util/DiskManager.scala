@@ -14,11 +14,27 @@ object DiskManager:
   def saveObject[T](obj: T, fileName: String): Unit =
     val file = new File(fileName)
     val oos = new ObjectOutputStream(new FileOutputStream(file))
-    try oos.writeObject(obj) finally oos.close
 
-  def loadObject[T](fileName: String): T =
+    Try {
+      oos.writeObject(obj)
+      }.toEither match {
+        case Left(error) =>
+          println("Error in saving the file")
+        case Right(_) =>
+          oos.close
+      }
+
+  def loadObject[T](fileName: String): Option[T] =
     val file = new File(fileName)
     val objectInputStream = new ObjectInputStream(new FileInputStream(file))
-    try {
-      objectInputStream.readObject.asInstanceOf[T]
-    } finally objectInputStream.close
+    var res: Option[T]= None
+    Try {
+      res=Some(objectInputStream.readObject.asInstanceOf[T])
+      }.toEither match {
+        case Left(error) =>
+          println("Error in reading the file")
+          None
+        case Right(_) =>
+          objectInputStream.close
+          res
+    }

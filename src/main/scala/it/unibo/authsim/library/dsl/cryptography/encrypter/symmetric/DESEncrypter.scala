@@ -16,6 +16,8 @@ object DESEncrypter extends BasicEcrypter:
 
   var algorithm : DES = DES()
 
+  val salt = Arrays.copyOf(algorithm.salt, 8)
+
   private var _iterationCount: Int = 19
 
   def iterationCount_(iteration: Int): Unit =
@@ -39,5 +41,5 @@ object DESEncrypter extends BasicEcrypter:
   private def secretKey(secret: String): SecretKey =
     //var newsecret=Arrays.copyOf(secret, algorithm.keyLength)
     //println(newsecret.length)
-    var keySpec: KeySpec = new PBEKeySpec(secret,algorithm.salt ,_iterationCount)
+    var keySpec: KeySpec = new PBEKeySpec(secret, salt ,_iterationCount)
     SecretKeyFactory.getInstance(_trasformation).generateSecret(keySpec)

@@ -36,7 +36,4 @@ lazy val root = project
     libraryDependencies += "commons-io" % "commons-io" % "20030203.000550",
     libraryDependencies += "com.google.guava" % "guava" % "25.1-jre",
 
-    libraryDependencies += "org.typelevel" %% "cats-core" % "2.6.1",
-    libraryDependencies += "org.typelevel" %% "cats-effect" % "3.2.9",
-
   )

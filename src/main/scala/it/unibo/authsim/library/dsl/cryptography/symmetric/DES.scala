@@ -18,7 +18,7 @@ object DES:
   def apply()= new BasicDES()
     class BasicDES() extends BasicEcryption with DES:
       import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
-
+      //Array.fill[Byte](8)(0)
       private val _salt: Array[Byte] = Array(0xA9.asInstanceOf[Byte], 0x9B.asInstanceOf[Byte], 0xC8.asInstanceOf[Byte], 0x32.asInstanceOf[Byte], 0x56.asInstanceOf[Byte], 0x35.asInstanceOf[Byte], 0xE3.asInstanceOf[Byte], 0x03.asInstanceOf[Byte])
 
       private var _iterationCount: Int = 19

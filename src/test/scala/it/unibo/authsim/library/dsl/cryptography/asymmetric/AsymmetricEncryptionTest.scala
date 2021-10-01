@@ -14,7 +14,6 @@ class AsymmetricEncryptionTest extends AnyWordSpec with Matchers {
   val fileName:String= "key.ser"
   val keypair= rsa.generateKeys(fileName)
   val(pvt, pub) = (keypair.privateKey, keypair.publicKey)
-  val passwordEncrypted = rsa.encrypt(password, pub)
 
 
    "RSA encryption" should {

@@ -14,7 +14,6 @@ object DiskManager:
   def saveObject[T](obj: T, fileName: String): Unit =
     val file = new File(fileName)
     val oos = new ObjectOutputStream(new FileOutputStream(file))
-
     Try {
       oos.writeObject(obj)
       }.toEither match {

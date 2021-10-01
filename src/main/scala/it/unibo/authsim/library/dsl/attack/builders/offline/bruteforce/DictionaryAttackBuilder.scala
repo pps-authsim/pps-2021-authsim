@@ -1,34 +1,18 @@
 package it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce
 
-import it.unibo.authsim.library.dsl.attack.builders.BruteForceAttackBuilder
+import it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce.AbstractBruteForceAttackBuilder
+import it.unibo.authsim.library.dsl.alphabet.{Alphabet, Dictionary}
 
 /**
  * Builder of dictionary attacks.
  * They can be seen as brute force attacks wht a special alphabet with symbols with a length greater than 1.
  */
-class DictionaryAttackBuilder extends BruteForceAttackBuilder:
+class DictionaryAttackBuilder extends AbstractBruteForceAttackBuilder[Dictionary]:
 
-  /**
-   * Sets the dictionary for the attack.
-   * @param dictionary The dictionary to use.
-   * @return The builder.
-   */
-  // TODO: Change into a real Alphabet
-  def withDictionary(dictionary: List[String]): DictionaryAttackBuilder = super.usingAlphabet(dictionary)
+  def withDictionary(dictionary: Alphabet[Dictionary]) = super.protectedUsingAlphabet(dictionary)
 
-  /**
-   * Sets the maximum number of words that can be combined to form the password to test.
-   * @param max The masimum number.
-   * @return The builder.
-   */
-  def maximumCombinedWords(max: Int): DictionaryAttackBuilder = super.maximumLength(max)
+  def maximumCombinedWords(max: Int) = super.protectedMaximumLength(max)
 
-  /**
-   * @return The set dictionary.
-   */
-  def getDictionary: List[String] = super.getAlphabet()
+  def getDictionary = super.protectedGetAlphabet
 
-  /**
-   * @return The set maximum number of combination.
-   */
-  def getMaximumCombinationLength: Int = super.getMaximumLength
+  def getMaximumCombinationLength: Int = super.protectedGetMaximumLength

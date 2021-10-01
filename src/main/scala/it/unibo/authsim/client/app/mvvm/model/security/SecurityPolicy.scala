@@ -21,7 +21,7 @@ object SecurityPolicy:
       def descriptor(defaultVal: DefaultVal) =
         s"""${base}\n
             ${if defaultVal.policy.transmissionProtocol.isDefined then s"Credentials are trasmitted with protocol ${defaultVal.policy.transmissionProtocol.get.getClass.getSimpleName.toUpperCase}." else "No protocol." }\n
-            The alphabet:  ${defaultVal.policy.credentialPolicies.map(_.alphabet).map(a => a.lowers.concat(a.uppers).concat(a.digits).concat(a.symbols).mkString).distinct.mkString}"""
+            The alphabet:  ${defaultVal.policy.credentialPolicies.map(_.alphabet).map(a => a.alphanumericsymbols.mkString).distinct.mkString}"""
 
     protected case class DefaultVal(val policy: Policy) extends super.Val:
       def name: String = (if policy.transmissionProtocol.isDefined then s"${policy.transmissionProtocol.get.getClass.getSimpleName}-" else "") + policy.name

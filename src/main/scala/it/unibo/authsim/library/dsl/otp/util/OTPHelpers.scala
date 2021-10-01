@@ -28,6 +28,7 @@ object OTPHelpers:
     def findIndexChar(differentFrom: Char): Option[Int] = base.zipWithIndex.find((char, _) => char != differentFrom).map((_, index) => index)
 
     def change(range: NumericRange[Char]): String =
+      require(!range.isEmpty, "range must have at least one value")
       val charsIterator: Iterator[Char] = range.iterator
       var charToSuppress: Char = charsIterator.next
       var indexToSuppress: Option[Int] = base.findIndexChar(charToSuppress)

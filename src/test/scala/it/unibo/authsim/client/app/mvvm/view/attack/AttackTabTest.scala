@@ -1,6 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.view.attack
 
-import it.unibo.authsim.client.app.mvvm.view.AuthsimViewTest
+import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFXTest
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.{AttackSequenceEntry, AttackTab}
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.SecurityPolicyEntry
 import javafx.beans.value.ObservableValue
@@ -11,7 +11,7 @@ class AttackTabTest extends AnyWordSpec :
 
   "Attack Tab" when {
 
-    AuthsimViewTest.setUpViewTest()
+    AuthsimViewSFXTest.setUpViewTest()
 
     "attack tab is constructed" should {
 

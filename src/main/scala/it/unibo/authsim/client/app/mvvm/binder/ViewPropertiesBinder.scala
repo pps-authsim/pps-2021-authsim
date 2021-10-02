@@ -1,10 +1,10 @@
 package it.unibo.authsim.client.app.mvvm.binder
 
-import it.unibo.authsim.client.app.mvvm.view.AuthsimView
+import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.{AttackSequenceEntry, AttackTab}
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.SecurityPoliciesProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.properties.GenerateUsersFormProperties
-import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.{AuthsimViewModelDeferedProxy, AuthsimViewModelImpl}
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.properties.AttackSequenceProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
@@ -28,7 +28,7 @@ import scalafx.Includes.*
  */
 object ViewPropertiesBinder:
 
-  def bindUsersTab(view: AuthsimView, viewModel: AuthsimViewModel): UsersViewModel =
+  def bindUsersTab(view: AuthsimViewSFX, viewModel: AuthsimViewModelDeferedProxy): UsersViewModel =
     val tab = view.usersTab
 
     val addUserFormProperties = new AddUserFormProperties(tab.usernameProperty, tab.passwordProperty);
@@ -47,7 +47,7 @@ object ViewPropertiesBinder:
     usersViewModel
 
 
-  def bindSecurityTab(view: AuthsimView, viewModel: AuthsimViewModel): SecurityViewModel =
+  def bindSecurityTab(view: AuthsimViewSFX, viewModel: AuthsimViewModelDeferedProxy): SecurityViewModel =
     val tab = view.securityTab
 
     val securityPoliciesProperties = new SecurityPoliciesProperties(tab.securityPoliciesListProperty, tab.securityPoliciesListSelectedProperty, tab.securityPoliciesDescriptionProperty)
@@ -62,7 +62,7 @@ object ViewPropertiesBinder:
     securityViewModel
 
 
-  def bindAttackTab(view: AuthsimView, viewModel: AuthsimViewModel): AttackViewModel =
+  def bindAttackTab(view: AuthsimViewSFX, viewModel: AuthsimViewModelDeferedProxy): AttackViewModel =
     val tab = view.attackTab
 
     val attackSequenceProperties = new AttackSequenceProperties(

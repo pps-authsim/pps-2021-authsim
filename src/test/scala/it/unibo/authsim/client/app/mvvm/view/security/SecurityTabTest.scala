@@ -1,6 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.view.security
 
-import it.unibo.authsim.client.app.mvvm.view.{AuthsimView, AuthsimViewTest}
+import it.unibo.authsim.client.app.mvvm.view.{AuthsimViewSFX, AuthsimViewSFXTest}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UsersTab}
 import javafx.event.ActionEvent
 import org.scalatest.wordspec.AnyWordSpec
@@ -12,7 +12,7 @@ class SecurityTabTest extends AnyWordSpec :
 
     "Security Tab" when {
 
-      AuthsimViewTest.setUpViewTest()
+      AuthsimViewSFXTest.setUpViewTest()
 
       "security tab is constructed" should {
 

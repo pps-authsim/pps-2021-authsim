@@ -1,8 +1,8 @@
 package it.unibo.authsim.client.app
 
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
-import it.unibo.authsim.client.app.mvvm.view.AuthsimView
-import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
+import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
+import it.unibo.authsim.client.app.mvvm.viewmodel.{AuthsimViewModelDeferedProxy, AuthsimViewModelImpl}
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ViewPropertiesBinder}
@@ -11,6 +11,9 @@ import it.unibo.authsim.client.app.mvvm.model.security.SecurityModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.SecurityTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
+import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import scalafx.application.JFXApp3
 import scalafx.beans.property.DoubleProperty
 import scalafx.geometry.Insets
@@ -31,17 +34,16 @@ object AuthsimApp extends JFXApp3 :
 
     val view = makeAuthsimView()
     val model = makeAuthsimModel()
-
-    new AuthsimViewModel(view, model)
+    val viewModel = makeAuthsimViewModel(view, model)
 
     stage = view
 
-  private def makeAuthsimView(): AuthsimView =
+  private def makeAuthsimView(): AuthsimViewSFX =
     val usersTab = new UsersTab
     val securityTab = new SecurityTab
     val attackTab = new AttackTab
 
-    new AuthsimView(usersTab, securityTab, attackTab)
+    new AuthsimViewSFX(usersTab, securityTab, attackTab)
 
   private def makeAuthsimModel(): AuthsimModel =
     val usersModel = new UsersModel
@@ -49,3 +51,17 @@ object AuthsimApp extends JFXApp3 :
     val attackModel = new AttackModel
 
     new AuthsimModel(usersModel, securityModel, attackModel)
+
+  private def makeAuthsimViewModel(view: AuthsimViewSFX, model: AuthsimModel): AuthsimViewModelImpl =
+    val viewModelDeferedProxy = new AuthsimViewModelDeferedProxy
+
+    val usersViewModel: UsersViewModel = ViewPropertiesBinder.bindUsersTab(view, viewModelDeferedProxy)
+    val securityViewModel: SecurityViewModel = ViewPropertiesBinder.bindSecurityTab(view, viewModelDeferedProxy)
+    val attackViewModel: AttackViewModel = ViewPropertiesBinder.bindAttackTab(view, viewModelDeferedProxy)
+
+    val authsimViewModel = new AuthsimViewModelImpl(usersViewModel, securityViewModel, attackViewModel, model)
+
+    viewModelDeferedProxy.delegate = Option(authsimViewModel)
+
+    authsimViewModel
+

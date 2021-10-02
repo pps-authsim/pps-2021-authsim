@@ -2,15 +2,17 @@ package it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric
 
 import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeyPair
 import org.apache.commons.io.FileUtils
+import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.io.*
 import scala.io.Source
+import scala.util.Random
 
-class AsymmetricEncryptionTest extends AnyWordSpec with Matchers {
+class AsymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
   val rsa= RSACipher()
-  val password: String = "password"
+  var passwordList: List[String]= List.empty[String]
   val fileName:String= "key.ser"
   val keypair= rsa.generateKeys(fileName)
   val(pvt, pub) = (keypair.privateKey, keypair.publicKey)
@@ -26,8 +28,17 @@ class AsymmetricEncryptionTest extends AnyWordSpec with Matchers {
     }
 
     "be equal to the result of the decryption operation" in {
-      rsa.decrypt(rsa.encrypt(password, pub), pvt).equals(password) shouldBe true
+      for (password <- passwordList)
+        rsa.decrypt(rsa.encrypt(password, pub), pvt).equals(password) shouldBe true
     }
 
   }
+  before {
+    val listLength=Random.between(5,20)
+    passwordList=listInitializer(listLength)
+  }
+
+  private def listInitializer(listLength:Int )=
+    List.fill(listLength)(Random.alphanumeric.filter(_.isLetterOrDigit).take(Random.between(8,20)).mkString)
+
 }

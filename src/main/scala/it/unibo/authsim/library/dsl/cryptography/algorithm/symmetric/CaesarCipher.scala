@@ -4,13 +4,8 @@ import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAl
 /**
  * Trait for Caesar Cipher algorithm
  */
-trait CaesarCipher extends SymmetricEncryptionAlgorithm:
-  /**
-   * Getter for tha alphabet to be used during the cryptographic operations
-   * @return    IndexedSeq[Char] representing the algorithm used
-   */
-  def alphabet: IndexedSeq[Char]
-  
+trait CaesarCipher extends SymmetricEncryptionAlgorithm
+
 /**
  * Companion object of the Caesar Cipher trait
  */
@@ -38,11 +33,7 @@ object CaesarCipher:
      * Private variable representing the length of the key used during the cryptographic operation
      */
     private val _length : Int = 8 //byte int length
-    /**
-     * Private variable representing the alphabet used during the cryptographic operation
-     */
-    private var _alphabet=('a' to 'z') ++ ('1' to '9')
-    
+
     /**
      * Getter for the salt value
      *
@@ -62,10 +53,3 @@ object CaesarCipher:
      *  @return                 a string representing the name of crypthographic algorithm
      */
     override def algorithmName: String = _name
-
-    /**
-     * Getter for the alphabet
-     * 
-     *  @return    IndexedSeq[Char] representing the algorithm used
-     */
-    override def alphabet: IndexedSeq[Char] = _alphabet

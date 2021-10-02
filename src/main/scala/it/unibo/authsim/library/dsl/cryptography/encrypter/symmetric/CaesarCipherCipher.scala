@@ -36,7 +36,7 @@ object CaesarCipherCipher:
      *                                in a reasonable way it is substitued with the default value, which is 0
      *  @return                       a string representing the password encrypted
      */
-    override def encrypt[A,B](password: A, rotation: B): String = crypto(password, rotation)
+    override def encrypt[A,B](password: A, rotation: B): String =  crypto(password, rotation)
 
     /**
      * Method used to decrypt the password
@@ -56,20 +56,5 @@ object CaesarCipherCipher:
      * @param rotation      value that represents the shift
      * @return              Either the password encrypted or decrypted
      */ 
-    private def crypto(password: String, rotation:Int)=
-      password.toLowerCase.map {
-        case character
-          if algorithm.alphabet.contains(character) =>
-            shift(algorithm.alphabet, character, rotation)
-        case character => character
-      }
-
-    /**
-     * Private method that performs the shift operation 
-     * @param alpha           alphabet to be used
-     * @param character       character of the password to be considered
-     * @param rotation        shift to applied to character
-     * @return                the new character
-     */
-    private def shift(alpha:IndexedSeq[Char], character:Char, rotation:Int)=
-      alpha((character - alpha.head + rotation + alpha.size) % alpha.size)
+    private def crypto(password: String, rotation:Int) =
+      password.map(c => (rotation + c).toChar)

@@ -1,14 +1,18 @@
 package it.unibo.authsim.client.app.mvvm.viewmodel
 
+import it.unibo.authsim.client.app.mvvm.binder.ViewPropertiesBinder
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
-import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelImpl
+import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelSFX
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackModel
 import it.unibo.authsim.client.app.mvvm.model.security.{SecurityModel, SecurityPolicy}
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityTab}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UsersTab}
+import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import javafx.embed.swing.JFXPanel
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -20,24 +24,31 @@ import org.scalatest.BeforeAndAfterEach
 
 import scala.collection.mutable.ListBuffer
 
-object AuthsimViewSFXModelSFXTest:
+object AuthsimViewModelSFXTest:
 
   def setUpViewModelTest() =
     val jfxPanel = new JFXPanel
 
-class AuthsimViewSFXModelSFXTest extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfterEach:
-
-  /*
+class AuthsimViewModelSFXTest extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfterEach:
 
   var mockModel: AuthsimModel = null
   var mockView: AuthsimViewSFX = null
-  var viewModel: AuthsimViewModelImpl = null
+  var viewModel: AuthsimViewModel = null
 
   override def beforeEach() =
-    AuthsimViewSFXModelSFXTest.setUpViewModelTest()
+    AuthsimViewModelSFXTest.setUpViewModelTest()
     mockModel = new AuthsimModel(new UsersModel(), new SecurityModel(), new AttackModel())
     mockView = makeMockView()
-    viewModel = new AuthsimViewModelImpl(mockView, mockModel)
+
+    val viewModelDeferedProxy = new AuthsimViewModelDeferedProxy
+
+    val usersViewModel: UsersViewModel = ViewPropertiesBinder.bindUsersTab(mockView, viewModelDeferedProxy)
+    val securityViewModel: SecurityViewModel = ViewPropertiesBinder.bindSecurityTab(mockView, viewModelDeferedProxy)
+    val attackViewModel: AttackViewModel = ViewPropertiesBinder.bindAttackTab(mockView, viewModelDeferedProxy)
+
+    viewModel = new AuthsimViewModelSFX(usersViewModel, securityViewModel, attackViewModel, mockModel)
+
+    viewModelDeferedProxy.delegate = Option(viewModel)
 
   "Authsim view model" when {
 
@@ -164,6 +175,3 @@ class AuthsimViewSFXModelSFXTest extends AnyWordSpec with Matchers with MockitoS
   def assertUserTabHasDefaultValues(): Unit =
     assert(mockModel.usersModel.usersList.value.sameElements(Seq(User("user", "password"))))
     assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))
-
-  */
-  ???

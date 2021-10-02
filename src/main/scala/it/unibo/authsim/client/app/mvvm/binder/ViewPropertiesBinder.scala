@@ -4,7 +4,7 @@ import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.{AttackSequenceEntry, AttackTab}
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.SecurityPoliciesProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.properties.GenerateUsersFormProperties
-import it.unibo.authsim.client.app.mvvm.viewmodel.{AuthsimViewModelDeferedProxy, AuthsimViewModelImpl}
+import it.unibo.authsim.client.app.mvvm.viewmodel.{AuthsimViewModelDeferedProxy, AuthsimViewModelSFX}
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.properties.AttackSequenceProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel

@@ -18,7 +18,7 @@ import it.unibo.authsim.library.user.model.User
 import javafx.collections.ObservableList
 import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
 
-object AuthsimViewModelImpl:
+object AuthsimViewModelSFX:
   val ATTACK_MISSING_VALUE_TEXT = "Please, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
 
 /**
@@ -26,10 +26,10 @@ object AuthsimViewModelImpl:
  * @param view view
  * @param model model
  */
-class AuthsimViewModelImpl(private val usersViewModel: UsersViewModel,
-                           private val securityViewModel: SecurityViewModel,
-                           private val attackViewModel: AttackViewModel,
-                           private val model: AuthsimModel) extends AuthsimViewModel:
+class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
+                          private val securityViewModel: SecurityViewModel,
+                          private val attackViewModel: AttackViewModel,
+                          private val model: AuthsimModel) extends AuthsimViewModel:
 
   ModelBinder.bindUsersViewModel(model.usersModel, usersViewModel)
   ModelBinder.bindSecurityViewModel(model.securityModel, securityViewModel)
@@ -79,7 +79,7 @@ class AuthsimViewModelImpl(private val usersViewModel: UsersViewModel,
 
       new Thread(simulation).start()
     else
-      attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModelImpl.ATTACK_MISSING_VALUE_TEXT
+      attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModelSFX.ATTACK_MISSING_VALUE_TEXT
 
 
 

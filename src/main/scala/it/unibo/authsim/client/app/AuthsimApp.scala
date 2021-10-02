@@ -2,7 +2,7 @@ package it.unibo.authsim.client.app
 
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
-import it.unibo.authsim.client.app.mvvm.viewmodel.{AuthsimViewModelDeferedProxy, AuthsimViewModelImpl}
+import it.unibo.authsim.client.app.mvvm.viewmodel.{AuthsimViewModelDeferedProxy, AuthsimViewModelSFX}
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ViewPropertiesBinder}
@@ -52,14 +52,14 @@ object AuthsimApp extends JFXApp3 :
 
     new AuthsimModel(usersModel, securityModel, attackModel)
 
-  private def makeAuthsimViewModel(view: AuthsimViewSFX, model: AuthsimModel): AuthsimViewModelImpl =
+  private def makeAuthsimViewModel(view: AuthsimViewSFX, model: AuthsimModel): AuthsimViewModelSFX =
     val viewModelDeferedProxy = new AuthsimViewModelDeferedProxy
 
     val usersViewModel: UsersViewModel = ViewPropertiesBinder.bindUsersTab(view, viewModelDeferedProxy)
     val securityViewModel: SecurityViewModel = ViewPropertiesBinder.bindSecurityTab(view, viewModelDeferedProxy)
     val attackViewModel: AttackViewModel = ViewPropertiesBinder.bindAttackTab(view, viewModelDeferedProxy)
 
-    val authsimViewModel = new AuthsimViewModelImpl(usersViewModel, securityViewModel, attackViewModel, model)
+    val authsimViewModel = new AuthsimViewModelSFX(usersViewModel, securityViewModel, attackViewModel, model)
 
     viewModelDeferedProxy.delegate = Option(authsimViewModel)
 

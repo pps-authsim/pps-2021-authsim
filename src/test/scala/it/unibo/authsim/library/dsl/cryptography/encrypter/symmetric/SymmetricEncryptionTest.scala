@@ -9,45 +9,47 @@ import org.apache.commons.lang3.RandomStringUtils
 
 import scala.util.Random
 
-
 class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
   val des = DESCipher()
   val aes = AESCipher()
   val caesarCipher= CaesarCipherCipher()
-  val rotation:Int = 2
-  val secret: String = "12345678123456781234567812345678"
-  //val password: String ="password"
-  var passwordSet: List[String]= List.empty[String]
+  var rotation=0
+  var passwordList: List[String]= List.empty[String]
+  var secretList: List[String]= List.empty[String]
+
   "DES encryption" should {
-    "return a string type" in {
-      passwordSet.foreach(password=>des.encrypt(password, secret).isInstanceOf[String] shouldBe true)
-    }
-
     "be " in {
-      passwordSet.foreach(password=>des.decrypt( des.encrypt(password, secret), secret).equals(password) shouldBe true)
-
+      for(password<- passwordList; secret<- secretList)
+        des.decrypt( des.encrypt(password, secret), secret).equals(password) shouldBe true
     }
   }
 
   "AES encryption" should{
       "be " in{
-        passwordSet.foreach(password=>aes.decrypt(aes.encrypt(password, secret), secret).equals(password) shouldBe true)
+        for(password<- passwordList; secret<- secretList)
+          aes.decrypt(aes.encrypt(password, secret), secret).equals(password) shouldBe true
       }
   }
 
   "A password encrypted with a Caesar cipher" should{
-
     "be " in{
-      passwordSet.foreach(password=>caesarCipher.decrypt(caesarCipher.encrypt(password, secret), secret).equals(password) shouldBe true)
-
+      for(password<- passwordList; secret<- secretList)
+        caesarCipher.decrypt(caesarCipher.encrypt(password, secret), secret).equals(password) shouldBe true
     }
 
-    "if rotation is 0 then encryption with Caesar cipher should work as identity function" in{
-      passwordSet.foreach(password=>password.map(c => (0 + c).toChar).equals(password) shouldBe true)
+    "if rotation is 0 then encryption with Caesar cipher should work as identity function" in {
+      for (password <- passwordList)
+        caesarCipher.decrypt(caesarCipher.encrypt(password, 0), 0).equals(password) shouldBe true
     }
-
   }
+
   before {
-    passwordSet=List.fill(10)(Random.alphanumeric.filter(_.isLetterOrDigit).take(8).mkString)
+    val listLength=Random.between(5,20)
+    passwordList=listInitializer(listLength)
+    secretList=listInitializer(listLength)
+    rotation= Random.between(1,50)
   }
+
+  private def listInitializer(listLength:Int )=
+    List.fill(listLength)(Random.alphanumeric.filter(_.isLetterOrDigit).take(Random.between(8,20)).mkString)
 }

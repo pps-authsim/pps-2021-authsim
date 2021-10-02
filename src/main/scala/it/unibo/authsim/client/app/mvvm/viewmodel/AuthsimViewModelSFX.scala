@@ -1,6 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.viewmodel
 
-import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ViewPropertiesBinder}
+import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ModelInitializer, ViewPropertiesBinder}
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
@@ -34,6 +34,10 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
   ModelBinder.bindUsersViewModel(model.usersModel, usersViewModel)
   ModelBinder.bindSecurityViewModel(model.securityModel, securityViewModel)
   ModelBinder.bindAttackViewModel(model.attackModel, attackViewModel)
+
+  ModelInitializer.initializeUsersModel(model.usersModel)
+  ModelInitializer.initializeSecurityModel(model.securityModel)
+  ModelInitializer.initializeAttackModel(model.attackModel)
 
   override def saveUser(): Unit =
     val username = usersViewModel.addUserFormProperties.usernameProperty.getValue()

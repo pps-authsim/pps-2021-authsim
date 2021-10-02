@@ -17,7 +17,7 @@ object RSA:
 
     private var keySet = Set(1024, 2048, 4096)
 
-    private var _length= 2048
+    private var _length= 2048//bit
 
     override def keyLength: Int = _length
 
@@ -30,10 +30,3 @@ object RSA:
         _length=newKeyLength
       else
         println("invalid key size")
-
-
-/*
-  private var algorithmSet = Set("RSA", "DiffieHellman")
-  private var keySet = Set(1024, 2048, 4096)
-  private var _bitlength= 2048
-*/

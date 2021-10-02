@@ -42,12 +42,18 @@ trait Encrypter:
    * @return                       a string representing the password decrypted
    */
   def decrypt[A, B](encryptedPassword: A, secret:B): String
+  
+/**
+ * Trait for Symmetric encrypter
+ */
+trait SymmetricEncrypter extends Encrypter                                            //TODO non so se lasciarla o rimuoverla
 
 /**
  * Trait for Asymmetric encrypter, it provides additional methods to manage the encryption operation
  * using asymmetric encryption algorithms
  */
 trait AsymmetricEncrypter extends Encrypter:
+  
   /**
    * Method to load existing key from a user directory 
    * 
@@ -64,19 +70,19 @@ trait AsymmetricEncrypter extends Encrypter:
    */
   def generateKeys(fileName: String): KeyPair
 
-trait SymmetricEncrypter extends Encrypter
 /**
  * Abstract class for to perform the encryption operation
  */
 abstract class BasicEncrypter extends Encrypter:
+  
   /**
    * Method used to encrypt the password
    *
-   * @param password      password to be encrypted
-   * @param secret        secret used to encrypt the password
-   * @tparam A            generic parameter for the password
-   * @tparam B            generic parameter for the secret
-   *  @return              a string representing the password encrypted
+   * @param password              password to be encrypted
+   * @param secret                secret used to encrypt the password
+   * @tparam A                    generic parameter for the password
+   * @tparam B                    generic parameter for the secret
+   *  @return                     a string representing the password encrypted
    */
   override def encrypt[A,B](password: A, secret: B): String =
     crypto(EncryptionMode.Encryption, password, secret)
@@ -88,7 +94,7 @@ abstract class BasicEncrypter extends Encrypter:
    * @param secret                 secret used to encrypt the password
    * @tparam A                     generic parameter for the password
    * @tparam B                     generic parameter for the secret
-   *  @return                       a string representing the password decrypted
+   *  @return                      a string representing the password decrypted
    */
   override def decrypt[A, B](encryptedPassword: A, secret:B): String =
     crypto(EncryptionMode.Decryption, encryptedPassword, secret)

@@ -3,16 +3,11 @@ package it.unibo.authsim.library.dsl.cryptography.algorithm
 /**
  * Trait that represent an encryption algorithm
  */
-trait EncryptionAlgorithm:
+trait EncryptionAlgorithm extends CryptographicAlgorithm:
   /**
    * Type value for the salt
    */
   type Salt
-  /**
-   * Getter for the name of the crypthographic algorithm
-   * @return                        a string representing the name of crypthographic algorithm
-   */
-  def algorithmName: String
 
   /**
    * Getter for the salt used by the algorithm 

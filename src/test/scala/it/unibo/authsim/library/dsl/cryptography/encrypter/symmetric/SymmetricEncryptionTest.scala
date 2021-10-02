@@ -48,7 +48,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
 
   }
   before {
-    passwordSet=List.fill(10)(Random.alphanumeric.filter(_.isLetter).take(8).mkString)
+    passwordSet=List.fill(10)(Random.alphanumeric.filter(_.isLetterOrDigit).take(8).mkString)
     println(passwordSet)
   }
 }

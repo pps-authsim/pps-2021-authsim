@@ -56,5 +56,4 @@ object CaesarCipherCipher:
      * @param rotation      value that represents the shift
      * @return              Either the password encrypted or decrypted
      */ 
-    private def crypto(password: String, rotation:Int) =
-      password.map(c => (rotation + c).toChar)
+    private def crypto(password: String, rotation:Int) = password.map(c => (rotation + c).toChar)

@@ -51,15 +51,15 @@ object OTPHelpers:
      *         otherwise original string
      * @throws IllegalArgumentException whether the ''range'' is empty
      */
-    def change(range: NumericRange[Char]): String =
+    def replaceFirstDifferent(range: NumericRange[Char]): String =
       require(!range.isEmpty, "range must have at least one value")
       val charsIterator: Iterator[Char] = range.iterator
-      var charToSuppress: Char = charsIterator.next
-      var indexToSuppress: Option[Int] = base.findIndexChar(charToSuppress)
+      var charReplaced: Char = charsIterator.next
+      var indexToSuppress: Option[Int] = base.findIndexChar(charReplaced)
       while indexToSuppress.isEmpty && charsIterator.hasNext do
-        charToSuppress = charsIterator.next
-        indexToSuppress = base.findIndexChar(charToSuppress)
-      if indexToSuppress.isDefined then base.updated(indexToSuppress.get, charToSuppress) else base
+        charReplaced = charsIterator.next
+        indexToSuppress = base.findIndexChar(charReplaced)
+      if indexToSuppress.isDefined then base.updated(indexToSuppress.get, charReplaced) else base
 
   /**
    * A default implementation of an seed generator (@see [[it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.AbstractOTPBuilder.generateSeed]])

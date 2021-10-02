@@ -48,7 +48,7 @@ object OTPGenerator:
         (1 to digits - pin.length).foreach(_ => pin = pin.appended('0'))
       if previousValues.regeneratedSamePin(pin) then
       //        println(s"Change one char.")
-        pin = pin.change(('0' to '9'))
+        pin = pin.replaceFirstDifferent(('0' to '9'))
       previous.update(secret, PreviousGenerateOTP(Some(seed), Some(start), Some(pin)))
       //      println(s"Now = (seed = $seed, start = $start, pin = $pin)\n\n")
       pin

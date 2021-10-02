@@ -29,10 +29,7 @@ class UsersTab() extends SplitPane :
 
   private val quantityField = AuthsimView.makeNumberTextField()
 
-  private val presetSelect = new ChoiceBox[String] {
-    items = SecurityPolicy.Default.withoutProtocol map {_.policy.name} to(ObservableBuffer)
-  }
-
+  private val presetSelect = new ChoiceBox[String]
   private val generateButton = new Button("Generate")
 
   private val usersList = new ListView[UserEntry]()
@@ -42,6 +39,7 @@ class UsersTab() extends SplitPane :
   val usernameProperty: StringProperty = usernameField.text
   val passwordProperty: StringProperty = passwordField.text
   val quantityProperty: StringProperty = quantityField.text
+  val presetListProperty: ObjectProperty[ObservableList[String]] = presetSelect.items
   val presetProperty: ObjectProperty[String] = presetSelect.value
   val usersListProperty: ObjectProperty[ObservableList[UserEntry]] = usersList.items
   val usersListSelectedProperty: ReadOnlyObjectProperty[UserEntry] = usersList.selectionModel.value.selectedItemProperty()

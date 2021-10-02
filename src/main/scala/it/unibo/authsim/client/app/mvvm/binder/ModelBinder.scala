@@ -16,6 +16,7 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import javafx.beans.property.ReadOnlyProperty
 import it.unibo.authsim.library.user.model.User
 import javafx.collections.ObservableList
+import scalafx.collections.ObservableBuffer
 
 /**
  * Helper object for binding model and viewModel dynamic callbacks
@@ -26,8 +27,14 @@ object ModelBinder:
     val username = "user"
     val password = "password"
 
+    val presets = SecurityPolicy.Default.withoutProtocol map {_.policy.name}
+
+    ModelBinder.bindPropertiesWithObservableList(usersModel.presetsList, viewModel.generateUsersFormProperties.presetListProperty.value, preset => preset)
     ModelBinder.bindPropertiesWithObservableList(usersModel.usersList, viewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
+
     usersModel.usersList += User(username, password)
+
+    presets.foreach(preset => usersModel.presetsList += preset)
 
 
   def bindSecurityViewModel(securityModel: SecurityModel, viewModel: SecurityViewModel): Unit =

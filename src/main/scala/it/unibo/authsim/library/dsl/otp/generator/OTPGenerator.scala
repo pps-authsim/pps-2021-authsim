@@ -8,6 +8,9 @@ import javax.crypto.spec.SecretKeySpec
 import scala.collection.mutable.Map as MutableMap
 import scala.util.Random
 
+/**
+ * ''OTPGenerator'' is object that rappresent the actual implementation of the HMAC One-Time Password algorithm.
+ */
 object OTPGenerator:
 
   private case class PreviousGenerateOTP(seed: Option[Int] = None, start: Option[Int] = Some(0), pin: Option[String] = None):
@@ -22,6 +25,14 @@ object OTPGenerator:
     mac.init(new SecretKeySpec(secret.getBytes, algorithm))
     mac.doFinal(secret.getBytes)
 
+  /**
+   * @param hashFunction cryptographic hash method
+   * @param secret secret key which is an arbitrary string
+   * @param digits actual length of hotp
+   * @param seed value that rappresents the session of the generated otp
+   * @return a generated one time password string based on HMAC algorithm
+   * @throws NoSuchAlgorithmException whether the hash function algorithm is not supported.
+   */
   def apply(hashFunction: HashFunction, secret: String, digits: Int, seed: Int): String =
     val previousValues: PreviousGenerateOTP = previous.get(secret).getOrElse(PreviousGenerateOTP())
     //    println(s"\n\nPrevious = (seed = ${previousValues.seed}, start = ${previousValues.start}, pin = ${previousValues.pin})")

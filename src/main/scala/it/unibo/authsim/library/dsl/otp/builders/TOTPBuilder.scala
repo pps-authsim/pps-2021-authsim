@@ -10,6 +10,9 @@ import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 import scala.concurrent.duration.Duration
 
 
+/**
+ * ''TOTPBuilder'' is the Time-based One-Time Password (TOTP) builder.
+ */
 case class TOTPBuilder() extends AbstractTOTPBuilder:
   override def build: TOTP = new TOTP:
 
@@ -37,4 +40,4 @@ case class TOTPBuilder() extends AbstractTOTPBuilder:
 
     override def reset: Unit = TOTPBuilder.this.generateSeed
 
-    override def toString: String = s"TOTP = { timeout = $timeout, create date = $createDate, length: $length, hash function = ${hashFunction.getClass.getSimpleName} , secret = $secret, policy = $policy }"
+    override def toString: String = s"TOTP = { timeout = $timeout, create date = $createDate, length = $length, hash function = ${hashFunction.getClass.getSimpleName} , secret = $secret, policy = $policy }"

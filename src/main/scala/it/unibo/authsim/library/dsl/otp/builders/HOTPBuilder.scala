@@ -7,6 +7,9 @@ import it.unibo.authsim.library.dsl.otp.model.HOTP
 import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.generatorSeed
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 
+/**
+ * ''TOTPBuilder'' is the Hash Message Authentication Codes based One-Time Password (HOTP) builder.
+ */
 case class HOTPBuilder() extends AbstractHOTPBuilder:
   override def build: HOTP = new HOTP:
 
@@ -22,4 +25,4 @@ case class HOTPBuilder() extends AbstractHOTPBuilder:
 
     override def reset: Unit = HOTPBuilder.this.generateSeed
 
-    override def toString: String = s"HOTP = { length: $length, hash function = ${hashFunction.getClass.getSimpleName} , secret = $secret, policy = $policy }"
+    override def toString: String = s"HOTP = { length = $length, hash function = ${hashFunction.getClass.getSimpleName} , secret = $secret, policy = $policy }"

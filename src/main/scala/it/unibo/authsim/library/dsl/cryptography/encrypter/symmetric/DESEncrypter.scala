@@ -11,22 +11,45 @@ import java.util.Arrays
 import javax.crypto.*
 import javax.crypto.spec.*
 
+/**
+ * DES encrypter object
+ */
 object DESEncrypter:
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
-  def apply() = new DESEncrypterImpl()
 
+  /**
+   * Apply method for the object
+   * @return        an istance of the DES class
+   */
+  def apply() = new DESEncrypterImpl()
+  /**
+   * Basic implementation of an encrypter which use DES algorithm for the cryptographic operation
+   */
   case class DESEncrypterImpl() extends BasicEncrypter:
+    /**
+     * Variable representing the algorithm used for the cryptographic operation
+     */
     var algorithm : DES = DES()
 
     val salt = Arrays.copyOf(algorithm.salt, 8)
 
     private var _iterationCount: Int = 19
-
+    
+    private val _trasformation : String = "PBEWithMD5AndDES"
+    
     def iterationCount_(iteration: Int): Unit =
       _iterationCount = iteration
-
-    private val _trasformation : String = "PBEWithMD5AndDES"
-
+    
+    /**
+     * Method that performs the encryption and decryption tasks
+     *
+     * @param mode                    Mode in with the method must operate, either as a decrypter or an encrypter
+     * @param password                Password to be encrypted or decrypted
+     * @param inputKey
+     * @tparam A                      Generic parameter for the password
+     * @tparam B                      Generic parameter for the secret
+     *  @return                        A string representing the password either encrypted or decrypted
+     */
     override def crypto[A, B](mode:EncryptionMode, password: A, secret: B): String=
       var cipher = Cipher.getInstance(_trasformation)
       var _secretKey: SecretKey = secretKey(secret)

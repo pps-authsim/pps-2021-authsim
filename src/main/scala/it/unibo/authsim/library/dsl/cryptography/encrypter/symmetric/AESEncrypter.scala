@@ -21,7 +21,16 @@ object AESEncrypter:
     var algorithm : AES = AES()
   
     private val _trasformation: String = "AES/ECB/PKCS5PADDING"
-  
+
+    /**
+     * 
+     * @param mode                    Mode in with the method must operate, either as a decrypter or an encrypter
+     * @param password                Password to be encrypted or decrypted
+     * @param secret                  Secred to encrypt or decrypt the password
+     * @tparam A                      Generic parameter for the password
+     * @tparam B                      Generic parameter for the secret
+     *  @return                        A string representing the password either encrypted or decrypted
+     */
     override def crypto[A,B](mode:EncryptionMode, password: A, secret: B): String=
       val cipher: Cipher = Cipher.getInstance(_trasformation)
       mode match{

@@ -11,6 +11,7 @@ import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityTab}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UsersTab}
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.proxy.AuthsimViewModelDeferedProxy
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import javafx.embed.swing.JFXPanel

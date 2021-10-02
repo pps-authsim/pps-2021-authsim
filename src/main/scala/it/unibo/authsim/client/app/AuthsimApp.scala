@@ -2,7 +2,7 @@ package it.unibo.authsim.client.app
 
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
-import it.unibo.authsim.client.app.mvvm.viewmodel.{AuthsimViewModelDeferedProxy, AuthsimViewModelSFX}
+import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelSFX
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ViewPropertiesBinder}
@@ -12,6 +12,7 @@ import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.SecurityTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.proxy.AuthsimViewModelDeferedProxy
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import scalafx.application.JFXApp3

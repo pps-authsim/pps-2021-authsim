@@ -1,4 +1,6 @@
-package it.unibo.authsim.client.app.mvvm.viewmodel
+package it.unibo.authsim.client.app.mvvm.viewmodel.proxy
+
+import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
 
 import scala.util.{Failure, Success}
 

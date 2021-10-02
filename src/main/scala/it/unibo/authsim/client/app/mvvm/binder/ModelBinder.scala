@@ -45,6 +45,9 @@ object ModelBinder:
 
     ModelBinder.bindPropertiesWithObservableList(securityModel.securityPolicyList, viewModel.securityPoliciesProperties.securityPoliciesList.value, policy => new SecurityPolicyEntry(policy.policy, policy.description))
     SecurityPolicy.Default.all.foreach(securityModel.securityPolicyList += _)
+    viewModel.securityPoliciesProperties.securityPoliciesListSelectedValue.addListener((observable, oldValue, newValue) => securityModel.selectedSecurityPolicy =
+      Option(new SecurityPolicy(newValue.policy, newValue.description))
+    )
 
     ModelBinder.bindPropertiesWithObservableList(securityModel.credentialsSourceList, viewModel.credentialsSourceProperties.credentialsSourceList.value, source => new CredentialsSourceEntry(source.source, source.description))
     viewModel.credentialsSourceProperties.credentialsSourceListSelectedValue.addListener((observable, oldValue, newValue) => securityModel.selectedCredentialsSource =

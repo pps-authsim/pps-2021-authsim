@@ -24,18 +24,23 @@ trait OTPBuilder[T] extends Builder[T]:
    * @return instance of the actual builder
    */
   def withPolicy(policy: OTPPolicy)(implicit generateLength: OTPPolicy => Int): this.type
-  /**
-   * Set the secret key (@see [[OTPBuilder.SecretValue]])
-   * @param secret key to set
-   * @return instance of the actual builder
-   */
-  def secret(secret: OTPBuilder.SecretValue): this.type
 
 object OTPBuilder:
   /**
    * It rappresents the user's userID and password pair.
    */
   type SecretValue = (String, String)
+
+  /**
+   *  ''SecretBuilder'' rappresents an extension builder to use Secret value.
+   */
+  trait SecretBuilder:
+    /**
+     * Set the secret key (@see [[SecretValue]])
+     * @param secret key to set
+     * @return instance of the actual builder
+     */
+    def secret(secret: SecretValue): this.type
 
   /**
    *  ''HmacOTPBuilder'' rappresents an extension builder to implement HOTP.
@@ -68,7 +73,7 @@ object OTPBuilder:
    *
    * @tparam T  the type to build
    */
-  abstract class AbstractOTPBuilder[T] extends OTPBuilder[T]:
+  abstract class AbstractOTPBuilder[T] extends OTPBuilder[T] with SecretBuilder:
     protected val SEPARATOR_SECRET = '-'
     protected var _policy: OTPPolicy = null
     protected var _secret: String = Random.alphanumeric.take(10).mkString

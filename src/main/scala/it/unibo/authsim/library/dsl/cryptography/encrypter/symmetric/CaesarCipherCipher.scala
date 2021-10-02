@@ -2,12 +2,12 @@ package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.CaesarCipher
-import it.unibo.authsim.library.dsl.cryptography.encrypter.Encrypter
+import it.unibo.authsim.library.dsl.cryptography.encrypter.Cipher
 
 /**
- * Caesar Cipher encrypter object
+ * Caesar Cipher cipher object
  */
-object CaesarCipherEncrypter:
+object CaesarCipherCipher:
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   /**
@@ -15,12 +15,12 @@ object CaesarCipherEncrypter:
    * 
    * @return                           an istance of the Caesar Cipher class
    */
-  def apply() = new CaesarCipherEncrypterImpl()
+  def apply() = new CaesarCipherImpl()
 
   /**
    * Basic implementation of an encrypter which use Caesar Cipher algorithm for the cryptographic operation
    */
-  case class CaesarCipherEncrypterImpl() extends Encrypter:
+  case class CaesarCipherImpl() extends Cipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */

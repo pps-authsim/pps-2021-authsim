@@ -4,7 +4,7 @@ import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricEncryptionA
 import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
 import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.{KeyPair, KeysGenerator}
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
-import it.unibo.authsim.library.dsl.cryptography.encrypter.{AsymmetricEncrypter, BasicEncrypter}
+import it.unibo.authsim.library.dsl.cryptography.encrypter.{AsymmetricEncrypter, BasicCipher}
 
 import java.security.*
 import java.security.{KeyPairGenerator, KeyPair as JavaKeyPair}
@@ -12,9 +12,9 @@ import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
 /**
- * RSA encrypter object
+ * RSA cipher object
  */
-object RSAEncrypter:
+object RSACipher:
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   /**
@@ -26,11 +26,12 @@ object RSAEncrypter:
   /**
    * Basic implementation of an encrypter which use RSA algorithm for the cryptographic operation
    */
-  case class RSAEncrypterImpl() extends BasicEncrypter with AsymmetricEncrypter:
+  case class RSAEncrypterImpl() extends BasicCipher with AsymmetricEncrypter:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
     var algorithm: RSA= RSA()
+    
     /**
      * Variable representing a KeyFactory object that converts public/private keys of the RSA algorithm
      */

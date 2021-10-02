@@ -12,7 +12,7 @@ import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 /**
  * Trait that represent a basic encryption
  */
-trait Encrypter:
+trait Cipher:
   def algorithm : EncryptionAlgorithm
 
   /**
@@ -46,13 +46,13 @@ trait Encrypter:
 /**
  * Trait for Symmetric encrypter
  */
-trait SymmetricEncrypter extends Encrypter                                            //TODO non so se lasciarla o rimuoverla
+trait SymmetricEncrypter extends Cipher                                            //TODO non so se lasciarla o rimuoverla
 
 /**
  * Trait for Asymmetric encrypter, it provides additional methods to manage the encryption operation
  * using asymmetric encryption algorithms
  */
-trait AsymmetricEncrypter extends Encrypter:
+trait AsymmetricEncrypter extends Cipher:
   
   /**
    * Method to load existing key from a user directory 
@@ -73,7 +73,7 @@ trait AsymmetricEncrypter extends Encrypter:
 /**
  * Abstract class for to perform the encryption operation
  */
-abstract class BasicEncrypter extends Encrypter:
+abstract class BasicCipher extends Cipher:
   
   /**
    * Method used to encrypt the password

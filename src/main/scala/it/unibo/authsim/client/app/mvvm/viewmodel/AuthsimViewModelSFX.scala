@@ -22,7 +22,7 @@ object AuthsimViewModelSFX:
   val ATTACK_MISSING_VALUE_TEXT = "Please, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
 
 /**
- * Binds View with Model via the ViewModel layer. ScalaFx implementation.
+ * Binds View with Model via the ViewModel layer. ScalaFx implementation using scalafx properties.
  * @param view view
  * @param model model
  */
@@ -34,10 +34,6 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
   ModelBinder.bindUsersViewModel(model.usersModel, usersViewModel)
   ModelBinder.bindSecurityViewModel(model.securityModel, securityViewModel)
   ModelBinder.bindAttackViewModel(model.attackModel, attackViewModel)
-
-  ModelInitializer.initializeUsersModel(model.usersModel)
-  ModelInitializer.initializeSecurityModel(model.securityModel)
-  ModelInitializer.initializeAttackModel(model.attackModel)
 
   override def saveUser(): Unit =
     val username = usersViewModel.addUserFormProperties.usernameProperty.getValue()

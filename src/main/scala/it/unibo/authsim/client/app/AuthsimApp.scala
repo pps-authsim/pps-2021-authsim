@@ -5,7 +5,7 @@ import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
 import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelSFX
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
-import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ViewPropertiesBinder}
+import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ModelInitializer, ViewPropertiesBinder}
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackModel
 import it.unibo.authsim.client.app.mvvm.model.security.SecurityModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
@@ -36,6 +36,8 @@ object AuthsimApp extends JFXApp3 :
     val view = makeAuthsimView()
     val model = makeAuthsimModel()
     val viewModel = makeAuthsimViewModel(view, model)
+    
+    initializeModel(model)
 
     stage = view
 
@@ -65,4 +67,10 @@ object AuthsimApp extends JFXApp3 :
     viewModelDeferedProxy.delegate = Option(authsimViewModel)
 
     authsimViewModel
+
+  private def initializeModel(model: AuthsimModel): Unit =
+    ModelInitializer.initializeUsersModel(model.usersModel)
+    ModelInitializer.initializeSecurityModel(model.securityModel)
+    ModelInitializer.initializeAttackModel(model.attackModel)
+
 

@@ -10,6 +10,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import java.io.File
 
 class DiskTest  extends AnyWordSpec with Matchers with BeforeAndAfter {
+
   val fileName:String= "diskTest1.txt"
   val testString:String= "foo"
 

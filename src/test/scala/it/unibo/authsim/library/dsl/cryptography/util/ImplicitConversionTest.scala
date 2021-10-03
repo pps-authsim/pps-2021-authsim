@@ -1,41 +1,42 @@
 package it.unibo.authsim.library.dsl.cryptography.util
 
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
-import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-
+import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
+import it.unibo.authsim.library.dsl.cryptography.utility.ImplicitConversionChecker._
 class ImplicitConversionTest extends AnyFlatSpec with Matchers {
+
   val testString="foo"
   val testString2="999"
-  val testArrayByte=Array(0xA9.asInstanceOf[Byte], 0x9B.asInstanceOf[Byte])
-
-  def genericToString[A](input: A) = input.isInstanceOf[String]
-  def stringToArrayByteTest[A](input: A)= input.isInstanceOf[Array[Byte]]
-  def stringToChartArrayTest[A](input: A)= input.isInstanceOf[Array[Char]]
-  def genericToIntTest[A](input:A)= input.isInstanceOf[Int]
 
   "Implicit string to array byte conversion" should "be" in {
-    Base64.decodeToArray(testString).isInstanceOf[Array[Byte]] shouldBe true
-    Base64.encodeToArray(testString).isInstanceOf[Array[Byte]] shouldBe true
-    Base64.encodeToString(testString).isInstanceOf[String] shouldBe true
-    Base64.decodeToString(testString).isInstanceOf[String] shouldBe true
-    stringToArrayByteTest(testString) shouldBe true
+    canConvert[String, Array[Byte]]() shouldBe true
+    canConvert[Int,  Array[Byte]]() shouldBe false
   }
 
   "Implicit object to int conversion" should "be" in {
-    genericToIntTest(testString) shouldBe true
-    genericToIntTest(testString2) shouldBe true
-    genericToIntTest(testArrayByte) shouldBe true
+      canConvert[String, Int]() shouldBe true
+      canConvert[Array[Byte], Int]() shouldBe true
+      canConvert[Boolean, Int]() shouldBe true
+  }
+
+  "and default conversion to int" should " be "  in{
+    optConvert[String, Int](this.testString2) shouldBe Option(999)
+  }
+  "and conversion of a reasonable value to int" should " be "  in{
+    optConvert[String, Int](this.testString) shouldBe Option(0)
   }
 
   "Implicit string to Array char conversion" should "be" in {
-    stringToChartArrayTest(testString) shouldBe true
+    canConvert[String, Array[Char]]() shouldBe true
+    canConvert[Int, Array[Char]]() shouldBe false
+    canConvert[String, Array[Int]]() shouldBe false
   }
 
   "Implicit generic to String char conversion" should "be" in {
-    //genericToString(1) shouldBe true
-    //genericToString(testArrayByte) shouldBe true
+    canConvert[String, String]() shouldBe true
+    canConvert[Array[Byte], String]() shouldBe true
+    canConvert[Boolean, String]() shouldBe true
   }
-
 }

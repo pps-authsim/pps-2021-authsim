@@ -2,6 +2,7 @@ package it.unibo.authsim.library.dsl.cryptography.util
 
 import java.io.{File, FileInputStream, FileOutputStream, ObjectInputStream, ObjectOutputStream, PrintWriter}
 import scala.util.{Random, Try}
+
 /**
  * Utility object used for disk operation management
  */
@@ -17,6 +18,7 @@ object DiskManager:
    * @return              an istance of File named after the input string
    */
   implicit def stringToFile(fileName:String): File= new File(fileName)
+  
   /**
    * Method that checks id a file does exists
    *

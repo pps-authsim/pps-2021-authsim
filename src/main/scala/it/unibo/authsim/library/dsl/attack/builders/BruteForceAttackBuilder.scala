@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
-
-import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
+import it.unibo.authsim.library.dsl.UserProvider
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.user.model.User

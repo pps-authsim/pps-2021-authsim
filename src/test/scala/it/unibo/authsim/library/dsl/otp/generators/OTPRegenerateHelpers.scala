@@ -7,7 +7,7 @@ import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 
 import scala.language.postfixOps
 
-object Helpers:
+object OTPRegenerateHelpers:
   val policySmall: OTPPolicy = OTPPolicyBuilder() maximumLength 3 build
   val policyMedium: OTPPolicy = OTPPolicyDefault.MEDIUM
   val policyLarge: OTPPolicy = OTPPolicyBuilder() maximumLength 70 minimumLength 50 build

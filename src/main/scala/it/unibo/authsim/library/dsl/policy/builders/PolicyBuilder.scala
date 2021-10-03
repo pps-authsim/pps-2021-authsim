@@ -5,6 +5,7 @@ import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.builder.Builder
+import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
 
 /**
  * ''PolicyBuilder'' is a trait that is used to build a new policy
@@ -35,17 +36,17 @@ trait PolicyBuilder extends Builder[Policy]:
    */
   def transmitWith(protocol: Protocol): PolicyBuilder
   /**
-   * Set a [[HashFunction hash function]]
-   * @param hashFunction hash function to set
+   * Set a [[CryptographicAlgorithm cryptographic algorithm]]
+   * @param cryptographicAlgorithm cryptographic algorithm to set
    * @return instance of policy builder
    */
-  def storeWith(hashFunction: HashFunction): PolicyBuilder
+  def storeWith(cryptographicAlgorithm: CryptographicAlgorithm): PolicyBuilder
   /**
-   * Set a [[HashFunction hash function]] and [[SaltPolicy salt policy]]
-   * @param hashFunctionSalted tuple of hash function and salt policy to set
+   * Set a [[CryptographicAlgorithm cryptographic algorithm]] and [[SaltPolicy salt policy]]
+   * @param cryptographicAlgorithmSalted tuple of cryptographic algorithm and salt policy to set
    * @return instance of policy builder
    */
-  def storeWith(hashFunctionSalted: (HashFunction, SaltPolicy)): PolicyBuilder
+  def storeWith(cryptographicAlgorithmSalted: (CryptographicAlgorithm, SaltPolicy)): PolicyBuilder
 
 /**
  *  PolicyBuilder is an implementation of policy builder
@@ -57,7 +58,7 @@ object PolicyBuilder:
   private class PolicyBuilderImpl(private val name: String = "") extends PolicyBuilder:
     private var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
     private var _protocol: Option[Protocol] = Option.empty
-    private var _hashFunction: Option[HashFunction] = Option.empty
+    private var _cryptographicAlgorithm: Option[CryptographicAlgorithm] = Option.empty
     private var _saltPolicy: Option[SaltPolicy] = Option.empty
 
     override def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): PolicyBuilder =
@@ -71,14 +72,14 @@ object PolicyBuilder:
     override def transmitWith(protocol: Protocol): PolicyBuilder =
       this.builderMethod((protocol: Protocol) => this._protocol = Some(protocol))(protocol)
 
-    override def storeWith(hashFunction: HashFunction): PolicyBuilder =
-      this.builderMethod((hashFunction: HashFunction) => this._hashFunction = Some(hashFunction))(hashFunction)
+    override def storeWith(cryptographicAlgorithm: CryptographicAlgorithm): PolicyBuilder =
+      this.builderMethod((cryptographicAlgorithm: CryptographicAlgorithm) => this._cryptographicAlgorithm = Some(cryptographicAlgorithm))(cryptographicAlgorithm)
 
-    override def storeWith(hashFunctionSalted: (HashFunction, SaltPolicy)): PolicyBuilder =
-      this.builderMethod((hashFunctionSalted: (HashFunction, SaltPolicy)) => {
-        this._hashFunction = Some(hashFunctionSalted._1)
-        this._saltPolicy = Some(hashFunctionSalted._2)
-      })(hashFunctionSalted)
+    override def storeWith(cryptographicAlgorithmSalted: (CryptographicAlgorithm, SaltPolicy)): PolicyBuilder =
+      this.builderMethod((cryptographicAlgorithmSalted: (CryptographicAlgorithm, SaltPolicy)) => {
+        this._cryptographicAlgorithm = Some(cryptographicAlgorithmSalted._1)
+        this._saltPolicy = Some(cryptographicAlgorithmSalted._2)
+      })(cryptographicAlgorithmSalted)
 
     override def build: Policy = new Policy:
 
@@ -86,7 +87,7 @@ object PolicyBuilder:
 
       override def credentialPolicies: Seq[CredentialPolicy] = PolicyBuilderImpl.this._credentialPolicies
 
-      override def hashFunction: Option[HashFunction] = PolicyBuilderImpl.this._hashFunction
+      override def cryptographicAlgorithm: Option[CryptographicAlgorithm] = PolicyBuilderImpl.this._cryptographicAlgorithm
 
       override def saltPolicy: Option[SaltPolicy] = PolicyBuilderImpl.this._saltPolicy
 
@@ -95,5 +96,5 @@ object PolicyBuilder:
       override def toString: String =
         s"${name}Policy {" +
           s"Protocol = $transmissionProtocol, " +
-          s"HashFunction = $hashFunction, SaltPolicy = $saltPolicy, " +
+          s"CryptographicAlgorithm = $cryptographicAlgorithm, SaltPolicy = $saltPolicy, " +
           s"CredentialPolicies = $credentialPolicies }"

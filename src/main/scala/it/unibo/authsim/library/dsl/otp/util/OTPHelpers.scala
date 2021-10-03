@@ -69,4 +69,4 @@ object OTPHelpers:
   /**
    * A default implementation of an length generator (@see [[it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.withPolicy]])
    */
-  implicit val generatorLength: OTPPolicy => Int = (policy: OTPPolicy) => Random.between(policy.minimumLength, policy.maximumLength + 1)
+  implicit val generatorLength: OTPPolicy => Int = (policy: OTPPolicy) => Random.between(policy.minimumLength, policy.maximumLength.getOrElse(policy.minimumLength + 10) + 1)

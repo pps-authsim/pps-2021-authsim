@@ -1,14 +1,20 @@
 package it.unibo.authsim.client.app.mvvm.viewmodel
 
+import it.unibo.authsim.client.app.mvvm.binder.{ModelInitializer, ViewPropertiesBinder}
+import it.unibo.authsim.client.app.mvvm.common.CredentialsSourceType
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
-import it.unibo.authsim.client.app.mvvm.view.AuthsimView
-import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
+import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
+import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelSFX
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackModel
-import it.unibo.authsim.client.app.mvvm.model.security.{SecurityModel, SecurityPolicy}
+import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityModel, SecurityPolicy}
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityTab}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UsersTab}
+import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.proxy.AuthsimViewModelDeferedProxy
+import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import javafx.embed.swing.JFXPanel
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -20,22 +26,35 @@ import org.scalatest.BeforeAndAfterEach
 
 import scala.collection.mutable.ListBuffer
 
-object AuthsimViewModelTest:
+object AuthsimViewModelSFXIntegrationTest:
 
   def setUpViewModelTest() =
     val jfxPanel = new JFXPanel
 
-class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfterEach:
+class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfterEach:
 
-  var mockModel: AuthsimModel = null
-  var mockView: AuthsimView = null
+  var model: AuthsimModel = null
+  var mockView: AuthsimViewSFX = null
   var viewModel: AuthsimViewModel = null
 
   override def beforeEach() =
-    AuthsimViewModelTest.setUpViewModelTest()
-    mockModel = new AuthsimModel(new UsersModel(), new SecurityModel(), new AttackModel())
+    AuthsimViewModelSFXIntegrationTest.setUpViewModelTest()
+    model = new AuthsimModel(new UsersModel(), new SecurityModel(), new AttackModel())
     mockView = makeMockView()
-    viewModel = new AuthsimViewModel(mockView, mockModel)
+
+    val viewModelDeferedProxy = new AuthsimViewModelDeferedProxy
+
+    val usersViewModel: UsersViewModel = ViewPropertiesBinder.bindUsersTab(mockView, viewModelDeferedProxy)
+    val securityViewModel: SecurityViewModel = ViewPropertiesBinder.bindSecurityTab(mockView, viewModelDeferedProxy)
+    val attackViewModel: AttackViewModel = ViewPropertiesBinder.bindAttackTab(mockView, viewModelDeferedProxy)
+
+    viewModel = new AuthsimViewModelSFX(usersViewModel, securityViewModel, attackViewModel, model)
+
+    ModelInitializer.initializeUsersModel(model.usersModel)
+    ModelInitializer.initializeSecurityModel(model.securityModel)
+    ModelInitializer.initializeAttackModel(model.attackModel)
+
+    viewModelDeferedProxy.delegate = Option(viewModel)
 
   "Authsim view model" when {
 
@@ -46,11 +65,16 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
       }
 
       "have default policy" in {
-        assert(mockModel.securityModel.securityPolicyList.hasSameValues(SecurityPolicy.Default.all))
+        assert(model.securityModel.securityPolicyList.hasSameValues(SecurityPolicy.Default.all))
       }
 
       "have default credentials source" in {
-        // TODO implement when credential sources are finalized
+        val sqlSource = CredentialsSourceType.Sql
+        val sqlSourceDescription = CredentialsSourceType.Sql.description
+        val mongoSource = CredentialsSourceType.Mongo
+        val mongoSourceDescription = CredentialsSourceType.Mongo.description
+
+        assert(model.securityModel.credentialsSourceList.hasSameValues(List(new CredentialsSource(sqlSource, sqlSourceDescription), new CredentialsSource(mongoSource, mongoSourceDescription))))
       }
 
       "have default attack sequence" in {
@@ -67,7 +91,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
 
         viewModel.saveUser()
 
-        assert(mockModel.usersModel.usersList.value.sameElements(Seq(User("user", "password"), User("1234", "5678"))))
+        assert(model.usersModel.usersList.value.sameElements(Seq(User("user", "password"), User("1234", "5678"))))
         assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))
         assert(mockView.usersTab.usersListProperty.value.get(1).equals(new UserEntry("1234", "5678")))
       }
@@ -101,7 +125,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
         viewModel.deleteSelectedUsers()
 
 
-        assert(mockModel.usersModel.usersList.value.isEmpty)
+        assert(model.usersModel.usersList.value.isEmpty)
         assert(mockView.usersTab.usersListProperty.value.isEmpty)
       }
 
@@ -117,7 +141,7 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
       "have no users in list" in {
         viewModel.resetUsers()
 
-        assert(mockModel.usersModel.usersList.value.isEmpty)
+        assert(model.usersModel.usersList.value.isEmpty)
         assert(mockView.usersTab.usersListProperty.value.isEmpty)
       }
 
@@ -148,17 +172,17 @@ class AuthsimViewModelTest extends AnyWordSpec with Matchers with MockitoSugar w
 
   }
 
-  def makeMockView(): AuthsimView =
+  def makeMockView(): AuthsimViewSFX =
     val userTab = new UsersTab
     val securityTab = new SecurityTab
     val attackTab = new AttackTab
 
-    val mock = MockitoSugar.mock[AuthsimView]
+    val mock = MockitoSugar.mock[AuthsimViewSFX]
     doReturn(userTab).when(mock).usersTab
     doReturn(securityTab).when(mock).securityTab
     doReturn(attackTab).when(mock).attackTab
     mock
 
   def assertUserTabHasDefaultValues(): Unit =
-    assert(mockModel.usersModel.usersList.value.sameElements(Seq(User("user", "password"))))
+    assert(model.usersModel.usersList.value.sameElements(Seq(User("user", "password"))))
     assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))

@@ -9,7 +9,7 @@ import scalafx.scene.{Node, Scene}
 import scalafx.scene.control.{Tab, TabPane, TextField, TextFormatter}
 import scalafx.scene.layout.VBox
 
-object AuthsimView {
+object AuthsimViewSFX {
 
   private val windowTitle = "AuthSim - pps2021"
   private val startingWindowWidth = 1024
@@ -44,15 +44,15 @@ object AuthsimView {
  * @param securityTab security tab
  * @param attackTab attack tab
  */
-class AuthsimView(
+class AuthsimViewSFX(
                               val usersTab: UsersTab,
                               val securityTab: SecurityTab,
                               val attackTab: AttackTab
                             ) extends JFXApp3.PrimaryStage :
 
-  title = AuthsimView.windowTitle
-  width = AuthsimView.startingWindowWidth
-  scene = AuthsimView.makeSceneFromTabs(Seq(
+  title = AuthsimViewSFX.windowTitle
+  width = AuthsimViewSFX.startingWindowWidth
+  scene = AuthsimViewSFX.makeSceneFromTabs(Seq(
     makeTab("Users", usersTab),
     makeTab("Security", securityTab),
     makeTab("Attack", attackTab)

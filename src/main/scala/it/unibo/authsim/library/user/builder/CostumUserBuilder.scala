@@ -8,34 +8,31 @@ import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 /**
  * Class that represent a costum builder for a user
  */
-class UserCostumBuilder extends UserBuilder[User]:
-  
+class UserCostumBuilder extends UserBuilder[Option[User]]:
+
   /**
    * Setter for the username of the user
    * 
    * @param userName    userName to use for the generation of the new user
    * @return            a UserCostumBuilder where the username field is setted with the provided value
    */
-  def withName(userName:String):this.type=
-    this._userName = userName
-    this
-    
+  def withName(userName:String) = this.builderMethod((userName: String) => this._userName = userName)(userName)
+
   /**
    * Setter for the username of the User
    *
    * @param password
    * @return            a UserCostumBuilder where the username field is setted with the provided value
    */
-  def withPassword(password:String):this.type=
-    this._password = password
-    this
+  def withPassword(password:String) = this.builderMethod((password: String) => this._password = password)(password)
+
 
   /**
    * Method that create an optional of user if the credential provided meet the input policy or an optional of None if they does not
    * 
    * @return      an optional of User
    */
-  def build(): Option[User]=
+  def build: Option[User]=
     if(checkPolicy()) then
       val user= User(_userName, _password)
       Some(user)

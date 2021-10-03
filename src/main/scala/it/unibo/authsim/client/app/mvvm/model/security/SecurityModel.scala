@@ -6,5 +6,7 @@ import scala.collection.mutable.ListBuffer
 
 class SecurityModel(
                      var securityPolicyList: ObservableListBuffer[SecurityPolicy] = new ObservableListBuffer(),
-                     var credentialsSourceList: ObservableListBuffer[CredentialsSource] = new ObservableListBuffer()
+                     var selectedSecurityPolicy: Option[SecurityPolicy] = Option.empty,
+                     var credentialsSourceList: ObservableListBuffer[CredentialsSource] = new ObservableListBuffer(),
+                     var selectedCredentialsSource: Option[CredentialsSource] = Option.empty
                    )

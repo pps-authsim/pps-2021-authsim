@@ -23,7 +23,8 @@ class SecurityTab extends VBox :
 
   private def makeSecurityPolicyDescription(): TextArea = new TextArea() {
     text = ""
-    editable = false;
+    editable = false
+    wrapText = true
   }
 
   private def makeCredentialsSourceList(): ListView[CredentialsSourceEntry] = new ListView[CredentialsSourceEntry]() {
@@ -32,7 +33,8 @@ class SecurityTab extends VBox :
 
   private def makeCredentialsSourceDescription(): TextArea = new TextArea() {
     text = ""
-    editable = false;
+    editable = false
+    wrapText = true
   }
 
   val credentialsSourceListProperty: ObjectProperty[ObservableList[CredentialsSourceEntry]] = credentialsSourceList.items

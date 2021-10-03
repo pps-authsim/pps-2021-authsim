@@ -1,3 +1,5 @@
 package it.unibo.authsim.client.app.mvvm.model.security
 
-case class CredentialsSource(val source: String, val description: String)
+import it.unibo.authsim.client.app.mvvm.common.CredentialsSourceType
+
+case class CredentialsSource(val source: CredentialsSourceType, val description: String)

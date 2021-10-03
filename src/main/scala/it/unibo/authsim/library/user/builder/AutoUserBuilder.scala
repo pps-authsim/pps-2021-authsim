@@ -1,10 +1,11 @@
 package it.unibo.authsim.library.user.builder
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{PasswordPolicyBuilder, UserIDPolicyBuilder}
+import it.unibo.authsim.library.dsl.policy.extractors.CredentialPolicyGenerate.{PasswordGenerate, UserIDGenerate}
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{PasswordPolicy, UserIDPolicy}
-import it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
+import it.unibo.authsim.library.user.model.User
+
 import scala.language.postfixOps
 
 /**
@@ -17,16 +18,21 @@ class UserAutoBuilder extends UserBuilder[User]:
    * 
    * @return  a User which credentials are complaint with the input policies
    */
-  def build(): User=
-    this._userName=this._credentialPolicies.find(c=> c.isInstanceOf[UserIDPolicy]).map(c=>c.generate).getOrElse(generateRandomString())
-    this._password=this._credentialPolicies.find(c=> c.isInstanceOf[PasswordPolicy]).map(c=>c.generate).getOrElse(generateRandomString())
+  def build: User=
+    val map=_credentialPolicies.map(c => c match
+      case UserIDGenerate(userId) => "userID" -> userId
+      case PasswordGenerate(password) => "password" -> password
+      case _=> "others" -> ""
+    ).toMap
+    this._userName=map.getOrElse("userID", generateRandomString())
+    this._password=map.getOrElse("password", generateRandomString())
     User(_userName, _password)
     
   /**
    * Method responsible of the generation of a given number of users
    *
-   * @param numberOfUsers   number of users to be created it should be a posive value, if not it will be implitly converted to be so
+   * @param numberOfUsers   number of users to be created it should be a posive value, if not it will be implicitly converted to be so
    * @return                a sequence of the require number of users
    */
   def build(numberOfUsers: Int): Seq[User] =
-    List.fill(numberOfUsers.abs)(build()).toSeq
+    List.fill(numberOfUsers.abs)(build).toSeq

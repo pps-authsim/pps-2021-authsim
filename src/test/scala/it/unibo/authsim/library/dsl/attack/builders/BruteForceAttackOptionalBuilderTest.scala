@@ -72,5 +72,10 @@ class BruteForceAttackOptionalBuilderTest extends AnyWordSpec:
         (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumLength maximumPasswordLength hashingWith HashFunction.MD5() jobs 4 logTo myLogger).executeNow()
         assert(!myLogger.getStatistics.successfulBreaches.isEmpty)
       }
+      "timeout if out of time" in {
+        val consumer = new TestStatisticsConsumer()
+        (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumLength maximumPasswordLength hashingWith HashFunction.MD5() jobs 4 logTo consumer timeout Duration.Zero).executeNow()
+        assert(consumer.getStatistics.timedOut)
+      }
     }
 

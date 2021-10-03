@@ -64,5 +64,31 @@ class StringPoliciesBuildersTests extends AnyWordSpec:
         }
       }
     }
+
+    "set minium symbols 30 and maximum length 50" should {
+      userIDPolicy = UserIDPolicyBuilder() minimumLength 30  maximumLength 50 build;
+      "have minimum length equivalent to 30" in {
+        assert(userIDPolicy.minimumLength == 30)
+      }
+      "have maximum length equivalent to 50" in {
+        assert(userIDPolicy.maximumLength.get == 50)
+      }
+    }
+
+    "set minium symbols 4, minimum uppercase 5, minimum numbers 4 and maximum length 9" should {
+      "throws IllegalArgument Exception " in {
+        assertThrows[IllegalArgumentException] {
+          PasswordPolicyBuilder() maximumLength 9 minimumSymbols 4 minimumUpperChars 5 minimumNumbers 4
+        }
+      }
+    }
+
+    "set minimum length 5, maximum length 20, minium symbols 10, minimum uppercase 10, minimum numbers 10" should {
+      "throws IllegalArgument Exception " in {
+        assertThrows[IllegalArgumentException] {
+          PasswordPolicyBuilder() minimumSymbols 5 minimumSymbols 10 minimumUpperChars 10 minimumNumbers 10 maximumLength 9
+        }
+      }
+    }
   }
 

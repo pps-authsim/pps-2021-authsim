@@ -155,10 +155,22 @@ object StringPoliciesBuilders:
 //      println(s"Length = $length, range [$min, ${if max.isDefined then max.get else "..."}]")
       if max.isDefined then require(length <= max.get, s"sum of minimum (lowercase, uppercase, symbols, numbers) must be less or equals than ${max.get}")
 
+    /**
+     * @param number minimum length of string to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is greater than maximum value or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
+     */
     override def minimumLength(number: Int) =
       this.checkLengthWith(What.MIN)(None)(number)
       super.minimumLength(number)
 
+    /**
+     * @param number maximum length of string to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is less than minimum value or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
+     */
     override def maximumLength(number: Int) =
       this.checkLengthWith(What.MAX)(None)(this.minLen, Some(number))
       super.maximumLength(number)
@@ -166,7 +178,8 @@ object StringPoliciesBuilders:
     /**
      * @param number minimum number of lowercase characters to set
      * @return instance of the actual builder
-     * @throws IllegalArgumentException whether number is less than or equal to 0
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
      */
     override def minimumLowerChars(number: Int) = this.builderMethod((number: Int) => {
       this.checkLengthWith(What.LOWER)(Some(number))()
@@ -178,7 +191,8 @@ object StringPoliciesBuilders:
     /**
      * @param number minimum number of uppercase characters to set
      * @return instance of the actual builder
-     * @throws IllegalArgumentException whether number is less than or equal to 0
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
      */
     override def minimumUpperChars(number: Int) = this.builderMethod((number: Int) => {
       this.checkLengthWith(What.UPPER)(Some(number))()
@@ -190,7 +204,8 @@ object StringPoliciesBuilders:
     /**
      * @param number minimum number of symbols to set
      * @return instance of the actual builder
-     * @throws IllegalArgumentException whether number is less than or equal to 0
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
      */
     override def minimumSymbols(number: Int) = this.builderMethod((number: Int) => {
       this.checkLengthWith(What.SYMBOL)(Some(number))()
@@ -202,7 +217,8 @@ object StringPoliciesBuilders:
     /**
      * @param number minimum number of digits to set
      * @return instance of the actual builder
-     * @throws IllegalArgumentException whether number is less than or equal to 0
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
      */
     override def minimumNumbers(number: Int) = this.builderMethod((number: Int) => {
       this.checkLengthWith(What.NUMBER)(Some(number))()

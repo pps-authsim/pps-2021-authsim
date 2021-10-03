@@ -152,7 +152,6 @@ object StringPoliciesBuilders:
 
         case What.MIN | What.MAX => this.minLowerChars.getOrElse(0) + this.minUpperChars.getOrElse(0) + this.minSymbols.getOrElse(0) + this.minNumbers.getOrElse(0)
       })
-//      println(s"Length = $length, range [$min, ${if max.isDefined then max.get else "..."}]")
       if max.isDefined then require(length <= max.get, s"sum of minimum (lowercase, uppercase, symbols, numbers) must be less or equals than ${max.get}")
 
     /**

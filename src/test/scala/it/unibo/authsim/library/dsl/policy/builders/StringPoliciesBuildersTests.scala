@@ -46,7 +46,7 @@ class StringPoliciesBuildersTests extends AnyWordSpec:
     "set at least 4 symbols" should {
       passwordPolicy = PasswordPolicyBuilder() minimumSymbols 4 build;
       "return 4" in {
-        assert(passwordPolicy.minimumSymbols === SETTED_MINIMUM_SYMBOLS)
+        assert(passwordPolicy.minimumSymbols.get === SETTED_MINIMUM_SYMBOLS)
       }
     }
 

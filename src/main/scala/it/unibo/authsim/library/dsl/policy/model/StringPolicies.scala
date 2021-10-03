@@ -44,21 +44,21 @@ object StringPolicies:
    */
   trait MoreRestrictStringPolicy:
     /**
-     * @return minimum number of uppercase characters a string must have
+     * @return optional minimum number of uppercase characters a string must have
      */
-    def minimumUpperChars: Int
+    def minimumUpperChars: Option[Int]
     /**
-     * @return minimum number of lowercase characters a string must have
+     * @return optional minimum number of lowercase characters a string must have
      */
-    def minimumLowerChars: Int
+    def minimumLowerChars: Option[Int]
     /**
-     * @return minimum number of symbols a string must have
+     * @return optional minimum number of symbols a string must have
      */
-    def minimumSymbols: Int
+    def minimumSymbols: Option[Int]
     /**
-     * @return minimum number of numbers a string must have
+     * @return optional minimum number of numbers a string must have
      */
-    def minimumNumbers: Int
+    def minimumNumbers: Option[Int]
 
   /**
    * ''CredentialPolicy'' rappresent an abstraction of the users credential policy (userID, password, OTP(One Time Password), ... policy)

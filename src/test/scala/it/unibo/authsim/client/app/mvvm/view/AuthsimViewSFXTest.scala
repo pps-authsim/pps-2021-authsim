@@ -1,6 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.view
 
-import it.unibo.authsim.client.app.mvvm.view.AuthsimView
+import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.SecurityTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
@@ -8,20 +8,20 @@ import org.scalatest.wordspec.AnyWordSpec
 import javafx.embed.swing.JFXPanel
 import scalafx.application.JFXApp3
 
-object AuthsimViewTest:
+object AuthsimViewSFXTest:
   def setUpViewTest() =
     val jfxPanel = new JFXPanel
 
-class AuthsimViewTest extends AnyWordSpec:
+class AuthsimViewSFXTest extends AnyWordSpec:
 
   "Autsim view" when {
 
-    AuthsimViewTest.setUpViewTest()
+    AuthsimViewSFXTest.setUpViewTest()
 
     "number text field is constructed" should {
 
       "allow number input" in {
-        val numberInput = AuthsimView.makeNumberTextField()
+        val numberInput = AuthsimViewSFX.makeNumberTextField()
 
         numberInput.text = "123"
 
@@ -30,7 +30,7 @@ class AuthsimViewTest extends AnyWordSpec:
       }
 
       "disallow text input" in {
-        val numberInput = AuthsimView.makeNumberTextField()
+        val numberInput = AuthsimViewSFX.makeNumberTextField()
 
         numberInput.text = "abc"
 

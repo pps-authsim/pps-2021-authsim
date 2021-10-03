@@ -1,6 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.viewmodel
 
-import it.unibo.authsim.client.app.mvvm.binder.ViewPropertiesBinder
+import it.unibo.authsim.client.app.mvvm.binder.{ModelInitializer, ViewPropertiesBinder}
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
 import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelSFX
@@ -25,20 +25,20 @@ import org.scalatest.BeforeAndAfterEach
 
 import scala.collection.mutable.ListBuffer
 
-object AuthsimViewModelSFXTest:
+object AuthsimViewModelSFXIntegrationTest:
 
   def setUpViewModelTest() =
     val jfxPanel = new JFXPanel
 
-class AuthsimViewModelSFXTest extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfterEach:
+class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfterEach:
 
-  var mockModel: AuthsimModel = null
+  var model: AuthsimModel = null
   var mockView: AuthsimViewSFX = null
   var viewModel: AuthsimViewModel = null
 
   override def beforeEach() =
-    AuthsimViewModelSFXTest.setUpViewModelTest()
-    mockModel = new AuthsimModel(new UsersModel(), new SecurityModel(), new AttackModel())
+    AuthsimViewModelSFXIntegrationTest.setUpViewModelTest()
+    model = new AuthsimModel(new UsersModel(), new SecurityModel(), new AttackModel())
     mockView = makeMockView()
 
     val viewModelDeferedProxy = new AuthsimViewModelDeferedProxy
@@ -47,7 +47,11 @@ class AuthsimViewModelSFXTest extends AnyWordSpec with Matchers with MockitoSuga
     val securityViewModel: SecurityViewModel = ViewPropertiesBinder.bindSecurityTab(mockView, viewModelDeferedProxy)
     val attackViewModel: AttackViewModel = ViewPropertiesBinder.bindAttackTab(mockView, viewModelDeferedProxy)
 
-    viewModel = new AuthsimViewModelSFX(usersViewModel, securityViewModel, attackViewModel, mockModel)
+    viewModel = new AuthsimViewModelSFX(usersViewModel, securityViewModel, attackViewModel, model)
+
+    ModelInitializer.initializeUsersModel(model.usersModel)
+    ModelInitializer.initializeSecurityModel(model.securityModel)
+    ModelInitializer.initializeAttackModel(model.attackModel)
 
     viewModelDeferedProxy.delegate = Option(viewModel)
 
@@ -60,7 +64,7 @@ class AuthsimViewModelSFXTest extends AnyWordSpec with Matchers with MockitoSuga
       }
 
       "have default policy" in {
-        assert(mockModel.securityModel.securityPolicyList.hasSameValues(SecurityPolicy.Default.all))
+        assert(model.securityModel.securityPolicyList.hasSameValues(SecurityPolicy.Default.all))
       }
 
       "have default credentials source" in {
@@ -81,7 +85,7 @@ class AuthsimViewModelSFXTest extends AnyWordSpec with Matchers with MockitoSuga
 
         viewModel.saveUser()
 
-        assert(mockModel.usersModel.usersList.value.sameElements(Seq(User("user", "password"), User("1234", "5678"))))
+        assert(model.usersModel.usersList.value.sameElements(Seq(User("user", "password"), User("1234", "5678"))))
         assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))
         assert(mockView.usersTab.usersListProperty.value.get(1).equals(new UserEntry("1234", "5678")))
       }
@@ -115,7 +119,7 @@ class AuthsimViewModelSFXTest extends AnyWordSpec with Matchers with MockitoSuga
         viewModel.deleteSelectedUsers()
 
 
-        assert(mockModel.usersModel.usersList.value.isEmpty)
+        assert(model.usersModel.usersList.value.isEmpty)
         assert(mockView.usersTab.usersListProperty.value.isEmpty)
       }
 
@@ -131,7 +135,7 @@ class AuthsimViewModelSFXTest extends AnyWordSpec with Matchers with MockitoSuga
       "have no users in list" in {
         viewModel.resetUsers()
 
-        assert(mockModel.usersModel.usersList.value.isEmpty)
+        assert(model.usersModel.usersList.value.isEmpty)
         assert(mockView.usersTab.usersListProperty.value.isEmpty)
       }
 
@@ -174,5 +178,5 @@ class AuthsimViewModelSFXTest extends AnyWordSpec with Matchers with MockitoSuga
     mock
 
   def assertUserTabHasDefaultValues(): Unit =
-    assert(mockModel.usersModel.usersList.value.sameElements(Seq(User("user", "password"))))
+    assert(model.usersModel.usersList.value.sameElements(Seq(User("user", "password"))))
     assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))

@@ -32,7 +32,7 @@ class ConcurrentStringCombinator(val alphabet: Alphabet[_], val maxLength: Int):
  * This companion object provides some shorthands for standard alphabets.
  */
 object ConcurrentStringCombinator:
-  def lowercaseLetters = SymbolicAlphabet(Set("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"))
+  def lowercaseLetters = SymbolicAlphabet(Set.from(for i <- 'a' to 'z' yield i.toString))
   def uppercaseLetters = SymbolicAlphabet(Set.from(lowercaseLetters.map(l => l.toUpperCase)))
   def numbers = SymbolicAlphabet((0 to 9).map(i => i.toString).toSet)
   def symbols = SymbolicAlphabet(Set(" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"))

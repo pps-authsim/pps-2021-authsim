@@ -18,15 +18,15 @@ object ModelInitializer:
     presets.foreach(preset => usersModel.presetsList += preset)
 
   def initializeSecurityModel(securityModel: SecurityModel): Unit =
-    val credentialsSource = CredentialsSourceType.Sql
-    val credentialsSourceDescription = CredentialsSourceType.Sql.description
-    val anotherCredentialsSource = CredentialsSourceType.Mongo
-    val anotherCredentialsSourceDescription = CredentialsSourceType.Mongo.description
+    val sqlSource = CredentialsSourceType.Sql
+    val sqlSourceDescription = CredentialsSourceType.Sql.description
+    val mongoSource = CredentialsSourceType.Mongo
+    val mongoSourceDescription = CredentialsSourceType.Mongo.description
 
     SecurityPolicy.Default.all.foreach(securityModel.securityPolicyList += _)
 
-    securityModel.credentialsSourceList += new CredentialsSource(credentialsSource, credentialsSourceDescription)
-    securityModel.credentialsSourceList += new CredentialsSource(anotherCredentialsSource, anotherCredentialsSourceDescription)
+    securityModel.credentialsSourceList += new CredentialsSource(sqlSource, sqlSourceDescription)
+    securityModel.credentialsSourceList += new CredentialsSource(mongoSource, mongoSourceDescription)
 
   def initializeAttackModel(attackModel: AttackModel): Unit =
     val sequenceName = "Sequence1"

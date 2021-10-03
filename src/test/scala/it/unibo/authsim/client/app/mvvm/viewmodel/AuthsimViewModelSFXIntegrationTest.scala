@@ -1,11 +1,12 @@
 package it.unibo.authsim.client.app.mvvm.viewmodel
 
 import it.unibo.authsim.client.app.mvvm.binder.{ModelInitializer, ViewPropertiesBinder}
+import it.unibo.authsim.client.app.mvvm.common.CredentialsSourceType
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
 import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelSFX
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackModel
-import it.unibo.authsim.client.app.mvvm.model.security.{SecurityModel, SecurityPolicy}
+import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityModel, SecurityPolicy}
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityTab}
@@ -68,7 +69,12 @@ class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with 
       }
 
       "have default credentials source" in {
-        // TODO implement when credential sources are finalized
+        val sqlSource = CredentialsSourceType.Sql
+        val sqlSourceDescription = CredentialsSourceType.Sql.description
+        val mongoSource = CredentialsSourceType.Mongo
+        val mongoSourceDescription = CredentialsSourceType.Mongo.description
+
+        assert(model.securityModel.credentialsSourceList.hasSameValues(List(new CredentialsSource(sqlSource, sqlSourceDescription), new CredentialsSource(mongoSource, mongoSourceDescription))))
       }
 
       "have default attack sequence" in {

@@ -57,8 +57,7 @@ class UserMongoRepositoryTest extends AnyWordSpec with BeforeAndAfterAll with Be
         val userEntity2 = new UserEntity("anotherUser", "abcd1234")
 
         val insertResult = userMongoRepository.saveUsers(List(userEntity1, userEntity2))
-
-        // FIXME runs well first time, then gets dirtied, then stays the same
+        
         val snapshot = getDatabaseSnapshot()
         assert(insertResult.isSuccess)
         assert(snapshot.sameElements(List(userEntity1, userEntity2)))

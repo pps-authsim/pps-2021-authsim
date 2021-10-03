@@ -30,47 +30,39 @@ object SecurityPolicy:
             """
              An userID has
               - minimum length of 3 characters
-              - maximum of 20 characters
 
              A password has
-              - minimum length of 3 characters and
-              - maximum of 20 characters
+              - minimum length of 3 characters
 
             Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
         case "Simple" =>
             """
              An userID has
               - minimum length of 8 characters
-              - maximum of 20 characters
 
              A password has
-              - minimum length of 3 characters and
-              - maximum of 20 characters
+              - minimum length of 3 characters
 
              Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
         case "Medium" =>
             """
              An userID has
               - minimum length of 8 characters
-              - maximum of 20 characters
               - a minimum of 1 symbols
 
              A password has
               - minimum length of 8 characters and
-              - maximum of 20 characters
 
              Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
         case "Hard" =>
             """
              An userID has
               - minimum length of 10 characters
-              - maximum of 20 characters
               - a minimum of 2 symbols
               - a minimum of 3 uppercase characters
 
              A password has
-              - minimum length of 8 characters and
-              - maximum of 20 characters
+              - minimum length of 8 characters
               - a minimum of 1 symbols
 
              Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
@@ -78,19 +70,16 @@ object SecurityPolicy:
             """
              An userID has
               - minimum length of 10 characters
-              - maximum of 20 characters
               - a minimum of 2 symbols
               - a minimum of 3 uppercase characters
 
              A password has
-              - minimum length of 8 characters and
-              - maximum of 20 characters
+              - minimum length of 8 characters
               - a minimum of 1 symbols
               - a minimum of 3 uppercase characters
 
             The userID is stored in plain text and password is stored with SHA256 algoritm using salt value with
               - minimum length of 8 characters
-              - maximum of 20 characters
               - a minimum of 1 symbols
               - a minimum of 1 uppercase characters
             in the database.""".descriptor(this)
@@ -98,19 +87,16 @@ object SecurityPolicy:
             """
                An userID has
                 - minimum length of 10 characters
-                - maximum of 20 characters
                 - a minimum of 2 symbols
                 - a minimum of 3 uppercase characters
 
                A password has
-                - minimum length of 10 characters and
-                - maximum of 20 characters
+                - minimum length of 10 characters
                 - a minimum of 2 symbols
                 - a minimum of 3 uppercase characters
 
               The userID is stored in plain text and password is stored with SHA384 algoritm using salt value with
                 - minimum length of 10 characters
-                - maximum of 20 characters
                 - a minimum of 2 symbols
                 - a minimum of 3 uppercase characters
               in the database.""".descriptor(this)

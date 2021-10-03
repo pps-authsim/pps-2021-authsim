@@ -35,23 +35,14 @@ object OTPGenerator:
    */
   def apply(hashFunction: HashFunction, secret: String, digits: Int, seed: Int): String =
     val previousValues: PreviousGenerateOTP = previous.get(secret).getOrElse(PreviousGenerateOTP())
-    //    println(s"\n\nPrevious = (seed = ${previousValues.seed}, start = ${previousValues.start}, pin = ${previousValues.pin})")
     if previousValues.isChangeSeed(seed) then
-      //      println(s"length of pin to generate = $digits")
       val hmacStr: String = this.hmac(hashFunction, secret).map(_.toUInt).mkString
-      //      println(s"HMAC = $hmacStr, Len = ${hmacStr.length}")
       val start: Int = Random.between(0, hmacStr.length, previousValues.start.get)
-      //      println(s"Start: $start")
       var pin = hmacStr.slice(start, start + digits)
-      if pin.length < digits then
-      //        println(s"Add more char : '0'")
-        (1 to digits - pin.length).foreach(_ => pin = pin.appended('0'))
+      if pin.length < digits then (1 to digits - pin.length).foreach(_ => pin = pin.appended('0'))
       if previousValues.regeneratedSamePin(pin) then
-      //        println(s"Change one char.")
         pin = pin.replaceFirstDifferent(('0' to '9'))
       previous.update(secret, PreviousGenerateOTP(Some(seed), Some(start), Some(pin)))
-      //      println(s"Now = (seed = $seed, start = $start, pin = $pin)\n\n")
       pin
     else
-    //      println(s"get previous pin = ${previousValues.pin}")
       previousValues.pin.get

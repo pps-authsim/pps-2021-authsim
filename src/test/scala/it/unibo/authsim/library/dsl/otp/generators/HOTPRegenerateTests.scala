@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.otp.generators
 
 import it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.SecretValue
 import it.unibo.authsim.library.dsl.otp.builders.HOTPBuilder
-import it.unibo.authsim.library.dsl.otp.generators.Helpers.*
+import it.unibo.authsim.library.dsl.otp.generators.OTPRegenerateHelpers.*
 import it.unibo.authsim.library.dsl.otp.model.HOTP
 import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.generatorLength
 import org.scalatest.wordspec.AnyWordSpec

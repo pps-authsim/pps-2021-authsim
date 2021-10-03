@@ -14,12 +14,6 @@ import scala.util.Random
  */
 object OTPHelpers:
 
-  implicit class RichInt(base: Int):
-    /**
-     * @return the next number of ''base''
-     */
-    def ++ : Int = base + 1
-
   implicit class RichByte(base: Byte):
     /**
      * Convert a byte to unsigned byte in an integer.

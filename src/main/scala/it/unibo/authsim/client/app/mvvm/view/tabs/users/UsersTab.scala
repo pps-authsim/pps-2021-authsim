@@ -1,7 +1,7 @@
 package it.unibo.authsim.client.app.mvvm.view.tabs.users
 
 import it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy
-import it.unibo.authsim.client.app.mvvm.view.AuthsimView
+import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{AddUserForm, GenerateUsersForm, UsersList}
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import javafx.beans.property.ReadOnlyObjectProperty
@@ -27,12 +27,9 @@ class UsersTab() extends SplitPane :
   private val passwordField = new TextField()
   private val saveButton = new Button("Save")
 
-  private val quantityField = AuthsimView.makeNumberTextField()
+  private val quantityField = AuthsimViewSFX.makeNumberTextField()
 
-  private val presetSelect = new ChoiceBox[String] {
-    items = SecurityPolicy.Default.withoutProtocol map {_.policy.name} to(ObservableBuffer)
-  }
-
+  private val presetSelect = new ChoiceBox[String]
   private val generateButton = new Button("Generate")
 
   private val usersList = new ListView[UserEntry]()
@@ -42,6 +39,7 @@ class UsersTab() extends SplitPane :
   val usernameProperty: StringProperty = usernameField.text
   val passwordProperty: StringProperty = passwordField.text
   val quantityProperty: StringProperty = quantityField.text
+  val presetListProperty: ObjectProperty[ObservableList[String]] = presetSelect.items
   val presetProperty: ObjectProperty[String] = presetSelect.value
   val usersListProperty: ObjectProperty[ObservableList[UserEntry]] = usersList.items
   val usersListSelectedProperty: ReadOnlyObjectProperty[UserEntry] = usersList.selectionModel.value.selectedItemProperty()

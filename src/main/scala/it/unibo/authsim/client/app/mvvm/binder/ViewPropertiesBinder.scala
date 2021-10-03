@@ -1,10 +1,10 @@
 package it.unibo.authsim.client.app.mvvm.binder
 
-import it.unibo.authsim.client.app.mvvm.view.AuthsimView
+import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.{AttackSequenceEntry, AttackTab}
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.SecurityPoliciesProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.properties.GenerateUsersFormProperties
-import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
+import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelSFX
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.properties.AttackSequenceProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
@@ -13,6 +13,7 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.users.UsersViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.properties.{AddUserFormProperties, GenerateUsersFormProperties, UsersListViewProperties}
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry, SecurityTab}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UsersTab
+import it.unibo.authsim.client.app.mvvm.viewmodel.proxy.AuthsimViewModelDeferedProxy
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.properties.SecurityPoliciesProperties
 import it.unibo.authsim.client.app.mvvm.viewmodel.users.properties.GenerateUsersFormProperties
 import javafx.beans.value.ChangeListener
@@ -28,11 +29,11 @@ import scalafx.Includes.*
  */
 object ViewPropertiesBinder:
 
-  def bindUsersTab(view: AuthsimView, viewModel: AuthsimViewModel): UsersViewModel =
+  def bindUsersTab(view: AuthsimViewSFX, viewModel: AuthsimViewModelDeferedProxy): UsersViewModel =
     val tab = view.usersTab
 
     val addUserFormProperties = new AddUserFormProperties(tab.usernameProperty, tab.passwordProperty);
-    val generateUsersForm = new GenerateUsersFormProperties(tab.quantityProperty, tab.presetProperty);
+    val generateUsersForm = new GenerateUsersFormProperties(tab.quantityProperty, tab.presetListProperty, tab.presetProperty);
     val usersListProperties = new UsersListViewProperties(tab.usersListProperty, tab.usersListSelectedProperty);
 
     val usersViewModel = new UsersViewModel(addUserFormProperties, generateUsersForm, usersListProperties)
@@ -47,7 +48,7 @@ object ViewPropertiesBinder:
     usersViewModel
 
 
-  def bindSecurityTab(view: AuthsimView, viewModel: AuthsimViewModel): SecurityViewModel =
+  def bindSecurityTab(view: AuthsimViewSFX, viewModel: AuthsimViewModelDeferedProxy): SecurityViewModel =
     val tab = view.securityTab
 
     val securityPoliciesProperties = new SecurityPoliciesProperties(tab.securityPoliciesListProperty, tab.securityPoliciesListSelectedProperty, tab.securityPoliciesDescriptionProperty)
@@ -62,7 +63,7 @@ object ViewPropertiesBinder:
     securityViewModel
 
 
-  def bindAttackTab(view: AuthsimView, viewModel: AuthsimViewModel): AttackViewModel =
+  def bindAttackTab(view: AuthsimViewSFX, viewModel: AuthsimViewModelDeferedProxy): AttackViewModel =
     val tab = view.attackTab
 
     val attackSequenceProperties = new AttackSequenceProperties(

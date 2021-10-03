@@ -1,6 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.view.users
 
-import it.unibo.authsim.client.app.mvvm.view.{AuthsimView, AuthsimViewTest}
+import it.unibo.authsim.client.app.mvvm.view.{AuthsimViewSFX, AuthsimViewSFXTest}
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UsersTab}
 import javafx.collections.ObservableList
@@ -16,7 +16,7 @@ class UsersTabTest extends AnyWordSpec :
 
   "Users tab" when {
 
-    AuthsimViewTest.setUpViewTest()
+    AuthsimViewSFXTest.setUpViewTest()
 
     "user tab is constructed" should {
 

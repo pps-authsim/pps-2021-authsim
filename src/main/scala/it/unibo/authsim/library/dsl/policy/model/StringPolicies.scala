@@ -35,9 +35,9 @@ object StringPolicies:
      */
     def minimumLength: Int
     /**
-     * @return maximum length that string must have
+     * @return optional maximum length that string must have
      */
-    def maximumLength: Int
+    def maximumLength: Option[Int]
 
   /**
    * ''MoreRestrictStringPolicy'' rappresents  an additional restriction for policies of the type string

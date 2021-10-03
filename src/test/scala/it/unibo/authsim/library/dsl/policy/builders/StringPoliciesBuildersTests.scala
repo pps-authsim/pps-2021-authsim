@@ -10,7 +10,6 @@ import scala.language.postfixOps
 class StringPoliciesBuildersTests extends AnyWordSpec:
 
   private val MINIMUM_LENGTH: Int = 1
-  private val MAXIMUM_LENGTH: Int = 20
   private val SETTED_MINIMUM_SYMBOLS: Int = 4
   private val ACTUAL_MAX_LENGTH: Int = 5
 
@@ -23,8 +22,8 @@ class StringPoliciesBuildersTests extends AnyWordSpec:
       "have minimum length equivalent to 1" in {
         assert(passwordPolicy.minimumLength == MINIMUM_LENGTH)
       }
-      "have maximum length equivalent to 20"  in {
-        assert(passwordPolicy.maximumLength == MAXIMUM_LENGTH)
+      "have no maximum length"  in {
+        assert(passwordPolicy.maximumLength.isEmpty)
       }
     }
 
@@ -54,7 +53,7 @@ class StringPoliciesBuildersTests extends AnyWordSpec:
     "call n times the same methods" should {
       "set the last call" in {
         passwordPolicy =  PasswordPolicyBuilder() maximumLength 10 maximumLength 13 maximumLength 5 build;
-        assert(passwordPolicy.maximumLength == ACTUAL_MAX_LENGTH)
+        assert(passwordPolicy.maximumLength.get == ACTUAL_MAX_LENGTH)
       }
     }
 

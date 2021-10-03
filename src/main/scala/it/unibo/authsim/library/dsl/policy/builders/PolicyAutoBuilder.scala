@@ -27,6 +27,7 @@ object PolicyAutoBuilder:
       new PolicyAutoBuilder[String]:
         override def generate: String =
           val generatedString: ListBuffer[Char] = ListBuffer.empty
+          val maxDefault: Int => Int = (min: Int) => min + 10
 
           val randomInt: (Int, Int, Int) => Int = (actualLength: Int, min: Int, max: Int) =>
             val minBound: Int = if actualLength >= min then 0 else min - actualLength
@@ -38,7 +39,7 @@ object PolicyAutoBuilder:
           policy match
             case otpPolicy: OTPPolicy =>
 //              println(s"OTPPolicy: length { min = ${otpPolicy.minimumLength}, max = ${otpPolicy.maximumLength} }")
-              generatedString ++= otpPolicy.alphabet.randomDigits.take(Random.between(otpPolicy.minimumLength, otpPolicy.maximumLength + 1))
+              generatedString ++= otpPolicy.alphabet.randomDigits.take(Random.between(otpPolicy.minimumLength, otpPolicy.maximumLength.getOrElse(maxDefault(otpPolicy.minimumLength)) + 1))
 
             case mRStringPolicy: StringPolicy with RestrictStringPolicy with MoreRestrictStringPolicy =>
 //              println(s"MoreRestrictStringPolicy: length { min = ${mRStringPolicy.minimumLength}, max = ${mRStringPolicy.maximumLength} }")
@@ -62,12 +63,12 @@ object PolicyAutoBuilder:
 //                println(s"Add ${mRStringPolicy.minimumLowerChars} lowers")
                 generatedString ++= mRStringPolicy.alphabet.randomLowers.take(mRStringPolicy.minimumLowerChars)
 
-              val numChars: Int =  randomInt(generatedString.length, mRStringPolicy.minimumLength, mRStringPolicy.maximumLength)
+              val numChars: Int =  randomInt(generatedString.length, mRStringPolicy.minimumLength, mRStringPolicy.maximumLength.getOrElse(maxDefault(mRStringPolicy.minimumLength)))
               generatedString ++= mRStringPolicy.alphabet.randomAlphanumericsymbols.take(numChars)
 
             case rStringPolicy: StringPolicy with RestrictStringPolicy =>
 //              println(s"RestrictStringPolicy: length { min = ${rStringPolicy.minimumLength}, max = ${rStringPolicy.maximumLength} }")
-              val numChars: Int = randomInt(generatedString.length, rStringPolicy.minimumLength, rStringPolicy.maximumLength)
+              val numChars: Int = randomInt(generatedString.length, rStringPolicy.minimumLength, rStringPolicy.maximumLength.getOrElse(maxDefault(rStringPolicy.minimumLength)))
               generatedString ++= rStringPolicy.alphabet.randomAlphanumericsymbols.take(numChars)
 
             case stringPolicy: StringPolicy =>

@@ -29,9 +29,8 @@ case class TOTPBuilder() extends AbstractTOTPBuilder:
     override def policy: OTPPolicy = TOTPBuilder.this._policy
 
     override def generate: String =
-      val generated = OTPGenerator(this.hashFunction, TOTPBuilder.this._secret, this.length, TOTPBuilder.this._seed)
       this._createDate = Some(System.currentTimeMillis())
-      generated
+      OTPGenerator(this.hashFunction, TOTPBuilder.this._secret, this.length, TOTPBuilder.this._seed)
 
     override def check(pincode: String): Boolean =
       val validTime = this.createDate.isDefined && this.createDate.get + this.timeout.toMillis > System.currentTimeMillis()

@@ -86,7 +86,7 @@ object OTPBuilder:
 
     protected def generateSeed(implicit seedGenerator: () => Int): Unit =
       val genSeed: Int = seedGenerator()
-      this._seed = if genSeed == this._seed then genSeed++ else genSeed
+      this._seed = if genSeed == this._seed then genSeed + 1 else genSeed
 
     override def withPolicy(policy: OTPPolicy)(implicit lengthGenerator: OTPPolicy => Int) =
       this.builderMethod[OTPPolicy](policy =>

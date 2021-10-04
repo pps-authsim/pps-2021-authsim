@@ -1,28 +1,35 @@
 package it.unibo.authsim.library.user.builder
 
-import  it.unibo.authsim.library.user.model.User
+import it.unibo.authsim.library.dsl.builder.Builder
+import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{PasswordPolicyBuilder, UserIDPolicyBuilder}
+import it.unibo.authsim.library.user.model.User
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
-import it.unibo.authsim.library.user.builder.util.RandomStringGenerator.generateRandomString
-import it.unibo.authsim.library.dsl.builder.Builder
+import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 
-//ANche qui non sono troppo sicura sull'iso
+
+/**
+ * Abstract class for building users, it provides basic method to add policies and check if user credentials are complaint with them.
+ * @tparam U
+ */
 abstract class UserBuilder[U] extends Builder[U]:
   protected var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
-  protected var _userName: String=generateRandomString()
-  protected var _password:String=generateRandomString()
+  protected var _userName: String= ""
+  protected var _password:String= ""
 
   /**
    * Method that check if the the provided credential for the user meet the input policy
-   * 
+   *
    * @return true if the the credentials are complaint with the policy or false if they are not
    */
   protected def checkPolicy(): Boolean=
-    _credentialPolicies.filter(e=> (e.isInstanceOf[PasswordPolicy]|| e.isInstanceOf[UserIDPolicy])).map(e=>
-      if(e.isInstanceOf[PasswordPolicy]) then
-        StringPolicyChecker(e.asInstanceOf[PasswordPolicy]) check _password
-      else
-        StringPolicyChecker(e.asInstanceOf[UserIDPolicy]) check _userName
+    _credentialPolicies.map(c =>
+      StringPolicyChecker(c) check (
+        c match
+          case _: UserIDPolicy => _userName
+          case _: PasswordPolicy => _password
+          case _ => ""
+        )
     ).contains(false).unary_!
     
   /**

@@ -48,7 +48,7 @@ trait Alphabet[T <: Alphabet[T]](val symbolSet: Set[String], protected val accep
  * An alphabet where symbols are words.
  */
 @throws[IllegalArgumentException]("if the alphabet is not acceptable")
-case class Dictionary(override val symbolSet: Set[String], override protected val acceptor: String => Boolean = s => !s.isBlank) extends Alphabet[Dictionary](symbolSet, acceptor):
+case class Dictionary(override val symbolSet: Set[String] = Set.empty, override protected val acceptor: String => Boolean = s => !s.isBlank) extends Alphabet[Dictionary](symbolSet, acceptor):
   /**
    * Unifies two Alphabets in one Dictionary (as a Dictionary can contain every non-blank word) and uses the acceptor of the first addend.
    * @param other The other alphabet.
@@ -62,7 +62,7 @@ case class Dictionary(override val symbolSet: Set[String], override protected va
  * @param acceptor The function used to check each symbol in the set.
  */
 @throws[IllegalArgumentException]("if the alphabet is not acceptable")
-case class SymbolicAlphabet(override val symbolSet: Set[String], protected override val acceptor: String => Boolean = s => !s.isBlank && s.length == 1) extends Alphabet[SymbolicAlphabet](symbolSet, acceptor):
+case class SymbolicAlphabet(override val symbolSet: Set[String] = Set.empty, protected override val acceptor: String => Boolean = s => !s.isBlank && s.length == 1) extends Alphabet[SymbolicAlphabet](symbolSet, acceptor):
   /**
    * Create a new SymbolicAlphabet with the union of the symbol sets and the acceptor of the first addend.
    *

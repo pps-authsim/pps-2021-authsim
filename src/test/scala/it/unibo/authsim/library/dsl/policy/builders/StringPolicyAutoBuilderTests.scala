@@ -7,6 +7,7 @@ import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{RestrictStringP
 import org.scalatest.*
 import org.scalatest.funsuite.AnyFunSuite
 
+import scala.collection.immutable.ListSet
 import scala.collection.mutable.ListBuffer
 import scala.language.postfixOps
 import scala.util.matching.Regex
@@ -19,20 +20,20 @@ class StringPolicyAutoBuilderTests extends AnyFunSuite with BeforeAndAfter:
 
   private var myPolicy: StringPolicy = new StringPolicy {
     override def alphabet: PolicyAlphabet = new PolicyAlphabet {
-      override def lowers = SymbolicAlphabet(Set("a", "e", "i", "o", "u"))
+      override def lowers = SymbolicAlphabet(ListSet("a", "e", "i", "o", "u"))
       override def uppers = SymbolicAlphabet(this.lowers.map { _.toUpperCase })
-      override def digits = SymbolicAlphabet(Set.empty)
-      override def symbols = SymbolicAlphabet(Set.empty)
+      override def digits = SymbolicAlphabet()
+      override def symbols = SymbolicAlphabet()
     }
     override def patterns: ListBuffer[Regex] = ListBuffer.empty
   }
 
   private var myRestrictedPolicy: StringPolicy = new StringPolicy with RestrictStringPolicy {
     override def alphabet: PolicyAlphabet = new PolicyAlphabet {
-      override def lowers = SymbolicAlphabet(Set("c", "e", "i", "o", "u"))
+      override def lowers = SymbolicAlphabet(ListSet("c", "e", "i", "o", "u"))
       override def uppers = SymbolicAlphabet(this.lowers.map { _.toUpperCase })
-      override def digits = SymbolicAlphabet(Set("0", "3"))
-      override def symbols = SymbolicAlphabet(Set.empty)
+      override def digits = SymbolicAlphabet(ListSet("0", "3"))
+      override def symbols = SymbolicAlphabet()
     }
     override def patterns: ListBuffer[Regex] = ListBuffer.empty
 

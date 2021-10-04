@@ -11,19 +11,19 @@ trait AlphabetCommonClasses:
   /**
    * @return sequence of lowercase characters of alphabet
    */
-  def lowers: SymbolicAlphabet = SymbolicAlphabet(Set.empty)
+  def lowers: SymbolicAlphabet = SymbolicAlphabet()
   /**
    * @return sequence of uppercase characters of alphabet
    */
-  def uppers: SymbolicAlphabet = SymbolicAlphabet(Set.empty)
+  def uppers: SymbolicAlphabet = SymbolicAlphabet()
   /**
    * @return sequence of digits of alphabet
    */
-  def digits: SymbolicAlphabet = SymbolicAlphabet(Set.empty)
+  def digits: SymbolicAlphabet = SymbolicAlphabet()
   /**
    * @return sequence of symbols of alphabet
    */
-  def symbols: SymbolicAlphabet = SymbolicAlphabet(Set.empty)
+  def symbols: SymbolicAlphabet = SymbolicAlphabet()
   /**
    * @return sequence of all characters (lowercase and uppercase), digits and symbols of alphabet
    */

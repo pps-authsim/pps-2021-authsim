@@ -27,17 +27,19 @@ object PolicyAutoBuilder:
       new PolicyAutoBuilder[String]:
         override def generate: String =
           val generatedString: ListBuffer[Char] = ListBuffer.empty
-          val maxDefault: Int => Int = (min: Int) => min + 10
+          val maximumBasedOnMin: Int => Int = (minimumLength: Int) => minimumLength + 10
 
           val randomInt: (Int, Int, Option[Int]) => Int = (actualLength: Int, min: Int, max: Option[Int]) =>
             val minBound: Int = if actualLength >= min then 0 else min - actualLength
-            val maxBound = (max.getOrElse(maxDefault(min)) - actualLength) + 1
+            val maxBound = (max.getOrElse(maximumBasedOnMin(min)) - actualLength) + 1
             val numChars: Int = Random.between(minBound, maxBound)
             numChars
 
           policy match
             case otpPolicy: OTPPolicy =>
-              generatedString ++= otpPolicy.alphabet.randomDigits.take(Random.between(otpPolicy.minimumLength, otpPolicy.maximumLength.getOrElse(maxDefault(otpPolicy.minimumLength)) + 1))
+              val minLen = otpPolicy.minimumLength
+              val maxLen = otpPolicy.maximumLength.getOrElse(maximumBasedOnMin(otpPolicy.minimumLength))
+              generatedString ++= otpPolicy.alphabet.randomDigits.take(Random.between(minLen, maxLen + 1))
 
             case mRStringPolicy: StringPolicy with RestrictStringPolicy with MoreRestrictStringPolicy =>
               if mRStringPolicy.minimumSymbols.isDefined
@@ -60,7 +62,9 @@ object PolicyAutoBuilder:
               generatedString ++= rStringPolicy.alphabet.randomAlphanumericsymbols.take(numChars)
 
             case stringPolicy: StringPolicy =>
-              val numChars: Int = randomInt(generatedString.length, 1, Some(30))
+              val minimumLenDefault = 1
+              val maximumLenDefault = 30
+              val numChars: Int = randomInt(generatedString.length, minimumLenDefault, Some(maximumLenDefault))
               generatedString ++= stringPolicy.alphabet.randomAlphanumericsymbols.take(numChars)
 
           Random.shuffle(generatedString).mkString

@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.dsl.policy.model
 
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
-import it.unibo.authsim.library.dsl.policy.builders.PolicyAutoBuilder
+import it.unibo.authsim.library.dsl.policy.generators.PolicyAutoGenerator
 
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
@@ -21,10 +21,11 @@ object StringPolicies:
     def patterns: ListBuffer[Regex]
     /**
      * Generate a string based on the policy
-     * @param policyAutoBuilder (@see [[PolicyAutoBuilder#stringPolicyAutoBuilder]])
+ *
+     * @param policyAutoGenerator (@see [[PolicyAutoGenerator#stringPolicyAutoGenerator]])
      * @return a random string that respects the string policy
      */
-    def generate(implicit policyAutoBuilder: StringPolicy => PolicyAutoBuilder[String]): String = policyAutoBuilder(this).generate
+    def generate(implicit policyAutoGenerator: StringPolicy => PolicyAutoGenerator[String]): String = policyAutoGenerator(this).generate
 
   /**
    * ''RestrictStringPolicy'' rappresents a restriction on policies of the type string

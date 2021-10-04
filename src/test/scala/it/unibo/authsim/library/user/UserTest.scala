@@ -36,7 +36,8 @@ class UserTest extends AnyWordSpec with should.Matchers{
   private var usernameSequence:Seq[String] = for(e<-userSequence) yield e.username
   private var passwordSequence:Seq[String]  = for(e<-userSequence) yield e.password
 
-  s"A user created with name '${name}' and password '{$password}'" should {
+  // TODO: these tests fail sometimes
+  s"A user created with name '${name}' and password '${password}'" should {
     "have name" in{
       costumUser1.get.username should be (name)
     }
@@ -45,13 +46,14 @@ class UserTest extends AnyWordSpec with should.Matchers{
     }
   }
 
+  // TODO: also these tests fail sometimes
   s"If a user created with a set of credential policies then user credentials" should  {
 
-    "be complaint with the policy'${userIDPolicy}'" in{
+    s"be complaint with the policy '${userIDPolicy}'" in{
       assert(StringPolicyChecker(userIDPolicy) check (costumUser1.get.username))
     }
 
-    "and meet the policy'${passwordPolicy}' requirements" in{
+    s"and meet the policy '${passwordPolicy}' requirements" in{
       assert(StringPolicyChecker(passwordPolicy) check (costumUser1.get.password))
     }
   }
@@ -63,10 +65,10 @@ class UserTest extends AnyWordSpec with should.Matchers{
   }
 
   s"A user auto-generated given some users' credentials " should {
-    "have a name complaint with the '${userIDPolicy.getClass}'" in{
+    s"have a name complaint with the '${userIDPolicy.getClass}'" in{
       assert(StringPolicyChecker(userIDPolicy) check (autoUser1.username))
     }
-    "and a password complaint with the '${passwordPolicy.getClass}'" in {
+    s"and a password complaint with the '${passwordPolicy.getClass}'" in {
       assert(StringPolicyChecker(passwordPolicy) check (autoUser1.password))
     }
   }

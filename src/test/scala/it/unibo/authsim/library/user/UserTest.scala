@@ -16,15 +16,16 @@ class UserTest extends AnyWordSpec with should.Matchers{
   private val max: Int=5
 
   private val userIDPolicy: CredentialPolicy = UserIDPolicyBuilder() minimumLength max build
-  private val passwordPolicy: CredentialPolicy = PasswordPolicyBuilder() minimumUpperChars min minimumLength max build
-  private val name: String= Util.generateRandomString()
+  private val passwordPolicy: CredentialPolicy = PasswordPolicyBuilder() minimumLength max build
+  private val name: String= Util.generateRandomString(max)
   private val shortName: String= Util.generateRandomString(min)
-  private val password: String= Util.generateRandomString()
+
+  private val password: String= Util.generateRandomString(max)
 
   private val costumUserBuilder1 = UserCostumBuilder() withName(name) withPassword(password) withPolicy(userIDPolicy) withPolicy(passwordPolicy)
   private val costumUser1 :Option[User]= costumUserBuilder1.build
 
-  private val costumUserBuilder2 =  UserCostumBuilder() withName(shortName) withPassword(password) withPolicy(userIDPolicy)
+  private val costumUserBuilder2 =  UserCostumBuilder() withName(shortName) withPassword(pgit assword) withPolicy(userIDPolicy)
   private val costumUser2:Option[User] = costumUserBuilder2.build
 
   private val autoUserBuilder1= UserAutoBuilder() withPolicy(userIDPolicy) withPolicy(passwordPolicy)
@@ -47,7 +48,7 @@ class UserTest extends AnyWordSpec with should.Matchers{
   }
 
   // TODO: also these tests fail sometimes
-  s"If a user created with a set of credential policies then user credentials" should  {
+  "If a user created with a set of credential policies then user credentials" should  {
 
     s"be complaint with the policy '${userIDPolicy}'" in{
       assert(StringPolicyChecker(userIDPolicy) check (costumUser1.get.username))
@@ -58,13 +59,13 @@ class UserTest extends AnyWordSpec with should.Matchers{
     }
   }
 
-  s"If a user chose a credential not complaint with the given policy" should {
+  "If a user chose a credential not complaint with the given policy" should {
     "not be able to create a user" in{
       costumUser2 should be (None)
     }
   }
 
-  s"A user auto-generated given some users' credentials " should {
+  "A user auto-generated given some users' credentials " should {
     s"have a name complaint with the '${userIDPolicy.getClass}'" in{
       assert(StringPolicyChecker(userIDPolicy) check (autoUser1.username))
     }
@@ -73,7 +74,7 @@ class UserTest extends AnyWordSpec with should.Matchers{
     }
   }
 
-  s"User" should{
+  "User" should{
     "should be able to create a given number of users" in{
       assert(userSequence.length == min)
     }

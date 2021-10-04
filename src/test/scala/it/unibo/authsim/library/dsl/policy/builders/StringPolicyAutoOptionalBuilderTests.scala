@@ -37,7 +37,7 @@ class StringPolicyAutoBuilderTests extends AnyFunSuite with BeforeAndAfter:
 
     override def minimumLength: Int = 3
 
-    override def maximumLength: Int = 10
+    override def maximumLength: Option[Int] = Some(10)
   }
 
   import StringPolicyAutoBuilderTestHelpers.*

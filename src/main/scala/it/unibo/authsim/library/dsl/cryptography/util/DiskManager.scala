@@ -35,15 +35,15 @@ object DiskManager:
    * @param fileName       name of the file on which the object should be saved
    * @tparam T             type of the object to be saved
    */
-  def saveObject[T](obj: T, fileName: String): Unit =
-    val oos = new ObjectOutputStream(new FileOutputStream(fileName))
+  def writeObject[T](obj: T, fileName: String): Unit =
+    val objectOutputStream = new ObjectOutputStream(new FileOutputStream(fileName))
     Try {
-      oos.writeObject(obj)
+      objectOutputStream.writeObject(obj)
       }.toEither match {
         case Left(error) =>
           println("Error in saving the file")
         case Right(_) =>
-          oos.close
+          objectOutputStream.close
       }
 
   /**
@@ -53,7 +53,7 @@ object DiskManager:
    * @tparam T              type of the object
    * @return                None in case of failure, or an optional of the object loaded
    */
-  def loadObject[T](fileName: String): Option[T] =
+  def readObject[T](fileName: String): Option[T] =
     val objectInputStream = new ObjectInputStream(new FileInputStream(fileName))
     var res: Option[T]= None
     Try {
@@ -72,7 +72,7 @@ object DiskManager:
    *
    * @param fileName          name of the file
    */
-  def delete (fileName: String): Unit =
+  def deleteFile(fileName: String): Unit =
     Try {
       fileName.delete()
     }.toEither match{

@@ -12,7 +12,7 @@ import org.scalatest.matchers.*
 
 import scala.language.postfixOps
 
-class PolicyOptionalBuilderTests extends AnyFlatSpec with should.Matchers:
+class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
 
   private val userIDPolicy: CredentialPolicy = UserIDPolicyBuilder() minimumLength 3 build
   private val userIDPolicy1: UserIDPolicy = UserIDPolicyBuilder() minimumLength 5 build

@@ -1,17 +1,19 @@
 package it.unibo.authsim.library.user.builder
 
+import it.unibo.authsim.library.dsl.builder.Builder
 import it.unibo.authsim.library.dsl.policy.defaults.PolicyDefault
 import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.UserIDPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.CredentialPolicy
 import it.unibo.authsim.library.user.model.{CryptoInformation, UserInformation}
+
 import scala.language.postfixOps
 import it.unibo.authsim.library.user.builder.UserBuilder
 
 /**
  * Class that represent a builder of UserInformation
  */
-class UserInformationBuilder extends OptionalBuilder[UserInformation]:
+class UserInformationBuilder extends Builder[UserInformation]:
   /*
     TODO : algorithmPolicy: si assume che se la policy non è stata settata allora è salvata in chiaro:
      di default viene salvata in chiaro, altrimenti deve essere chiamato il metodo per aggiornare il campo

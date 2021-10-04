@@ -11,7 +11,7 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 
 import scala.concurrent.duration.Duration
 
-class BruteForceAttackOptionalBuilderTest extends AnyWordSpec:
+class BruteForceAttackBuilderTest extends AnyWordSpec:
 
   private class TestStatisticsConsumer extends StatisticsConsumer:
     private var statistics: Statistics = Statistics.zero

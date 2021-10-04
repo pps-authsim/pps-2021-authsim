@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 import scala.language.postfixOps
 import scala.util.matching.Regex
 
-class StringPolicyAutoOptionalBuilderTests extends AnyFunSuite with BeforeAndAfter:
+class StringPolicyAutoBuilderTests extends AnyFunSuite with BeforeAndAfter:
 
   private var userID = UserIDPolicyBuilder()
   private var password = PasswordPolicyBuilder()

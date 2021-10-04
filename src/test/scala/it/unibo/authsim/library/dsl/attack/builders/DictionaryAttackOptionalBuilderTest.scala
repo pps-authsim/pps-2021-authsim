@@ -11,7 +11,7 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 
 import scala.concurrent.duration.Duration
 
-class DictionaryAttackOptionalBuilderTest extends AnyWordSpec:
+class DictionaryAttackBuilderTest extends AnyWordSpec:
   private class TestStatisticsConsumer extends StatisticsConsumer:
     private var statistics: Statistics = Statistics.zero
 

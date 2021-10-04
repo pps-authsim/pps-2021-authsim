@@ -13,7 +13,7 @@ import it.unibo.authsim.library.user.builder.UserBuilder
 /**
  * Class that represent a builder of UserInformation
  */
-class UserInformationBuilder extends Builder[UserInformation]:
+class UserInformationBuilder extends Builder[Option[UserInformation]]:
   /*
     TODO : algorithmPolicy: si assume che se la policy non è stata settata allora è salvata in chiaro:
      di default viene salvata in chiaro, altrimenti deve essere chiamato il metodo per aggiornare il campo
@@ -63,7 +63,7 @@ class UserInformationBuilder extends Builder[UserInformation]:
    *
    * @return      an optional of UserInformation
    */
-  override def build():Option[UserInformation]=
+  def build: Option[UserInformation]=
     if(!this._userName.isEmpty && !this._encryptedPassword.isEmpty ) then
       val user= UserInformation(_userName, _encryptedPassword, _cryptoInformation)
       Some(user)

@@ -27,12 +27,12 @@ class UserInformationTest extends AnyWordSpec{
   private val cryptoInfo = CryptoInformation(algorithmPolicy)
 
   private var userBuilder1 : UserInformationBuilder = UserInformationBuilder() withUserName(name) withPassword(encryptedPassword)
-  private var userInformation1 : Option[UserInformation] = userBuilder1.build()
+  private var userInformation1 : Option[UserInformation] = userBuilder1.build
   private var userBuilder2 : UserInformationBuilder = UserInformationBuilder() withUserName(name) withPassword(encryptedPassword) withAlgorithmPolicy(cryptoInfo)
-  private var userInformation2 : Option[UserInformation] = userBuilder2.build()
+  private var userInformation2 : Option[UserInformation] = userBuilder2.build
 
   private var userBuilder3 = UserInformationBuilder() withUserName(name) withAlgorithmPolicy(cryptoInfo)
-  private var userInformation3 : Option[UserInformation] = userBuilder3.build()
+  private var userInformation3 : Option[UserInformation] = userBuilder3.build
 
   "A userInformation" when {
     "created" should {

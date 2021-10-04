@@ -10,7 +10,6 @@ import scala.language.postfixOps
 class StringPoliciesBuildersTests extends AnyWordSpec:
 
   private val MINIMUM_LENGTH: Int = 1
-  private val MAXIMUM_LENGTH: Int = 20
   private val SETTED_MINIMUM_SYMBOLS: Int = 4
   private val ACTUAL_MAX_LENGTH: Int = 5
 
@@ -23,8 +22,8 @@ class StringPoliciesBuildersTests extends AnyWordSpec:
       "have minimum length equivalent to 1" in {
         assert(passwordPolicy.minimumLength == MINIMUM_LENGTH)
       }
-      "have maximum length equivalent to 20"  in {
-        assert(passwordPolicy.maximumLength == MAXIMUM_LENGTH)
+      "have no maximum length"  in {
+        assert(passwordPolicy.maximumLength.isEmpty)
       }
     }
 
@@ -47,14 +46,14 @@ class StringPoliciesBuildersTests extends AnyWordSpec:
     "set at least 4 symbols" should {
       passwordPolicy = PasswordPolicyBuilder() minimumSymbols 4 build;
       "return 4" in {
-        assert(passwordPolicy.minimumSymbols === SETTED_MINIMUM_SYMBOLS)
+        assert(passwordPolicy.minimumSymbols.get === SETTED_MINIMUM_SYMBOLS)
       }
     }
 
     "call n times the same methods" should {
       "set the last call" in {
         passwordPolicy =  PasswordPolicyBuilder() maximumLength 10 maximumLength 13 maximumLength 5 build;
-        assert(passwordPolicy.maximumLength == ACTUAL_MAX_LENGTH)
+        assert(passwordPolicy.maximumLength.get == ACTUAL_MAX_LENGTH)
       }
     }
 
@@ -62,6 +61,32 @@ class StringPoliciesBuildersTests extends AnyWordSpec:
       "throws IllegalArgument Exception " in {
         assertThrows[IllegalArgumentException] {
           OTPPolicyBuilder() maximumLength -3
+        }
+      }
+    }
+
+    "set minium symbols 30 and maximum length 50" should {
+      userIDPolicy = UserIDPolicyBuilder() minimumLength 30  maximumLength 50 build;
+      "have minimum length equivalent to 30" in {
+        assert(userIDPolicy.minimumLength == 30)
+      }
+      "have maximum length equivalent to 50" in {
+        assert(userIDPolicy.maximumLength.get == 50)
+      }
+    }
+
+    "set minium symbols 4, minimum uppercase 5, minimum numbers 4 and maximum length 9" should {
+      "throws IllegalArgument Exception " in {
+        assertThrows[IllegalArgumentException] {
+          PasswordPolicyBuilder() maximumLength 9 minimumSymbols 4 minimumUpperChars 5 minimumNumbers 4
+        }
+      }
+    }
+
+    "set minimum length 5, maximum length 20, minium symbols 10, minimum uppercase 10, minimum numbers 10" should {
+      "throws IllegalArgument Exception " in {
+        assertThrows[IllegalArgumentException] {
+          PasswordPolicyBuilder() minimumSymbols 5 minimumSymbols 10 minimumUpperChars 10 minimumNumbers 10 maximumLength 9
         }
       }
     }

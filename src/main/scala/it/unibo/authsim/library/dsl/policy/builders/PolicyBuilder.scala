@@ -14,37 +14,37 @@ trait PolicyBuilder extends Builder[Policy]:
    * @param credentialPolicy tuple of userID policy and a password policy to set
    * @return instance of policy builder
    */
-  def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): PolicyBuilder
+  def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): this.type
   /**
    * Set a [[CredentialPolicy credential policy]]
    * @param credentialPolicy credential policy to set
    * @return instance of policy builder
    */
-  def of(credentialPolicy: CredentialPolicy): PolicyBuilder
+  def of(credentialPolicy: CredentialPolicy): this.type
   /**
    * Set a [[CredentialPolicy credential policy]]
    * @param credentialPolicy credential policy to set
    * @return instance of policy builder
    */
-  def and(credentialPolicy: CredentialPolicy): PolicyBuilder
+  def and(credentialPolicy: CredentialPolicy): this.type
   /**
    * Set a [[Protocol protocol]]
    * @param protocol protocol to set
    * @return instance of policy builder
    */
-  def transmitWith(protocol: Protocol): PolicyBuilder
+  def transmitWith(protocol: Protocol): this.type
   /**
    * Set a [[HashFunction hash function]]
    * @param hashFunction hash function to set
    * @return instance of policy builder
    */
-  def storeWith(hashFunction: HashFunction): PolicyBuilder
+  def storeWith(hashFunction: HashFunction): this.type
   /**
    * Set a [[HashFunction hash function]] and [[SaltPolicy salt policy]]
    * @param hashFunctionSalted tuple of hash function and salt policy to set
    * @return instance of policy builder
    */
-  def storeWith(hashFunctionSalted: (HashFunction, SaltPolicy)): PolicyBuilder
+  def storeWith(hashFunctionSalted: (HashFunction, SaltPolicy)): this.type
 
 /**
  *  PolicyBuilder is an implementation of policy builder
@@ -59,21 +59,17 @@ object PolicyBuilder:
     private var _hashFunction: Option[HashFunction] = Option.empty
     private var _saltPolicy: Option[SaltPolicy] = Option.empty
 
-    override def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): PolicyBuilder =
-      this of credentialPolicy._1 and credentialPolicy._2
+    override def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)) = this of credentialPolicy._1 and credentialPolicy._2
 
-    override def of(credentialPolicy: CredentialPolicy): PolicyBuilder =
-      this.builderMethod((credentialPolicy: CredentialPolicy) => this._credentialPolicies = credentialPolicy +: this._credentialPolicies)(credentialPolicy)
+    override def of(credentialPolicy: CredentialPolicy) = this.builderMethod((credentialPolicy: CredentialPolicy) => this._credentialPolicies = credentialPolicy +: this._credentialPolicies)(credentialPolicy)
 
-    override def and(credentialPolicy: CredentialPolicy): PolicyBuilder = this of credentialPolicy
+    override def and(credentialPolicy: CredentialPolicy) = this of credentialPolicy
 
-    override def transmitWith(protocol: Protocol): PolicyBuilder =
-      this.builderMethod((protocol: Protocol) => this._protocol = Some(protocol))(protocol)
+    override def transmitWith(protocol: Protocol) = this.builderMethod((protocol: Protocol) => this._protocol = Some(protocol))(protocol)
 
-    override def storeWith(hashFunction: HashFunction): PolicyBuilder =
-      this.builderMethod((hashFunction: HashFunction) => this._hashFunction = Some(hashFunction))(hashFunction)
+    override def storeWith(hashFunction: HashFunction) = this.builderMethod((hashFunction: HashFunction) => this._hashFunction = Some(hashFunction))(hashFunction)
 
-    override def storeWith(hashFunctionSalted: (HashFunction, SaltPolicy)): PolicyBuilder =
+    override def storeWith(hashFunctionSalted: (HashFunction, SaltPolicy)) =
       this.builderMethod((hashFunctionSalted: (HashFunction, SaltPolicy)) => {
         this._hashFunction = Some(hashFunctionSalted._1)
         this._saltPolicy = Some(hashFunctionSalted._2)

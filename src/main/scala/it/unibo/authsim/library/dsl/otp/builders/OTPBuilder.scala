@@ -2,6 +2,7 @@ package it.unibo.authsim.library.dsl.otp.builders
 
 import it.unibo.authsim.library.dsl.HashFunction
 import it.unibo.authsim.library.dsl.builder.Builder
+import it.unibo.authsim.library.dsl.otp.generator.OTPGenerator
 import it.unibo.authsim.library.dsl.otp.model.*
 import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.*
 import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.OTPPolicyBuilder
@@ -104,6 +105,8 @@ object OTPBuilder:
    */
   abstract class AbstractHOTPBuilder extends AbstractOTPBuilder[HOTP] with HmacOTPBuilder:
     protected var _hashFunction: HashFunction = HashFunction.SHA256()
+
+    protected def otpGenerator(length: Int = this._length): String = OTPGenerator(this._hashFunction, this._secret, length, this._seed)
 
     override def hashFunction(hashFunction: HashFunction) = this.builderMethod[HashFunction](hashFunction => this._hashFunction = hashFunction)(hashFunction)
 

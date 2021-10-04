@@ -68,8 +68,4 @@ class UserBuilderTest extends AnyWordSpec with should.Matchers{
       assert(StringPolicyChecker(userIDPolicy.asInstanceOf[UserIDPolicy]) check (autoUser1.password))
     }
   }
-
-/*
-TODO generation policy default when Marica creates them
- */
 }

@@ -1,5 +1,6 @@
-package it.unibo.authsim.library.dsl.attack.builders
+package it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce
 
+import it.unibo.authsim.library.dsl.alphabet.Dictionary
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.dsl.policy.model.Policy
@@ -36,7 +37,7 @@ class DictionaryAttackBuilderTest extends AnyWordSpec:
 
     private val myLogger = new TestStatisticsConsumer()
 
-    private val myDictionary = List("password", "1", "2", "3", "4", "hunter", "user", "admin")
+    private val myDictionary = Dictionary(Set("password", "1", "2", "3", "4", "hunter", "user", "admin"))
     val myDictionaryAttackBuilder: DictionaryAttackBuilder = new DictionaryAttackBuilder()
 
     "The DictionaryAttackBuilder" must {

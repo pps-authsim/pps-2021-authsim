@@ -84,7 +84,7 @@ object StringPoliciesBuilders:
    */
   abstract class AbstractStringPolicyBuilder[T] extends StringPolicyBuilder[T] with RestrictStringPolicyBuilder[T]:
     protected var minLen: Int = 1
-    protected var maxLen: Int = 20
+    protected var maxLen: Option[Int] = None
     protected var alphabetPolicy: PolicyAlphabet = new PolicyDefaultAlphabet
     protected var patterns: ListBuffer[Regex] = ListBuffer(this.alphabetPolicy.minimalLength)
 
@@ -95,10 +95,14 @@ object StringPoliciesBuilders:
       val index: Int = patterns.indexWhere(r => r.toString == regexString)
       if index != -1 then patterns.remove(index)
 
-    override def addAlphabet(alphabetPolicy: PolicyAlphabet) =
-      this.builderMethod((alphabetPolicy: PolicyAlphabet) => this.alphabetPolicy = alphabetPolicy)(alphabetPolicy)
+    protected def checker(number: Int)(regex: Regex): Unit =
+      this.checkNegativeNumbers(number)
+      this.checkReCall(regex)
 
     protected def addPatterns(regex: Regex) = this.builderMethod((regex: Regex) => patterns += regex)(regex)
+
+    override def addAlphabet(alphabetPolicy: PolicyAlphabet) =
+      this.builderMethod((alphabetPolicy: PolicyAlphabet) => this.alphabetPolicy = alphabetPolicy)(alphabetPolicy)
 
     /**
      * @param number maximum length of string to set
@@ -106,10 +110,9 @@ object StringPoliciesBuilders:
      * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is less than minimum value
      */
     override def maximumLength(number: Int) = this.builderMethod((number: Int) => {
-      this.checkNegativeNumbers(number)
-      this.checkReCall(this.alphabetPolicy.rangeLength(this.minLen, this.maxLen))
+      this.checker(number)(this.alphabetPolicy.rangeLength(this.minLen, this.maxLen.getOrElse(this.minLen)))
       require(number >= this.minLen , s"number must be >= ${this.minLen}")
-      this.maxLen = number
+      this.maxLen = Some(number)
       this.addPatterns(this.alphabetPolicy.rangeLength(this.minLen, number))
     })(number)
 
@@ -119,9 +122,8 @@ object StringPoliciesBuilders:
      * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is greater than maximum value
      */
     override def minimumLength(number: Int) = this.builderMethod((number: Int) => {
-      this.checkNegativeNumbers(number)
-      this.checkReCall(this.alphabetPolicy.minimumLength(this.minLen))
-      require(number <= this.maxLen, s"number must be <= ${this.maxLen}")
+      this.checker(number)(this.alphabetPolicy.minimumLength(this.minLen))
+      if this.maxLen.isDefined then require(number <= this.maxLen.get, s"number must be <= ${this.maxLen.get}")
       this.minLen = number
       this.addPatterns(this.alphabetPolicy.minimumLength(number))
     })(number)
@@ -133,51 +135,94 @@ object StringPoliciesBuilders:
    * @tparam T the type to build
    */
   abstract class AbstractMoreRestrictStringPolicyBuilder[T] extends AbstractStringPolicyBuilder[T] with MoreRestrictStringPolicyBuilder[T]:
-    protected var minUpperChars: Int = 0
-    protected var minLowerChars: Int = 0
-    protected var minSymbols: Int = 0
-    protected var minNumbers: Int = 0
+    protected var minUpperChars: Option[Int] = None
+    protected var minLowerChars: Option[Int] = None
+    protected var minSymbols: Option[Int] = None
+    protected var minNumbers: Option[Int] = None
 
+    private enum What:
+      case LOWER, UPPER, SYMBOL, NUMBER, MAX, MIN
+
+    private def checkLengthWith(what: What)(value: Option[Int])(min: Int = this.minLen, max: Option[Int] = this.maxLen): Unit =
+      var length: Int = value.getOrElse(0) + (what match {
+        case What.LOWER => this.minUpperChars.getOrElse(0) + this.minSymbols.getOrElse(0) + this.minNumbers.getOrElse(0)
+        case What.UPPER => this.minLowerChars.getOrElse(0) + this.minSymbols.getOrElse(0) + this.minNumbers.getOrElse(0)
+        case What.SYMBOL => this.minLowerChars.getOrElse(0) + this.minUpperChars.getOrElse(0) + this.minNumbers.getOrElse(0)
+        case What.NUMBER => this.minLowerChars.getOrElse(0) + this.minUpperChars.getOrElse(0) + this.minSymbols.getOrElse(0)
+
+        case What.MIN | What.MAX => this.minLowerChars.getOrElse(0) + this.minUpperChars.getOrElse(0) + this.minSymbols.getOrElse(0) + this.minNumbers.getOrElse(0)
+      })
+      if max.isDefined then require(length <= max.get, s"sum of minimum (lowercase, uppercase, symbols, numbers) must be less or equals than ${max.get}")
+
+    /**
+     * @param number minimum length of string to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is greater than maximum value or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
+     */
+    override def minimumLength(number: Int) =
+      this.checkLengthWith(What.MIN)(None)(number)
+      super.minimumLength(number)
+
+    /**
+     * @param number maximum length of string to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or whether number is less than minimum value or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
+     */
+    override def maximumLength(number: Int) =
+      this.checkLengthWith(What.MAX)(None)(this.minLen, Some(number))
+      super.maximumLength(number)
+
+    /**
+     * @param number minimum number of lowercase characters to set
+     * @return instance of the actual builder
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
+     */
     override def minimumLowerChars(number: Int) = this.builderMethod((number: Int) => {
-      this.checkNegativeNumbers(number)
-      this.checkReCall(this.alphabetPolicy.minimumLowerCharacters(this.minLowerChars))
-      this.minLowerChars = number
+      this.checkLengthWith(What.LOWER)(Some(number))()
+      this.checker(number)(this.alphabetPolicy.minimumLowerCharacters(this.minLowerChars.getOrElse(0)))
+      this.minLowerChars = Some(number)
       this.patterns += this.alphabetPolicy.minimumLowerCharacters(number)
     })(number)
 
     /**
      * @param number minimum number of uppercase characters to set
      * @return instance of the actual builder
-     * @throws IllegalArgumentException whether number is less than or equal to 0
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
      */
     override def minimumUpperChars(number: Int) = this.builderMethod((number: Int) => {
-      this.checkNegativeNumbers(number)
-      this.checkReCall(this.alphabetPolicy.minimumUpperCharacters(this.minUpperChars))
-      this.minUpperChars = number
+      this.checkLengthWith(What.UPPER)(Some(number))()
+      this.checker(number)(this.alphabetPolicy.minimumUpperCharacters(this.minUpperChars.getOrElse(0)))
+      this.minUpperChars = Some(number)
       this.addPatterns(this.alphabetPolicy.minimumUpperCharacters(number))
     })(number)
 
     /**
      * @param number minimum number of symbols to set
      * @return instance of the actual builder
-     * @throws IllegalArgumentException whether number is less than or equal to 0
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
      */
     override def minimumSymbols(number: Int) = this.builderMethod((number: Int) => {
-      this.checkNegativeNumbers(number)
-      this.checkReCall(this.alphabetPolicy.minimumSymbols(this.minSymbols))
-      this.minSymbols = number
+      this.checkLengthWith(What.SYMBOL)(Some(number))()
+      this.checker(number)(this.alphabetPolicy.minimumSymbols(this.minSymbols.getOrElse(0)))
+      this.minSymbols = Some(number)
       this.addPatterns(this.alphabetPolicy.minimumSymbols(number))
     })(number)
 
     /**
      * @param number minimum number of digits to set
      * @return instance of the actual builder
-     * @throws IllegalArgumentException whether number is less than or equal to 0
+     * @throws IllegalArgumentException whether number is less than or equal to 0 or
+     *                                  the sum of minimum (lowecase, uppercase, symbols and numbers) is greater than maximum length
      */
     override def minimumNumbers(number: Int) = this.builderMethod((number: Int) => {
-      this.checkNegativeNumbers(number)
-      this.checkReCall(this.alphabetPolicy.minimumNumbers(this.minNumbers))
-      this.minNumbers = number
+      this.checkLengthWith(What.NUMBER)(Some(number))()
+      this.checker(number)(this.alphabetPolicy.minimumNumbers(this.minNumbers.getOrElse(0)))
+      this.minNumbers = Some(number)
       this.addPatterns(this.alphabetPolicy.minimumNumbers(number))
     })(number)
 
@@ -187,13 +232,13 @@ object StringPoliciesBuilders:
   case class UserIDPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[UserIDPolicy]:
     override def build: UserIDPolicy = new UserIDPolicy:
       override def minimumLength: Int = UserIDPolicyBuilder.this.minLen
-      override def maximumLength: Int = UserIDPolicyBuilder.this.maxLen
+      override def maximumLength: Option[Int] = UserIDPolicyBuilder.this.maxLen
       override def alphabet: PolicyAlphabet = UserIDPolicyBuilder.this.alphabetPolicy
       override def patterns: ListBuffer[Regex] = UserIDPolicyBuilder.this.patterns
-      override def minimumUpperChars: Int = UserIDPolicyBuilder.this.minUpperChars
-      override def minimumLowerChars: Int = UserIDPolicyBuilder.this.minLowerChars
-      override def minimumSymbols: Int = UserIDPolicyBuilder.this.minSymbols
-      override def minimumNumbers: Int = UserIDPolicyBuilder.this.minNumbers
+      override def minimumUpperChars: Option[Int] = UserIDPolicyBuilder.this.minUpperChars
+      override def minimumLowerChars: Option[Int] = UserIDPolicyBuilder.this.minLowerChars
+      override def minimumSymbols: Option[Int] = UserIDPolicyBuilder.this.minSymbols
+      override def minimumNumbers: Option[Int] = UserIDPolicyBuilder.this.minNumbers
       override def toString: String = Helpers.buildToString("UseIDPolicy", this)
 
   /**
@@ -202,13 +247,13 @@ object StringPoliciesBuilders:
   case class PasswordPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[PasswordPolicy]:
     override def build: PasswordPolicy = new PasswordPolicy:
       override def minimumLength: Int = PasswordPolicyBuilder.this.minLen
-      override def maximumLength: Int = PasswordPolicyBuilder.this.maxLen
+      override def maximumLength: Option[Int] = PasswordPolicyBuilder.this.maxLen
       override def alphabet: PolicyAlphabet = PasswordPolicyBuilder.this.alphabetPolicy
       override def patterns: ListBuffer[Regex] = PasswordPolicyBuilder.this.patterns
-      override def minimumUpperChars: Int = PasswordPolicyBuilder.this.minUpperChars
-      override def minimumLowerChars: Int = PasswordPolicyBuilder.this.minLowerChars
-      override def minimumSymbols: Int = PasswordPolicyBuilder.this.minSymbols
-      override def minimumNumbers: Int = PasswordPolicyBuilder.this.minNumbers
+      override def minimumUpperChars: Option[Int] = PasswordPolicyBuilder.this.minUpperChars
+      override def minimumLowerChars: Option[Int] = PasswordPolicyBuilder.this.minLowerChars
+      override def minimumSymbols: Option[Int] = PasswordPolicyBuilder.this.minSymbols
+      override def minimumNumbers: Option[Int] = PasswordPolicyBuilder.this.minNumbers
       override def toString: String = Helpers.buildToString("PasswordPolicy", this)
 
   /**
@@ -218,7 +263,7 @@ object StringPoliciesBuilders:
     this.alphabetPolicy.onlyNumbers +=: this.patterns
     override def build: OTPPolicy = new OTPPolicy:
       override def minimumLength: Int = OTPPolicyBuilder.this.minLen
-      override def maximumLength: Int = OTPPolicyBuilder.this.maxLen
+      override def maximumLength: Option[Int] = OTPPolicyBuilder.this.maxLen
       override def alphabet: PolicyAlphabet = OTPPolicyBuilder.this.alphabetPolicy
       override def patterns: ListBuffer[Regex] = OTPPolicyBuilder.this.patterns
       override def toString: String = Helpers.buildToString("OTPPolicy", this)
@@ -229,13 +274,13 @@ object StringPoliciesBuilders:
   case class SaltPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[SaltPolicy]:
     override def build: SaltPolicy = new SaltPolicy:
       override def minimumLength: Int = SaltPolicyBuilder.this.minLen
-      override def maximumLength: Int = SaltPolicyBuilder.this.maxLen
+      override def maximumLength: Option[Int] = SaltPolicyBuilder.this.maxLen
       override def alphabet: PolicyAlphabet = SaltPolicyBuilder.this.alphabetPolicy
       override def patterns: ListBuffer[Regex] = SaltPolicyBuilder.this.patterns
-      override def minimumUpperChars: Int = SaltPolicyBuilder.this.minUpperChars
-      override def minimumLowerChars: Int = SaltPolicyBuilder.this.minLowerChars
-      override def minimumSymbols: Int = SaltPolicyBuilder.this.minSymbols
-      override def minimumNumbers: Int = SaltPolicyBuilder.this.minNumbers
+      override def minimumUpperChars: Option[Int] = SaltPolicyBuilder.this.minUpperChars
+      override def minimumLowerChars: Option[Int] = SaltPolicyBuilder.this.minLowerChars
+      override def minimumSymbols: Option[Int] = SaltPolicyBuilder.this.minSymbols
+      override def minimumNumbers: Option[Int] = SaltPolicyBuilder.this.minNumbers
       override def toString: String = Helpers.buildToString("SaltPolicy", this)
 
   private object Helpers:
@@ -250,17 +295,10 @@ object StringPoliciesBuilders:
 
       if stringPolicy.isInstanceOf[MoreRestrictStringPolicy] then
         val policyMoreRestrict: MoreRestrictStringPolicy = stringPolicy.asInstanceOf[MoreRestrictStringPolicy]
-        if policyMoreRestrict.getClass.getDeclaredMethods
-                             .filter(m => m.getName!="minimumLength" && m.getName.startsWith("minimum"))
-                             .exists(method => method.invoke(policyMoreRestrict).asInstanceOf[Int] > 0) then
-          if policyMoreRestrict.minimumUpperChars > 0 then
-            string.append(", ").append("minimum uppercase chars = ").append(policyMoreRestrict.minimumUpperChars)
-          if policyMoreRestrict.minimumLowerChars > 0 then
-            string.append(", ").append("minimum lowercase chars = ").append(policyMoreRestrict.minimumLowerChars)
-          if policyMoreRestrict.minimumSymbols > 0 then
-            string.append(", ").append("minimum symbols = ").append(policyMoreRestrict.minimumSymbols)
-          if policyMoreRestrict.minimumNumbers > 0 then
-            string.append(", ").append("minimum numbers = ").append(policyMoreRestrict.minimumNumbers)
+        string.append(", ").append("minimum uppercase chars = ").append(policyMoreRestrict.minimumUpperChars)
+        string.append(", ").append("minimum lowercase chars = ").append(policyMoreRestrict.minimumLowerChars)
+        string.append(", ").append("minimum symbols = ").append(policyMoreRestrict.minimumSymbols)
+        string.append(", ").append("minimum numbers = ").append(policyMoreRestrict.minimumNumbers)
 
       if stringPolicy.isInstanceOf[StringPolicy] then
         val policyString = stringPolicy.asInstanceOf[StringPolicy]

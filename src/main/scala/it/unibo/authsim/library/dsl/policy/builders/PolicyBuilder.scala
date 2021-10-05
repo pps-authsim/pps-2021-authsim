@@ -5,7 +5,6 @@ import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.builder.Builder
-import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
 
 /**
  * ''PolicyBuilder'' is a trait that is used to build a new policy
@@ -16,37 +15,37 @@ trait PolicyBuilder extends Builder[Policy]:
    * @param credentialPolicy tuple of userID policy and a password policy to set
    * @return instance of policy builder
    */
-  def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): PolicyBuilder
+  def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): this.type
   /**
    * Set a [[CredentialPolicy credential policy]]
    * @param credentialPolicy credential policy to set
    * @return instance of policy builder
    */
-  def of(credentialPolicy: CredentialPolicy): PolicyBuilder
+  def of(credentialPolicy: CredentialPolicy): this.type
   /**
    * Set a [[CredentialPolicy credential policy]]
    * @param credentialPolicy credential policy to set
    * @return instance of policy builder
    */
-  def and(credentialPolicy: CredentialPolicy): PolicyBuilder
+  def and(credentialPolicy: CredentialPolicy): this.type
   /**
    * Set a [[Protocol protocol]]
    * @param protocol protocol to set
    * @return instance of policy builder
    */
-  def transmitWith(protocol: Protocol): PolicyBuilder
+  def transmitWith(protocol: Protocol): this.type
   /**
    * Set a [[CryptographicAlgorithm cryptographic algorithm]]
    * @param cryptographicAlgorithm cryptographic algorithm to set
    * @return instance of policy builder
    */
-  def storeWith(cryptographicAlgorithm: CryptographicAlgorithm): PolicyBuilder
+  def storeWith(cryptographicAlgorithm: CryptographicAlgorithm): this.type
   /**
    * Set a [[CryptographicAlgorithm cryptographic algorithm]] and [[SaltPolicy salt policy]]
    * @param cryptographicAlgorithmSalted tuple of cryptographic algorithm and salt policy to set
    * @return instance of policy builder
    */
-  def storeWith(cryptographicAlgorithmSalted: (CryptographicAlgorithm, SaltPolicy)): PolicyBuilder
+  def storeWith(cryptographicAlgorithmSalted: (CryptographicAlgorithm, SaltPolicy)): this.type
 
 /**
  *  PolicyBuilder is an implementation of policy builder
@@ -61,21 +60,17 @@ object PolicyBuilder:
     private var _cryptographicAlgorithm: Option[CryptographicAlgorithm] = Option.empty
     private var _saltPolicy: Option[SaltPolicy] = Option.empty
 
-    override def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): PolicyBuilder =
-      this of credentialPolicy._1 and credentialPolicy._2
+    override def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)) = this of credentialPolicy._1 and credentialPolicy._2
 
-    override def of(credentialPolicy: CredentialPolicy): PolicyBuilder =
-      this.builderMethod((credentialPolicy: CredentialPolicy) => this._credentialPolicies = credentialPolicy +: this._credentialPolicies)(credentialPolicy)
+    override def of(credentialPolicy: CredentialPolicy) = this.builderMethod((credentialPolicy: CredentialPolicy) => this._credentialPolicies = credentialPolicy +: this._credentialPolicies)(credentialPolicy)
 
-    override def and(credentialPolicy: CredentialPolicy): PolicyBuilder = this of credentialPolicy
+    override def and(credentialPolicy: CredentialPolicy) = this of credentialPolicy
 
-    override def transmitWith(protocol: Protocol): PolicyBuilder =
-      this.builderMethod((protocol: Protocol) => this._protocol = Some(protocol))(protocol)
+    override def transmitWith(protocol: Protocol) = this.builderMethod((protocol: Protocol) => this._protocol = Some(protocol))(protocol)
 
-    override def storeWith(cryptographicAlgorithm: CryptographicAlgorithm): PolicyBuilder =
-      this.builderMethod((cryptographicAlgorithm: CryptographicAlgorithm) => this._cryptographicAlgorithm = Some(cryptographicAlgorithm))(cryptographicAlgorithm)
+    override def storeWith(cryptographicAlgorithm: CryptographicAlgorithm) = this.builderMethod((cryptographicAlgorithm: CryptographicAlgorithm) => this._cryptographicAlgorithm = Some(cryptographicAlgorithm))(cryptographicAlgorithm)
 
-    override def storeWith(cryptographicAlgorithmSalted: (CryptographicAlgorithm, SaltPolicy)): PolicyBuilder =
+    override def storeWith(cryptographicAlgorithmSalted: (CryptographicAlgorithm, SaltPolicy)) =
       this.builderMethod((cryptographicAlgorithmSalted: (CryptographicAlgorithm, SaltPolicy)) => {
         this._cryptographicAlgorithm = Some(cryptographicAlgorithmSalted._1)
         this._saltPolicy = Some(cryptographicAlgorithmSalted._2)

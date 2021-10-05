@@ -1,12 +1,13 @@
 package it.unibo.authsim.library.dsl.attack.builders
 
+import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.util.stream.Collectors
 
 class ConcurrentStringCombinatorTest extends AnyWordSpec:
-  val alphabet = List("a", "b")
-  val concurrentStringProvider = new ConcurrentStringCombinator(alphabet, 2)
+  val alphabet = Set("a", "b")
+  val concurrentStringProvider = new ConcurrentStringCombinator(SymbolicAlphabet(alphabet), 2)
 
   "A string combinator" when {
     "the max length is > 0" should {

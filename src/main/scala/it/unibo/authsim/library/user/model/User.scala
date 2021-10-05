@@ -14,6 +14,7 @@ object User:
 
   /**
    * Class to implement a simple version of the User trait
+   * 
    * @param username      username of the user
    * @param password      password to associated with the username
    */
@@ -24,6 +25,6 @@ object User:
    *
    * @param username     name of the user
    * @param password     password in clear of the user
-   * @return              a BasicUser
+   * @return             a BasicUser
    */
   def apply(username:String, password:String): User = BasicUser(username, password)

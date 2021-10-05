@@ -1,5 +1,6 @@
-package it.unibo.authsim.library.dsl.attack.builders
+package it.unibo.authsim.library.dsl.attack.builders.offline
 
+import it.unibo.authsim.library.dsl.attack.builders.{Attack, AttackBuilder}
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.UserProvider
 

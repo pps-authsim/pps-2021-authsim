@@ -7,7 +7,7 @@ import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.*
 import it.unibo.authsim.library.dsl.cryptography.utility.ImplicitConversionChecker.*
 import org.scalatest.GivenWhenThen
 import org.scalatest.featurespec.AnyFeatureSpec
-class ImplicitConversionTest extends  AnyFeatureSpec with GivenWhenThen with Matchers {
+class ImplicitConversionTest extends AnyFeatureSpec with GivenWhenThen with Matchers {
 
   private val testString="foo"
   private val testString2="999"
@@ -49,13 +49,13 @@ class ImplicitConversionTest extends  AnyFeatureSpec with GivenWhenThen with Mat
     scenario ("is conversion available from Int") {
       isConversionAvailable[Int, Array[Char]]() shouldBe false
     }
-    scenario ("is conversion available from String") {
+    scenario ("is conversion available from String to Array[Int]") {
       isConversionAvailable[String, Array[Int]]() shouldBe false
     }
   }
 
   feature("Implicit conversion from generic to String") {
-    scenario("is conversion available from Boolean") {
+    scenario("is conversion available from Set[Int]") {
       isConversionAvailable[Set[Int], String]() shouldBe true
     }
     scenario("is conversion available from Array[Byte]") {

@@ -14,6 +14,8 @@ class AsymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndA
   val rsa= RSACipher()
   var passwordList: List[String]= List.empty[String]
   val fileName:String= "key.ser"
+  val minLength=5
+  val maxLength=20
   val keypair= rsa.generateKeys(fileName)
   val(pvt, pub) = (keypair.privateKey, keypair.publicKey)
 
@@ -33,12 +35,13 @@ class AsymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndA
     }
 
   }
+
   before {
-    val listLength=Random.between(5,20)
+    val listLength=Random.between(minLength,maxLength)
     passwordList=listInitializer(listLength)
   }
 
   private def listInitializer(listLength:Int )=
-    List.fill(listLength)(Random.alphanumeric.filter(_.isLetterOrDigit).take(Random.between(8,20)).mkString)
+    List.fill(listLength)(Random.alphanumeric.filter(_.isLetterOrDigit).take(Random.between(minLength,maxLength)).mkString)
 
 }

@@ -38,7 +38,7 @@ object RSA:
     /**
      * Private variable representing the length of the key algorithm supports
      */
-    private var keySet = Set(1024, 2048, 4096)
+    private val keySet = Set(1024, 2048, 4096)
 
     /**
      * Private variable representing the length of the key used during the cryptographic operation

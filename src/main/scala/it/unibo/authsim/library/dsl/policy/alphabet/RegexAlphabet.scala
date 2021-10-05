@@ -5,7 +5,7 @@ import scala.util.matching.Regex
 /**
  * A ''RegexAlphabet'' is a trait that is used to define a new alphabet with some basic methods for comparing any strings
  */
-trait RegexAlphabet extends Alphabet:
+trait RegexAlphabet extends AlphabetCommonClasses:
   /**
    * Used to check that a string has at least 1 alphanumeric character
    * @return regular expression

@@ -16,24 +16,24 @@ class PolicyDefaultAlphabetTests extends AnyWordSpec:
 
   "The PolicyDefaultAlphabet" should {
     "have 26 characters lowercase" in {
-      assert(policyDefaultAlphabet.lowers.length == NUMER_CHARS)
+      assert(policyDefaultAlphabet.lowers.size == NUMER_CHARS)
     }
     "have characters from 'a' to 'z'" in {
-      assert(policyDefaultAlphabet.lowers.mkString == CHARS_LOWER)
+      assert(CHARS_LOWER.toCharArray.map(_.toString).forall(policyDefaultAlphabet.lowers.contains))
     }
     "have 26 characters uppercase" in {
-      assert(policyDefaultAlphabet.uppers.length == NUMER_CHARS)
+      assert(policyDefaultAlphabet.uppers.size == NUMER_CHARS)
     }
     "have characters from 'A' to 'Z'" in {
-      assert(policyDefaultAlphabet.uppers.mkString == CHARS_UPPER)
+      assert(CHARS_UPPER.toCharArray.map(_.toString).forall(policyDefaultAlphabet.uppers.contains))
     }
     "have 10 charaters numeric" in {
-      assert(policyDefaultAlphabet.digits.length == NUMBER_DIGIT)
+      assert(policyDefaultAlphabet.digits.size == NUMBER_DIGIT)
     }
     "have numbers from 0 to 9" in {
-      assert(policyDefaultAlphabet.digits.mkString == DIGIT)
+      assert(DIGIT.toCharArray.map(_.toString).forall(policyDefaultAlphabet.digits.contains))
     }
     "have symbols " + SYMBOLS in {
-      assert(policyDefaultAlphabet.symbols.mkString == SYMBOLS)
+      assert(SYMBOLS.toCharArray.map(_.toString).forall(policyDefaultAlphabet.symbols.contains))
     }
   }

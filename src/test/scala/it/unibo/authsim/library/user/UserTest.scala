@@ -37,7 +37,6 @@ class UserTest extends AnyWordSpec with should.Matchers{
   private var usernameSequence:Seq[String] = for(e<-userSequence) yield e.username
   private var passwordSequence:Seq[String]  = for(e<-userSequence) yield e.password
 
-  // TODO: these tests fail sometimes
   s"A user created with name '${name}' and password '${password}'" should {
     "have name" in{
       costumUser1.get.username should be (name)
@@ -47,7 +46,6 @@ class UserTest extends AnyWordSpec with should.Matchers{
     }
   }
 
-  // TODO: also these tests fail sometimes
   "If a user created with a set of credential policies then user credentials" should  {
 
     s"be complaint with the policy '${userIDPolicy}'" in{

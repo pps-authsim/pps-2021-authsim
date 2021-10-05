@@ -15,7 +15,7 @@ object CaesarCipher:
    * @return an istance of the Caesar Cipher case class
    */
   def apply() = new CaesarCipherImpl()
-  
+
   /**
    * Class representing a basic implementation of the Caesar Cipher algorithm
    */

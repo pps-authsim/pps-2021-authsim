@@ -46,7 +46,7 @@ trait Cipher:
 /**
  * Trait for Symmetric encrypter
  */
-trait SymmetricEncrypter extends Cipher                                            //TODO non so se lasciarla o rimuoverla
+trait SymmetricEncrypter extends Cipher
 
 /**
  * Trait for Asymmetric encrypter, it provides additional methods to manage the encryption operation

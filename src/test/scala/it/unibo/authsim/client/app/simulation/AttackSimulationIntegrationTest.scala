@@ -1,4 +1,4 @@
-package it.unibo.authsim.client.app.mvvm.simulation
+package it.unibo.authsim.client.app.simulation
 
 class AttackSimulationIntegrationTest {
 

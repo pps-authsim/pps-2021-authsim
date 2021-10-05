@@ -3,13 +3,13 @@ import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.model.User
-import it.unibo.authsim.library.user.builder.util.RandomStringGenerator.generateRandomString
+import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 
-//TODO controlla se con i metodi del builder si può parlare di setter
 /**
  * Class that represent a costum builder for a user
  */
 class UserCostumBuilder extends UserBuilder[Option[User]]:
+
   /**
    * Setter for the username of the user
    * 
@@ -28,7 +28,7 @@ class UserCostumBuilder extends UserBuilder[Option[User]]:
 
 
   /**
-   * Method that create a user if the credential provided meet the input policy or an optional of None if they does not
+   * Method that create an optional of user if the credential provided meet the input policy or an optional of None if they does not
    * 
    * @return      an optional of User
    */
@@ -38,4 +38,3 @@ class UserCostumBuilder extends UserBuilder[Option[User]]:
       Some(user)
     else
       None
-

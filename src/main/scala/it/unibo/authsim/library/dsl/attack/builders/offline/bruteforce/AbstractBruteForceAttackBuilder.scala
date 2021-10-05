@@ -1,22 +1,23 @@
-package it.unibo.authsim.library.dsl.attack.builders
+package it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce
 
-
-import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
+import it.unibo.authsim.library.dsl.alphabet.Alphabet
+import it.unibo.authsim.library.dsl.attack.builders.offline.{OfflineAttack, OfflineAttackBuilder}
+import it.unibo.authsim.library.dsl.attack.builders.{Attack, ConcurrentStringCombinator}
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
+import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
 import it.unibo.authsim.library.user.model.User
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.{Duration, MILLISECONDS}
-import scala.concurrent.{Await, Future}
-import scala.concurrent.TimeoutException
-import concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{Await, Future, TimeoutException}
 
 /**
  * A builder of bruteforce attacks.
  */
-class BruteForceAttackBuilder extends OfflineAttackBuilder:
-  private var alphabet: List[String] = null
-  private var maximumLength = 1
+abstract class AbstractBruteForceAttackBuilder[T <: Alphabet[T]] extends OfflineAttackBuilder:
+  private var alphabet: Alphabet[T] = null
+  private var _maximumLength = 1
 
   /**
    * Sets the alphabet to use for the attack.
@@ -27,12 +28,12 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder:
    * @param alphabet The alphabet to use.
    * @return The builder.
    */
-  def usingAlphabet(alphabet: List[String]): this.type = this.builderMethod[List[String]](alphabet => this.alphabet = alphabet)(alphabet)
+  protected def protectedUsingAlphabet(alphabet: Alphabet[T]): this.type = this.builderMethod[Alphabet[T]](alphabet => this.alphabet = alphabet)(alphabet)
 
   /**
    * @return The used alphabet.
    */
-  def getAlphabet(): List[String] = this.alphabet
+  protected def protectedGetAlphabet: Alphabet[T] = this.alphabet
 
   /**
    * Sets the maximum number of combinations of symbols from the alphabet.
@@ -40,16 +41,16 @@ class BruteForceAttackBuilder extends OfflineAttackBuilder:
    * @param maximumLength The maximum combination number.
    * @return The builder.
    */
-  def maximumLength(maximumLength: Int): this.type = this.builderMethod[Int](l => this.maximumLength = l)(maximumLength)
+  protected def protectedMaximumLength(maximumLength: Int): this.type = this.builderMethod[Int](l => this._maximumLength = l)(maximumLength)
 
   /**
    * @return The maximum combination number.
    */
-  def getMaximumLength: Int = this.maximumLength
+  protected def protectedGetMaximumLength: Int = this._maximumLength
 
-  override def build: Attack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.getAlphabet(), this.getMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
+  final override def build: Attack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.protectedGetAlphabet, this.protectedGetMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
 
-private class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val alphabet: List[String], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
+private class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val alphabet: Alphabet[_], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
 
   override def start(): Unit =
     var jobResults: List[Future[Statistics]] = List.empty

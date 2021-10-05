@@ -2,7 +2,6 @@ package it.unibo.authsim.library.dsl.otp.builders
 
 import it.unibo.authsim.library.dsl.HashFunction
 import it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.AbstractHOTPBuilder
-import it.unibo.authsim.library.dsl.otp.generator.OTPGenerator
 import it.unibo.authsim.library.dsl.otp.model.HOTP
 import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.generatorSeed
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
@@ -19,7 +18,7 @@ case class HOTPBuilder() extends AbstractHOTPBuilder:
 
     override def policy: OTPPolicy = HOTPBuilder.this._policy
 
-    override def generate: String = OTPGenerator(this.hashFunction, HOTPBuilder.this._secret, this.length, HOTPBuilder.this._seed)
+    override def generate: String = HOTPBuilder.this.otpGenerator()
 
     override def check(pincode: String): Boolean =  this.generate == pincode
 

@@ -26,32 +26,26 @@ class AttackSimulation(
     case CredentialsSourceType.Mongo => ComponentRegistry.userMongoRepository
 
   override def call(): Unit =
-    // TODO make functional error handling (each try should be blocking)
     printInitialMessage()
-    val userProvider = makeUserProvider()
-    val insertUsersResult = insertUsersIntoDatabase()
-    printAttackInitializedMessage()
-    printAttackFinished()
+    try
+      val userProvider = makeUserProvider()
+      insertUsersIntoDatabase()
+      printAttackFinished()
+    catch
+      case e: SimulationException => printErrorMessage(e.message)
 
-  private def makeUserProvider(): Try[UserProvider] = Try {
+  private def makeUserProvider(): UserProvider =
     val matchedPolicy = SecurityPolicy.Default.all.find(policyToMatch => policyToMatch.policy.equals(policy))
     matchedPolicy match
-      case Some(value) =>
-        val cryptoInformation = CryptoInformation(null)
-        val provider = new RepositoryUserProvider(database, cryptoInformation)
-        provider
+      case Some(value) => new RepositoryUserProvider(database, CryptoInformation(null))
       case None => throw new SimulationException("Could not match provided policy with library policies")
-  }
 
-  private def insertUsersIntoDatabase(): Try[Unit] = Try {
+  private def insertUsersIntoDatabase(): Unit =
     val userEntities = users.map(user => new UserEntity(user.username, user.password)).toList
 
-    var operationResult = database.saveUsers(userEntities)
-    operationResult match
-      case Success(_) =>
+    database.saveUsers(userEntities) match
+      case Success(_) => // do nothing
       case Failure(error) => throw new SimulationException(error.getMessage)
-
-  }
 
   private def printErrorMessage(message:String) =
     logMessage(s"Could not launch attack, an error has occured: $message...")
@@ -60,11 +54,7 @@ class AttackSimulation(
     val initialText =  s"Starting an attack procedure '$attackSequence' with '$policy' security policy and '$credentialsSource' credentails source for users $users..."
     logMessage(initialText)
 
-  private def printAttackInitializedMessage() =
-    val text = "Database and attack succesfully initialized..."
-    logMessage(text)
-
-  private def printAttackFinished() =
+  private def printAttackFinished(): Unit =
     val text = "Attack simulation completed!"
     logMessage(text)
 

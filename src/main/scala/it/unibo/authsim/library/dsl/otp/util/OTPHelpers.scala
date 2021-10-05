@@ -48,13 +48,12 @@ object OTPHelpers:
     def replaceFirstDifferent(range: NumericRange[Char]): String =
       require(!range.isEmpty, "range must have at least one value")
       val charsIterator: Iterator[Char] = range.iterator
-      var charReplaced: Char = charsIterator.next
-      var indexToSuppress: Option[Int] = base.findIndexChar(charReplaced)
-      while indexToSuppress.isEmpty && charsIterator.hasNext do
-        charReplaced = charsIterator.next
-        indexToSuppress = base.findIndexChar(charReplaced)
-      if indexToSuppress.isDefined then base.updated(indexToSuppress.get, charReplaced) else base
-
+      if charsIterator.hasNext then
+        val charReplaced: Char = charsIterator.next
+        val indexToReplace: Option[Int] = base.findIndexChar(charReplaced)
+        if indexToReplace.isEmpty then replaceFirstDifferent(range.drop(1))
+        else base.updated(indexToReplace.get, charReplaced)
+      else base
   /**
    * A default implementation of an seed generator (@see [[it.unibo.authsim.library.dsl.otp.builders.OTPBuilder.AbstractOTPBuilder.generateSeed]])
    */

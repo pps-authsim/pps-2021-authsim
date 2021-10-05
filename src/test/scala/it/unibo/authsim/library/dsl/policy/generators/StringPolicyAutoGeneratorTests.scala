@@ -1,11 +1,13 @@
 package it.unibo.authsim.library.dsl.policy.generators
 
+import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
 import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.*
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{RestrictStringPolicy, StringPolicy}
 import org.scalatest.*
 import org.scalatest.funsuite.AnyFunSuite
 
+import scala.collection.immutable.ListSet
 import scala.collection.mutable.ListBuffer
 import scala.language.postfixOps
 import scala.util.matching.Regex
@@ -18,20 +20,20 @@ class StringPolicyAutoGeneratorTests extends AnyFunSuite with BeforeAndAfter:
 
   private var myPolicy: StringPolicy = new StringPolicy {
     override def alphabet: PolicyAlphabet = new PolicyAlphabet {
-      override def lowers: Seq[Char] = Seq('a', 'e', 'i', 'o', 'u')
-      override def uppers: Seq[Char] = this.lowers.map { _.toUpper }
-      override def digits: Seq[Char] = Seq.empty
-      override def symbols: Seq[Char] = Seq.empty
+      override def lowers = SymbolicAlphabet(ListSet("a", "e", "i", "o", "u"))
+      override def uppers = SymbolicAlphabet(this.lowers.map { _.toUpperCase })
+      override def digits = SymbolicAlphabet()
+      override def symbols = SymbolicAlphabet()
     }
     override def patterns: ListBuffer[Regex] = ListBuffer.empty
   }
 
   private var myRestrictedPolicy: StringPolicy = new StringPolicy with RestrictStringPolicy {
     override def alphabet: PolicyAlphabet = new PolicyAlphabet {
-      override def lowers: Seq[Char] = Seq('c', 'e', 'i', 'o', 'u')
-      override def uppers: Seq[Char] = this.lowers.map { _.toUpper }
-      override def digits: Seq[Char] = Seq('0', '3')
-      override def symbols: Seq[Char] = Seq.empty
+      override def lowers = SymbolicAlphabet(ListSet("c", "e", "i", "o", "u"))
+      override def uppers = SymbolicAlphabet(this.lowers.map { _.toUpperCase })
+      override def digits = SymbolicAlphabet(ListSet("0", "3"))
+      override def symbols = SymbolicAlphabet()
     }
     override def patterns: ListBuffer[Regex] = ListBuffer.empty
 
@@ -87,7 +89,7 @@ class StringPolicyAutoGeneratorTests extends AnyFunSuite with BeforeAndAfter:
     assert(
       testAutoGenerator(
         Seq(userID minimumSymbols 1 minimumUpperChars 1 minimumLength 3 maximumLength 10 build,
-            password minimumSymbols 2 minimumNumbers 4 maximumLength 7 build)
+          password minimumSymbols 2 minimumNumbers 4 maximumLength 7 build)
       )
     )
   }

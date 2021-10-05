@@ -109,4 +109,4 @@ abstract class BasicCipher extends Cipher:
    * @tparam B                      Generic parameter for the secret
    * @return                        A string representing the password either encrypted or decrypted
    */
-  def crypto[A, B](mode:EncryptionMode, password: A, secret: B): String
+  protected def crypto[A, B](mode:EncryptionMode, password: A, secret: B): String

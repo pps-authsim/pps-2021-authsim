@@ -44,7 +44,7 @@ object AES:
     /**
      * Private variable representing the length of the key algorithm supports
      */
-    private var keySet = Set(16, 24, 32)
+    private val keySet = Set(16, 24, 32)
 
     /**
      * Private variable representing the salt value

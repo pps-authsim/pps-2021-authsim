@@ -21,11 +21,11 @@ object DESCipher:
    * Apply method for the object
    * @return        an istance of the DES class
    */
-  def apply() = new DESCipherImpl()
+  def apply(): BasicCipher = new DESCipherImpl()
   /**
    * Basic implementation of an cipher which use DES algorithm for the cryptographic operation
    */
-  case class DESCipherImpl() extends BasicCipher:
+  private case class DESCipherImpl() extends BasicCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */

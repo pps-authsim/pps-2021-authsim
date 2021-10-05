@@ -23,12 +23,12 @@ object RSA:
    * Apply method for the object
    * @return an istance of the RSA case class
    */
-  def apply()= new BasicRSA()
+  def apply(): RSA = new BasicRSA()
 
   /**
    * Class representing a basic implementation of the RSA algorithm
    */
-  case class BasicRSA() extends RSA:
+  private case class BasicRSA() extends RSA:
     type Salt = String
     /**
      * Private variable representing the algorithm name

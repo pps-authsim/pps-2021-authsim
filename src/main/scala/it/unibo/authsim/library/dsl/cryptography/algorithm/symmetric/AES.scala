@@ -23,12 +23,12 @@ object AES:
    * Apply method for the object
    * @return an istance of the AES case class
    */
-  def apply()= new BasicAES()
+  def apply(): AES = new BasicAES()
 
   /**
    * Class representing a basic implementation of the AES algorithm
    */
-  case class BasicAES() extends AES:
+  private case class BasicAES() extends AES:
 
     type Salt = String
     /**

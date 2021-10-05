@@ -9,9 +9,9 @@ object DES:
   import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeysGenerator
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
-  def apply()= new BasicDES()
+  def apply(): DES = new BasicDES()
 
-  case class BasicDES() extends DES:
+  private case class BasicDES() extends DES:
 
     type Salt = String
 

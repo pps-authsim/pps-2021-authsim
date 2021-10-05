@@ -65,4 +65,10 @@ class ImplicitConversionTest extends AnyFeatureSpec with GivenWhenThen with Matc
       isConversionAvailable[Boolean, String]() shouldBe true
     }
   }
+
+  feature("Implicit conversion from String") {
+    scenario("is conversion available to Byte") {
+      isConversionAvailable[String, Byte]() shouldBe true
+    }
+  }
 }

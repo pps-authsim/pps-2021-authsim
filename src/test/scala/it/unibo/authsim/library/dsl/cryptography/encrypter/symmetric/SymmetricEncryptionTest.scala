@@ -17,7 +17,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
   var salt=""
   var passwordList: List[String]= List.empty[String]
   var secretList: List[String]= List.empty[String]
-//TODO add test for salt
+
   "DES encryption" should {
     "be " in {
       for(password<- passwordList; secret<- secretList)

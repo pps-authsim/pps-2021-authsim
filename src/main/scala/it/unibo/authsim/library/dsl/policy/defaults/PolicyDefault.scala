@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.policy.defaults
 
 import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.Protocol.*
-import it.unibo.authsim.library.dsl.HashFunction.*
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction._
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
 import it.unibo.authsim.library.dsl.policy.defaults.stringpolicy.*
 import it.unibo.authsim.library.dsl.policy.model.Policy

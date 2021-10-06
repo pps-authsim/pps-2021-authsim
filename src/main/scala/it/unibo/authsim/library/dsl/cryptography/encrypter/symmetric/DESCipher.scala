@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.DES
-import it.unibo.authsim.library.dsl.cryptography.encrypter.BasicCipher
+import it.unibo.authsim.library.dsl.cryptography.encrypter.{BasicCipher, SymmetricEncrypter}
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 
 import java.io.*
@@ -21,15 +21,15 @@ object DESCipher:
    * Apply method for the object
    * @return        an istance of the DES class
    */
-  def apply(): BasicCipher = new DESCipherImpl()
+  def apply(): BasicCipher[DES] = new DESCipherImpl()
   /**
    * Basic implementation of an cipher which use DES algorithm for the cryptographic operation
    */
-  private case class DESCipherImpl() extends BasicCipher:
+  private case class DESCipherImpl() extends BasicCipher[DES] with SymmetricEncrypter[DES]:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm : DES = DES()
+    override def algorithm = DES()
     
     /**
      * Private variable representing the salt value to be used during the cryptographic operations

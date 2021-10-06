@@ -11,7 +11,7 @@ import java.security.{KeyPairGenerator, KeyPair as JavaKeyPair}
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
-trait AsymmetricCipher extends BasicCipher with AsymmetricEncrypter
+trait AsymmetricCipher[T <: AsymmetricEncryptionAlgorithm] extends BasicCipher[T] with AsymmetricEncrypter[T]
 
 /**
  * RSA cipher object
@@ -23,16 +23,16 @@ object RSACipher:
    * Apply method for the object
    * @return        an istance of the RSA class
    */
-  def apply(): AsymmetricCipher = new RSAEncrypterImpl()
+  def apply(): AsymmetricCipher[RSA] = new RSAEncrypterImpl()
 
   /**
    * Basic implementation of an encrypter which use RSA algorithm for the cryptographic operation
    */
-  private case class RSAEncrypterImpl() extends AsymmetricCipher:
+  private case class RSAEncrypterImpl() extends AsymmetricCipher[RSA]:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm: RSA= RSA()
+    override def algorithm = RSA()
     
     /**
      * Variable representing a KeyFactory object that converts public/private keys of the RSA algorithm

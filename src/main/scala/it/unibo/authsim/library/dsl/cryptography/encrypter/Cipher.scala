@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.cryptography.encrypter
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.EncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.{AsymmetricEncryptionAlgorithm, EncryptionAlgorithm, SymmetricEncryptionAlgorithm}
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeyPair
 
@@ -12,8 +12,8 @@ import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 /**
  * Trait that represent a basic encryption
  */
-trait Cipher:
-  def algorithm : EncryptionAlgorithm
+trait Cipher[T <: EncryptionAlgorithm]:
+  def algorithm: T
 
   /**
    * Enumeration that specify in wich mode is to be used either encrypt or decrypt
@@ -46,13 +46,13 @@ trait Cipher:
 /**
  * Trait for Symmetric encrypter
  */
-trait SymmetricEncrypter extends Cipher
+trait SymmetricEncrypter[T <: SymmetricEncryptionAlgorithm] extends Cipher[T]
 
 /**
  * Trait for Asymmetric encrypter, it provides additional methods to manage the encryption operation
  * using asymmetric encryption algorithms
  */
-trait AsymmetricEncrypter extends Cipher:
+trait AsymmetricEncrypter[T <: AsymmetricEncryptionAlgorithm] extends Cipher[T]:
   
   /**
    * Method to load existing key from a user directory 
@@ -73,7 +73,7 @@ trait AsymmetricEncrypter extends Cipher:
 /**
  * Abstract class for to perform the encryption operation
  */
-abstract class BasicCipher extends Cipher:
+abstract class BasicCipher[T <: EncryptionAlgorithm] extends Cipher[T]:
   
   /**
    * Method used to encrypt the password

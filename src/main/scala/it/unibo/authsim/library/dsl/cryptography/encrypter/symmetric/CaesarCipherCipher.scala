@@ -15,16 +15,16 @@ object CaesarCipherCipher:
    * 
    * @return                           an istance of the Caesar Cipher class
    */
-  def apply(): Cipher = new CaesarCipherImpl()
+  def apply(): Cipher[CaesarCipher] = new CaesarCipherImpl()
 
   /**
    * Basic implementation of an encrypter which use Caesar Cipher algorithm for the cryptographic operation
    */
-  private case class CaesarCipherImpl() extends Cipher:
+  private case class CaesarCipherImpl() extends Cipher[CaesarCipher]:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm : CaesarCipher = CaesarCipher()
+    override def algorithm = CaesarCipher()
 
     /**
      * Method used to encrypt the password

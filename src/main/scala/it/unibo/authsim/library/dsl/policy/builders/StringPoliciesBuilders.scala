@@ -85,7 +85,7 @@ object StringPoliciesBuilders:
   abstract class AbstractStringPolicyBuilder[T] extends StringPolicyBuilder[T] with RestrictStringPolicyBuilder[T]:
     protected var minLen: Int = 1
     protected var maxLen: Option[Int] = None
-    protected var alphabetPolicy: PolicyAlphabet = new PolicyDefaultAlphabet
+    protected var alphabetPolicy: PolicyAlphabet = PolicyDefaultAlphabet()
     protected var patterns: ListBuffer[Regex] = ListBuffer(this.alphabetPolicy.minimalLength)
 
     protected def checkNegativeNumbers(number: Int): Unit = require(number > 0, "number must be > 0")

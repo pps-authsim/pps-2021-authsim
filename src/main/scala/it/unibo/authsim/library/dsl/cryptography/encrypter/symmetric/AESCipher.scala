@@ -12,6 +12,7 @@ import java.util
 import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 import javax.crypto.spec.{PBEKeySpec, SecretKeySpec}
 import java.util.*
+import scala.util.Random
 
 /**
  * AES cipher object
@@ -23,11 +24,11 @@ object AESCipher:
    * Apply method for the object
    * @return        an istance of the AES class
    */
-  def apply(): BasicCipher = new AESCipherterImpl()
+  def apply(): BasicCipher = new AESCipherImpl()
   /**
    * Basic implementation of an encrypter which use AES algorithm for the cryptographic operation
    */
-  private case class AESCipherterImpl() extends BasicCipher:
+  private case class AESCipherImpl() extends BasicCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
@@ -38,6 +39,7 @@ object AESCipher:
      */
     private val _trasformation: String = "AES/ECB/PKCS5PADDING"
 
+    private val defautlSalt: String = Random.alphanumeric.filter(_.isLetterOrDigit).take(Random.between(4,5))
     /**
      * Method that performs the encryption and decryption tasks
      *
@@ -66,6 +68,6 @@ object AESCipher:
      * @return                a SecretKeySpecification compliant with algorithm chosen
      */
     private def secretKeySpec(secret: String): SecretKeySpec =
-      var keyBytes: Array[Byte] = secret.concat(algorithm.salt.get)
+      var keyBytes: Array[Byte] = secret.concat(algorithm.salt.getOrElse(defautlSalt))
       keyBytes= Arrays.copyOf(keyBytes, algorithm.keyLength)
       new SecretKeySpec(keyBytes, algorithm.algorithmName)

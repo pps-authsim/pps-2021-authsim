@@ -110,3 +110,5 @@ abstract class BasicCipher extends Cipher:
    * @return                        A string representing the password either encrypted or decrypted
    */
   protected def crypto[A, B](mode:EncryptionMode, password: A, secret: B): String
+  
+  

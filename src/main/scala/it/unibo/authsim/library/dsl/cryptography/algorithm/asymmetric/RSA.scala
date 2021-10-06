@@ -64,7 +64,7 @@ object RSA:
      *
      *  @return                        None if the algorithm does not use a salt value, or an optional of the salt value used by the algorithm
      */
-    override def salt: Option[String] = None
+    //override def salt: Option[String] = None
 
     override def keyLength_(newKeyLength:Int):Unit=
       if(keySet.contains(newKeyLength)) then

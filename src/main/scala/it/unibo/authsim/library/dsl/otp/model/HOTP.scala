@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.otp.model
 
-import it.unibo.authsim.library.dsl.HashFunction
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 
 /**
  * ''HOTP'' rappresents an one time password (OTP) based on hash-based message authentication codes (HMAC).

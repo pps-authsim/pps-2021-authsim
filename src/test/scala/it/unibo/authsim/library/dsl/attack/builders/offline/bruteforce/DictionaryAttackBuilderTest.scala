@@ -4,7 +4,8 @@ import it.unibo.authsim.library.dsl.alphabet.Dictionary
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.dsl.policy.model.Policy
-import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
+import it.unibo.authsim.library.dsl.UserProvider
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.user.model.{CryptoInformation, UserInformation}
 import org.mockito.Mock
 import org.scalatest.wordspec.AnyWordSpec

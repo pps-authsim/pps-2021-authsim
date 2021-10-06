@@ -9,3 +9,10 @@ trait CryptographicAlgorithm:
    * @return                 a string representing the name of crypthographic algorithm
    */
   def algorithmName: String
+
+  /**
+   * Getter for the salt used by the algorithm, by default the algorithm does not use it
+   *
+   * @return                        None
+   */
+  def salt: Option[String]= None

@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.otp
 
-import it.unibo.authsim.library.dsl.HashFunction
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.otp.builders.{HOTPBuilder, TOTPBuilder}
 import it.unibo.authsim.library.dsl.otp.model.{HOTP, TOTP}
 import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.generatorLength

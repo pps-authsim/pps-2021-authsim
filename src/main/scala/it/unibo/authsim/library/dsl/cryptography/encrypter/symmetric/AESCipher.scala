@@ -4,7 +4,7 @@ import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAl
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.AES
-import it.unibo.authsim.library.dsl.cryptography.encrypter.BasicCipher
+import it.unibo.authsim.library.dsl.cryptography.encrypter.{BasicCipher, SymmetricCipher}
 
 import java.security.MessageDigest
 import java.security.spec.KeySpec
@@ -28,7 +28,7 @@ object AESCipher:
   /**
    * Basic implementation of an encrypter which use AES algorithm for the cryptographic operation
    */
-  case class AESCipherterImpl() extends BasicCipher:
+  case class AESCipherterImpl() extends BasicCipher with SymmetricCipher:
 
     /**
      * Variable representing the algorithm used for the cryptographic operation

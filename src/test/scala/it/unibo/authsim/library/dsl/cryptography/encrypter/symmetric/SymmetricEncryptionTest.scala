@@ -12,7 +12,7 @@ import scala.util.Random
 class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
   val des = DESCipher()
   val aes = AESCipher()
-  val caesarCipher= CaesarCipherCipher()
+  val caesarCipher= CaesarCipher()
   var rotation=0
   var salt=""
   var passwordList: List[String]= List.empty[String]

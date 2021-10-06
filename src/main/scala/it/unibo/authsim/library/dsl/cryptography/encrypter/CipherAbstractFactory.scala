@@ -1,28 +1,40 @@
 package it.unibo.authsim.library.dsl.cryptography.encrypter
 
-import it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric.{AESCipher, CaesarCipherCipher, DESCipher}
+import it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric.{AESCipher, CaesarCipher, DESCipher}
 import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.RSACipher
-
-/**
- * Abstract factory for building encryption algorithm
- */
-object CipherAbstractFactory:
+object CipherFactory:
   /**
-   * Enumeration who provide the name of the encryption algorithms supported
+   * Abstract factory for building encryption algorithm
    */
-  enum EncryptionAlgorithm:
-    case CaesarCipher, AES, DES, RSA
+  object SymmetricCipherAbstractFactory:
+
+    /**
+     * Apply method for the abstract encryption factory
+     * @param name        name of the encryption algorithm one wants to create
+     * @tparam A          type of the algorithm
+     * @return            an istance of the algorithm chosen
+     */
+    def apply[A>: SymmetricCipher](name: String): A =            //TODO: capire se riesce a passare il tipo effettivo: A.type non funziona
+      name.toLowerCase match {
+        case "caesar" => CaesarCipher()
+        case "aes" => AESCipher()
+        case "des" => DESCipher()
+      }
 
   /**
-   * Apply method for the abstract encryption factory
-   * @param name        name of the encryption algorithm one wants to create
-   * @tparam A          type of the algorithm
-   * @return            an istance of the algorithm chosen
+   * Abstract factory for building encryption algorithm
    */
-  def apply[A>: Cipher](name: EncryptionAlgorithm): A =            //TODO: capire se riesce a passare il tipo effettivo: A.type non funziona
-    name match {
-      case EncryptionAlgorithm.CaesarCipher => CaesarCipherCipher()
-      case EncryptionAlgorithm.AES => AESCipher()
-      case EncryptionAlgorithm.DES => DESCipher()
-      case EncryptionAlgorithm.RSA => RSACipher()
-    }
+  object AsymmetricCipherAbstractFactory:
+
+    /**
+     * Apply method for the abstract encryption factory
+     * @param name        name of the encryption algorithm one wants to create
+     * @tparam A          type of the algorithm
+     * @return            an istance of the algorithm chosen
+     */
+    def apply[A>: AsymmetricCipher](name: String): A =
+      name.toLowerCase match {
+        case "rsa" => RSACipher()
+      }
+
+

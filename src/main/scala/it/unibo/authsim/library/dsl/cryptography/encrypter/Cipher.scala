@@ -46,13 +46,13 @@ trait Cipher:
 /**
  * Trait for Symmetric encrypter
  */
-trait SymmetricEncrypter extends Cipher
+trait SymmetricCipher extends Cipher
 
 /**
  * Trait for Asymmetric encrypter, it provides additional methods to manage the encryption operation
  * using asymmetric encryption algorithms
  */
-trait AsymmetricEncrypter extends Cipher:
+trait AsymmetricCipher extends Cipher:
   
   /**
    * Method to load existing key from a user directory 

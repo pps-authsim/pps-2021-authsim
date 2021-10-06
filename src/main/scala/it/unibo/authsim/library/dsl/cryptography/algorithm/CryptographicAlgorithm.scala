@@ -13,6 +13,6 @@ trait CryptographicAlgorithm:
   /**
    * Getter for the salt used by the algorithm, by default the algorithm does not use it
    *
-   * @return                        None
+   * @return                  None
    */
   def salt: Option[String]= None

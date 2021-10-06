@@ -1,7 +1,7 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter
+package it.unibo.authsim.library.dsl.cryptography.cipher
 
-import it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric.{AESCipher, CaesarCipher, DESCipher}
-import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.RSACipher
+import it.unibo.authsim.library.dsl.cryptography.cipher.symmetric.{AESCipher, CaesarCipher, DESCipher}
+import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.RSACipher
 object CipherFactory:
   /**
    * Abstract factory for building encryption algorithm

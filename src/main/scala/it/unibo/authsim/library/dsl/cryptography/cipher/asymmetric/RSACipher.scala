@@ -1,10 +1,10 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricEncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
-import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.{KeyPair, KeysGenerator}
+import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.{KeyPair, KeysGenerator}
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
-import it.unibo.authsim.library.dsl.cryptography.encrypter.{AsymmetricCipher, BasicCipher}
+import it.unibo.authsim.library.dsl.cryptography.cipher.{AsymmetricCipher, BasicCipher}
 
 import java.security.*
 import java.security.{KeyPairGenerator, KeyPair as JavaKeyPair}

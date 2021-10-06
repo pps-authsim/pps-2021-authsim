@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.util.DiskManager
 import org.apache.commons.io.FileUtils

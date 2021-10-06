@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter
+package it.unibo.authsim.library.dsl.cryptography.cipher
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.EncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
-import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeyPair
+import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.KeyPair
 
 import java.security.spec.{AlgorithmParameterSpec, KeySpec}
 import java.util.Base64

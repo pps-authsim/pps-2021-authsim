@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.otp.util
 
-import it.unibo.authsim.library.dsl.HashFunction
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction._
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 
 import javax.crypto.Mac

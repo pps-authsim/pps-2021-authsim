@@ -7,7 +7,8 @@ import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
 import it.unibo.authsim.client.app.simulation.exception.SimulationException
 import it.unibo.authsim.client.app.simulation.provider.RepositoryUserProvider
-import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
+import it.unibo.authsim.library.dsl.UserProvider
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction._
 import it.unibo.authsim.library.user.model.{CryptoInformation, User, UserInformation}
 import javafx.concurrent.Task
 

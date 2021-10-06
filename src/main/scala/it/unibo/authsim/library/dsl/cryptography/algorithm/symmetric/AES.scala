@@ -19,7 +19,7 @@ trait AES extends SymmetricEncryptionAlgorithm:
  * Companion object of the AES trait
  */
 object AES:
-  import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeysGenerator
+  import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.KeysGenerator
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   /**

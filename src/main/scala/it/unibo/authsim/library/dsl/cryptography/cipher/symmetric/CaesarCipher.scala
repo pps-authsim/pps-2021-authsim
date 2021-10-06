@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.Caesar
-import it.unibo.authsim.library.dsl.cryptography.encrypter.{Cipher, SymmetricCipher}
+import it.unibo.authsim.library.dsl.cryptography.cipher.{Cipher, SymmetricCipher}
 
 /**
  * Caesar Cipher cipher object

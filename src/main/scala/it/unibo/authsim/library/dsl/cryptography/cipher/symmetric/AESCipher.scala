@@ -1,10 +1,10 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.AES
-import it.unibo.authsim.library.dsl.cryptography.encrypter.{BasicCipher, SymmetricCipher}
+import it.unibo.authsim.library.dsl.cryptography.cipher.{BasicCipher, SymmetricCipher}
 
 import java.security.MessageDigest
 import java.security.spec.KeySpec

@@ -7,7 +7,7 @@ trait DES extends SymmetricEncryptionAlgorithm:
   def salt_[A](salt: A):Unit
 
 object DES:
-  import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeysGenerator
+  import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.KeysGenerator
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   def apply()= new BasicDES()

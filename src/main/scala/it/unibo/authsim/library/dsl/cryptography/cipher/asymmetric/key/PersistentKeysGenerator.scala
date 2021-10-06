@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key
+package it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricEncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.util.{Base64, DiskManager as Disk}

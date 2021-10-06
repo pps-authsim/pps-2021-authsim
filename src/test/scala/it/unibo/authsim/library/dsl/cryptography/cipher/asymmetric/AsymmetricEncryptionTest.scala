@@ -1,6 +1,6 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric
 
-import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeyPair
+import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.KeyPair
 import org.apache.commons.io.FileUtils
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers

@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.DES
-import it.unibo.authsim.library.dsl.cryptography.encrypter.{BasicCipher, SymmetricCipher}
+import it.unibo.authsim.library.dsl.cryptography.cipher.{BasicCipher, SymmetricCipher}
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 
 import java.io.*

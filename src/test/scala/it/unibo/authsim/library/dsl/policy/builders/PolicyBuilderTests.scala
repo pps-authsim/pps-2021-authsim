@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
-import it.unibo.authsim.library.dsl.HashFunction.{SHA1, SHA256, SHA384}
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction.{SHA1, SHA256, SHA384}
 import it.unibo.authsim.library.dsl.Protocol.*
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
 import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{OTPPolicyBuilder, PasswordPolicyBuilder, SaltPolicyBuilder, UserIDPolicyBuilder}

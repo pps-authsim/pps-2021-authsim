@@ -11,8 +11,8 @@ trait CryptographicAlgorithm:
   def algorithmName: String
 
   /**
-   * Getter for the salt used by the algorithm
+   * Getter for the salt used by the algorithm, by default the algorithm does not use it
    *
-   * @return                        None if the algorithm does not use a salt value, or an optional of the salt value used by the algorithm
+   * @return                        None
    */
   def salt: Option[String]= None

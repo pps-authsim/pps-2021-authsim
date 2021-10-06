@@ -15,7 +15,7 @@ object PolicyAlphabet:
   /**
    * ''PolicyDefaultAlphabet'' is an implementation of a default alphabet for a policy
    */
-  class PolicyDefaultAlphabet() extends PolicyAlphabet:
+  case class PolicyDefaultAlphabet() extends PolicyAlphabet:
     override def lowers = SymbolicAlphabet(ListSet.from(for i <- 'a' to 'z' yield i.toString))
     override def uppers = SymbolicAlphabet(ListSet.from(for i <- lowers.symbolSet yield i.toUpperCase))
     override def digits = SymbolicAlphabet(ListSet.from(for i <- '0' to '9' yield i.toString))

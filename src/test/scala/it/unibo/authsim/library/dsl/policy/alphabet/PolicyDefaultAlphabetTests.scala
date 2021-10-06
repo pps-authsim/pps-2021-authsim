@@ -5,7 +5,7 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class PolicyDefaultAlphabetTests extends AnyWordSpec:
 
-  private val policyDefaultAlphabet: PolicyAlphabet = new PolicyDefaultAlphabet
+  private val policyDefaultAlphabet: PolicyAlphabet = PolicyDefaultAlphabet()
   private val NUMER_CHARS: Int = 26
   private val NUMBER_DIGIT: Int = 10
   private val CHARS_LOWER: String = "abcdefghijklmnopqrstuvwxyz"

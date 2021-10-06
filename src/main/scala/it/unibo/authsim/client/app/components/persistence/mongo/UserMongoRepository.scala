@@ -11,6 +11,7 @@ import org.mongodb.scala.model.Filters.*
 import org.mongodb.scala.result.InsertManyResult
 
 import java.util.concurrent.TimeUnit
+import scala.collection.mutable.ListBuffer
 import scala.concurrent.{Await, Future, Promise}
 import scala.concurrent.duration.Duration
 import scala.util.{Try, Using}
@@ -48,7 +49,7 @@ trait UserMongoRepositoryComponent:
 
     private val mongoClient = MongoClient()
 
-    def saveUsers(users: Seq[UserEntity]): Try[Unit] =
+    override def saveUsers(users: Seq[UserEntity]): Try[Unit] =
       return usingCollection[Unit]("users",
         collection =>
           val documents = users.map(user => Document("username" -> user.username, "password" -> user.password))
@@ -69,7 +70,7 @@ trait UserMongoRepositoryComponent:
         promise.success(())
     }
 
-    def resetUsers(): Try[Unit] =
+    override def resetUsers(): Try[Unit] =
       usingCollection("users",
         collection =>
           val dropObservable = collection.drop
@@ -89,7 +90,7 @@ trait UserMongoRepositoryComponent:
         promise.success(())
     }
 
-    def retrieveUser(username: String, password: String): Try[UserEntity] =
+    override def retrieveUser(username: String, password: String): Try[UserEntity] =
       usingCollection("users",
         collection =>
           val findObservable = collection.find(and(equal("username", username), equal("password", password)))
@@ -114,6 +115,41 @@ trait UserMongoRepositoryComponent:
       override def onComplete(): Unit =
         return // do nothing
     }
+
+    override def retrieveAllUsers(): Try[Seq[UserEntity]] =
+      usingCollection("users",
+        collection =>
+          val retrieveUsersObservable = collection.find()
+          val promise = Promise[Seq[UserEntity]]
+          retrieveUsersObservable.subscribe(retrieveAllUsersObservableFromPromise(promise))
+          Await.result(promise.future, UserMongoRepository.operationTimeout)
+      )
+
+    private def retrieveAllUsersObservableFromPromise(promise: Promise[Seq[UserEntity]]): Observer[Document] = new Observer[Document] {
+
+      private var users = ListBuffer[UserEntity]()
+
+      override def onNext(result: Document): Unit =
+        val userEntity = convertDocumentToUserEntity(result)
+        userEntity match
+          case Some(user) => users += user
+          case None => promise.failure(new PersistenceException(s"Failed to parse user from $result"))
+
+
+      override def onError(e: Throwable): Unit =
+        promise.failure(e)
+
+      override def onComplete(): Unit =
+        return promise.success(users.toSeq);
+    }
+
+    private def convertDocumentToUserEntity(result: Document): Option[UserEntity] =
+      val usernameWrapper = result.get("username")
+      val passwordWrapper = result.get("password")
+      if usernameWrapper.isDefined && passwordWrapper.isDefined then
+        Some(new UserEntity(usernameWrapper.get.asString.getValue, passwordWrapper.get.asString.getValue))
+      else
+        None
 
     private def usingCollection[T](collectionName: String, collectionFunction: (MongoCollection[Document] => T)): Try[T] =
       Try {

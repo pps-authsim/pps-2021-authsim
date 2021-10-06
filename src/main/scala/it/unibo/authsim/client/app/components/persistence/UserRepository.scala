@@ -9,3 +9,5 @@ trait UserRepository:
   def resetUsers(): Try[Unit]
 
   def retrieveUser(username: String, password: String): Try[UserEntity]
+  
+  def retrieveAllUsers(): Try[Seq[UserEntity]]

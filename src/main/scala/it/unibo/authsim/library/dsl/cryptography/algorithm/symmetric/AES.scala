@@ -13,11 +13,14 @@ trait AES extends SymmetricEncryptionAlgorithm:
    */
   def keyLength_(newKeyLength:Int):Unit
 
+  def salt_[A](salt: A):Unit
+
 /**
  * Companion object of the AES trait
  */
 object AES:
   import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeysGenerator
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   /**
    * Apply method for the object
@@ -29,8 +32,7 @@ object AES:
    * Class representing a basic implementation of the AES algorithm
    */
   case class BasicAES() extends AES:
-
-    type Salt = String
+    
     /**
      * Private variable representing the length of the key used during the cryptographic operation
      */
@@ -49,7 +51,15 @@ object AES:
     /**
      * Private variable representing the salt value
      */
-    private var _salt: String = "123456789"
+    private var _salt: String = ""
+
+    /**
+     * Setter for the salt value
+     *
+     * @param salt                    new value for the salt
+     * @tparam A                      type of the value
+     */
+    override def salt_[A](salt:A): Unit = _salt = salt
 
     /**
      * Getter for the salt value

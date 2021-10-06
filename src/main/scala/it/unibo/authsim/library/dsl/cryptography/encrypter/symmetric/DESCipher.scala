@@ -84,8 +84,5 @@ object DESCipher:
      * @return            a new SecretKey
      */
     private def secretKey(secret: String): SecretKey =
-      //TODO trim string to right value
       var keySpec: KeySpec = new PBEKeySpec(secret, salt ,_iterationCount)
       SecretKeyFactory.getInstance(_trasformation).generateSecret(keySpec)
-    //TODO
-    private def initializeSecret(secret:String): String = secret

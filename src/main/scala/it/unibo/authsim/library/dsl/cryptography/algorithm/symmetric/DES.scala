@@ -3,7 +3,8 @@ package it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric
 import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
 
 
-trait DES extends SymmetricEncryptionAlgorithm
+trait DES extends SymmetricEncryptionAlgorithm:
+  def salt_[A](salt: A):Unit
 
 object DES:
   import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeysGenerator
@@ -13,20 +14,27 @@ object DES:
 
   case class BasicDES() extends DES:
 
-    type Salt = String
-
     private var _length : Int = 7 //bit or 64
     
     /**
      * Private variable representing the algorithm name
      */
     val _name : String ="DES"
-
+//TODO generate random value
     /**
      * Private variable representing the salt value
      */
-    private var _salt: Array[Byte] = Array(0xA9.asInstanceOf[Byte], 0x9B.asInstanceOf[Byte], 0xC8.asInstanceOf[Byte], 0x32.asInstanceOf[Byte], 0x56.asInstanceOf[Byte], 0x35.asInstanceOf[Byte], 0xE3.asInstanceOf[Byte], 0x03.asInstanceOf[Byte])
-    
+    private var _salt: String = "aaaa"
+      //Array(0xA9.asInstanceOf[Byte], 0x9B.asInstanceOf[Byte], 0xC8.asInstanceOf[Byte], 0x32.asInstanceOf[Byte], 0x56.asInstanceOf[Byte], 0x35.asInstanceOf[Byte], 0xE3.asInstanceOf[Byte], 0x03.asInstanceOf[Byte])
+
+    /**
+     * Setter for the salt value
+     *
+     * @param salt                    new value for the salt
+     * @tparam A                      type of the value
+     */
+    override def salt_[A](salt:A): Unit = _salt=salt
+
     /**
      * Getter for the salt value
      *

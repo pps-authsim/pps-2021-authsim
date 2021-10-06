@@ -19,7 +19,7 @@ class AsymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndA
   val keypair= rsa.generateKeys(fileName)
   val(pvt, pub) = (keypair.privateKey, keypair.publicKey)
 
-
+//TODO add test for salt
    "RSA encryption" should {
     "be able to create Key pair"in{
       rsa.generateKeys(fileName).isInstanceOf[KeyPair] shouldBe true

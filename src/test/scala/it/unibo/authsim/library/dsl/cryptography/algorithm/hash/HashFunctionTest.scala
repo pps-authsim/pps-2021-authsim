@@ -15,7 +15,9 @@ class HashFunctionTest extends AnyWordSpec with Matchers {
   val hashedValueSHA384 = "98c11ffdfdd540676b1a137cb1a22b2a70350c9a44171d6b1180c6be5cbb2ee3f79d532c8a1dd9ef2e8e08e752a3babb"
   val hashedValueMD5 = "acbd18db4cc2f85cedef654fccc4a4d8"
   def is = afterWord("is")
-
+  
+  //TODO add test for salt
+  
   "A password" when {
     "hashed with the SHA1 algorithm" should{
       "return the hashed value" which is {

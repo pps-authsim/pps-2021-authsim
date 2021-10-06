@@ -14,6 +14,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
   val aes = AESCipher()
   val caesarCipher= CaesarCipherCipher()
   var rotation=0
+  var salt=""
   var passwordList: List[String]= List.empty[String]
   var secretList: List[String]= List.empty[String]
 //TODO add test for salt
@@ -22,6 +23,11 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
       for(password<- passwordList; secret<- secretList)
         des.decrypt( des.encrypt(password, secret), secret).equals(password) shouldBe true
     }
+
+    "allow to re-define the salt value" in{
+      aes.algorithm.salt_(salt)
+      aes.algorithm.salt.get should be (salt)
+    }
   }
 
   "AES encryption" should{
@@ -29,7 +35,11 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
         for(password<- passwordList; secret<- secretList)
           aes.decrypt(aes.encrypt(password, secret), secret).equals(password) shouldBe true
       }
-    
+
+      "allow to re-define the salt value" in{
+        aes.algorithm.salt_(salt)
+        aes.algorithm.salt.get should be (salt)
+      }
   }
 
   "A password encrypted with a Caesar cipher" should{
@@ -53,6 +63,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
     passwordList=listInitializer(listLength)
     secretList=listInitializer(listLength)
     rotation= Random.between(1,50)
+    salt =Random.alphanumeric.filter(_.isLetterOrDigit).take(Random.between(8,20)).mkString
   }
 
   private def listInitializer(listLength:Int )=

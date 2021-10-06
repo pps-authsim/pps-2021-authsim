@@ -29,6 +29,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
         for(password<- passwordList; secret<- secretList)
           aes.decrypt(aes.encrypt(password, secret), secret).equals(password) shouldBe true
       }
+    
   }
 
   "A password encrypted with a Caesar cipher" should{
@@ -40,6 +41,10 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
     "if rotation is 0 then encryption with Caesar cipher should work as identity function" in {
       for (password <- passwordList)
         caesarCipher.decrypt(caesarCipher.encrypt(password, 0), 0).equals(password) shouldBe true
+    }
+
+    "not to use salt value" in{
+      caesarCipher.algorithm.salt should be (None)
     }
   }
 

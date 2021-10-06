@@ -30,7 +30,7 @@ class HashFunctionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
       }
       "password could also be salted, in this case it" should {
         "the hashed value should be different" in {
-          sha1._salt(salt)
+          sha1.salt_(salt)
           sha1.salt.get should be(salt)
           sha1.hash(password) should not be hashedValueSHA1
         }
@@ -46,7 +46,7 @@ class HashFunctionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
     }
       "password could also be salted, in this case it" should{
         "the hashed value should be different" in{
-          sha256._salt(salt)
+          sha256.salt_(salt)
           sha256.salt.get should be (salt)
           sha256.hash(password) should not be hashedValueSHA256
         }
@@ -60,7 +60,7 @@ class HashFunctionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
       }
       "password could also be salted, in this case it" should {
         "the hashed value should be different" in {
-          sha384._salt(salt)
+          sha384.salt_(salt)
           sha384.salt.get should be(salt)
           sha384.hash(password) should not be hashedValueSHA384
         }
@@ -75,7 +75,7 @@ class HashFunctionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
       }
       "password could also be salted, in this case it" should {
         "the hashed value should be different" in {
-          md5._salt(salt)
+          md5.salt_(salt)
           md5.salt.get should be(salt)
           md5.hash(password) should not be hashedValueMD5
         }

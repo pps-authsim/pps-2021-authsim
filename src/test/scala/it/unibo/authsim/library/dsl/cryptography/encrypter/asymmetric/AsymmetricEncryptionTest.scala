@@ -7,6 +7,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.io.*
+import scala.None
 import scala.io.Source
 import scala.util.Random
 
@@ -19,20 +20,23 @@ class AsymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndA
   val keypair= rsa.generateKeys(fileName)
   val(pvt, pub) = (keypair.privateKey, keypair.publicKey)
 
-//TODO add test for salt
    "RSA encryption" should {
     "be able to create Key pair"in{
       rsa.generateKeys(fileName).isInstanceOf[KeyPair] shouldBe true
     }
 
-    "be le to load keys from a local file or generate a new one if it does not exist" in {
+    "be able to load keys from a local file or generate a new one if it does not exist" in {
       rsa.loadKeys(fileName).isInstanceOf[KeyPair] shouldBe true
     }
 
-    "be equal to the result of the decryption operation" in {
+    "be able to perform the encryption and the decryption operations" in {
       for (password <- passwordList)
         rsa.decrypt(rsa.encrypt(password, pub), pvt).equals(password) shouldBe true
     }
+
+     "not use salt value" in{
+       rsa.algorithm.salt should be (None)
+     }
 
   }
 

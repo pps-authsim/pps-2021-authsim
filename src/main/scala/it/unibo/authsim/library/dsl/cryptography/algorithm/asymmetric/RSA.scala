@@ -29,7 +29,6 @@ object RSA:
    * Class representing a basic implementation of the RSA algorithm
    */
   case class BasicRSA() extends RSA:
-    type Salt = String
     /**
      * Private variable representing the algorithm name
      */
@@ -60,12 +59,10 @@ object RSA:
     override def algorithmName: String = _name
 
     /**
-     * Getter for the salt value
-     *
-     *  @return                        None if the algorithm does not use a salt value, or an optional of the salt value used by the algorithm
+     * Setter for new key length; it prints a log error if the key length is not supported by the algorithm
+     * 
+     * @param newKeyLength          new key length
      */
-    //override def salt: Option[String] = None
-
     override def keyLength_(newKeyLength:Int):Unit=
       if(keySet.contains(newKeyLength)) then
         _length=newKeyLength

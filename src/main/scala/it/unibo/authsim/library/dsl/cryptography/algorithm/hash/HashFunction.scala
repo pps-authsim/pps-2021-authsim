@@ -50,7 +50,7 @@ object HashFunction:
      * Getter for the salt value
      *  @return                        an option of the salt value, or none if ot is not set
      */
-    override def salt: Option[String]=Option(_salt)
+    override def salt: Option[String]= Option(_salt)
 
     /**
      * Setter for the salt value
@@ -58,7 +58,7 @@ object HashFunction:
      * @param salt              a new salt to use during the hash transformation
      * @tparam A                type value of the input
      */
-    override def _salt[A](salt:A): Unit= _salt=salt
+    override def _salt[A](salt:A): Unit= _salt = salt
 
     /**
      * Getter for the name of the Hash algorithm
@@ -78,7 +78,7 @@ object HashFunction:
      * @tparam A                type value of the input
      *  @return                  a string representing the hashed input value
      */
-    override def hash[A](password: A): String = DigestUtils.shaHex(_salt.concat(password).getBytes(StandardCharsets.UTF_8))
+    override def hash[A](password: A): String = DigestUtils.shaHex(password.concat(salt.get).getBytes(StandardCharsets.UTF_8))
 
   /**
    * Class performing the SHA256 algorithm
@@ -91,7 +91,7 @@ object HashFunction:
      * @tparam A                type value of the input
      *  @return                  a string representing the hashed input value
      */
-    override def hash[A](password: A): String = Hashing.sha256().hashString(_salt.concat(password), StandardCharsets.UTF_8).toString
+    override def hash[A](password: A): String = Hashing.sha256().hashString(password.concat(_salt), StandardCharsets.UTF_8).toString
 
   /**
    * Class performing the SHA384 algorithm

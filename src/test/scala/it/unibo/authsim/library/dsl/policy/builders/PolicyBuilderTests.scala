@@ -2,11 +2,12 @@ package it.unibo.authsim.library.dsl.policy.builders
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction.{SHA1, SHA256, SHA384}
 import it.unibo.authsim.library.dsl.Protocol.*
+import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.AES
+import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
 import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{OTPPolicyBuilder, PasswordPolicyBuilder, SaltPolicyBuilder, UserIDPolicyBuilder}
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
 import it.unibo.authsim.library.dsl.policy.model.Policy
-
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.*
 
@@ -41,7 +42,7 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
     PolicyBuilder("Medium") of userIDPolicy and passwordPolicy storeWith (SHA256(), saltPolicy) transmitWith Https() build;
 
   private val policy3: Policy =
-    PolicyBuilder() of userIDPolicy and passwordPolicy storeWith SHA1() transmitWith Https() build;
+    PolicyBuilder() of userIDPolicy and passwordPolicy storeWith AES() transmitWith Https() build;
 
   private val policy4: Policy =
     PolicyBuilder("2FA") of (userIDPolicy1, passwordPolicy1) and optPolicy build;
@@ -49,6 +50,8 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
   private val policy5: Policy =
     PolicyBuilder("HardOTP") of optPolicy1 storeWith (SHA384(), saltPolicy1) transmitWith Https() build;
 
+  private val policy6: Policy =
+      PolicyBuilder("AnotherHardOTP") of optPolicy1 storeWith (RSA(), saltPolicy1) transmitWith Https() build;
 
   println(policy0)
   println(policy1)
@@ -56,6 +59,7 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
   println(policy3)
   println(policy4)
   println(policy5)
+  println(policy6)
 
   s"Policy '${policy0.name}' was created with with credential policies: $userIDPolicy1 and $passwordPolicy1" should s"contain $CREDENTIALS_POLICY_1" in {
     policy0.credentialPolicies should be (CREDENTIALS_POLICY_1)
@@ -72,7 +76,7 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
     policy2.transmissionProtocol should be (Some(Https()))
   }
   it should "stored using SHA256 and Salt" in {
-    policy2.hashFunction should be (Some(SHA256()))
+    policy2.cryptographicAlgorithm should be (Some(SHA256()))
     policy2.saltPolicy should be (Some(saltPolicy))
   }
 
@@ -82,8 +86,8 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
   it should "transmitted using HTTPS" in {
     policy3.transmissionProtocol should be (Some(Https()))
   }
-  it should "stored using SHA1 " in {
-    policy3.hashFunction should be (Some(SHA1()))
+  it should "stored using AES " in {
+    policy3.cryptographicAlgorithm should be (Some(AES()))
   }
 
   s"Policy '${policy4.name}' was created with with credential policies: $userIDPolicy1, $passwordPolicy1 and $optPolicy" should s"contain $CREDENTIALS_POLICY_2" in {
@@ -97,6 +101,17 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
     policy5.transmissionProtocol should be (Some(Https()))
   }
   it should "stored using SHA384 and Salt " in {
-    policy5.hashFunction should be (Some(SHA384()))
+    policy5.cryptographicAlgorithm should be (Some(SHA384()))
     policy5.saltPolicy should be (Some(saltPolicy1))
+  }
+
+  s"Policy '${policy6.name}' was created with with credential policies: $optPolicy1" should s"contain $optPolicy1" in {
+    policy6.credentialPolicies should be (Seq(optPolicy1))
+  }
+  it should "transmitted using HTTPS" in {
+    policy6.transmissionProtocol should be (Some(Https()))
+  }
+  it should "stored using RSA and Salt " in {
+    policy6.cryptographicAlgorithm should be (Some(RSA()))
+    policy6.saltPolicy should be (Some(saltPolicy1))
   }

@@ -2,7 +2,8 @@ package it.unibo.authsim.library.dsl.policy.model
 
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, SaltPolicy}
 import it.unibo.authsim.library.dsl.Protocol
-import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
+
+import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
 
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
@@ -20,9 +21,9 @@ trait Policy:
    */
   def credentialPolicies: Seq[CredentialPolicy]
   /**
-   * @return an optional [[HashFunction hash function]] used to store the credentials on database
+   * @return an optional [[CryptographicAlgorithm cryptographic algorithm]] used to store the credentials on database
    */
-  def hashFunction: Option[HashFunction]
+  def cryptographicAlgorithm: Option[CryptographicAlgorithm]
   /**
    * @return an optional [[SaltPolicy salt policy]] used to check an eventual salt value to encrypt credential
    */

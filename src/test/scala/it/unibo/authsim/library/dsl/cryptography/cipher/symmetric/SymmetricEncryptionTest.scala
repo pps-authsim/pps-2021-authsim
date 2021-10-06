@@ -25,8 +25,8 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
     }
 
     "allow to re-define the salt value" in{
-      aes.algorithm.salt_(salt)
-      aes.algorithm.salt.get should be (salt)
+      des.algorithm.salt_(salt)
+      des.algorithm.salt.get should be (salt)
     }
   }
 

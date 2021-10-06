@@ -23,6 +23,11 @@ bin/
 *.iws
 .idea
 
+
+# test files
+*.txt
+*.ser
+
 # project specific
 
 data/

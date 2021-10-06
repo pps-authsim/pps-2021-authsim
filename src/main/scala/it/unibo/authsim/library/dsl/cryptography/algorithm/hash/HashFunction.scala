@@ -48,8 +48,6 @@ trait HashFunction extends CryptographicAlgorithm:
    */
   override def algorithmName: String = this.toString
 
-
-
 /**
  * Companion object of the HashFunction trait
  */

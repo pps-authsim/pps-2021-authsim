@@ -3,7 +3,7 @@ package it.unibo.authsim.library.user.model
 import it.unibo.authsim.library.dsl.policy.model.Policy
 
 /**
- * Trait that represent a CryptoIntormation
+ * Trait that represent a CryptoInformation
  */
 trait CryptoInformation(algorithmPolicy:Policy)
 

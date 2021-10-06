@@ -28,7 +28,7 @@ trait HashFunction extends CryptographicAlgorithm:
    * @param salt              a new salt to use during the hash transformation
    * @tparam A                type value of the input
    */
-  def _salt[A](salt:A): Unit
+  def setSalt[A](salt:A): Unit
 
 
 /**
@@ -58,7 +58,7 @@ object HashFunction:
      * @param salt              a new salt to use during the hash transformation
      * @tparam A                type value of the input
      */
-    override def _salt[A](salt:A): Unit= _salt=salt
+    override def setSalt[A](salt:A): Unit= _salt=salt
 
     /**
      * Getter for the name of the Hash algorithm

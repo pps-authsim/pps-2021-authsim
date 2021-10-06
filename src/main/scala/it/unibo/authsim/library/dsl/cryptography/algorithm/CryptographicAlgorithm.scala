@@ -15,4 +15,4 @@ trait CryptographicAlgorithm:
    *
    * @return                        None
    */
-  def salt: Option[String]= None
+  def salt: Option[String] = None

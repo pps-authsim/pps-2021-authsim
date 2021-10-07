@@ -31,13 +31,8 @@ class AsymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndA
 
     "be able to perform the encryption and the decryption operations" in {
       for (password <- passwordList)
-        rsa.decrypt(rsa.encrypt(password, pub), pvt).equals(password) shouldBe true
+        rsa.decrypt(rsa.encrypt(password, pub), pvt) shouldEqual password
     }
-
-     "not use salt value" in{
-       rsa.algorithm.salt should be (None)
-     }
-
   }
 
   before {

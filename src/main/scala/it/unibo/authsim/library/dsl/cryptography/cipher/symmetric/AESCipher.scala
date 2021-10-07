@@ -40,7 +40,11 @@ object AESCipher:
      */
     private val _trasformation: String = "AES/ECB/PKCS5PADDING"
 
-    private val defautlSalt: String = Random.alphanumeric.filter(_.isLetterOrDigit).take(Random.between(4,5))
+    /**
+     * Private variable representing the salt value to be used during the cryptographic operations
+     */
+    private val salt = Arrays.copyOf(algorithm.salt, 8)
+
     /**
      * Method that performs the encryption and decryption tasks
      *
@@ -69,6 +73,6 @@ object AESCipher:
      * @return                a SecretKeySpecification compliant with algorithm chosen
      */
     private def secretKeySpec(secret: String): SecretKeySpec =
-      var keyBytes: Array[Byte] = secret.concat(algorithm.salt.getOrElse(defautlSalt))
+      var keyBytes: Array[Byte] = secret.concat(salt)
       keyBytes= Arrays.copyOf(keyBytes, algorithm.keyLength)
       new SecretKeySpec(keyBytes, algorithm.algorithmName)

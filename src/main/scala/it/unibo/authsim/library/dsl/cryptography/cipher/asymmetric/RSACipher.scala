@@ -30,7 +30,7 @@ object RSACipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm: RSA= RSA()
+    val algorithm: RSA= RSA()
     
     /**
      * Variable representing a KeyFactory object that converts public/private keys of the RSA algorithm

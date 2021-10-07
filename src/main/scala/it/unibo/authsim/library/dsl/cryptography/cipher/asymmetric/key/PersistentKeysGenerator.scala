@@ -42,8 +42,6 @@ trait KeyGenerator[A]:
    */
   def loadKeys(fileName: String):A
 
-//Singleton
-
 /**
  * Object for the key generation
  */

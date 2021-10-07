@@ -22,6 +22,7 @@ object DESCipher:
    * @return        an istance of the DES class
    */
   def apply() = new DESCipherImpl()
+
   /**
    * Basic implementation of an cipher which use DES algorithm for the cryptographic operation
    */
@@ -35,6 +36,7 @@ object DESCipher:
      * Private variable representing the salt value to be used during the cryptographic operations
      */
     private val salt = Arrays.copyOf(algorithm.salt, 8)
+    
     /**
      * Private variable that represent the number of iterations used in the generation of 
      * algorithm params
@@ -51,8 +53,7 @@ object DESCipher:
      * 
      * @param iteration         new iterations value
      */
-    def iterationCount_(iteration: Int): Unit =
-      _iterationCount = iteration
+    def iterationCount_(iteration: Int): Unit = _iterationCount = iteration
     
     /**
      * Method that performs the encryption and decryption tasks

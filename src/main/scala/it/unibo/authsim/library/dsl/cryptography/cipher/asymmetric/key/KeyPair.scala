@@ -9,6 +9,7 @@ trait KeyPair:
    * @return          the public key encoded as string
    */
   def publicKey: String
+  
   /**
    * Getter for the private key
    * 

@@ -4,22 +4,22 @@ import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAl
 /**
  * Trait for Caesar Cipher algorithm
  */
-trait CaesarCipher extends SymmetricEncryptionAlgorithm
+trait Caesar extends SymmetricEncryptionAlgorithm
 
 /**
  * Companion object of the Caesar Cipher trait
  */
-object CaesarCipher:
+object Caesar:
   /**
    * Apply method for the object
    * @return an istance of the Caesar Cipher case class
    */
   def apply() = new CaesarCipherImpl()
-  
+
   /**
    * Class representing a basic implementation of the Caesar Cipher algorithm
    */
-  case class CaesarCipherImpl() extends CaesarCipher:
+  case class CaesarCipherImpl() extends Caesar:
     import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
     
     type Salt = String

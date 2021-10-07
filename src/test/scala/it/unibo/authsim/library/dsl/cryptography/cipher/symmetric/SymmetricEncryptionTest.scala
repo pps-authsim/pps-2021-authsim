@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.util.DiskManager
 import org.apache.commons.io.FileUtils
@@ -12,8 +12,9 @@ import scala.util.Random
 class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
   val des = DESCipher()
   val aes = AESCipher()
-  val caesarCipher= CaesarCipherCipher()
+  val caesarCipher= CaesarCipher()
   var rotation=0
+  var salt=""
   var passwordList: List[String]= List.empty[String]
   var secretList: List[String]= List.empty[String]
 
@@ -22,12 +23,22 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
       for(password<- passwordList; secret<- secretList)
         des.decrypt( des.encrypt(password, secret), secret).equals(password) shouldBe true
     }
+
+    "allow to re-define the salt value" in{
+      aes.algorithm.salt_(salt)
+      aes.algorithm.salt.get should be (salt)
+    }
   }
 
   "AES encryption" should{
       "be " in{
         for(password<- passwordList; secret<- secretList)
           aes.decrypt(aes.encrypt(password, secret), secret).equals(password) shouldBe true
+      }
+
+      "allow to re-define the salt value" in{
+        aes.algorithm.salt_(salt)
+        aes.algorithm.salt.get should be (salt)
       }
   }
 
@@ -41,6 +52,10 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
       for (password <- passwordList)
         caesarCipher.decrypt(caesarCipher.encrypt(password, 0), 0).equals(password) shouldBe true
     }
+
+    "not to use salt value" in{
+      caesarCipher.algorithm.salt should be (None)
+    }
   }
 
   before {
@@ -48,6 +63,7 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
     passwordList=listInitializer(listLength)
     secretList=listInitializer(listLength)
     rotation= Random.between(1,50)
+    salt =Random.alphanumeric.filter(_.isLetterOrDigit).take(Random.between(8,20)).mkString
   }
 
   private def listInitializer(listLength:Int )=

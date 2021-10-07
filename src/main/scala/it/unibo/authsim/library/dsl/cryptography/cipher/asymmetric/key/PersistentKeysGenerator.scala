@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key
+package it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricEncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.util.{Base64, DiskManager as Disk}
@@ -58,16 +58,14 @@ object KeysGenerator extends KeyGenerator[KeyPair]:
    * 
    * @param algorithm     algorithm to be used for the generation of the key pair
    */
-  override def algorithm_(algorithm: AsymmetricEncryptionAlgorithm): Unit=
-    _algorithm=algorithm
+  override def algorithm_(algorithm: AsymmetricEncryptionAlgorithm): Unit= _algorithm=algorithm
 
   /**
    * Getter for the algorithm to be used for the generation of the key pair
    * 
    *  @return              an istance of the algorithm to be used for the generation of the key pair
    */
-  override def algorithm: AsymmetricEncryptionAlgorithm=
-    _algorithm
+  override def algorithm: AsymmetricEncryptionAlgorithm= _algorithm
 
   /**
    * Method used to generate the key pair and saving it on the disk
@@ -91,7 +89,7 @@ object KeysGenerator extends KeyGenerator[KeyPair]:
    */
   override def loadKeys(fileName: String): KeyPair =
     if (Disk.isExisting(fileName))then
-      val optKey=Disk.loadObject(fileName)
+      val optKey=Disk.readObject(fileName)
       optKey.getOrElse(generateKeys(fileName))
     else
       generateKeys(fileName)
@@ -101,8 +99,7 @@ object KeysGenerator extends KeyGenerator[KeyPair]:
    * @param keypair         a key pair
    * @param fileName        a file name where the key pair should be saved
    */
-  private def saveKeys(keypair:KeyPair, fileName: String) : Unit=
-    Disk.saveObject(keypair, fileName)
+  private def saveKeys(keypair:KeyPair, fileName: String) : Unit= Disk.writeObject(keypair, fileName)
 
   /**
    * Implicit class responsible of the conversion of the JavaKeyPair in the trait KeyPair

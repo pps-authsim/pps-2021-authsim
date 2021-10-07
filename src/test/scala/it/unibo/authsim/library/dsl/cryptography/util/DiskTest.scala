@@ -2,40 +2,43 @@ package it.unibo.authsim.library.dsl.cryptography.util
 
 import it.unibo.authsim.library.dsl.cryptography.util.DiskManager
 import org.apache.commons.io.FileUtils
-import org.scalatest.BeforeAndAfter
+import org.scalatest.{BeforeAndAfter, GivenWhenThen}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.io.File
 
-class DiskTest  extends AnyWordSpec with Matchers with BeforeAndAfter {
-
+class DiskTest extends AnyFlatSpec with GivenWhenThen with Matchers  with BeforeAndAfter{
   val fileName:String= "diskTest1.txt"
-  val testString:String= "foo"
 
   before {
     if(DiskManager.isExisting(fileName)) then
-      DiskManager.delete(fileName)
+      DiskManager.deleteFile(fileName)
   }
 
-  "A Disk manager" should {
-    "be able to control if a file exists" in {
-      DiskManager.isExisting(fileName) shouldBe false
-    }
-    "be able to save an object in a file creating it if not exists" in {
-      DiskManager.saveObject(testString, fileName)
-      DiskManager.isExisting(fileName) shouldBe true
-    }
-    "it should be able to read it" in {
-      DiskManager.saveObject(testString, fileName)
-      DiskManager.loadObject(fileName).get shouldBe testString
-    }
-    "and it should be able to delete it" in {
-      DiskManager.saveObject(testString, fileName)
-      DiskManager.isExisting(fileName) shouldBe true
-      DiskManager.delete(fileName)
-      DiskManager.isExisting(fileName) shouldBe false
-    }
+  "A Disk manager" should "support the the following tasks" in {
+    Given("an object")
+    val testString:String= "foo"
+
+    When("it is asked to check for the file existance")
+    DiskManager.isExisting(fileName) shouldBe false
+
+    Then("it is asked to write the object in the file")
+    DiskManager.writeObject(testString, fileName)
+
+    And("now the file shuold exist")
+    DiskManager.isExisting(fileName) shouldBe true
+
+    Then("it is asked to read it")
+    DiskManager.readObject(fileName).get shouldBe testString
+
+    Then("it is asked to delete it")
+    DiskManager.deleteFile(fileName)
+
+    And("now the file shuold not exist anymore")
+    DiskManager.isExisting(fileName) shouldBe false
+
+    info("These are the disk manager basic operations!")
   }
 }

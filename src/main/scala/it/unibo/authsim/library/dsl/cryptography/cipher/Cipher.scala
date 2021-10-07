@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter
+package it.unibo.authsim.library.dsl.cryptography.cipher
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.EncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
-import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeyPair
+import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.KeyPair
 
 import java.security.spec.{AlgorithmParameterSpec, KeySpec}
 import java.util.Base64
@@ -46,13 +46,13 @@ trait Cipher:
 /**
  * Trait for Symmetric encrypter
  */
-trait SymmetricEncrypter extends Cipher                                            //TODO non so se lasciarla o rimuoverla
+trait SymmetricCipher extends Cipher
 
 /**
  * Trait for Asymmetric encrypter, it provides additional methods to manage the encryption operation
  * using asymmetric encryption algorithms
  */
-trait AsymmetricEncrypter extends Cipher:
+trait AsymmetricCipher extends Cipher:
   
   /**
    * Method to load existing key from a user directory 
@@ -109,4 +109,6 @@ abstract class BasicCipher extends Cipher:
    * @tparam B                      Generic parameter for the secret
    * @return                        A string representing the password either encrypted or decrypted
    */
-  def crypto[A, B](mode:EncryptionMode, password: A, secret: B): String
+  protected def crypto[A, B](mode:EncryptionMode, password: A, secret: B): String
+  
+  

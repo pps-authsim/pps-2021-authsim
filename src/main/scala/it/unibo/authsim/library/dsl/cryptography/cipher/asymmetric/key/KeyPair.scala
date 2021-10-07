@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key
+package it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key
 
 /**
  * Triat that represent a pair of Key to be used for encryption and decription tasks

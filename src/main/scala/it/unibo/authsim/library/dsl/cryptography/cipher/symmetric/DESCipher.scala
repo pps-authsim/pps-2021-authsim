@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.symmetric
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.DES
-import it.unibo.authsim.library.dsl.cryptography.encrypter.BasicCipher
+import it.unibo.authsim.library.dsl.cryptography.cipher.{BasicCipher, SymmetricCipher}
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 
 import java.io.*
@@ -25,7 +25,7 @@ object DESCipher:
   /**
    * Basic implementation of an cipher which use DES algorithm for the cryptographic operation
    */
-  case class DESCipherImpl() extends BasicCipher:
+  case class DESCipherImpl() extends BasicCipher with SymmetricCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
@@ -84,8 +84,5 @@ object DESCipher:
      * @return            a new SecretKey
      */
     private def secretKey(secret: String): SecretKey =
-      //TODO trim string to right value
       var keySpec: KeySpec = new PBEKeySpec(secret, salt ,_iterationCount)
       SecretKeyFactory.getInstance(_trasformation).generateSecret(keySpec)
-    //TODO
-    private def initializeSecret(secret:String): String = secret

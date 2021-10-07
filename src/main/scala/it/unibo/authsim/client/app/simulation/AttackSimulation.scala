@@ -8,7 +8,7 @@ import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, Secur
 import it.unibo.authsim.client.app.simulation.exception.SimulationException
 import it.unibo.authsim.client.app.simulation.provider.RepositoryUserProvider
 import it.unibo.authsim.library.dsl.UserProvider
-import it.unibo.authsim.library.user.model.{CryptoInformation, User, UserInformation}
+import it.unibo.authsim.library.user.model.{User, UserInformation}
 import javafx.concurrent.Task
 
 import scala.collection.mutable.ListBuffer

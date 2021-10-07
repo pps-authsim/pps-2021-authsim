@@ -37,7 +37,7 @@ class AttackSimulation(
   private def makeUserProvider(): UserProvider =
     val matchedPolicy = SecurityPolicy.Default.all.find(policyToMatch => policyToMatch.policy.equals(policy))
     matchedPolicy match
-      case Some(value) => new RepositoryUserProvider(database, CryptoInformation(null))
+      case Some(value) => new RepositoryUserProvider(database, None)
       case None => throw new SimulationException("Could not match provided policy with library policies")
 
   private def insertUsersIntoDatabase(): Unit =

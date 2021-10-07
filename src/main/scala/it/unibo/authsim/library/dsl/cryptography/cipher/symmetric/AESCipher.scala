@@ -33,7 +33,7 @@ object AESCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm : AES = AES()
+    val algorithm : AES = AES()
 
     /**
      * Private variable that specify which transformation must be applied from the Cipher

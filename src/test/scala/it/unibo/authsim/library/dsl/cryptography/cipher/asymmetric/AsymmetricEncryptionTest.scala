@@ -22,11 +22,11 @@ class AsymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndA
 
    "RSA encryption" should {
     "be able to create Key pair"in{
-      rsa.generateKeys(fileName).isInstanceOf[KeyPair] shouldBe true
+      rsa.generateKeys(fileName) shouldBe a [KeyPair]
     }
 
     "be able to load keys from a local file or generate a new one if it does not exist" in {
-      rsa.loadKeys(fileName).isInstanceOf[KeyPair] shouldBe true
+      rsa.loadKeys(fileName) shouldBe a [KeyPair]
     }
 
     "be able to perform the encryption and the decryption operations" in {

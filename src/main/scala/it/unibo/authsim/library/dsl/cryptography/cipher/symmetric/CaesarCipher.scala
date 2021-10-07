@@ -24,7 +24,7 @@ object CaesarCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm : Caesar = Caesar()
+    val algorithm : Caesar = Caesar()
 
     /**
      * Method used to encrypt the password

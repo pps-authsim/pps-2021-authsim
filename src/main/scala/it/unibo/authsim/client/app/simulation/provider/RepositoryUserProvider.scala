@@ -4,7 +4,7 @@ import it.unibo.authsim.client.app.components.persistence.{UserEntity, UserRepos
 import it.unibo.authsim.client.app.simulation.exception.SimulationException
 import it.unibo.authsim.library.dsl.UserProvider
 import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
-import it.unibo.authsim.library.user.model.{CryptoInformation, UserInformation}
+import it.unibo.authsim.library.user.model.UserInformation
 
 import scala.util.{Failure, Success}
 

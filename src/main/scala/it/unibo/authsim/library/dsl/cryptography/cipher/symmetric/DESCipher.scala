@@ -29,7 +29,7 @@ object DESCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm : DES = DES()
+    val algorithm : DES = DES()
     
     /**
      * Private variable representing the salt value to be used during the cryptographic operations

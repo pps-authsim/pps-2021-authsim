@@ -19,7 +19,7 @@ object DES:
     /**
      * Private variable representing the algorithm name
      */
-    val _name : String ="DES"
+    private val _name : String ="DES"
 
     /**
      * Private variable representing the salt value

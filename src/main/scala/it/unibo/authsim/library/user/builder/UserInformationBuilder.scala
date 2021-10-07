@@ -5,7 +5,6 @@ import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorith
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.user.model.UserInformation
-import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.CaesarCipher
 
 import scala.language.postfixOps
 import it.unibo.authsim.library.user.builder.UserBuilder

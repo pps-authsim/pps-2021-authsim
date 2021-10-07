@@ -41,7 +41,7 @@ object AES:
     /**
      * Private variable representing the algorithm name
      */
-    val _name : String ="AES"
+    private val _name : String ="AES"
 
     /**
      * Private variable representing the length of the key algorithm supports

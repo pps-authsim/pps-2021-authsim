@@ -42,7 +42,7 @@ object RSA:
     /**
      * Private variable representing the length of the key used during the cryptographic operation
      */
-    private var _length= 2048//bit
+    private var _length= 2048
 
     /**
      * Getter for the key used during the encryption operation

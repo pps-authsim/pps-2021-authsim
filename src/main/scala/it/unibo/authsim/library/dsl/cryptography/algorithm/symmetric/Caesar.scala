@@ -22,8 +22,6 @@ object Caesar:
   case class CaesarCipherImpl() extends Caesar:
     import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
     
-    type Salt = String
-    
     /**
      * Private variable representing the algorithm name
      */
@@ -32,7 +30,7 @@ object Caesar:
     /**
      * Private variable representing the length of the key used during the cryptographic operation
      */
-    private val _length : Int = 8 //byte int length
+    private val _length : Int = 8 
 
     /**
      * Getter for the salt value

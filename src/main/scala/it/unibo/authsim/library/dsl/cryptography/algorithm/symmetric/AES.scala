@@ -51,7 +51,7 @@ object AES:
     /**
      * Private variable representing the salt value
      */
-    private var _salt: String = ""
+    private var _salt: Option[String] = None
 
     /**
      * Setter for the salt value
@@ -59,14 +59,14 @@ object AES:
      * @param salt                    new value for the salt
      * @tparam A                      type of the value
      */
-    override def salt_[A](salt:A): Unit = _salt = salt
+    override def salt_[A](salt:A): Unit = _salt = Some(salt)
 
     /**
      * Getter for the salt value
      *
      *  @return                        None if the algorithm does not use a salt value, or an optional of the salt value used by the algorithm
      */
-    override def salt: Option[String] = Some(_salt)
+    override def salt: Option[String] = _salt
 
     /**
      * Setter for the length of the key to be used in the encryption operation.

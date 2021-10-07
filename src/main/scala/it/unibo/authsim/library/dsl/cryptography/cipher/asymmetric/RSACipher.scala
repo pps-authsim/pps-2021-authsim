@@ -14,7 +14,7 @@ import javax.crypto.Cipher
 /**
  * RSA cipher object
  */
-object RSACipher:
+private[cipher] object RSACipher:
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   /**

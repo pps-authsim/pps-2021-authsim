@@ -14,7 +14,7 @@ import javax.crypto.spec.*
 /**
  * DES cipher object
  */
-object DESCipher:
+private[cipher] object DESCipher:
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   /**
@@ -36,7 +36,7 @@ object DESCipher:
      * Private variable representing the salt value to be used during the cryptographic operations
      */
     private val salt = Arrays.copyOf(algorithm.salt, 8)
-    
+
     /**
      * Private variable that represent the number of iterations used in the generation of 
      * algorithm params

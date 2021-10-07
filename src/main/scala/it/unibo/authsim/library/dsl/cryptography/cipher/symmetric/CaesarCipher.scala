@@ -7,7 +7,7 @@ import it.unibo.authsim.library.dsl.cryptography.cipher.{Cipher, SymmetricCipher
 /**
  * Caesar Cipher cipher object
  */
-object CaesarCipher:
+private[cipher] object CaesarCipher:
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   /**

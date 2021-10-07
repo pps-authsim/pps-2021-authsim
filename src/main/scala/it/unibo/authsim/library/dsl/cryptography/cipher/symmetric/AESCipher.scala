@@ -17,7 +17,7 @@ import scala.util.Random
 /**
  * AES cipher object
  */
-object AESCipher:
+private[cipher] object AESCipher:
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._  
   
   /**

@@ -14,7 +14,7 @@ object CipherFactory:
      * @tparam A          type of the algorithm
      * @return            an istance of the algorithm chosen
      */
-    def apply[A>: SymmetricCipher](name: String): A =            //TODO: capire se riesce a passare il tipo effettivo: A.type non funziona
+    def apply[A>: SymmetricCipher](name: String): A =
       name.toLowerCase match {
         case "caesar" => CaesarCipher()
         case "aes" => AESCipher()

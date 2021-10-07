@@ -45,7 +45,7 @@ trait KeyGenerator[A]:
 /**
  * Object for the key generation
  */
-object KeysGenerator extends KeyGenerator[KeyPair]:
+private[asymmetric] object KeysGenerator extends KeyGenerator[KeyPair]:
   /**
    * Variable representing the instance of the agorithm used for the generation of the key pair
    */

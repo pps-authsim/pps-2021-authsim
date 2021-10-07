@@ -2,10 +2,7 @@ package it.unibo.authsim.library.user.builder
 
 import it.unibo.authsim.library.dsl.builder.Builder
 import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
-import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
-import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.user.model.UserInformation
-import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.CaesarCipher
 
 import scala.language.postfixOps
 import it.unibo.authsim.library.user.builder.UserBuilder
@@ -45,7 +42,7 @@ class UserInformationBuilder extends Builder[Option[UserInformation]]:
    * @returna                     UserInformationBuilder where the username field is setted with the provided value
    */
   def withAlgorithm(algorithm:CryptographicAlgorithm) : this.type =
-    val _algorithm=Some(algorithm)
+    this._algorithm = Some(algorithm)
     this
     
   /**

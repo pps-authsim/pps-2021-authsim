@@ -7,8 +7,8 @@ import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
 import it.unibo.authsim.client.app.simulation.exception.SimulationException
 import it.unibo.authsim.client.app.simulation.provider.RepositoryUserProvider
-import it.unibo.authsim.library.dsl.{HashFunction, UserProvider}
-import it.unibo.authsim.library.user.model.{CryptoInformation, User, UserInformation}
+import it.unibo.authsim.library.dsl.UserProvider
+import it.unibo.authsim.library.user.model.{User, UserInformation}
 import javafx.concurrent.Task
 
 import scala.collection.mutable.ListBuffer
@@ -37,7 +37,7 @@ class AttackSimulation(
   private def makeUserProvider(): UserProvider =
     val matchedPolicy = SecurityPolicy.Default.all.find(policyToMatch => policyToMatch.policy.equals(policy))
     matchedPolicy match
-      case Some(value) => new RepositoryUserProvider(database, CryptoInformation(null))
+      case Some(value) => new RepositoryUserProvider(database, None)
       case None => throw new SimulationException("Could not match provided policy with library policies")
 
   private def insertUsersIntoDatabase(): Unit =

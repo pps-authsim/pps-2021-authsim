@@ -6,10 +6,8 @@ import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.UserProvider
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
-import it.unibo.authsim.library.user.model.{CryptoInformation, UserInformation}
-import org.mockito.Mock
+import it.unibo.authsim.library.user.model.UserInformation
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar.mock
 
 import scala.concurrent.duration.Duration
 
@@ -26,14 +24,8 @@ class BruteForceAttackBuilderTest extends AnyWordSpec:
       println("Elapsed time: " + consumable.elapsedTime.toMillis + " ms")
       println("Breached credentials: " + consumable.successfulBreaches.map(u => u.username + " - " + u.password).reduceOption((u1, u2) => u1 + "\n" + u2).getOrElse("No credentials breached"))
 
-  //TODO Alex appena abbiamo le policy degli algoritmi togli sta roba, te l'ho messa se no non compilava più nulla
-  @Mock
-  abstract class AlgorithmPolicy extends Policy
-  @Mock
-  val algorithmPolicy = mock[AlgorithmPolicy]
-
     val myProxy = new UserProvider {
-      override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("abc"), CryptoInformation(algorithmPolicy)))
+      override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("abc"), None))
     }
     private val myLogger = new TestStatisticsConsumer()
     private val myAlphabet = ConcurrentStringCombinator.lowercaseLetters

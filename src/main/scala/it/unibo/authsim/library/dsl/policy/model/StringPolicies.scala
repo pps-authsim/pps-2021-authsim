@@ -64,7 +64,7 @@ object StringPolicies:
   /**
    * ''CredentialPolicy'' rappresent an abstraction of the users credential policy (userID, password, OTP(One Time Password), ... policy)
    */
-  sealed trait CredentialPolicy extends StringPolicy
+  trait CredentialPolicy extends StringPolicy
   /**
    * ''PasswordPolicy'' is a policy that is used to build and/or check passwords
    */

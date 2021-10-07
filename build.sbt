@@ -25,6 +25,8 @@ lazy val root = project
       "-unchecked", // Enable additional warnings where generated code depends on assumptions.
       "-explain", // Explain errors in more detail.
       "-new-syntax", // Require then and do in control expressions
+      "-language:postfixOps",
+      "-language:implicitConversions"
     ),
 
     // test
@@ -38,7 +40,6 @@ lazy val root = project
 
     libraryDependencies += "commons-codec" % "commons-codec" % "20041127.091804",
     libraryDependencies += "commons-io" % "commons-io" % "20030203.000550",
-
     libraryDependencies += "com.google.guava" % "guava" % "25.1-jre",
 
     // in-memory databases

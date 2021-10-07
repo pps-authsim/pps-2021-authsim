@@ -1,11 +1,13 @@
 package it.unibo.authsim.library.user.model
 
+import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.user.model.User
 
 /**
  * Trait that represent a UserInformation
  */
-trait UserInformation (cryptoInformation: CryptoInformation) extends User
+trait UserInformation() extends User:
+  def algorithm: Option[CryptographicAlgorithm]
 
 /**
  * Object that represent a UserInformation
@@ -17,21 +19,24 @@ object UserInformation:
    * 
    * @param username              Name of the user
    * @param password              Encrypted password of the user
-   * @param cryptoInformation     Information about the algorithm used to encrypt the password
+   * @param algorithm     Information about the algorithm used to encrypt the password
    * @return
    */
   def apply(username: String,
             password: String,
-            cryptoInformation: CryptoInformation) =
-            new UserInformationImpl(username,password, cryptoInformation)
+            algorithm: Option[CryptographicAlgorithm]) =
+            new UserInformationImpl(username,password, algorithm)
 
+  def apply(username: String,
+            password: String) =
+    new UserInformationImpl(username,password, None)
   /**
    * Case class implementing UserInformation trait
    * @param username            Name of the user
    * @param password            Encrypted password of the user
-   * @param cryptoInformation   Information about the algorithm used to encrypt the password
+   * @param algorithm    Information about the algorithm used to encrypt the password
    */
   case class UserInformationImpl(override val username: String,
                                  override val password: String,
-                                 cryptoInformation: CryptoInformation)
-                                   extends UserInformation(cryptoInformation)
+                                 algorithm: Option[CryptographicAlgorithm])
+                                   extends UserInformation()

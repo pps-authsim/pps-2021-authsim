@@ -4,7 +4,7 @@ import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class AsymmetricAlgorithm extends AnyWordSpec with Matchers {
+class AsymmetricAlgorithmTest extends AnyWordSpec with Matchers {
   val rsa = RSA()
 
   "A RSA algorithm" should {

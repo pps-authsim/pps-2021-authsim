@@ -3,7 +3,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric._
 
-class SymmetricAlgorithm extends AnyWordSpec with Matchers{
+class SymmetricAlgorithmTest extends AnyWordSpec with Matchers{
   val des= DES()
   val aes= AES()
   val caesar= Caesar()

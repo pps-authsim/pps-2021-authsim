@@ -1,7 +1,8 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
+import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
-import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
+import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.{PolicyDefaultAlphabet, PolicyOTPAlphabet}
 import it.unibo.authsim.library.dsl.policy.checkers.PolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 import it.unibo.authsim.library.dsl.builder.Builder
@@ -265,7 +266,7 @@ object StringPoliciesBuilders:
    * ''OTPPolicyBuilder'' is OTP policy builder
    */
   case class OTPPolicyBuilder() extends AbstractStringPolicyBuilder[OTPPolicy]:
-    this.alphabetPolicy.onlyNumbers +=: this.patterns
+    this.addAlphabet(PolicyOTPAlphabet())
     override def build: OTPPolicy = new OTPPolicy:
       override def minimumLength: Int = OTPPolicyBuilder.this.minLen
       override def maximumLength: Option[Int] = OTPPolicyBuilder.this.maxLen

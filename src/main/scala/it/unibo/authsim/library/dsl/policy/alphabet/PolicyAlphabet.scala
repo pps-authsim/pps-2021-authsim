@@ -1,6 +1,7 @@
 package it.unibo.authsim.library.dsl.policy.alphabet
 
 import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
+import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
 
 import scala.collection.immutable.ListSet
 import scala.util.matching.Regex
@@ -27,3 +28,7 @@ object PolicyAlphabet:
         s", digits = " + this.digits.mkString +
         s", symbols = " + this.symbols.mkString + " }"
 
+
+  case class PolicyOTPAlphabet() extends PolicyAlphabet:
+    override def digits: SymbolicAlphabet = PolicyDefaultAlphabet().digits
+    override def toString: String = s"PolicyOTPAlphabet { digits = " + this.digits.mkString + " }"

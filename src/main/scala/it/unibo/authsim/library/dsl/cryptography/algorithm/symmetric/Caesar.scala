@@ -1,10 +1,10 @@
 package it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricAlgorithm
 /**
  * Trait for Caesar Cipher algorithm
  */
-trait Caesar extends SymmetricEncryptionAlgorithm
+trait Caesar extends SymmetricAlgorithm
 
 /**
  * Companion object of the Caesar Cipher trait

@@ -1,11 +1,11 @@
 package it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricAlgorithm
 
 /**
  * Trait for RSA algorithm
  */
-trait RSA extends AsymmetricEncryptionAlgorithm:
+trait RSA extends AsymmetricAlgorithm:
   /**
    * Setter for the length of the key to be used in the encryption operation.
    *

@@ -1,9 +1,9 @@
 package it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricAlgorithm
 
 
-trait DES extends SymmetricEncryptionAlgorithm:
+trait DES extends SymmetricAlgorithm:
   def salt_[A](salt: A):Unit
 
 object DES:

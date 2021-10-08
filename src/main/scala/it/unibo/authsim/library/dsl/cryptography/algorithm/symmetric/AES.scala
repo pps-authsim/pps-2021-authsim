@@ -1,11 +1,11 @@
 package it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricAlgorithm
 
 /**
  * Trait for AES algorithm
  */
-trait AES extends SymmetricEncryptionAlgorithm:
+trait AES extends SymmetricAlgorithm:
   /**
    * Setter for the length of the key to be used in the encryption operation.
    *

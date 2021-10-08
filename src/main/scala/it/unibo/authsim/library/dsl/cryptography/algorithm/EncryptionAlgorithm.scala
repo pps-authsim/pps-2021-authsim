@@ -15,11 +15,11 @@ trait EncryptionAlgorithm extends CryptographicAlgorithm:
 /**
  * Trait that represent symmetric encryption algorithms
  */
-trait SymmetricEncryptionAlgorithm extends EncryptionAlgorithm
+trait SymmetricAlgorithm extends EncryptionAlgorithm
 
 /**
  * Trait that represent asymmetric encryption algorithms
  */
-trait AsymmetricEncryptionAlgorithm extends EncryptionAlgorithm
+trait AsymmetricAlgorithm extends EncryptionAlgorithm
 
 

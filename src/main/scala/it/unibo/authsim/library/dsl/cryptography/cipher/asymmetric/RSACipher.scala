@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
 import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.{KeyPair, KeysGenerator}
 import it.unibo.authsim.library.dsl.cryptography.util.Base64

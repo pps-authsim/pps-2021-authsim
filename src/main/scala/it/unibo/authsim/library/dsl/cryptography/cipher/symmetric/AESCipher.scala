@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.cryptography.cipher.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.AES

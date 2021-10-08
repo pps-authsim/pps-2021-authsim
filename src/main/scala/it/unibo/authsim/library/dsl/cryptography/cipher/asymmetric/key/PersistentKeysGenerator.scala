@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.util.{Base64, DiskManager as Disk}
 import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
 import java.io.*
@@ -18,13 +18,13 @@ trait KeyGenerator[A]:
    * 
    * @param algorithm     algorithm to be used for the generation of the key pair
    */
-  def algorithm_(algorithm: AsymmetricEncryptionAlgorithm): Unit
+  def algorithm_(algorithm: AsymmetricAlgorithm): Unit
 
   /**
    * Getter for the algorithm to be used for the generation of the key pair
    * @return              an istance of the algorithm to be used for the generation of the key pair
    */
-  def algorithm: AsymmetricEncryptionAlgorithm
+  def algorithm: AsymmetricAlgorithm
 
   /**
    * Method used to generate the key pair and saving it on the disk
@@ -49,21 +49,21 @@ private[asymmetric] object KeysGenerator extends KeyGenerator[KeyPair]:
   /**
    * Variable representing the instance of the agorithm used for the generation of the key pair
    */
-  private var _algorithm: AsymmetricEncryptionAlgorithm = RSA()
+  private var _algorithm: AsymmetricAlgorithm = RSA()
 
   /**
    * Setter for the algorithm to be used for the generation of the key pair
    * 
    * @param algorithm     algorithm to be used for the generation of the key pair
    */
-  override def algorithm_(algorithm: AsymmetricEncryptionAlgorithm): Unit= _algorithm=algorithm
+  override def algorithm_(algorithm: AsymmetricAlgorithm): Unit= _algorithm=algorithm
 
   /**
    * Getter for the algorithm to be used for the generation of the key pair
    * 
    *  @return              an istance of the algorithm to be used for the generation of the key pair
    */
-  override def algorithm: AsymmetricEncryptionAlgorithm= _algorithm
+  override def algorithm: AsymmetricAlgorithm= _algorithm
 
   /**
    * Method used to generate the key pair and saving it on the disk

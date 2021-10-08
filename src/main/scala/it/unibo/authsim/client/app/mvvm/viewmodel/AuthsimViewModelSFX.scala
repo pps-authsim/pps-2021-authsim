@@ -14,9 +14,11 @@ import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.CredentialPolicy
 import it.unibo.authsim.library.user.model.User
 import javafx.collections.ObservableList
 import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
+import it.unibo.authsim.library.user.builder.UserAutoBuilder
 
 object AuthsimViewModelSFX:
   val ATTACK_MISSING_VALUE_TEXT = "Please, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
@@ -45,12 +47,18 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
 
 
   override def generateUsers(): Unit =
-    val quantity = usersViewModel.generateUsersFormProperties.quantityProperty.getValue();
+    val quantity = usersViewModel.generateUsersFormProperties.quantityProperty.getValue().toInt;
     val preset = usersViewModel.generateUsersFormProperties.presetProperty.getValue();
 
     val credentialsPolicies = SecurityPolicy.Default.credentialsPoliciesFrom(preset)
     if(credentialsPolicies.isDefined) then
-      println(credentialsPolicies) // TODO finish user generation
+      generateUsers(quantity, credentialsPolicies.get)
+        .foreach(user => model.usersModel.usersList += user)
+
+  private def generateUsers(quantity: Int, credentialsPolicies: Seq[CredentialPolicy]): Seq[User] =
+    val userBuilder = UserAutoBuilder()
+    credentialsPolicies.foreach(policy => userBuilder withPolicy(policy))
+    userBuilder build(quantity)
 
 
   override def deleteSelectedUsers(): Unit =

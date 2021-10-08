@@ -1,11 +1,11 @@
 package it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricAlgorithm
 
 /**
  * Trait for AES algorithm
  */
-trait AES extends SymmetricEncryptionAlgorithm:
+trait AES extends SymmetricAlgorithm:
   /**
    * Setter for the length of the key to be used in the encryption operation.
    *
@@ -13,11 +13,14 @@ trait AES extends SymmetricEncryptionAlgorithm:
    */
   def keyLength_(newKeyLength:Int):Unit
 
+  def salt_[A](salt: A):Unit
+
 /**
  * Companion object of the AES trait
  */
 object AES:
-  import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeysGenerator
+  import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.KeysGenerator
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   /**
    * Apply method for the object
@@ -29,8 +32,7 @@ object AES:
    * Class representing a basic implementation of the AES algorithm
    */
   case class BasicAES() extends AES:
-
-    type Salt = String
+    
     /**
      * Private variable representing the length of the key used during the cryptographic operation
      */
@@ -39,24 +41,32 @@ object AES:
     /**
      * Private variable representing the algorithm name
      */
-    val _name : String ="AES"
+    private val _name : String ="AES"
 
     /**
      * Private variable representing the length of the key algorithm supports
      */
-    private var keySet = Set(16, 24, 32)
+    private val keySet = Set(16, 24, 32)
 
     /**
      * Private variable representing the salt value
      */
-    private var _salt: String = "123456789"
+    private var _salt: Option[String] = None
+
+    /**
+     * Setter for the salt value
+     *
+     * @param salt                    new value for the salt
+     * @tparam A                      type of the value
+     */
+    override def salt_[A](salt:A): Unit = _salt = Some(salt)
 
     /**
      * Getter for the salt value
      *
      *  @return                        None if the algorithm does not use a salt value, or an optional of the salt value used by the algorithm
      */
-    override def salt: Option[String] = Some(_salt)
+    override def salt: Option[String] = _salt
 
     /**
      * Setter for the length of the key to be used in the encryption operation.

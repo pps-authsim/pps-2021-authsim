@@ -1,10 +1,10 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.AES
-import it.unibo.authsim.library.dsl.cryptography.encrypter.BasicCipher
+import it.unibo.authsim.library.dsl.cryptography.cipher.{BasicCipher, SymmetricCipher}
 
 import java.security.MessageDigest
 import java.security.spec.KeySpec
@@ -12,6 +12,7 @@ import java.util
 import javax.crypto.{Cipher, SecretKey, SecretKeyFactory}
 import javax.crypto.spec.{PBEKeySpec, SecretKeySpec}
 import java.util.*
+import scala.util.Random
 
 /**
  * AES cipher object
@@ -23,20 +24,26 @@ object AESCipher:
    * Apply method for the object
    * @return        an istance of the AES class
    */
-  def apply() = new AESCipherterImpl()
+  def apply() = new BasicAESCipher()
   /**
    * Basic implementation of an encrypter which use AES algorithm for the cryptographic operation
    */
-  case class AESCipherterImpl() extends BasicCipher:
+  case class BasicAESCipher() extends BasicCipher with SymmetricCipher:
+
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm : AES = AES()
+    val algorithm : AES = AES()
 
     /**
      * Private variable that specify which transformation must be applied from the Cipher
      */
     private val _trasformation: String = "AES/ECB/PKCS5PADDING"
+
+    /**
+     * Private variable representing the salt value to be used during the cryptographic operations
+     */
+    private val salt = Arrays.copyOf(algorithm.salt, 8)
 
     /**
      * Method that performs the encryption and decryption tasks
@@ -66,6 +73,6 @@ object AESCipher:
      * @return                a SecretKeySpecification compliant with algorithm chosen
      */
     private def secretKeySpec(secret: String): SecretKeySpec =
-      var keyBytes: Array[Byte] = secret.concat(algorithm.salt.get)
+      var keyBytes: Array[Byte] = secret.concat(salt)
       keyBytes= Arrays.copyOf(keyBytes, algorithm.keyLength)
       new SecretKeySpec(keyBytes, algorithm.algorithmName)

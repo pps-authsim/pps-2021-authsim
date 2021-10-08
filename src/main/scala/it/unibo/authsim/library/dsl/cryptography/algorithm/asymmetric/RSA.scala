@@ -1,11 +1,11 @@
 package it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricAlgorithm
 
 /**
  * Trait for RSA algorithm
  */
-trait RSA extends AsymmetricEncryptionAlgorithm:
+trait RSA extends AsymmetricAlgorithm:
   /**
    * Setter for the length of the key to be used in the encryption operation.
    *
@@ -17,7 +17,7 @@ trait RSA extends AsymmetricEncryptionAlgorithm:
  * Companion object of the AES trait
  */
 object RSA:
-  import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.KeysGenerator
+  import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.KeysGenerator
 
   /**
    * Apply method for the object
@@ -29,7 +29,6 @@ object RSA:
    * Class representing a basic implementation of the RSA algorithm
    */
   case class BasicRSA() extends RSA:
-    type Salt = String
     /**
      * Private variable representing the algorithm name
      */
@@ -38,12 +37,12 @@ object RSA:
     /**
      * Private variable representing the length of the key algorithm supports
      */
-    private var keySet = Set(1024, 2048, 4096)
+    private val keySet = Set(1024, 2048, 4096)
 
     /**
      * Private variable representing the length of the key used during the cryptographic operation
      */
-    private var _length= 2048//bit
+    private var _length= 2048
 
     /**
      * Getter for the key used during the encryption operation
@@ -60,12 +59,10 @@ object RSA:
     override def algorithmName: String = _name
 
     /**
-     * Getter for the salt value
-     *
-     *  @return                        None if the algorithm does not use a salt value, or an optional of the salt value used by the algorithm
+     * Setter for new key length; it prints a log error if the key length is not supported by the algorithm
+     * 
+     * @param newKeyLength          new key length
      */
-    override def salt: Option[String] = None
-
     override def keyLength_(newKeyLength:Int):Unit=
       if(keySet.contains(newKeyLength)) then
         _length=newKeyLength

@@ -5,30 +5,21 @@ package it.unibo.authsim.library.dsl.cryptography.algorithm
  */
 trait EncryptionAlgorithm extends CryptographicAlgorithm:
   /**
-   * Type value for the salt
-   */
-  type Salt
-
-  /**
-   * Getter for the salt used by the algorithm 
-   * 
-   * @return                        None if the algorithm does not use a salt value, or an optional of the salt value used by the algorithm
-   */
-  def salt: Option[Salt]
-
-  /**
    * Getter for the length of the key used by algorithm
    * 
    * @return                        the size of the used by the algorithm
    */
   def keyLength: Int
 
+
 /**
  * Trait that represent symmetric encryption algorithms
  */
-trait SymmetricEncryptionAlgorithm extends EncryptionAlgorithm
+trait SymmetricAlgorithm extends EncryptionAlgorithm
 
 /**
  * Trait that represent asymmetric encryption algorithms
  */
-trait AsymmetricEncryptionAlgorithm extends EncryptionAlgorithm
+trait AsymmetricAlgorithm extends EncryptionAlgorithm
+
+

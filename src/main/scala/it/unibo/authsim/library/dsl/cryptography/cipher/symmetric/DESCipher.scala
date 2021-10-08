@@ -1,8 +1,8 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.symmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.DES
-import it.unibo.authsim.library.dsl.cryptography.encrypter.BasicCipher
+import it.unibo.authsim.library.dsl.cryptography.cipher.{BasicCipher, SymmetricCipher}
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 
 import java.io.*
@@ -21,20 +21,22 @@ object DESCipher:
    * Apply method for the object
    * @return        an istance of the DES class
    */
-  def apply() = new DESCipherImpl()
+  def apply() = new BasicDESCipher()
+
   /**
    * Basic implementation of an cipher which use DES algorithm for the cryptographic operation
    */
-  case class DESCipherImpl() extends BasicCipher:
+  case class BasicDESCipher() extends BasicCipher with SymmetricCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm : DES = DES()
+    val algorithm : DES = DES()
     
     /**
      * Private variable representing the salt value to be used during the cryptographic operations
      */
     private val salt = Arrays.copyOf(algorithm.salt, 8)
+
     /**
      * Private variable that represent the number of iterations used in the generation of 
      * algorithm params
@@ -51,8 +53,7 @@ object DESCipher:
      * 
      * @param iteration         new iterations value
      */
-    def iterationCount_(iteration: Int): Unit =
-      _iterationCount = iteration
+    def iterationCount_(iteration: Int): Unit = _iterationCount = iteration
     
     /**
      * Method that performs the encryption and decryption tasks
@@ -84,8 +85,5 @@ object DESCipher:
      * @return            a new SecretKey
      */
     private def secretKey(secret: String): SecretKey =
-      //TODO trim string to right value
       var keySpec: KeySpec = new PBEKeySpec(secret, salt ,_iterationCount)
       SecretKeyFactory.getInstance(_trasformation).generateSecret(keySpec)
-    //TODO
-    private def initializeSecret(secret:String): String = secret

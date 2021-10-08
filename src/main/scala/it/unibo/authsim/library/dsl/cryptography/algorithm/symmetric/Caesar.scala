@@ -1,28 +1,26 @@
 package it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.SymmetricAlgorithm
 /**
  * Trait for Caesar Cipher algorithm
  */
-trait CaesarCipher extends SymmetricEncryptionAlgorithm
+trait Caesar extends SymmetricAlgorithm
 
 /**
  * Companion object of the Caesar Cipher trait
  */
-object CaesarCipher:
+object Caesar:
   /**
    * Apply method for the object
    * @return an istance of the Caesar Cipher case class
    */
-  def apply() = new CaesarCipherImpl()
-  
+  def apply() = new BasicCaesar()
+
   /**
    * Class representing a basic implementation of the Caesar Cipher algorithm
    */
-  case class CaesarCipherImpl() extends CaesarCipher:
+  case class BasicCaesar() extends Caesar:
     import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
-    
-    type Salt = String
     
     /**
      * Private variable representing the algorithm name
@@ -32,7 +30,7 @@ object CaesarCipher:
     /**
      * Private variable representing the length of the key used during the cryptographic operation
      */
-    private val _length : Int = 8 //byte int length
+    private val _length : Int = 8 
 
     /**
      * Getter for the salt value

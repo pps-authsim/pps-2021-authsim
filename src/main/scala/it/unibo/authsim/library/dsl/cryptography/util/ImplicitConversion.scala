@@ -40,7 +40,7 @@ object ImplicitConversion:
    * @tparam A              type of the object
    * @return                a byte array representing the input value
    */
-  implicit def genericToArrayByte[A](value :A):Array[Byte] = stringToArrayByte(genericToString(value))
+  implicit def genericToArrayByte[A](value :A):Array[Byte] = stringToArrayByte(value)
 
   /**
    * Method responsible of performing an implicit conversion from a string to a char array

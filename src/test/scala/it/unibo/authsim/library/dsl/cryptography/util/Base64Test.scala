@@ -6,13 +6,17 @@ import org.scalatest.matchers.should.Matchers
 class Base64Test extends AnyFlatSpec with Matchers {
   val testArrayByte: Array[Byte]= Array( 0x32.asInstanceOf[Byte], 0x72.asInstanceOf[Byte])
   private val charset: String = "UTF8"
-  "Base64 decoding operation" should "be" in {
-    Base64.decodeToArray(testArrayByte).isInstanceOf[Array[Byte]] shouldBe true
-    Base64.decodeToString(testArrayByte).isInstanceOf[String] shouldBe true
+  "Base64 decoding operation from array byte to array byte" should "be" in {
+    Base64.decodeToArray(testArrayByte) shouldBe a [Array[Byte]]
+  }
+  "Base64 decoding operation from array byte to string" should "be" in {
+    Base64.decodeToString(testArrayByte) shouldBe a [String]
   }
 
-  "Base64 encoding operation" should "be" in {
-    Base64.encodeToArray(testArrayByte).isInstanceOf[Array[Byte]] shouldBe true
-    Base64.encodeToString(testArrayByte).isInstanceOf[String] shouldBe true
+  "Base64 encoding operation from array byte to array byte" should "be" in {
+    Base64.encodeToArray(testArrayByte) shouldBe a [Array[Byte]]
+  }
+  "Base64 encoding operation from array byte to String" should "be" in {
+    Base64.encodeToString(testArrayByte) shouldBe a [String]
   }
 }

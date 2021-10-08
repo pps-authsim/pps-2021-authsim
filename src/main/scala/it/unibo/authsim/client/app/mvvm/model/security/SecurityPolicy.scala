@@ -5,7 +5,7 @@ import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.Protocol.*
 import it.unibo.authsim.library.dsl.policy.defaults.PolicyDefault
 import it.unibo.authsim.library.dsl.policy.model.Policy
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.CredentialPolicy
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy, OTPPolicy}
 
 case class SecurityPolicy(val policy: String, val description: String)
 
@@ -19,9 +19,16 @@ object SecurityPolicy:
 
     implicit class RichString(base: String):
       def descriptor(defaultVal: DefaultVal) =
+        val alphabets = defaultVal.policy.credentialPolicies.map {
+          case u: UserIDPolicy => "userID" -> u.alphabet.alphanumericsymbols.mkString
+          case p: PasswordPolicy => "password" -> p.alphabet.alphanumericsymbols.mkString
+          case o: OTPPolicy => "otp" -> o.alphabet.alphanumericsymbols.mkString
+        }.reverse.toMap
+
         s"""${base}\n
             ${if defaultVal.policy.transmissionProtocol.isDefined then s"Credentials are trasmitted with protocol ${defaultVal.policy.transmissionProtocol.get.getClass.getSimpleName.toUpperCase}." else "No protocol." }\n
-            The alphabet:  ${defaultVal.policy.credentialPolicies.map(_.alphabet).map(a => a.alphanumericsymbols.mkString).distinct.mkString}"""
+            The alphabet:\n${alphabets.map((who, alpha) => s"\t\t- $who : $alpha\n").mkString}
+        """
 
     protected case class DefaultVal(val policy: Policy) extends super.Val:
       def name: String = (if policy.transmissionProtocol.isDefined then s"${policy.transmissionProtocol.get.getClass.getSimpleName}-" else "") + policy.name

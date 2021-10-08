@@ -1,5 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.viewmodel
 
+import it.unibo.authsim.client.app.components.registry.ComponentRegistry
 import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ModelInitializer, ViewPropertiesBinder}
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
@@ -19,6 +20,7 @@ import it.unibo.authsim.library.user.model.User
 import javafx.collections.ObservableList
 import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
 import it.unibo.authsim.library.user.builder.UserAutoBuilder
+import it.unibo.authsim.client.app.components.registry.ComponentRegistry.SimulationRunner
 
 object AuthsimViewModelSFX:
   val ATTACK_MISSING_VALUE_TEXT = "Please, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
@@ -31,7 +33,8 @@ object AuthsimViewModelSFX:
 class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
                           private val securityViewModel: SecurityViewModel,
                           private val attackViewModel: AttackViewModel,
-                          private val model: AuthsimModel) extends AuthsimViewModel:
+                          private val model: AuthsimModel,
+                          private val simulationRunner: SimulationRunner) extends AuthsimViewModel:
 
   ModelBinder.bindUsersViewModel(model.usersModel, usersViewModel)
   ModelBinder.bindSecurityViewModel(model.securityModel, securityViewModel)
@@ -84,8 +87,7 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
 
       val simulation = new AttackSimulation(users, policy.get.policy, credentialsSource.get.source, selectedProcedure.get.sequence)
       simulation.messageProperty().addListener((observable, oldValue, newValue) => attackViewModel.attackSequenceProperties.attackLog.value += newValue)
-
-      new Thread(simulation).start()
+      simulationRunner.runSimulation(simulation)
     else
       attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModelSFX.ATTACK_MISSING_VALUE_TEXT
 

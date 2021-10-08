@@ -16,10 +16,10 @@ import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
 class AttackSimulation(
-                        val users: ListBuffer[User],
-                        val policy: String,
-                        val credentialsSource: CredentialsSourceType,
-                        val attackSequence: String
+                        private val users: ListBuffer[User],
+                        private val policy: String,
+                        private val credentialsSource: CredentialsSourceType,
+                        private val attackSequence: String
                       ) extends Task[Unit]:
 
   private val database: UserRepository = credentialsSource match

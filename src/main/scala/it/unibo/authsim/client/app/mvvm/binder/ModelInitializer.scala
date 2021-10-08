@@ -6,6 +6,8 @@ import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, Secur
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.library.user.model.User
 
+import scala.collection.mutable.ListBuffer
+
 object ModelInitializer:
 
   def initializeUsersModel(usersModel: UsersModel): Unit =
@@ -29,11 +31,10 @@ object ModelInitializer:
     securityModel.credentialsSourceList += new CredentialsSource(mongoSource, mongoSourceDescription)
 
   def initializeAttackModel(attackModel: AttackModel): Unit =
-    val sequenceName = "Sequence1"
-    val sequenceDescription = "An attack sequence"
-    val anotherSequenceName = "Sequence2"
-    val anotherSequenceDescription = "Even better attack sequence"
+    configuredAttacks().foreach(attack => attackModel.attackSequenceList += attack)
 
-    attackModel.attackSequenceList += new AttackSequence(sequenceName, sequenceDescription)
-    attackModel.attackSequenceList += new AttackSequence(anotherSequenceName, anotherSequenceDescription)
-
+  private def configuredAttacks(): Seq[AttackSequence] =
+    var sequence = ListBuffer[AttackSequence]()
+    sequence += new AttackSequence("BruteForce Simple", "")
+    sequence += new AttackSequence("BruteForce Advanced", "")
+    sequence.toSeq

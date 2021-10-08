@@ -29,6 +29,9 @@ object PolicyAlphabet:
         s", symbols = " + this.symbols.mkString + " }"
 
 
+  /**
+   * ''PolicyOTPAlphabet'' is an implementation of a default alphabet for a otp policy
+   */
   case class PolicyOTPAlphabet() extends PolicyAlphabet:
     override def digits: SymbolicAlphabet = PolicyDefaultAlphabet().digits
     override def toString: String = s"PolicyOTPAlphabet { digits = " + this.digits.mkString + " }"

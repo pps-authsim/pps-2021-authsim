@@ -5,25 +5,28 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class AsymmetricAlgorithmTest extends AnyWordSpec with Matchers {
-  val rsa = RSA()
+  private val rsa = RSA()
+  private val defaultKey=2048
+  private val newKey=1024
+  private val wrongKey=2
 
   "A RSA algorithm" should {
     "have a name" in {
       rsa.algorithmName shouldBe "RSA"
     }
     "have a default key's length" in {
-      rsa.keyLength shouldEqual 2048
+      rsa.keyLength shouldEqual defaultKey
     }
     "have a default salt value" in {
       rsa.salt shouldEqual None
     }
     "have allow key length re-definition" in {
-      rsa.keyLength_(1024)
-      rsa.keyLength shouldEqual 1024
+      rsa.keyLength_(newKey)
+      rsa.keyLength shouldEqual newKey
     }
     "do not key length redefinition not complaint with the algorithm rules" in {
-      rsa.keyLength_(2)
-      rsa.keyLength shouldEqual 1024
+      rsa.keyLength_(wrongKey)
+      rsa.keyLength shouldEqual newKey
     }
   }
 }

@@ -24,11 +24,11 @@ object AESCipher:
    * Apply method for the object
    * @return        an istance of the AES class
    */
-  def apply() = new AESCipherterImpl()
+  def apply() = new BasicAESCipher()
   /**
    * Basic implementation of an encrypter which use AES algorithm for the cryptographic operation
    */
-  case class AESCipherterImpl() extends BasicCipher with SymmetricCipher:
+  case class BasicAESCipher() extends BasicCipher with SymmetricCipher:
 
     /**
      * Variable representing the algorithm used for the cryptographic operation

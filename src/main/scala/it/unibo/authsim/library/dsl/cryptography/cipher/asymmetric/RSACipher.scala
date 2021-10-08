@@ -21,12 +21,12 @@ object RSACipher:
    * Apply method for the object
    * @return        an istance of the RSA class
    */
-  def apply() = new RSAEncrypterImpl()
+  def apply() = new BasicRSACipher()
 
   /**
    * Basic implementation of an encrypter which use RSA algorithm for the cryptographic operation
    */
-  case class RSAEncrypterImpl() extends BasicCipher with AsymmetricCipher:
+  case class BasicRSACipher() extends BasicCipher with AsymmetricCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */

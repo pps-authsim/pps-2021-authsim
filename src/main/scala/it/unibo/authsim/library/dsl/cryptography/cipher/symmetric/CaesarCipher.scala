@@ -15,12 +15,12 @@ object CaesarCipher:
    * 
    * @return                           an istance of the Caesar Cipher class
    */
-  def apply() = new CaesarCipherImpl()
+  def apply() = new BasicCaesarCipher()
 
   /**
    * Basic implementation of an encrypter which use Caesar Cipher algorithm for the cryptographic operation
    */
-  case class CaesarCipherImpl() extends Cipher with SymmetricCipher:
+  case class BasicCaesarCipher() extends Cipher with SymmetricCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */

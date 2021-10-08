@@ -10,7 +10,7 @@ class AsymmetricAlgorithmTest extends AnyWordSpec with Matchers {
   private val newKey=1024
   private val wrongKey=2
 
-  "A RSA algorithm" should {
+  s"A '${rsa.algorithmName}' algorithm" should {
     "have a name" in {
       rsa.algorithmName shouldBe "RSA"
     }
@@ -20,11 +20,11 @@ class AsymmetricAlgorithmTest extends AnyWordSpec with Matchers {
     "have a default salt value" in {
       rsa.salt shouldEqual None
     }
-    "have allow key length re-definition" in {
+    "allow key length re-definition" in {
       rsa.keyLength_(newKey)
       rsa.keyLength shouldEqual newKey
     }
-    "do not key length redefinition not complaint with the algorithm rules" in {
+    "do not allow a key re-definition not complaint with the algorithm rules" in {
       rsa.keyLength_(wrongKey)
       rsa.keyLength shouldEqual newKey
     }

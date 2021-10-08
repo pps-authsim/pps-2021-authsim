@@ -21,7 +21,6 @@ class HashFunctionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
   private val minLength=5
   private val maxLength=20
   def is = afterWord("is")
-
   
   "A password" when {
     "hashed with the SHA1 algorithm" should{

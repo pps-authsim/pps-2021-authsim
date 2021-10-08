@@ -132,13 +132,13 @@ Il framework deve permettere di definire:
 
 Il simulatore deve permettere di:
 
-- Inserire gli utenti tramite un from registrando i loro username e password
-- Generare gli utenti tramire un form selezionando il preset e la quantità degli utenti da generare
-- Configurare il tipo delle contromisure (policy) da adottare per la simulazione dell'attacco
-- Configurare il tipo della persistenza (SQL o Mongo) da utilizzare per memorizzare gli utenti
-- Configurare il tipo dell'attacco da simulare
-- Lanciare l'attacco allo scopo di crackare le password degli utenti forniti
-- Visualizzare il log, le metriche e il risultato dell'attacco
+- Inserire gli utenti tramite un from registrando i loro username e password.
+- Generare gli utenti tramite un form selezionando un modello e la quantità degli utenti da generare.
+- Configurare il tipo delle contromisure (policy) da adottare per la simulazione dell'attacco.
+- Configurare il tipo della persistenza (SQL o Mongo) da utilizzare per memorizzare gli utenti.
+- Configurare il tipo dell'attacco da simulare.
+- Lanciare l'attacco allo scopo di crackare le password degli utenti forniti.
+- Visualizzare il log, le metriche e il risultato dell'attacco.
 
 ## Non-functional Requirements
 

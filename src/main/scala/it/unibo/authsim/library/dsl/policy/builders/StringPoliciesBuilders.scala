@@ -85,8 +85,9 @@ object StringPoliciesBuilders:
   abstract class AbstractStringPolicyBuilder[T] extends StringPolicyBuilder[T] with RestrictStringPolicyBuilder[T]:
     protected var minLen: Int = 1
     protected var maxLen: Option[Int] = None
-    protected var alphabetPolicy: PolicyAlphabet = PolicyDefaultAlphabet()
-    protected var patterns: ListBuffer[Regex] = ListBuffer(this.alphabetPolicy.minimalLength)
+    protected var alphabetPolicy: PolicyAlphabet = null
+    protected var patterns: ListBuffer[Regex] = ListBuffer.empty
+    this.addAlphabet(PolicyDefaultAlphabet())
 
     protected def checkNegativeNumbers(number: Int): Unit = require(number > 0, "number must be > 0")
 
@@ -102,7 +103,11 @@ object StringPoliciesBuilders:
     protected def addPatterns(regex: Regex) = this.builderMethod((regex: Regex) => patterns += regex)(regex)
 
     override def addAlphabet(alphabetPolicy: PolicyAlphabet) =
-      this.builderMethod((alphabetPolicy: PolicyAlphabet) => this.alphabetPolicy = alphabetPolicy)(alphabetPolicy)
+      this.builderMethod((alphabetPolicy: PolicyAlphabet) =>
+        if patterns.nonEmpty then patterns.remove(0)
+        this.alphabetPolicy = alphabetPolicy;
+        patterns.insert(0, this.alphabetPolicy.minimalLength)
+      )(alphabetPolicy)
 
     /**
      * @param number maximum length of string to set

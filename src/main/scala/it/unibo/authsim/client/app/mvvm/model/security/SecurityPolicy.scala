@@ -30,9 +30,11 @@ object SecurityPolicy:
             """
              An userID has
               - minimum length of 3 characters
+              - maximum length of 6 characters
 
              A password has
               - minimum length of 3 characters
+              - maximum length of 7 characters
 
             Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
         case "Simple" =>
@@ -42,6 +44,7 @@ object SecurityPolicy:
 
              A password has
               - minimum length of 3 characters
+              - maximum length of 7 characters
 
              Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
         case "Medium" =>

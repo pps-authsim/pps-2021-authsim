@@ -7,9 +7,9 @@ import scala.language.postfixOps
 
 object PasswordPolicyDefault:
   /**
-   * Password Policy with minimum length of 3 characters (alphanumeric + some symbols)
+   * Password Policy with minimum length of 3 characters (alphanumeric + some symbols) and maximum of 7 characters (alphanumeric + some symbols)
    */
-  val SIMPLE: PasswordPolicy = PasswordPolicyBuilder() minimumLength 3 build
+  val SIMPLE: PasswordPolicy = PasswordPolicyBuilder() minimumLength 3 maximumLength 7 build
   /**
    * Password Policy with minimum length of 8 characters (alphanumeric + some symbols) 
    */

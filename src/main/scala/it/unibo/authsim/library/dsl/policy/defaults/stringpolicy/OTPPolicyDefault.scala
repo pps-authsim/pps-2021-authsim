@@ -8,9 +8,9 @@ import scala.language.postfixOps
 object OTPPolicyDefault:
 
   /**
-   * OTP Policy with minimum length of 4 numeric characters
+   * OTP Policy with minimum length of 4 numeric characters and maximum of 6 numeric characters
    */
-  val SIMPLE: OTPPolicy = OTPPolicyBuilder() minimumLength 4 build
+  val SIMPLE: OTPPolicy = OTPPolicyBuilder() minimumLength 4 maximumLength 6 build
   /**
    * OTP Policy with minimum length of 7 numeric characters
    */

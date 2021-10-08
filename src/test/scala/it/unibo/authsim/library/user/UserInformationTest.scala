@@ -34,13 +34,14 @@ class UserInformationTest extends AnyFeatureSpec with GivenWhenThen with Matcher
 
   feature ("User Information creation") {
     info("The following the assume that a user is correctly created")
+
     scenario("Password store in clear") {
       Given("No cryptographic algorithm")
       When("a user information is created")
       val userInformationBuilder: UserInformationBuilder = UserInformationBuilder() withUserName (costumUser.get.username) withPassword (password)
       val userInformation: Option[UserInformation] = userInformationBuilder.build
 
-      Then("to check if name were correctly saved")
+      Then("to check if name was correctly saved")
       costumUser.get.username shouldBe userInformation.get.username
 
       And("to check if password was stored in clear")
@@ -50,15 +51,15 @@ class UserInformationTest extends AnyFeatureSpec with GivenWhenThen with Matcher
       costumUser.get.password shouldBe userInformation.get.password
     }
 
-    scenario("User Informaion creation storing the password with an hash function") {
-      Given("a symmetric algorithm")
+    scenario("Hashed password") {
+      Given("an hash algorithm")
       val sha = HashFunction.SHA384()
 
-      When("a user information is created with a password encrypted")
+      When("a user information is created with an hashed password")
       val userInformationBuilder: UserInformationBuilder = UserInformationBuilder() withUserName (autoUser.username) withPassword (sha.hash(autoUser.password)) withAlgorithm (sha)
       val userInformation: Option[UserInformation] = userInformationBuilder.build
 
-      Then("to check if name were correctly saved")
+      Then("to check if name was correctly saved")
       autoUser.username shouldBe userInformation.get.username
 
       And("to check if password was stored in clear")
@@ -68,7 +69,7 @@ class UserInformationTest extends AnyFeatureSpec with GivenWhenThen with Matcher
       sha.hash(autoUser.password) shouldBe userInformation.get.password
     }
 
-    scenario("User Informaion creation storing the password with symmetric encryption") {
+    scenario("Password encrypted with a symmetric algorithm") {
       Given("a symmetric algorithm")
       val des = DES()
 
@@ -79,7 +80,7 @@ class UserInformationTest extends AnyFeatureSpec with GivenWhenThen with Matcher
       val userInformationBuilder: UserInformationBuilder = UserInformationBuilder() withUserName (autoUser.username) withPassword (cipher.encrypt(autoUser.password, admPassword)) withAlgorithm (des)
       val userInformation: Option[UserInformation] = userInformationBuilder.build
 
-      Then("to check if name were correctly saved")
+      Then("to check if name was correctly saved")
       autoUser.username shouldBe userInformation.get.username
 
       And("to check if password was stored in clear")
@@ -89,7 +90,7 @@ class UserInformationTest extends AnyFeatureSpec with GivenWhenThen with Matcher
       autoUser.password shouldBe cipher.decrypt(userInformation.get.password, admPassword)
     }
 
-    scenario("User Information creation storing the password with asymmetric encryption") {
+    scenario("Password encrypted with a asymmetric algorithm") {
       Given("a asymmetric algorithm")
       val rsa = RSA()
 
@@ -105,7 +106,7 @@ class UserInformationTest extends AnyFeatureSpec with GivenWhenThen with Matcher
       val userInformationBuilder: UserInformationBuilder = UserInformationBuilder() withUserName (autoUser.username) withPassword (cipher.encrypt(autoUser.password, pub)) withAlgorithm (rsa)
       val userInformation: Option[UserInformation] = userInformationBuilder.build
 
-      Then("to check if name were correctly saved")
+      Then("to check if name was correctly saved")
       autoUser.username shouldBe userInformation.get.username
 
       And("to check if password was stored in clear")

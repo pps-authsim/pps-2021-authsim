@@ -47,7 +47,6 @@ class UserTest extends AnyWordSpec with should.Matchers{
   }
 
   "If a user created with a set of credential policies then user credentials" should  {
-
     s"be complaint with the policy '${userIDPolicy}'" in{
       assert(StringPolicyChecker(userIDPolicy) check (costumUser1.get.username))
     }

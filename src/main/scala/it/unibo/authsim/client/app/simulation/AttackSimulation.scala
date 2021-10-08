@@ -29,17 +29,11 @@ class AttackSimulation(
   override def call(): Unit =
     printInitialMessage()
     try
-      val userProvider = makeUserProvider()
       insertUsersIntoDatabase()
+      val userProvider = makeUserProvider()
       printAttackFinished()
     catch
       case e: SimulationException => printErrorMessage(e.message)
-
-  private def makeUserProvider(): UserProvider =
-    val matchedPolicy = SecurityPolicy.Default.all.find(policyToMatch => policyToMatch.policy.equals(policy))
-    matchedPolicy match
-      case Some(value) => new RepositoryUserProvider(database, None)
-      case None => throw new SimulationException("Could not match provided policy with library policies")
 
   private def insertUsersIntoDatabase(): Unit =
     val userEntities = users.map(user => new UserEntity(user.username, user.password)).toList
@@ -47,6 +41,10 @@ class AttackSimulation(
     database.saveUsers(userEntities) match
       case Success(_) => // do nothing
       case Failure(error) => throw new SimulationException(error.getMessage)
+
+  private def makeUserProvider(): UserProvider =
+    val matchedAlgorithm = SecurityPolicy.Default.cryptographicAlgorithmFrom(policy)
+    new RepositoryUserProvider(database, matchedAlgorithm)
 
   private def printErrorMessage(message:String) =
     logMessage(s"Could not launch attack, an error has occured: $message...")

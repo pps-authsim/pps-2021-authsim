@@ -14,7 +14,7 @@ import javax.crypto.spec.*
 /**
  * DES cipher object
  */
-private[cipher] object DESCipher:
+object DESCipher:
   import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 
   /**

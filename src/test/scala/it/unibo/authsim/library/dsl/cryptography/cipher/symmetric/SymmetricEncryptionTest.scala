@@ -6,7 +6,7 @@ import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.apache.commons.lang3.RandomStringUtils
-
+import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.RSACipher
 import scala.util.Random
 
 class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAfter {
@@ -17,7 +17,6 @@ class SymmetricEncryptionTest extends AnyWordSpec with Matchers with BeforeAndAf
   var salt=""
   var passwordList: List[String]= List.empty[String]
   var secretList: List[String]= List.empty[String]
-
   "DES encryption" should {
     "be " in {
       for(password<- passwordList; secret<- secretList)

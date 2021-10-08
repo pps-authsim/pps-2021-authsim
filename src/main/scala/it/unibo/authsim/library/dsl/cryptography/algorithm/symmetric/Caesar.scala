@@ -14,12 +14,12 @@ object Caesar:
    * Apply method for the object
    * @return an istance of the Caesar Cipher case class
    */
-  def apply() = new CaesarCipherImpl()
+  def apply() = new BasicCaesar()
 
   /**
    * Class representing a basic implementation of the Caesar Cipher algorithm
    */
-  case class CaesarCipherImpl() extends Caesar:
+  case class BasicCaesar() extends Caesar:
     import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
     
     /**

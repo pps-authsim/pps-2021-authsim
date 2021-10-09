@@ -29,7 +29,7 @@ class UsersTab() extends SplitPane :
 
   private val quantityField = AuthsimViewSFX.makeNumberTextField()
 
-  private val presetSelect = new ChoiceBox[String]
+  private val presetSelect = new ChoiceBox[UserGenerationPreset]
   private val generateButton = new Button("Generate")
 
   private val usersList = new ListView[UserEntry]()
@@ -39,8 +39,8 @@ class UsersTab() extends SplitPane :
   val usernameProperty: StringProperty = usernameField.text
   val passwordProperty: StringProperty = passwordField.text
   val quantityProperty: StringProperty = quantityField.text
-  val presetListProperty: ObjectProperty[ObservableList[String]] = presetSelect.items
-  val presetProperty: ObjectProperty[String] = presetSelect.value
+  val presetListProperty: ObjectProperty[ObservableList[UserGenerationPreset]] = presetSelect.items
+  val presetProperty: ObjectProperty[UserGenerationPreset] = presetSelect.value
   val usersListProperty: ObjectProperty[ObservableList[UserEntry]] = usersList.items
   val usersListSelectedProperty: ReadOnlyObjectProperty[UserEntry] = usersList.selectionModel.value.selectedItemProperty()
 
@@ -90,7 +90,7 @@ class AddUserForm(usernameField: TextField, passwordField: TextField, saveButton
 
 
 
-class GenerateUsersForm(quantityField: TextField, presetSelect: ChoiceBox[String], generateButton: Button) extends GridPane :
+class GenerateUsersForm(quantityField: TextField, presetSelect: ChoiceBox[UserGenerationPreset], generateButton: Button) extends GridPane :
   alignment = Pos.Center;
   hgap = 10;
   vgap = 10;

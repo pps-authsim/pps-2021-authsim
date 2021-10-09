@@ -10,7 +10,7 @@ import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, Secur
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityTab}
-import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UsersTab}
+import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UserGenerationPreset, UsersTab}
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.proxy.AuthsimViewModelDeferedProxy
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
@@ -122,7 +122,7 @@ class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with 
 
     "users are generated" should {
       "generate expected quantity of users" in {
-        mockView.usersTab.presetProperty.value = "Simple"
+        mockView.usersTab.presetProperty.value = new UserGenerationPreset("Simple", "")
         mockView.usersTab.quantityProperty.value = "3"
 
         viewModel.generateUsers()

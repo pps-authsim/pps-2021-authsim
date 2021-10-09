@@ -14,7 +14,7 @@ object ModelInitializer:
     val username = "user"
     val password = "password"
 
-    val presets = SecurityPolicy.Default.withoutProtocol map {_.policy.name}
+    val presets = SecurityPolicy.Default.withoutProtocol
 
     usersModel.usersList += User(username, password)
     presets.foreach(preset => usersModel.presetsList += preset)

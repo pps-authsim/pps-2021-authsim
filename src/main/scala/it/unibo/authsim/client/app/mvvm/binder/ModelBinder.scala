@@ -8,7 +8,7 @@ import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
-import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
+import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UserGenerationPreset}
 import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelSFX
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
@@ -24,7 +24,7 @@ import scalafx.collections.ObservableBuffer
 object ModelBinder:
 
   def bindUsersViewModel(usersModel: UsersModel, viewModel: UsersViewModel): Unit =
-    ModelBinder.bindPropertiesWithObservableList(usersModel.presetsList, viewModel.generateUsersFormProperties.presetListProperty.value, preset => preset)
+    ModelBinder.bindPropertiesWithObservableList(usersModel.presetsList, viewModel.generateUsersFormProperties.presetListProperty.value, preset => new UserGenerationPreset(preset.name, preset.description))
     ModelBinder.bindPropertiesWithObservableList(usersModel.usersList, viewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
 
   def bindSecurityViewModel(securityModel: SecurityModel, viewModel: SecurityViewModel): Unit =

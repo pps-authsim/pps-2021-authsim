@@ -53,7 +53,7 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
     val quantity = usersViewModel.generateUsersFormProperties.quantityProperty.getValue().toInt;
     val preset = usersViewModel.generateUsersFormProperties.presetProperty.getValue();
 
-    val credentialsPolicies = SecurityPolicy.Default.credentialsPoliciesFrom(preset)
+    val credentialsPolicies = SecurityPolicy.Default.credentialsPoliciesFrom(preset.name)
     if(credentialsPolicies.isDefined) then
       generateUsers(quantity, credentialsPolicies.get)
         .foreach(user => model.usersModel.usersList += user)

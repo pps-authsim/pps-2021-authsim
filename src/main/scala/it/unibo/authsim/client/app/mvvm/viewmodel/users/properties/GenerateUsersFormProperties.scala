@@ -7,5 +7,6 @@ import scalafx.beans.property.{ObjectProperty, StringProperty}
 case class GenerateUsersFormProperties(
                                         val quantityProperty: StringProperty,
                                         val presetListProperty: ObjectProperty[ObservableList[UserGenerationPreset]],
-                                        val presetProperty: ObjectProperty[UserGenerationPreset]
+                                        val presetProperty: ObjectProperty[UserGenerationPreset],
+                                        val presetDescription: StringProperty
                                  )

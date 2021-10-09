@@ -26,6 +26,12 @@ object ModelBinder:
   def bindUsersViewModel(usersModel: UsersModel, viewModel: UsersViewModel): Unit =
     ModelBinder.bindPropertiesWithObservableList(usersModel.presetsList, viewModel.generateUsersFormProperties.presetListProperty.value, preset => new UserGenerationPreset(preset.name, preset.description))
     ModelBinder.bindPropertiesWithObservableList(usersModel.usersList, viewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
+    viewModel.generateUsersFormProperties.presetProperty.addListener((observable, oldValue, newValue) => {
+      val description = newValue.description
+      usersModel.presetDescription = Option(description)
+      viewModel.generateUsersFormProperties.presetDescription.value = description
+    })
+
 
   def bindSecurityViewModel(securityModel: SecurityModel, viewModel: SecurityViewModel): Unit =
     ModelBinder.bindPropertiesWithObservableList(securityModel.securityPolicyList, viewModel.securityPoliciesProperties.securityPoliciesList.value, policy => new SecurityPolicyEntry(policy.policy, policy.description))

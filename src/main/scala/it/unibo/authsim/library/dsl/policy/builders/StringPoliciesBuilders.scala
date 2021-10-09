@@ -23,13 +23,6 @@ object StringPoliciesBuilders:
      * @return instance of the actual builder
      */
     def addAlphabet(alphabetPolicy: PolicyAlphabet): this.type
-    /**
-     * Check if the given value is valid for a policy of type string
-     * @param value value to check
-     * @param policyChecker (@see [[PolicyChecker#stringPolicyChecker]])
-     * @return instance of the actual builder
-     */
-    def check(value: String)(implicit policyChecker: List[Regex] => PolicyChecker[String]): Boolean
 
   /**
    * ''RestrictStringPolicyBuilder'' rappresent an extension to build a new restricted policy of type string
@@ -133,8 +126,6 @@ object StringPoliciesBuilders:
       this.minLen = number
       this.addPatterns(this.alphabetPolicy.minimumLength(number))
     })(number)
-
-    override def check(value: String)(implicit policyChecker: List[Regex] => PolicyChecker[String]): Boolean = policyChecker(patterns.toList).check(value)
 
   /**
    * ''AbstractMoreRestrictStringPolicyBuilder'' is an abstract builder that extends [[AbstractStringPolicyBuilder]] and implements [[MoreRestrictStringPolicyBuilder]] methods

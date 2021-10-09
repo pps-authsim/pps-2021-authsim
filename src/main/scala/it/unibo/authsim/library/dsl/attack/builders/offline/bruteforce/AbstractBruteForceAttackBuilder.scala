@@ -7,7 +7,11 @@ import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.dsl.UserProvider
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
-import it.unibo.authsim.library.user.model.User
+import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
+import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.{AES, DES, Caesar}
+import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.RSACipher
+import it.unibo.authsim.library.dsl.cryptography.cipher.symmetric.{AESCipher, CaesarCipher, DESCipher}
+import it.unibo.authsim.library.user.model.{User, UserInformation}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.{Duration, MILLISECONDS}
@@ -69,13 +73,13 @@ private class BruteForceAttack(private val target: UserProvider, private val has
     totalResults = totalResults + Statistics.onlyElapsedTime(elapsedTime)
     logTo.foreach(logSpec => logSpec.consume(totalResults))
 
-  private def futureJob(targetUsers: List[User], stringProvider: ConcurrentStringCombinator): Statistics =
+  private def futureJob(targetUsers: List[UserInformation], stringProvider: ConcurrentStringCombinator): Statistics =
     var localStatistics = Statistics.zero
     var nextPassword = stringProvider.getNextString()
     while !nextPassword.isEmpty do
       val nextPasswordString = nextPassword.get
-      val hashedPassword = hashFunction.hash(nextPasswordString)
       targetUsers.foreach(user => {
+        val hashedPassword = retrievePasswordEncrypter(user)(nextPasswordString)
         localStatistics = localStatistics + Statistics.onlyBreaches(hashedPassword == user.password match {
           case true => Set(User(user.username, nextPasswordString))
           case false => Set()
@@ -85,3 +89,15 @@ private class BruteForceAttack(private val target: UserProvider, private val has
       nextPassword = stringProvider.getNextString()
     end while
     localStatistics
+
+  private def retrievePasswordEncrypter(userInfo: UserInformation): String => String =
+    userInfo.algorithm match {
+      case None => s => s
+      case Some(algorithm) => algorithm match {
+        case hashFunction: HashFunction => hashFunction.hash
+        case caesar: Caesar => s => CaesarCipher().encrypt(s, caesar.keyLength)
+        case des: DES => s => DESCipher().encrypt(s, algorithm.salt.getOrElse(""))
+        case aes: AES => s => AESCipher().encrypt(s, algorithm.salt.getOrElse(""))
+        case rsa: RSA => s => RSACipher().encrypt(s, algorithm.salt.getOrElse(""))
+      }
+    }

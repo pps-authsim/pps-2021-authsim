@@ -18,7 +18,9 @@ import scala.concurrent.duration.{Duration, MILLISECONDS}
 import scala.concurrent.{Await, Future, TimeoutException}
 
 /**
- * A builder of bruteforce attacks.
+ * A builder of bruteforce attacks. It allows to specify the Alphabet to use in the attack and maximum length of the string to build.
+ * The alphabet is mandatory.
+ * The length of the words defaults to 1.
  */
 abstract class AbstractBruteForceAttackBuilder[T <: Alphabet[T]] extends OfflineAttackBuilder:
   private var alphabet: Alphabet[T] = null
@@ -53,7 +55,10 @@ abstract class AbstractBruteForceAttackBuilder[T <: Alphabet[T]] extends Offline
    */
   protected def protectedGetMaximumLength: Int = this._maximumLength
 
-  final override def build: Attack = new BruteForceAttack(this.getTarget(), this.protectedGetAlphabet, this.protectedGetMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
+  final override def build: Attack =
+    require(this.getTarget() != null, "UserProvider not set. Aborting attack creation.")
+    require(this.protectedGetAlphabet != null, "Alphabet not set. Aborting attack creation.")
+    new BruteForceAttack(this.getTarget(), this.protectedGetAlphabet, this.protectedGetMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
 
 private class BruteForceAttack(private val target: UserProvider, private val alphabet: Alphabet[_], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
 

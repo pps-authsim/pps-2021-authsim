@@ -82,7 +82,7 @@ class AttackSimulation(
     logMessage(s"Could not launch attack, an error has occured: $message...")
 
   private def printInitialMessage(): Unit =
-    val initialText =  s"Starting an attack procedure '$attackSequence' with '$policy' security policy and '$credentialsSource' credentails source for users $users..."
+    val initialText =  s"Starting an attack procedure '$attackSequence' with '$policy' security policy and '$credentialsSource' credentails source for users ${users.map(u => u.username + ":" + u.password).toList}..."
     logMessage(initialText)
 
   private def printAttackFinished(): Unit =

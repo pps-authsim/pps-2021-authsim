@@ -18,16 +18,16 @@ class AttacksFactory(private val userProvider: UserProvider, private val logger:
    * @return an AttackBuilder configured to attack a userProvider, using lowercase characters to construct the password string
    *         with a maximum length of 6 and logging to the given logger, without timeout.
    */
-  def bruteForceLowers(): AttackBuilder = new BruteForceAttackBuilder() against userProvider usingAlphabet defaultAlphabets.lowers logTo logger maximumLength 6
+  def bruteForceLowers(): AttackBuilder = new BruteForceAttackBuilder() against userProvider usingAlphabet defaultAlphabets.lowers logTo logger maximumWordLength 6
 
   /**
    * @return an AttackBuilder configured to attack a userProvider, using both lower and upper case characters to construct the password string
    *         with a maximum length of 10 and logging to the given logger, with a timeout of 120 seconds (2 minutes).
    */
-  def bruteForceLetters(): AttackBuilder = new BruteForceAttackBuilder() against userProvider usingAlphabet (defaultAlphabets.lowers and defaultAlphabets.uppers) maximumLength 10 logTo logger timeout Duration(120, TimeUnit.SECONDS)
+  def bruteForceLetters(): AttackBuilder = new BruteForceAttackBuilder() against userProvider usingAlphabet (defaultAlphabets.lowers and defaultAlphabets.uppers) maximumWordLength 10 logTo logger timeout Duration(120, TimeUnit.SECONDS)
 
   /**
    * @return an AttackBuilder configured to attack a userProvider, using all alphanumeric and symbols characters to construct the password string
    *         with a maximum length of 16 and logging to the given logger, with a timeout of 600 seconds (10 minutes).
    */
-  def bruteForceAll(): AttackBuilder = new BruteForceAttackBuilder() against userProvider usingAlphabet defaultAlphabets.alphanumericsymbols maximumLength 16 logTo logger timeout Duration(600, TimeUnit.SECONDS)
+  def bruteForceAll(): AttackBuilder = new BruteForceAttackBuilder() against userProvider usingAlphabet defaultAlphabets.alphanumericsymbols maximumWordLength 16 logTo logger timeout Duration(600, TimeUnit.SECONDS)

@@ -54,19 +54,19 @@ class BruteForceAttackBuilderTest extends AnyWordSpec:
         assert(!myBruteForceBuilder.getTimeout().isEmpty)
       }
       "specify the maximum length of the password" in {
-        myBruteForceBuilder maximumLength 2
+        myBruteForceBuilder maximumWordLength 2
         assert(myBruteForceBuilder.getMaximumLength == 2)
       }
     }
 
     "A bruteforce attack" should {
       "crack a simple password" in {
-        (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumLength maximumPasswordLength jobs 4 logTo myLogger).executeNow()
+        (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumWordLength maximumPasswordLength jobs 4 logTo myLogger).executeNow()
         assert(!myLogger.getStatistics.successfulBreaches.isEmpty)
       }
       "timeout if out of time" in {
         val consumer = new TestStatisticsConsumer()
-        (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumLength maximumPasswordLength jobs 4 logTo consumer timeout Duration.Zero).executeNow()
+        (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumWordLength maximumPasswordLength jobs 4 logTo consumer timeout Duration.Zero).executeNow()
         assert(consumer.getStatistics.timedOut)
       }
     }

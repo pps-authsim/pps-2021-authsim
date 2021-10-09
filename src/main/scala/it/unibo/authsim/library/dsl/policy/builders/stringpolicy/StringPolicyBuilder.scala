@@ -1,40 +1,38 @@
-package it.unibo.authsim.library.dsl.policy.builders
+package it.unibo.authsim.library.dsl.policy.builders.stringpolicy
 
+import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
+import it.unibo.authsim.library.dsl.builder.Builder
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
-import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
+import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.{PolicyDefaultAlphabet, PolicyOTPAlphabet}
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.StringPolicyBuildersHelpers
 import it.unibo.authsim.library.dsl.policy.checkers.PolicyChecker
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
-import it.unibo.authsim.library.dsl.builder.Builder
 
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
-object StringPoliciesBuilders:
+/**
+ * ''StringPolicyBuilder'' is a trait that is used to build a new policy of type string
+ * @tparam T the type to build
+ */
+trait StringPolicyBuilder[T] extends Builder[T]
 
+object StringPolicyBuilder:
   /**
-   * ''StringPolicyBuilder'' is a trait that is used to build a new policy of type string
-   * @tparam T the type to build
+   * ''SettableAlphabetBuilder'' rappresent an extension to build a new policy of type string with another alphabet
    */
-  trait StringPolicyBuilder[T] extends Builder[T]:
+  trait SettableAlphabetBuilder:
     /**
      * Set a [[PolicyAlphabet policy alphabet]]
      * @param alphabetPolicy policy alphabet to set
      * @return instance of the actual builder
      */
     def addAlphabet(alphabetPolicy: PolicyAlphabet): this.type
-    /**
-     * Check if the given value is valid for a policy of type string
-     * @param value value to check
-     * @param policyChecker (@see [[PolicyChecker#stringPolicyChecker]])
-     * @return instance of the actual builder
-     */
-    def check(value: String)(implicit policyChecker: List[Regex] => PolicyChecker[String]): Boolean
 
   /**
    * ''RestrictStringPolicyBuilder'' rappresent an extension to build a new restricted policy of type string
-   * @tparam T the type to build
    */
-  trait RestrictStringPolicyBuilder[T] extends Builder[T]:
+  trait RestrictStringPolicyBuilder:
     /**
      * Set the maximum length a string must have.
      * @param number maximum length of string to set
@@ -50,9 +48,8 @@ object StringPoliciesBuilders:
 
   /**
    * ''MoreRestrictStringPolicyBuilder'' rappresent an extension to build a new more restricted policy of type string
-   * @tparam T the type to build
    */
-  trait MoreRestrictStringPolicyBuilder[T] extends Builder[T]:
+  trait MoreRestrictStringPolicyBuilder:
     /**
      * Set the minimum number of lowercase characters a string must have.
      * @param number minimum number of lowercase characters to set
@@ -82,11 +79,12 @@ object StringPoliciesBuilders:
    * ''AbstractStringPolicyBuilder'' is an abstract builder that implements [[StringPolicyBuilder]] and [[RestrictStringPolicyBuilder]] methods
    * @tparam T the type to build
    */
-  abstract class AbstractStringPolicyBuilder[T] extends StringPolicyBuilder[T] with RestrictStringPolicyBuilder[T]:
+  abstract class AbstractStringPolicyBuilder[T] extends StringPolicyBuilder[T] with RestrictStringPolicyBuilder:
     protected var minLen: Int = 1
     protected var maxLen: Option[Int] = None
-    protected var alphabetPolicy: PolicyAlphabet = PolicyDefaultAlphabet()
-    protected var patterns: ListBuffer[Regex] = ListBuffer(this.alphabetPolicy.minimalLength)
+    protected var alphabetPolicy: PolicyAlphabet = null
+    protected var patterns: ListBuffer[Regex] = ListBuffer.empty
+    this.setAlphabet(PolicyDefaultAlphabet())
 
     protected def checkNegativeNumbers(number: Int): Unit = require(number > 0, "number must be > 0")
 
@@ -101,8 +99,12 @@ object StringPoliciesBuilders:
 
     protected def addPatterns(regex: Regex) = this.builderMethod((regex: Regex) => patterns += regex)(regex)
 
-    override def addAlphabet(alphabetPolicy: PolicyAlphabet) =
-      this.builderMethod((alphabetPolicy: PolicyAlphabet) => this.alphabetPolicy = alphabetPolicy)(alphabetPolicy)
+    protected def setAlphabet(alphabetPolicy: PolicyAlphabet) =
+      this.builderMethod((alphabetPolicy: PolicyAlphabet) =>
+        if patterns.nonEmpty then patterns.remove(0)
+        this.alphabetPolicy = alphabetPolicy;
+        patterns.insert(0, this.alphabetPolicy.minimalLength)
+      )(alphabetPolicy)
 
     /**
      * @param number maximum length of string to set
@@ -128,13 +130,18 @@ object StringPoliciesBuilders:
       this.addPatterns(this.alphabetPolicy.minimumLength(number))
     })(number)
 
-    override def check(value: String)(implicit policyChecker: List[Regex] => PolicyChecker[String]): Boolean = policyChecker(patterns.toList).check(value)
-
   /**
-   * ''AbstractMoreRestrictStringPolicyBuilder'' is an abstract builder that extends [[AbstractStringPolicyBuilder]] and implements [[MoreRestrictStringPolicyBuilder]] methods
+   * ''AbstractStringPolicyWithSettableAlphabetBuilder'' is an abstract builder that extends [[AbstractStringPolicyBuilder]] and implements [[SettableAlphabetBuilder]] methods
    * @tparam T the type to build
    */
-  abstract class AbstractMoreRestrictStringPolicyBuilder[T] extends AbstractStringPolicyBuilder[T] with MoreRestrictStringPolicyBuilder[T]:
+  abstract class AbstractStringPolicyBuilderWithSettableAlphabet[T] extends AbstractStringPolicyBuilder[T] with SettableAlphabetBuilder:
+    override def addAlphabet(alphabetPolicy: PolicyAlphabet) = this.builderMethod((alphabetPolicy: PolicyAlphabet) => super.setAlphabet(alphabetPolicy))(alphabetPolicy)
+
+  /**
+   * ''AbstractMoreRestrictStringPolicyBuilder'' is an abstract builder that extends [[AbstractStringPolicyBuilderWithSettableAlphabet]] and implements [[MoreRestrictStringPolicyBuilder]] methods
+   * @tparam T the type to build
+   */
+  abstract class AbstractMoreRestrictStringPolicyBuilder[T] extends AbstractStringPolicyBuilderWithSettableAlphabet[T] with MoreRestrictStringPolicyBuilder:
     protected var minUpperChars: Option[Int] = None
     protected var minLowerChars: Option[Int] = None
     protected var minSymbols: Option[Int] = None
@@ -225,85 +232,3 @@ object StringPoliciesBuilders:
       this.minNumbers = Some(number)
       this.addPatterns(this.alphabetPolicy.minimumNumbers(number))
     })(number)
-
-  /**
-   * ''UserIDPolicyBuilder'' is userID policy builder
-   */
-  case class UserIDPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[UserIDPolicy]:
-    override def build: UserIDPolicy = new UserIDPolicy:
-      override def minimumLength: Int = UserIDPolicyBuilder.this.minLen
-      override def maximumLength: Option[Int] = UserIDPolicyBuilder.this.maxLen
-      override def alphabet: PolicyAlphabet = UserIDPolicyBuilder.this.alphabetPolicy
-      override def patterns: ListBuffer[Regex] = UserIDPolicyBuilder.this.patterns
-      override def minimumUpperChars: Option[Int] = UserIDPolicyBuilder.this.minUpperChars
-      override def minimumLowerChars: Option[Int] = UserIDPolicyBuilder.this.minLowerChars
-      override def minimumSymbols: Option[Int] = UserIDPolicyBuilder.this.minSymbols
-      override def minimumNumbers: Option[Int] = UserIDPolicyBuilder.this.minNumbers
-      override def toString: String = Helpers.buildToString("UseIDPolicy", this)
-
-  /**
-   * ''PasswordPolicyBuilder'' is password policy builder
-   */
-  case class PasswordPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[PasswordPolicy]:
-    override def build: PasswordPolicy = new PasswordPolicy:
-      override def minimumLength: Int = PasswordPolicyBuilder.this.minLen
-      override def maximumLength: Option[Int] = PasswordPolicyBuilder.this.maxLen
-      override def alphabet: PolicyAlphabet = PasswordPolicyBuilder.this.alphabetPolicy
-      override def patterns: ListBuffer[Regex] = PasswordPolicyBuilder.this.patterns
-      override def minimumUpperChars: Option[Int] = PasswordPolicyBuilder.this.minUpperChars
-      override def minimumLowerChars: Option[Int] = PasswordPolicyBuilder.this.minLowerChars
-      override def minimumSymbols: Option[Int] = PasswordPolicyBuilder.this.minSymbols
-      override def minimumNumbers: Option[Int] = PasswordPolicyBuilder.this.minNumbers
-      override def toString: String = Helpers.buildToString("PasswordPolicy", this)
-
-  /**
-   * ''OTPPolicyBuilder'' is OTP policy builder
-   */
-  case class OTPPolicyBuilder() extends AbstractStringPolicyBuilder[OTPPolicy]:
-    this.alphabetPolicy.onlyNumbers +=: this.patterns
-    override def build: OTPPolicy = new OTPPolicy:
-      override def minimumLength: Int = OTPPolicyBuilder.this.minLen
-      override def maximumLength: Option[Int] = OTPPolicyBuilder.this.maxLen
-      override def alphabet: PolicyAlphabet = OTPPolicyBuilder.this.alphabetPolicy
-      override def patterns: ListBuffer[Regex] = OTPPolicyBuilder.this.patterns
-      override def toString: String = Helpers.buildToString("OTPPolicy", this)
-
-  /**
-   * ''SaltPolicyBuilder'' is salt policy builder
-   */
-  case class SaltPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[SaltPolicy]:
-    override def build: SaltPolicy = new SaltPolicy:
-      override def minimumLength: Int = SaltPolicyBuilder.this.minLen
-      override def maximumLength: Option[Int] = SaltPolicyBuilder.this.maxLen
-      override def alphabet: PolicyAlphabet = SaltPolicyBuilder.this.alphabetPolicy
-      override def patterns: ListBuffer[Regex] = SaltPolicyBuilder.this.patterns
-      override def minimumUpperChars: Option[Int] = SaltPolicyBuilder.this.minUpperChars
-      override def minimumLowerChars: Option[Int] = SaltPolicyBuilder.this.minLowerChars
-      override def minimumSymbols: Option[Int] = SaltPolicyBuilder.this.minSymbols
-      override def minimumNumbers: Option[Int] = SaltPolicyBuilder.this.minNumbers
-      override def toString: String = Helpers.buildToString("SaltPolicy", this)
-
-  private object Helpers:
-    def buildToString(name: String, stringPolicy: StringPolicy | RestrictStringPolicy | MoreRestrictStringPolicy): String =
-      val string: StringBuilder = new StringBuilder(name).append(" { ")
-
-      if stringPolicy.isInstanceOf[RestrictStringPolicy] then
-        val policyRestrict = stringPolicy.asInstanceOf[RestrictStringPolicy]
-        string
-          .append("minimum length = ").append(policyRestrict.minimumLength).append(", ")
-          .append("maximum length = ").append(policyRestrict.maximumLength)
-
-      if stringPolicy.isInstanceOf[MoreRestrictStringPolicy] then
-        val policyMoreRestrict: MoreRestrictStringPolicy = stringPolicy.asInstanceOf[MoreRestrictStringPolicy]
-        string.append(", ").append("minimum uppercase chars = ").append(policyMoreRestrict.minimumUpperChars)
-        string.append(", ").append("minimum lowercase chars = ").append(policyMoreRestrict.minimumLowerChars)
-        string.append(", ").append("minimum symbols = ").append(policyMoreRestrict.minimumSymbols)
-        string.append(", ").append("minimum numbers = ").append(policyMoreRestrict.minimumNumbers)
-
-      if stringPolicy.isInstanceOf[StringPolicy] then
-        val policyString = stringPolicy.asInstanceOf[StringPolicy]
-        string.append(", ")
-          .append("patterns = ").append(policyString.patterns).append(", ")
-          .append("alphabet = ").append(policyString.alphabet)
-
-      string.append(" } ").toString

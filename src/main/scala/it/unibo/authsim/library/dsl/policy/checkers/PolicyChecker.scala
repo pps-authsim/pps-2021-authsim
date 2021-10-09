@@ -1,7 +1,5 @@
 package it.unibo.authsim.library.dsl.policy.checkers
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.StringPolicyBuilder
-
 import scala.util.matching.Regex
 
 /**

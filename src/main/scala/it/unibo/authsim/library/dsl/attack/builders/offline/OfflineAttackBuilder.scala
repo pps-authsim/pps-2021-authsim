@@ -5,11 +5,11 @@ import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.UserProvider
 
 /**
- * Builder for offline attacks. It allows to configure a UserProvider, the used hash function and the number of concurrent workers.
+ * Builder for offline attacks. It allows to configure a UserProvider and the number of concurrent workers.
+ * The user provider is mandatory.
  */
 trait OfflineAttackBuilder extends AttackBuilder:
   private var target: UserProvider = null
-  private var hashFunction: HashFunction = null
   private var numberOfWorkers: Int = 1
 
   /**

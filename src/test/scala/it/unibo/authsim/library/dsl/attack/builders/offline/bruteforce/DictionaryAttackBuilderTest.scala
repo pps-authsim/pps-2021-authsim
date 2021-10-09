@@ -24,7 +24,7 @@ class DictionaryAttackBuilderTest extends AnyWordSpec:
       println("Breached credentials: " + consumable.successfulBreaches.map(u => u.username + " - " + u.password).reduceOption((u1, u2) => u1 + "\n" + u2).getOrElse("No credentials breached"))
 
     val myProxy = new UserProvider {
-      override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("hunter2"), None))
+      override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("hunter2"), Some(HashFunction.MD5())))
 
     }
 
@@ -34,12 +34,9 @@ class DictionaryAttackBuilderTest extends AnyWordSpec:
     val myDictionaryAttackBuilder: DictionaryAttackBuilder = new DictionaryAttackBuilder()
 
     "The DictionaryAttackBuilder" must {
-      myDictionaryAttackBuilder withDictionary myDictionary against myProxy hashingWith HashFunction.MD5()
+      myDictionaryAttackBuilder withDictionary myDictionary against myProxy
       "declare a target" in {
         assert(myDictionaryAttackBuilder.getTarget() != null)
-      }
-      "select a hash function" in {
-        assert(myDictionaryAttackBuilder.getHashFunction() != null)
       }
       "declare a dictionary" in {
         assert(myDictionaryAttackBuilder.getDictionary != null)
@@ -65,7 +62,7 @@ class DictionaryAttackBuilderTest extends AnyWordSpec:
 
     "A dictionary attack" should {
       "crack a simple password" in {
-        (new DictionaryAttackBuilder() withDictionary myDictionary maximumCombinedWords 2 against myProxy hashingWith HashFunction.MD5() jobs 4 logTo myLogger).executeNow()
+        (new DictionaryAttackBuilder() withDictionary myDictionary maximumCombinedWords 2 against myProxy jobs 4 logTo myLogger).executeNow()
         assert(!myLogger.getStatistics.successfulBreaches.isEmpty)
       }
     }

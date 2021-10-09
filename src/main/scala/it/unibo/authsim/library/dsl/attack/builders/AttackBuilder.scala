@@ -20,7 +20,7 @@ trait AttackBuilder extends Builder[Attack]:
    * @param statisticsConsumer The StatisticsConsumer to log to.
    * @return
    */
-  def logTo(statisticsConsumer: StatisticsConsumer) = this.builderMethod[StatisticsConsumer](consumer => this.statisticsConsumer = Option(consumer))(statisticsConsumer)
+  def logTo(statisticsConsumer: StatisticsConsumer): this.type = this.builderMethod[StatisticsConsumer](consumer => this.statisticsConsumer = Option(consumer))(statisticsConsumer)
 
   /**
    * Sets the timeout for an attack.

@@ -18,11 +18,6 @@ trait OfflineAttackBuilder extends AttackBuilder:
   final def getTarget() = this.target
 
   /**
-   * @return The hash function to use to hash passwords.
-   */
-  final def getHashFunction() = this.hashFunction
-
-  /**
    * @return The number of concurrent workers used by the attack.
    */
   final def getNumberOfWorkers = this.numberOfWorkers
@@ -40,13 +35,6 @@ trait OfflineAttackBuilder extends AttackBuilder:
    * @return The builder
    */
   def jobs(numberOfWorkers: Int): this.type = this.builderMethod[Int](n => this.numberOfWorkers = n)(numberOfWorkers)
-
-  /**
-   * Sets the hash function to use in the attack.
-   * @param hashFunction The hash function.
-   * @return The builder.
-   */
-  def hashingWith(hashFunction: HashFunction): this.type = this.builderMethod[HashFunction](fun => this.hashFunction = fun)(hashFunction)
 
 /**
  * An offline attack.

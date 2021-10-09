@@ -43,6 +43,7 @@ class AttackSimulation(
       printAttackStarted()
       startAttack(attackBuilder)
       printAttackFinished()
+      succeeded()
     catch
       case e: SimulationException => printErrorMessage(e.message)
 
@@ -90,3 +91,4 @@ class AttackSimulation(
 
   private def logMessage(message: String): Unit =
     updateMessage(s"\n$message")
+    Thread.sleep(500)

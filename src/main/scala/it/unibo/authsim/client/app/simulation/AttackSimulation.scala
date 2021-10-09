@@ -63,7 +63,7 @@ class AttackSimulation(
   private def makeAttack(userProvider: UserProvider, logger: StatisticsConsumer): AttackBuilder =
     val factory = AttacksFactory(userProvider, logger)
     //TODO pattern match to determine attack to build
-    factory.bruteForceSimple()
+    factory.bruteForceLowers()
 
   private def startAttack(attackBuilder: AttackBuilder): Unit =
     attackBuilder.timeout(AttackSimulation.DEFAULT_TIMEOUT)

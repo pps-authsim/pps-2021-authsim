@@ -75,7 +75,7 @@ object SecurityPolicy:
               - minimum length of 8 characters
               - a minimum of 1 symbols
 
-             Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
+             The userID is stored in plain text and password is stored with SHA1.""".descriptor(this)
         case "SuperHard" =>
             """
              An userID has

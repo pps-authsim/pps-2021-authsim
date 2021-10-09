@@ -53,9 +53,9 @@ abstract class AbstractBruteForceAttackBuilder[T <: Alphabet[T]] extends Offline
    */
   protected def protectedGetMaximumLength: Int = this._maximumLength
 
-  final override def build: Attack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.protectedGetAlphabet, this.protectedGetMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
+  final override def build: Attack = new BruteForceAttack(this.getTarget(), this.protectedGetAlphabet, this.protectedGetMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
 
-private class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val alphabet: Alphabet[_], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
+private class BruteForceAttack(private val target: UserProvider, private val alphabet: Alphabet[_], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
 
   override def start(): Unit =
     var jobResults: List[Future[Statistics]] = List.empty

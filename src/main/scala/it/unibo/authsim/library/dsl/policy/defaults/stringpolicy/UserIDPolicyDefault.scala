@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.policy.defaults.stringpolicy
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.UserIDPolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.UserIDPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.UserIDPolicy
 
 import scala.language.postfixOps
@@ -11,7 +11,7 @@ object UserIDPolicyDefault:
    */
   val SUPER_SIMPLE: UserIDPolicy = UserIDPolicyBuilder() minimumLength 3 maximumLength 6 build
   /**
-   * UserID Policy with minimum length of 8 (alphanumeric + some symbols) and maximum of
+   * UserID Policy with minimum length of 8 (alphanumeric + some symbols)
    */
   val SIMPLE: UserIDPolicy = UserIDPolicyBuilder() minimumLength 8 build
   /**

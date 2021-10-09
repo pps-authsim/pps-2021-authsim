@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.policy.defaults.stringpolicy
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.PasswordPolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.PasswordPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.PasswordPolicy
 
 import scala.language.postfixOps

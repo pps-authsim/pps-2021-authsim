@@ -2,7 +2,7 @@ package it.unibo.authsim.library.user
 
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.DES
 import it.unibo.authsim.library.user.builder.UserInformationBuilder
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{OTPPolicyBuilder, PasswordPolicyBuilder, SaltPolicyBuilder, UserIDPolicyBuilder}
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.{OTPPolicyBuilder, PasswordPolicyBuilder, SaltPolicyBuilder, UserIDPolicyBuilder}
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.util.Util

@@ -2,7 +2,8 @@ package it.unibo.authsim.library.dsl.policy.generators
 
 import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.*
+import it.unibo.authsim.library.dsl.policy.builders.*
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.{OTPPolicyBuilder, PasswordPolicyBuilder, UserIDPolicyBuilder}
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{RestrictStringPolicy, StringPolicy}
 import org.scalatest.*
 import org.scalatest.funsuite.AnyFunSuite

@@ -1,6 +1,7 @@
 package it.unibo.authsim.library.user
 import scala.language.postfixOps
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{OTPPolicyBuilder, PasswordPolicyBuilder, UserIDPolicyBuilder}
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.OTPPolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.{PasswordPolicyBuilder, UserIDPolicyBuilder}
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.UserCostumBuilder
 import it.unibo.authsim.library.user.builder.UserBuilder

@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.dsl.otp.generators
 
 import it.unibo.authsim.library.dsl.otp.model.OTP
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.OTPPolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.OTPPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.defaults.stringpolicy.OTPPolicyDefault
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 

@@ -1,6 +1,7 @@
 package it.unibo.authsim.library.dsl.policy.alphabet
 
 import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
+import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
 
 import scala.collection.immutable.ListSet
 import scala.util.matching.Regex
@@ -13,7 +14,17 @@ trait PolicyAlphabet extends RegexAlphabet with RandomAlphabet
 object PolicyAlphabet:
 
   /**
-   * ''PolicyDefaultAlphabet'' is an implementation of a default alphabet for a policy
+   * ''PolicyDefaultAlphabet'' is an implementation of a default alphabet for a policy.
+   *
+   * The characters are:
+   *
+   * - lowercase : 'a' to 'z'
+   *
+   * - uppercase : 'A' to 'Z'
+   *
+   * - digits    : '0' to '9'
+   *
+   * - symbols   : '!' '@' '#' '$' '%' '&#94;' '&' '*'
    */
   case class PolicyDefaultAlphabet() extends PolicyAlphabet:
     override def lowers = SymbolicAlphabet(ListSet.from(for i <- 'a' to 'z' yield i.toString))
@@ -27,3 +38,12 @@ object PolicyAlphabet:
         s", digits = " + this.digits.mkString +
         s", symbols = " + this.symbols.mkString + " }"
 
+
+  /**
+   * ''PolicyOTPAlphabet'' is an implementation of a default alphabet for a otp policy.
+   *
+   * The characters are: '0' to '9'
+   */
+  case class PolicyOTPAlphabet() extends PolicyAlphabet:
+    override def digits: SymbolicAlphabet = PolicyDefaultAlphabet().digits
+    override def toString: String = s"PolicyOTPAlphabet { digits = " + this.digits.mkString + " }"

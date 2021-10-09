@@ -6,7 +6,7 @@ import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.cryptography.cipher.symmetric.DESCipher
 import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.RSACipher
 import it.unibo.authsim.library.user.builder.{UserAutoBuilder, UserBuilder, UserCostumBuilder, UserInformationBuilder}
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.UserIDPolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.UserIDPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.util.Util

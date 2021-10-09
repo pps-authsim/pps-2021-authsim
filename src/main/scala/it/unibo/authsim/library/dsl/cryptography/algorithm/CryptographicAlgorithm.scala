@@ -8,7 +8,7 @@ trait CryptographicAlgorithm:
    * Getter for the name of the crypthographic algorithm
    * @return                 a string representing the name of crypthographic algorithm
    */
-  def algorithmName: String
+  def name: String
 
   /**
    * Getter for the salt used by the algorithm, by default the algorithm does not use it

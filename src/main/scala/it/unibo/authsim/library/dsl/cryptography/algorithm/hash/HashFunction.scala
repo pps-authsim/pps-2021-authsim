@@ -7,7 +7,7 @@ import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 
 import java.nio.charset.StandardCharsets
-import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
+import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitConversion._
 /**
  * Trait representing the hash function
  */
@@ -41,13 +41,6 @@ trait HashFunction extends CryptographicAlgorithm:
    */
   def salt_[A](salt:A): Unit= _salt = Option(salt)
 
-  /**
-   * Getter for the name of the Hash algorithm
-   *
-   *  @return                 a string representing the name of crypthographic algorithm
-   */
-  override def algorithmName: String = this.toString
-
 /**
  * Companion object of the HashFunction trait
  */
@@ -65,7 +58,13 @@ object HashFunction:
      *  @return                  a string representing the hashed input value
      */
     override def hash[A](password: A): String = DigestUtils.shaHex(password.concat(salt.getOrElse("")))
-
+    /**
+     * Getter for the name of the Hash algorithm
+     *
+     *  @return                 a string representing the name of crypthographic algorithm
+     */
+    override def name: String = "SHA1"
+    
   /**
    * Class performing the SHA256 algorithm
    */
@@ -78,7 +77,13 @@ object HashFunction:
      *  @return                  a string representing the hashed input value
      */
     override def hash[A](password: A): String = Hashing.sha256().hashString(password.concat(salt.getOrElse("")), StandardCharsets.UTF_8)
-
+    /**
+     * Getter for the name of the Hash algorithm
+     *
+     *  @return                 a string representing the name of crypthographic algorithm
+     */
+    override def name: String = "SHA256"
+    
   /**
    * Class performing the SHA384 algorithm
    */
@@ -91,6 +96,12 @@ object HashFunction:
      *  @return                  a string representing the hashed input value
      */
     override def hash[A](password: A): String = Hashing.sha384().hashString(password.concat(salt.getOrElse("")), StandardCharsets.UTF_8)
+    /**
+     * Getter for the name of the Hash algorithm
+     *
+     *  @return                 a string representing the name of crypthographic algorithm
+     */
+    override def name: String = "SHA384"
 
   /**
    * Class performing the MD5 algorithm
@@ -104,3 +115,10 @@ object HashFunction:
      *  @return                  a string representing the hashed input value
      */
     override def hash[A](password: A): String = DigestUtils.md5Hex(password.concat(salt.getOrElse("")))
+
+    /**
+     * Getter for the name of the Hash algorithm
+     *
+     *  @return                 a string representing the name of crypthographic algorithm
+     */
+    override def name: String = "MD5"

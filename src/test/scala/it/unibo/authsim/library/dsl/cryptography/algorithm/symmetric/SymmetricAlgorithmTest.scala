@@ -2,25 +2,22 @@ package it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.*
-import org.scalatest.BeforeAndAfter
-
+import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
 import scala.util.Random
 
-class SymmetricAlgorithmTest extends AnyWordSpec with Matchers with BeforeAndAfter {
-  private val des= DES()
-  private val aes= AES()
-  private val caesar= Caesar()
-  private val desKey= 7
-  private val aesKey= (16, 32)
-  private val caesarKey= 8
-  private val wrongKey=2
-  private var salt=""
-  private val minLength=5
-  private val maxLength=20
+class SymmetricAlgorithmTest extends AnyWordSpec with Matchers {
+  private val des = DES()
+  private val aes = AES()
+  private val caesar = Caesar()
+  private val desKey = 7
+  private val aesKey = (16, 32)
+  private val caesarKey = 8
+  private val wrongKey = 2
+  private var salt = "0x32"
 
-  s"A '${des.algorithmName}' algorithm" should {
+  s"A '${des name}' algorithm" should {
     "have a name" in{
-      des.algorithmName shouldBe "DES"
+      des.name shouldBe "DES"
     }
     "have a default key's length" in{
       des.keyLength shouldEqual desKey
@@ -30,13 +27,13 @@ class SymmetricAlgorithmTest extends AnyWordSpec with Matchers with BeforeAndAft
     }
     "allow to set the salt value" in{
       des.salt_(salt)
-      des.salt.get shouldEqual salt
+      des.salt.get shouldEqual (salt)
     }
   }
 
-  s"A '${aes.algorithmName}' algorithm" should {
+  s"A '${aes name}' algorithm" should {
     "have a name" in{
-      aes.algorithmName shouldBe "AES"
+      aes.name shouldBe "AES"
     }
     "have a default key's length" in{
       aes.keyLength shouldEqual aesKey._1
@@ -58,9 +55,9 @@ class SymmetricAlgorithmTest extends AnyWordSpec with Matchers with BeforeAndAft
     }
   }
 
-  s"A '${caesar.algorithmName}' algorithm" should {
+  s"A '${caesar name}' algorithm" should {
     "have a name" in{
-      caesar.algorithmName shouldBe "CaesarCipher"
+      caesar.name shouldBe "CaesarCipher"
     }
     "have a default key's length" in{
       caesar.keyLength shouldEqual caesarKey
@@ -68,8 +65,5 @@ class SymmetricAlgorithmTest extends AnyWordSpec with Matchers with BeforeAndAft
     "not have a salt value" in{
       caesar.salt shouldEqual None
     }
-  }
-  before {
-    salt= Random.alphanumeric.filter(_.isLetterOrDigit).take(Random.between(minLength,maxLength)).mkString
   }
 }

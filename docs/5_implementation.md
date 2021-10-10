@@ -88,4 +88,14 @@ Il companion object di `StatisticsConsumer` offre anche un'implementazione di ba
 |[Consumer UML](/pps-2021-authsim/assets/images/ConsumerFullUml.jpg)
 
 ### ConcurrentStringCombinator
+I `ConcurrentStringCombinator` sono oggetti il cui compito è di produrre tutte le combinazioni dei simboli dell'alfabeto
+passato come argomento fino a uno specificato numero massimo di simboli consecutivi: utilizzando un alfabeto (`a`, `b`, `c`, `d`)
+e chiedendo una lunghezza massima di 4 simboli, verranno prodotte tutte le stringhe da "`a`" fino a "`dddd`", ma ad esempio la stringa
+"`adddd`" non sarà prodotta (in quanto è lunga 5 simboli).
+
+Il companion object fornisce delle scorciatoie per alcuni alfabeti standard: le lettere dell'alfabeto inglese minuscole e maiuscole,
+le cifre da `0` a `9` e i simboli principali della tabella ASCII originale.
+
+![ConcurrentStringCombinator UML](/pps-2021-authsim/assets/images/ConcurrentStringCombinatorUml.jpg)
+
 ### Attacks

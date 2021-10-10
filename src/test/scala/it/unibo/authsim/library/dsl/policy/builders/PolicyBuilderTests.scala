@@ -1,13 +1,13 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction.{SHA1, SHA256, SHA384}
 import it.unibo.authsim.library.dsl.Protocol.*
-import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.AES
 import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction.{SHA1, SHA256, SHA384}
+import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.AES
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
 import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.{OTPPolicyBuilder, PasswordPolicyBuilder, SaltPolicyBuilder, UserIDPolicyBuilder}
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
 import it.unibo.authsim.library.dsl.policy.model.Policy
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.*
 

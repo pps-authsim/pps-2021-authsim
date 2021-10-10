@@ -1,11 +1,11 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.Protocol
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
-import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.builder.Builder
 import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
+import it.unibo.authsim.library.dsl.policy.model.Policy
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
 
 /**
  * ''PolicyBuilder'' is a trait that is used to build a new policy

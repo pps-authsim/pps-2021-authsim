@@ -23,7 +23,8 @@ import it.unibo.authsim.library.user.builder.UserAutoBuilder
 import it.unibo.authsim.client.app.components.registry.ComponentRegistry.SimulationRunner
 
 object AuthsimViewModelSFX:
-  val ATTACK_MISSING_VALUE_TEXT = "Please, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
+  val ATTACK_MISSING_VALUE_TEXT = "\nPlease, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
+  val ATTACK_STOPPED_TEXT = "\nAttack has been stopped by user."
 
 /**
  * Binds View with Model via the ViewModel layer. ScalaFx implementation using scalafx properties.
@@ -91,5 +92,7 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
     else
       attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModelSFX.ATTACK_MISSING_VALUE_TEXT
 
-
+  override def stopAttack(): Unit =
+    attackViewModel.attackSequenceProperties.attackLog.value += AuthsimViewModelSFX.ATTACK_STOPPED_TEXT
+    simulationRunner.stopSimulation()
 

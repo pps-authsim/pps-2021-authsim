@@ -78,6 +78,7 @@ object ViewPropertiesBinder:
 
     tab.bindOnSequenceChange((o: ObservableValue[_ <: AttackSequenceEntry], oldValue: AttackSequenceEntry, newValue: AttackSequenceEntry) => tab.attackSequenceDescriptionProperty.value = newValue.description)
     tab.bindOnAttackLaunch((e: ActionEvent) => viewModel.launchAttack())
+    tab.bindOnAttackStop((e: ActionEvent) => viewModel.stopAttack())
 
     attackViewModel
 

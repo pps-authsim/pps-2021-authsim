@@ -99,3 +99,22 @@ le cifre da `0` a `9` e i simboli principali della tabella ASCII originale.
 ![ConcurrentStringCombinator UML](/pps-2021-authsim/assets/images/ConcurrentStringCombinatorUml.jpg)
 
 ### Attacks
+
+Per gli attacchi è stata specificato solo un trait `Attack` pubblico, che tutti gli attacchi devono estendere.
+Il trait definisce il metodo `start`, che permette di eseguire l'attacco.
+
+Per creare un attacco si fa uso di builder (che estendono il trait `Builder[Attack]`), definiti a cascata in base alla tipologia dell'attacco e dei parametri che la tipologia stessa richiede:
+- `AttackBuilder`: si è supposto che, oltre a poter costruire un attacco, si possa anche eseguire subito col metodo `executeNow`; 
+   inoltre, per un qualsiasi attacco si può specificare uno `StatisticsConsumer` a cui inviare le statistiche dell'attacco e un tempo di timeout, oltre al quale l'attacco viene considerato interrotto.
+- `OfflineAttackBuilder`: per gli attacchi offline è stato ipotizzato che fosse necessario scegliere un provider di informazioni delgi utenti e, 
+   dato che questo tipo di attacchi si presta bene alla parallelizzazione delle operazioni basilari, il numero di thread da utilizzare per eseguire l'attacco.
+- `AbstractBruteForceAttackBuilder`: questa classe astratta generalizza i parametri necessari per tutti gli attacchi bruteforce, 
+   cioè quelli semplici e gli attacchi a dizionario, permettendo di impostare il tipo di `Alphabet` da usare e il numero 
+   massimo di simboli concatenati per generare le stringhe da usare. I metodi per fare ciò hanno visibilità `protected`
+   per permettere alle classi più specifiche di esporli con nomi più semantici rispetto all'attacco stesso (ad esempio, 
+   un attacco a dizionario espone il metodo `protectedUsingAlphabet` con il metodo `withDictionary` per rendere esplicito
+   che necessita di un `Alphabet` di tipo `Dictionary`). Questa classe implementa la generazione dell'attacco di classe `BruteForceAttack`.
+- `BruteForceAttackBuilder` e `DictionaryAttackBuilder`: queste due classi estendono la classe astratta descritta sopra 
+   per esporre metodi con nomi specifici per il campo semantico dell'attacco stesso.
+
+![Attacks UML](/pps-2021-authsim/assets/images/AttackMainUml.jpg)

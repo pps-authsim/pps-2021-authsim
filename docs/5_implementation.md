@@ -59,7 +59,33 @@ myBuilder setX 5 setY 4 build
 
 ![Buider UML](/pps-2021-authsim/assets/images/BuilderFullUml.jpg)
 
-### Consumer
 ### Statistics
+La classe `Statistics` racchiude le metriche utili ad analizzare l'esecuzione di un attacco; esse sono:
+- l'insieme degli utenti la cui password è stata trovata;
+- il numero di tentativi fatti;
+- la durata dell'attacco;
+- se l'attacco è terminato prima a causa dello scadere del tempo di timeout.
+
+È possibile anche sommare oggetti di questa classe, utilizzando il metodo `+` che restituisce una nuova istanza di `Statistics`:
+- l'insieme di utenti è l'unione degli insiemi degli addendi;
+- il numero di tentativi e la durata sono calcolati sommando le rispettive metriche;
+- l'indicazione di timeout è l'OR logico tra il valore booleano degli addendi.
+
+In questo modo è molto semplice aggregare delle statistiche ottenute da diversi thread di calcolo.
+
+![Statistics UML](/pps-2021-authsim/assets/images/StatisticsFullUml.jpg)
+
+### Consumer e StatisticsConsumer
+Il trait `Consumer` rappresenta un qualsiasi consumatore di oggetti (infatti il trait definisce un tipo generico),
+quindi il metodo principale `consume` richiede un argomento e non restituisce alcun risultato.
+
+Il trait `StatisticsConsumer` rappresenta un `Consumer` di `Statistics`, e deve essere esteso da chiunque sia interessato
+a consumare le statistiche di un attacco, sia per semplicemente stamparle sul terminale, che eventualmente controllare che un
+attacco non sia andato a buon fine (cioè se non è stata trovata la password di alcun utente).
+
+Il companion object di `StatisticsConsumer` offre anche un'implementazione di base che scrive sul terminale i dati consumati.
+
+|[Consumer UML](/pps-2021-authsim/assets/images/ConsumerFullUml.jpg)
+
 ### ConcurrentStringCombinator
 ### Attacks

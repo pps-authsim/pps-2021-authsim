@@ -13,6 +13,18 @@ object Util:
   def generateRandomString(length:Int=5): String=
     import org.apache.commons.lang3.RandomStringUtils
     RandomStringUtils.randomAlphanumeric(length)
+    
+  /**
+   * Method that generate a randomic string composed by letter and numbers 
+   * of a random length in a range
+   *
+   * @param minVal    min length of the string
+   * @param maxVal    maxlenght of the string
+   * @return          new randomic string of random length in the given range
+   */
+  def generateRandomString(minVal: Int, maxVal:Int): String=
+    import scala.util.Random
+    Random.alphanumeric.filter(_ isLetterOrDigit).take(Random between(minVal,maxVal)) mkString
 
   /**
    * Method to count the occurence of the elements of Sequence
@@ -24,72 +36,3 @@ object Util:
     list.foldLeft(Map.empty[A, Int]) { (map, item) =>
       map + (item -> (map.getOrElse(item, 0) + 1))
     }.count(_._2 > 1)
-
-  /**
-   * Object to provide implicit conversion to a list
-   */
-  object ImplicitToList:
-
-    /**
-     * Method that convert an array to a list
-     *
-     * @param list    input list to convert
-     * @tparam A      Generic parameter
-     * @return        an array of the given generic parameter
-     */
-    implicit def arrayToList[A](list: Array[A]):List[A] = list.toList
-
-    /**
-     * Method that convert a sequence to a list
-     *
-     * @param seq     input sequence to convert
-     * @tparam A      Generic parameter
-     * @return        a list of the given generic parameter
-     */
-    implicit def seqToList[A](seq:Seq[A]):List[A]= seq.toList
-
-  /**
-   * Object to provide implicit conversion to a sequence
-   */
-  object ImplicitToSeq:
-    /**
-     * Method that convert an array to a list
-     *
-     * @param array   input array to convert
-     * @tparam A      Generic parameter
-     * @return        a sequence of the given generic parameter
-     */
-    implicit def arrayToSeq[A](array: Array[A]):Seq[A] = array.toSeq
-
-    /**
-     * Method that convert an array to a list
-     *
-     * @param list    input list to convert
-     * @tparam A      Generic parameter
-     * @return        a sequence of the given generic parameter
-     */
-    implicit def listToSeq[A](list:List[A]):Seq[A]= list.toSeq
-
-  /**
-   * Object to provide implicit conversion to an array
-   */
-  object ImplicitToArray:
-    import scala.reflect.ClassTag
-
-    /**
-     * Method that convert a list into an array
-     *
-     * @param list    input list to convert
-     * @tparam A      Generic parameter
-     * @return        an array of the given generic parameter
-     */
-    def listToArray[T](list: List[T])(implicit ev: ClassTag[T]) = list.toArray
-
-    /**
-     * Method that convert a sequence into an array
-     *
-     * @param seq     input sequence to convert
-     * @tparam A      Generic parameter
-     * @return        an array of the given generic parameter
-     */
-    def seqToArray[T](seq: Seq[T])(implicit ev: ClassTag[T]) = seq.toArray

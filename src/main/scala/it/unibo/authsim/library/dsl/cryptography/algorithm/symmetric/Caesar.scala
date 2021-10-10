@@ -50,4 +50,4 @@ object Caesar:
      *
      *  @return                 a string representing the name of crypthographic algorithm
      */
-    override def algorithmName: String = _name
+    override def name: String = _name

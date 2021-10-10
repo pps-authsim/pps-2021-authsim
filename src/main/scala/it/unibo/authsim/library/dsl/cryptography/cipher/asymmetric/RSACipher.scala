@@ -11,11 +11,13 @@ import java.security.{KeyPairGenerator, KeyPair as JavaKeyPair}
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
+
 /**
  * RSA cipher object
  */
 object RSACipher:
-  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitConversion._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitToArray._
 
   /**
    * Apply method for the object
@@ -35,7 +37,7 @@ object RSACipher:
     /**
      * Variable representing a KeyFactory object that converts public/private keys of the RSA algorithm
      */
-    private val keyFactory = KeyFactory.getInstance(algorithm.algorithmName)
+    private val keyFactory = KeyFactory.getInstance(algorithm.name)
 
     /**
      * Variable representing the defaul name for key pair file
@@ -95,14 +97,14 @@ object RSACipher:
      *  @return                        A string representing the password either encrypted or decrypted
      */
     override def crypto[A,B](mode:EncryptionMode, password: A, inputKey: B): String=
-      val cipher = Cipher.getInstance(algorithm.algorithmName);
+      val cipher = Cipher.getInstance(algorithm.name);
       mode match{
         case EncryptionMode.Encryption =>
-          val key = publicKeyFromString(inputKey)
+          val key = privateKeyFromString(inputKey)
           cipher.init(Cipher.ENCRYPT_MODE, key)
           Base64.encodeToString(cipher.doFinal(password))
         case EncryptionMode.Decryption =>
-          val key = privateKeyFromString(inputKey)
+          val key = publicKeyFromString(inputKey)
           cipher.init(Cipher.DECRYPT_MODE, key)
           new String(cipher.doFinal(Base64.decodeToArray(password)))
       }

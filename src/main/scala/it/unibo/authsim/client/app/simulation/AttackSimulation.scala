@@ -32,8 +32,8 @@ class AttackSimulation(
     case CredentialsSourceType.Mongo => ComponentRegistry.userMongoRepository
 
   override def call(): Unit =
-    printInitialMessage()
     try
+      printInitialMessage()
       insertUsersIntoDatabase()
       val userProvider = makeUserProvider()
       val logger = makeLogger()
@@ -66,6 +66,7 @@ class AttackSimulation(
       case AttackConfiguration.BruteForceLetters => factory.bruteForceLetters()
       case AttackConfiguration.BruteForceLowers => factory.bruteForceLowers()
       case AttackConfiguration.DictionaryMostCommonPasswords => factory.dictionaryMostCommonPasswords()
+      case AttackConfiguration.GuessDefaultPassword => factory.guessDefaultPassword()
 
   private def startAttack(attackBuilder: AttackBuilder): Unit =
     attackBuilder.executeNow()

@@ -21,7 +21,7 @@ object StringPolicies:
     def patterns: ListBuffer[Regex]
     /**
      * Generate a string based on the policy
- *
+     *
      * @param policyAutoGenerator (@see [[PolicyAutoGenerator#stringPolicyAutoGenerator]])
      * @return a random string that respects the string policy
      */

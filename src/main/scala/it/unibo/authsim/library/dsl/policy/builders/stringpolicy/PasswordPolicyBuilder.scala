@@ -1,8 +1,8 @@
 package it.unibo.authsim.library.dsl.policy.builders.stringpolicy
 
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
-import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.StringPolicyBuildersHelpers
 import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.StringPolicyBuilder.AbstractMoreRestrictStringPolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.StringPolicyBuildersHelpers
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.PasswordPolicy
 
 import scala.collection.mutable.ListBuffer

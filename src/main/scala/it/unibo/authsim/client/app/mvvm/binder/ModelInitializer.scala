@@ -14,6 +14,7 @@ object ModelInitializer:
   def initializeUsersModel(usersModel: UsersModel): Unit =
     val presets = SecurityPolicy.Default.withoutProtocol
 
+    usersModel.usersList += User("user", "password")
     presets.foreach(preset => usersModel.presetsList += preset)
 
   def initializeSecurityModel(securityModel: SecurityModel): Unit =

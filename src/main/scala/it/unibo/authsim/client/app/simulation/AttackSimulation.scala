@@ -12,20 +12,16 @@ import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.user.model.{User, UserInformation}
 import javafx.concurrent.Task
-import it.unibo.authsim.client.app.simulation.attacks.AttacksFactory
+import it.unibo.authsim.client.app.simulation.attacks.{AttackConfiguration, AttacksFactory}
 
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 import it.unibo.authsim.library.dsl.attack.builders.AttackBuilder
-
 import scala.concurrent.duration.Duration
-import it.unibo.authsim.client.app.simulation.attacks.PreconfiguredAttacks.{AttackConfiguration, BruteForceAll, BruteForceLetters, BruteForceLowers, DictionaryMostCommonPasswords}
-
-object AttackSimulation:
-  private val DEFAULT_TIMEOUT = Duration.apply(2, scala.concurrent.duration.HOURS)
+import it.unibo.authsim.client.app.simulation.attacks.AttackConfiguration
 
 class AttackSimulation(
-                        private val users: ListBuffer[User],
+                        private val users: Seq[User],
                         private val policy: String,
                         private val credentialsSource: CredentialsSourceType,
                         private val attackSequence: AttackConfiguration
@@ -66,13 +62,12 @@ class AttackSimulation(
   private def makeAttack(userProvider: UserProvider, logger: StatisticsConsumer): AttackBuilder =
     val factory = AttacksFactory(userProvider, logger)
     attackSequence match
-      case BruteForceAll => factory.bruteForceAll()
-      case BruteForceLetters => factory.bruteForceLetters()
-      case BruteForceLowers => factory.bruteForceLowers()
-      case DictionaryMostCommonPasswords => factory.dictionaryMostCommonPasswords()
+      case AttackConfiguration.BruteForceAll => factory.bruteForceAll()
+      case AttackConfiguration.BruteForceLetters => factory.bruteForceLetters()
+      case AttackConfiguration.BruteForceLowers => factory.bruteForceLowers()
+      case AttackConfiguration.DictionaryMostCommonPasswords => factory.dictionaryMostCommonPasswords()
 
   private def startAttack(attackBuilder: AttackBuilder): Unit =
-    attackBuilder.timeout(AttackSimulation.DEFAULT_TIMEOUT)
     attackBuilder.executeNow()
 
   private val printStatistics: (Statistics => Unit) = (statistics: Statistics) =>

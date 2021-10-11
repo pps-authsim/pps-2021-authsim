@@ -78,7 +78,7 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
 
 
   override def launchAttack(): Unit =
-    val users = model.usersModel.usersList.value
+    val users = model.usersModel.usersList.value.toSeq
     val policy = model.securityModel.selectedSecurityPolicy
     val credentialsSource = model.securityModel.selectedCredentialsSource
     val selectedProcedure = model.attackModel.selectedAttackSequence

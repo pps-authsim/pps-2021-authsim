@@ -7,6 +7,7 @@ import it.unibo.authsim.client.app.components.persistence.mongo.UserMongoReposit
 import it.unibo.authsim.client.app.components.runner.SimulationRunnerComponent
 
 import java.io.FileInputStream
+import java.util.concurrent.Executors
 import scala.io.Source
 
 /**
@@ -23,4 +24,4 @@ object ComponentRegistry extends UserMongoRepositoryComponent
 
   override val userMongoRepository: UserRepository = new UserMongoRepository
 
-  override val simulationRunner: SimulationRunner = new SimulationRunnerImpl
+  override val simulationRunner: SimulationRunner = new SimulationRunnerImpl(Executors.newSingleThreadExecutor())

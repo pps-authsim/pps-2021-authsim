@@ -15,9 +15,7 @@ trait SimulationRunnerComponent:
 
     def stopSimulation(): Unit
 
-  class SimulationRunnerImpl extends SimulationRunner:
-
-    var executor: ExecutorService = Executors.newSingleThreadExecutor()
+  class SimulationRunnerImpl(var executor: ExecutorService) extends SimulationRunner:
 
     override def runSimulation(simulation: AttackSimulation): Unit =
       if executor.isShutdown then executor = Executors.newSingleThreadExecutor()

@@ -62,6 +62,8 @@ abstract class AbstractBruteForceAttackBuilder[T <: Alphabet[T]] extends Offline
 
 private class BruteForceAttack(private val target: UserProvider, private val alphabet: Alphabet[_], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
 
+  private var timedOut: Boolean = false
+
   override def start(): Unit =
     var jobResults: List[Future[Statistics]] = List.empty
     var totalResults = Statistics.zero
@@ -71,7 +73,10 @@ private class BruteForceAttack(private val target: UserProvider, private val alp
     try {
       Await.result(Future.sequence(jobResults), timeout.getOrElse(Duration.Inf)).foreach(stats => totalResults = totalResults + stats)
     } catch {
-      case e: TimeoutException => totalResults = totalResults + Statistics.timedOut
+      case e: TimeoutException => {
+        this.timedOut = true
+        totalResults = totalResults + Statistics.timedOut
+      }
     }
     val endTime = System.nanoTime()
     val elapsedTime = Duration(endTime - startTime, NANOSECONDS)
@@ -81,7 +86,7 @@ private class BruteForceAttack(private val target: UserProvider, private val alp
   private def futureJob(targetUsers: List[UserInformation], stringProvider: ConcurrentStringCombinator): Statistics =
     var localStatistics = Statistics.zero
     var nextPassword = stringProvider.getNextString()
-    while !nextPassword.isEmpty do
+    while !nextPassword.isEmpty && !this.timedOut do
       val nextPasswordString = nextPassword.get
       targetUsers.foreach(user => {
         val hashedPassword = retrievePasswordEncrypter(user)(nextPasswordString)

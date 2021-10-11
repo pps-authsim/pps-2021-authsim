@@ -1,13 +1,14 @@
 package it.unibo.authsim.client.app.simulation
 
 import it.unibo.authsim.library.dsl.UserProvider
-import it.unibo.authsim.library.dsl.alphabet.SymbolicAlphabet
+import it.unibo.authsim.library.dsl.alphabet.{Dictionary, SymbolicAlphabet}
 import it.unibo.authsim.library.dsl.attack.builders.ConcurrentStringCombinator
-import it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce.BruteForceAttackBuilder
+import it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce.{BruteForceAttackBuilder, DictionaryAttackBuilder}
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.attack.builders.AttackBuilder
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
+
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.Duration
 
@@ -31,3 +32,22 @@ class AttacksFactory(private val userProvider: UserProvider, private val logger:
    *         with a maximum length of 16 and logging to the given logger, with a timeout of 600 seconds (10 minutes).
    */
   def bruteForceAll(): AttackBuilder = new BruteForceAttackBuilder() against userProvider usingAlphabet defaultAlphabets.alphanumericsymbols maximumWordLength 16 logTo logger timeout Duration(600, TimeUnit.SECONDS)
+
+  /**
+   * @return a DictionaryAttackBuilder configured to attack a userProvider, with the dictionary of the top 97 most common passwords, combining them up to 3 times,
+   *         logging to logger and with a timeout of 120 seconds (2 minutes).
+   */
+  def dictionaryMostCommonPasswords(): AttackBuilder = new DictionaryAttackBuilder() against userProvider withDictionary Dictionary(top97MostCommonPasswords) maximumCombinedWords 3 logTo logger timeout Duration(120, TimeUnit.SECONDS)
+
+  private val top97MostCommonPasswords =
+    Set(("123456"), ("password"), ("12345678"), ("qwerty"), ("123456789"), ("12345"), ("1234"), ("111111"), ("1234567"), ("dragon"),
+      ("123123"), ("wrongpassword"), ("abc123"), ("football"), ("monkey"), ("letmein"), ("696969"), ("shadow"), ("master"), ("666666"),
+      ("qwertyuiop"), ("123321"), ("mustang"), ("1234567890"), ("michael"), ("654321"), ("superman"), ("1qaz2wsx"), ("7777777"), ("abcdef"),
+      ("121212"), ("000000"), ("qazwsx"), ("123qwe"), ("killer"), ("trustno1"), ("jordan"), ("jennifer"), ("zxcvbnm"), ("asdfgh"), ("hunter"),
+      ("buster"), ("soccer"), ("harley"), ("batman"), ("andrew"), ("tigger"), ("sunshine"), ("iloveyou"), ("mycomeputer"), ("2000"), ("charlie"),
+      ("robert"), ("thomas"), ("hockey"), ("ranger"), ("daniel"), ("starwars"), ("klaster"), ("112233"), ("george"), ("computer"), ("michelle"),
+      ("jessica"), ("pepper"), ("easy"), ("zxcvbn"), ("555555"), ("11111111"), ("131313"), ("freedom"), ("777777"), ("pass"), ("maggie"),
+      ("159753"), ("aaaaaa"), ("ginger"), ("princess"), ("joshua"), ("cheese"), ("amanda"), ("summer"), ("love"), ("ashley"), ("6969"),
+      ("nicole"), ("chelsea"), ("biteme"), ("matthew"), ("access"), ("yankees"), ("987654321"), ("dallas"), ("austin"), ("thunder"),
+      ("taylor"), ("matrix"), ("william"), ("corvette"), ("hello")
+    )

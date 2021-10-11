@@ -17,7 +17,8 @@ import it.unibo.authsim.client.app.simulation.attacks.{AttackConfiguration, Atta
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 import it.unibo.authsim.library.dsl.attack.builders.AttackBuilder
-import scala.concurrent.duration.Duration
+
+import scala.concurrent.duration.{Duration, HOURS}
 import it.unibo.authsim.client.app.simulation.attacks.AttackConfiguration
 
 class AttackSimulation(
@@ -69,7 +70,7 @@ class AttackSimulation(
       case AttackConfiguration.GuessDefaultPassword => factory.guessDefaultPassword()
 
   private def startAttack(attackBuilder: AttackBuilder): Unit =
-    if attackBuilder.getTimeout().isEmpty then attackBuilder timeout AttackSimulation.DEFAULT_TIMEOUT
+    if attackBuilder.getTimeout().isEmpty then attackBuilder timeout Duration(1, HOURS)
     attackBuilder.executeNow()
 
   private val printStatistics: (Statistics => Unit) = (statistics: Statistics) =>

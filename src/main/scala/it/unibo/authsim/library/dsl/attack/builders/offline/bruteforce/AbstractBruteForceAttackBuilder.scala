@@ -14,7 +14,7 @@ import it.unibo.authsim.library.dsl.cryptography.cipher.symmetric.{AESCipher, Ca
 import it.unibo.authsim.library.user.model.{User, UserInformation}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.{Duration, MILLISECONDS}
+import scala.concurrent.duration.{Duration, NANOSECONDS}
 import scala.concurrent.{Await, Future, TimeoutException}
 
 /**
@@ -74,7 +74,7 @@ private class BruteForceAttack(private val target: UserProvider, private val alp
       case e: TimeoutException => totalResults = totalResults + Statistics.timedOut
     }
     val endTime = System.nanoTime()
-    val elapsedTime = Duration(endTime - startTime, MILLISECONDS)
+    val elapsedTime = Duration(endTime - startTime, NANOSECONDS)
     totalResults = totalResults + Statistics.onlyElapsedTime(elapsedTime)
     logTo.foreach(logSpec => logSpec.consume(totalResults))
 

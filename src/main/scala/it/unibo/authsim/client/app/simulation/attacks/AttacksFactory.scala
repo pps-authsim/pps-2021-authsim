@@ -1,12 +1,11 @@
-package it.unibo.authsim.client.app.simulation
+package it.unibo.authsim.client.app.simulation.attacks
 
 import it.unibo.authsim.library.dsl.UserProvider
 import it.unibo.authsim.library.dsl.alphabet.{Dictionary, SymbolicAlphabet}
-import it.unibo.authsim.library.dsl.attack.builders.ConcurrentStringCombinator
+import it.unibo.authsim.library.dsl.attack.builders.{AttackBuilder, ConcurrentStringCombinator}
 import it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce.{BruteForceAttackBuilder, DictionaryAttackBuilder}
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
-import it.unibo.authsim.library.dsl.attack.builders.AttackBuilder
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
 
 import java.util.concurrent.TimeUnit

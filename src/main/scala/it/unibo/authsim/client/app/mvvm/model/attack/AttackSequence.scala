@@ -1,3 +1,5 @@
 package it.unibo.authsim.client.app.mvvm.model.attack
 
-case class AttackSequence(sequence: String, description: String)
+import it.unibo.authsim.client.app.simulation.attacks.PreconfiguredAttacks.AttackConfiguration
+
+case class AttackSequence(sequence: String, description: String, attack: AttackConfiguration)

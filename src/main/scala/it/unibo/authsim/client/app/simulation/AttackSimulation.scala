@@ -12,21 +12,23 @@ import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.user.model.{User, UserInformation}
 import javafx.concurrent.Task
+import it.unibo.authsim.client.app.simulation.attacks.AttacksFactory
 
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 import it.unibo.authsim.library.dsl.attack.builders.AttackBuilder
 
 import scala.concurrent.duration.Duration
+import it.unibo.authsim.client.app.simulation.attacks.PreconfiguredAttacks.{AttackConfiguration, BruteForceAll, BruteForceLetters, BruteForceLowers, DictionaryMostCommonPasswords}
 
 object AttackSimulation:
-  private val DEFAULT_TIMEOUT = Duration.apply(15, scala.concurrent.duration.MINUTES)
+  private val DEFAULT_TIMEOUT = Duration.apply(2, scala.concurrent.duration.HOURS)
 
 class AttackSimulation(
                         private val users: ListBuffer[User],
                         private val policy: String,
                         private val credentialsSource: CredentialsSourceType,
-                        private val attackSequence: String
+                        private val attackSequence: AttackConfiguration
                       ) extends Task[Unit]:
 
   private val database: UserRepository = credentialsSource match
@@ -63,8 +65,11 @@ class AttackSimulation(
 
   private def makeAttack(userProvider: UserProvider, logger: StatisticsConsumer): AttackBuilder =
     val factory = AttacksFactory(userProvider, logger)
-    //TODO pattern match to determine attack to build
-    factory.bruteForceLowers()
+    attackSequence match
+      case BruteForceAll => factory.bruteForceAll()
+      case BruteForceLetters => factory.bruteForceLetters()
+      case BruteForceLowers => factory.bruteForceLowers()
+      case DictionaryMostCommonPasswords => factory.dictionaryMostCommonPasswords()
 
   private def startAttack(attackBuilder: AttackBuilder): Unit =
     attackBuilder.timeout(AttackSimulation.DEFAULT_TIMEOUT)

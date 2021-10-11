@@ -86,7 +86,7 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
     if !users.isEmpty && policy.nonEmpty && credentialsSource.nonEmpty && selectedProcedure.nonEmpty then
       attackViewModel.attackSequenceProperties.attackLog.value = ""
 
-      val simulation = new AttackSimulation(users, policy.get.policy, credentialsSource.get.source, selectedProcedure.get.sequence)
+      val simulation = new AttackSimulation(users, policy.get.policy, credentialsSource.get.source, selectedProcedure.get.attack)
       simulation.messageProperty().addListener((observable, oldValue, newValue) => attackViewModel.attackSequenceProperties.attackLog.value += newValue)
       simulationRunner.runSimulation(simulation)
     else

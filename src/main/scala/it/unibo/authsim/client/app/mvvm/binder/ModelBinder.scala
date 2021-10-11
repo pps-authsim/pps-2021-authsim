@@ -45,9 +45,9 @@ object ModelBinder:
     )
 
   def bindAttackViewModel(attackModel: AttackModel, viewModel: AttackViewModel): Unit =
-    ModelBinder.bindPropertiesWithObservableList(attackModel.attackSequenceList, viewModel.attackSequenceProperties.attackSequenceList.value, (sequence => new AttackSequenceEntry(sequence.sequence, sequence.description)))
+    ModelBinder.bindPropertiesWithObservableList(attackModel.attackSequenceList, viewModel.attackSequenceProperties.attackSequenceList.value, (sequence => new AttackSequenceEntry(sequence.sequence, sequence.description, sequence.attack)))
     viewModel.attackSequenceProperties.attackSequenceListSelectedValue.addListener((observable, oldValue, newValue) => attackModel.selectedAttackSequence =
-      Option(new AttackSequence(newValue.sequence, newValue.description))
+      Option(new AttackSequence(newValue.sequence, newValue.description, newValue.attack))
     )
 
   private def bindPropertiesWithObservableList[A, B](observableListBuffer: ObservableListBuffer[A], propertiesList: ObservableList[B], mapper: (A => B)) =

@@ -72,10 +72,11 @@ class AttackSimulation(
       case DictionaryMostCommonPasswords => factory.dictionaryMostCommonPasswords()
 
   private def startAttack(attackBuilder: AttackBuilder): Unit =
-    attackBuilder.timeout(AttackSimulation.DEFAULT_TIMEOUT)
+    if attackBuilder.getTimeout().isEmpty then attackBuilder timeout AttackSimulation.DEFAULT_TIMEOUT
     attackBuilder.executeNow()
 
   private val printStatistics: (Statistics => Unit) = (statistics: Statistics) =>
+    if statistics.timedOut then logMessage("The attack timed out: the following statistics could be incomplete.")
     logMessage("Attempts: " + statistics.attempts)
     logMessage("Elapsed time: " + statistics.elapsedTime.toMillis + " ms")
     logMessage("Breached credentials: " + statistics.successfulBreaches.map(u => u.username + " - " + u.password).reduce((u1, u2) => u1 + "\n" + u2))

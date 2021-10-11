@@ -3,10 +3,10 @@ package it.unibo.authsim.client.app.mvvm.view.attack
 import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFXTest
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.{AttackSequenceEntry, AttackTab}
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.SecurityPolicyEntry
+import it.unibo.authsim.client.app.simulation.attacks.AttackConfiguration
 import javafx.beans.value.ObservableValue
 import javafx.event.ActionEvent
 import org.scalatest.wordspec.AnyWordSpec
-import it.unibo.authsim.client.app.simulation.attacks.PreconfiguredAttacks.{AttackConfiguration, BruteForceLowers}
 
 class AttackTabTest extends AnyWordSpec :
 
@@ -19,7 +19,7 @@ class AttackTabTest extends AnyWordSpec :
       val attackTab = new AttackTab()
 
       "allow sequence selection" in {
-        val sequence = new AttackSequenceEntry("attack", "description", BruteForceLowers)
+        val sequence = new AttackSequenceEntry("attack", "description", AttackConfiguration.BruteForceLowers)
 
         var capturedSequence: AttackSequenceEntry = null
         attackTab.bindOnSequenceChange((o: ObservableValue[_ <: AttackSequenceEntry], oldValue: AttackSequenceEntry, newValue: AttackSequenceEntry) => capturedSequence = newValue)

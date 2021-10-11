@@ -38,6 +38,12 @@ class AttacksFactory(private val userProvider: UserProvider, private val logger:
    */
   def dictionaryMostCommonPasswords(): AttackBuilder = new DictionaryAttackBuilder() against userProvider withDictionary Dictionary(top97MostCommonPasswords) maximumCombinedWords 3 jobs (sys.runtime.availableProcessors() - 2) logTo logger timeout Duration(120, TimeUnit.SECONDS)
 
+  /**
+   *
+   * @return a DictionaryAttackBuilder configured to guess only "password" logging to logger and with no timeout
+   */
+  def guessDefaultPassword(): AttackBuilder = new DictionaryAttackBuilder against userProvider withDictionary Dictionary(Set("password")) maximumCombinedWords 1 logTo logger
+
   private val top97MostCommonPasswords =
     Set(("123456"), ("password"), ("12345678"), ("qwerty"), ("123456789"), ("12345"), ("1234"), ("111111"), ("1234567"), ("dragon"),
       ("123123"), ("wrongpassword"), ("abc123"), ("football"), ("monkey"), ("letmein"), ("696969"), ("shadow"), ("master"), ("666666"),

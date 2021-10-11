@@ -35,5 +35,5 @@ object ModelInitializer:
     sequence += new AttackSequence("BruteForce Lowercase Letters", "A Brute Force Attack configured to use lowercase characters to construct the password string with a maximum length of 6", BruteForceLowers)
     sequence += new AttackSequence("BruteForce Only Letters", "A Brute Force Attack configured to use both lower and upper case characters to construct the password string with a maximum length of 10", BruteForceLetters)
     sequence += new AttackSequence("BruteForce Alphanumerical", "A Brute Force Attack configured to use all alphanumeric and symbols characters to construct the password string with a maximum length of 16", BruteForceAll)
-    sequence += new AttackSequence("Dictionary Most Common Passwords", "A Dictionary Attack configured to use the dictionary of the top 97 most common passwords, combining them up to 3 times", DictionaryMostCommonPasswords)
+    sequence += new AttackSequence("Dictionary Most Common Passwords", "A Dictionary Attack configured to use the dictionary of the top 97 most common passwords, combining them up to 3 times. Try 123456 or password!", DictionaryMostCommonPasswords)
     sequence.toSeq

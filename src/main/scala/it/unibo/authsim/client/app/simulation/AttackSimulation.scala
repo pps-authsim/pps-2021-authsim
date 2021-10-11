@@ -77,7 +77,7 @@ class AttackSimulation(
     if statistics.timedOut then logMessage("The attack timed out: the following statistics could be incomplete.")
     logMessage("Attempts: " + statistics.attempts)
     logMessage("Elapsed time: " + statistics.elapsedTime.toMillis + " ms")
-    logMessage("Breached credentials: " + statistics.successfulBreaches.map(u => u.username + " - " + u.password).reduce((u1, u2) => u1 + "\n" + u2))
+    logMessage("Breached credentials: " + statistics.successfulBreaches.map(u => u.username + " - " + u.password).reduceOption((u1, u2) => u1 + "\n" + u2).getOrElse("None"))
 
   private def printAttackStarted(): Unit =
     logMessage("Attack procedure started...")

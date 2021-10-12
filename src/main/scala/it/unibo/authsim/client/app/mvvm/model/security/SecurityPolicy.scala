@@ -3,6 +3,7 @@ package it.unibo.authsim.client.app.mvvm.model.security
 import it.unibo.authsim.client.app.mvvm.model.security
 import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.Protocol.*
+import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.dsl.policy.defaults.PolicyDefault
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy, OTPPolicy}
@@ -167,3 +168,11 @@ object SecurityPolicy:
     def credentialsPoliciesFrom(name: String): Option[Seq[CredentialPolicy]] =
       val default = this.values.find(_.name == name)
       if default.isDefined then Some(default.get.policy.credentialPolicies) else None
+
+    /**
+     * @param name name of selected default policy
+     * @return a optional [[CryptographicAlgorithm cryptographic algorithm]] of selected default policy
+     */
+    def cryptographicAlgorithmFrom(name: String): Option[CryptographicAlgorithm] =
+      val default = this.values.find(_.name == name)
+      if default.isDefined then default.get.policy.cryptographicAlgorithm else None

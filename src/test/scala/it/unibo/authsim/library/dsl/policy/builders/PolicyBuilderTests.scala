@@ -27,9 +27,9 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
   private val optPolicy: OTPPolicy = OTPPolicyBuilder() minimumLength 10 maximumLength 10 build
   private val optPolicy1: OTPPolicy = OTPPolicyBuilder() minimumLength 10 maximumLength 30 build
 
-  private val CREDENTIALS_POLICY: Seq[CredentialPolicy] = Seq(passwordPolicy, userIDPolicy)
-  private val CREDENTIALS_POLICY_1: Seq[CredentialPolicy] = Seq(passwordPolicy1, userIDPolicy1)
-  private val CREDENTIALS_POLICY_2: Seq[CredentialPolicy] = Seq(optPolicy, passwordPolicy1, userIDPolicy1)
+  private val CREDENTIALS_POLICY: Seq[CredentialPolicy] = Seq(userIDPolicy, passwordPolicy)
+  private val CREDENTIALS_POLICY_1: Seq[CredentialPolicy] = Seq(userIDPolicy1, passwordPolicy1)
+  private val CREDENTIALS_POLICY_2: Seq[CredentialPolicy] = Seq(userIDPolicy1, passwordPolicy1, optPolicy)
 
 
   private val policy0: Policy =

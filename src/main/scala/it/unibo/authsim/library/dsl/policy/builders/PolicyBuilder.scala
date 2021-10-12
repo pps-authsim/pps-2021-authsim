@@ -54,10 +54,10 @@ trait PolicyBuilder extends Builder[Policy]:
  *  PolicyBuilder is an implementation of policy builder
  */
 object PolicyBuilder:
-  def apply(): PolicyBuilder = new PolicyBuilderImpl();
-  def apply(policyName: String): PolicyBuilder = new PolicyBuilderImpl(Some(policyName));
+  def apply(): PolicyBuilder = BasicPolicyBuilder();
+  def apply(policyName: String): PolicyBuilder = BasicPolicyBuilder(Some(policyName));
 
-  private class PolicyBuilderImpl(private val name: Option[String] = None) extends PolicyBuilder:
+  case class BasicPolicyBuilder(private val name: Option[String] = None) extends PolicyBuilder:
     private var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
     private var _protocol: Option[Protocol] = Option.empty
     private var _cryptographicAlgorithm: Option[CryptographicAlgorithm] = Option.empty
@@ -98,20 +98,20 @@ object PolicyBuilder:
 
     override def build: Policy = new Policy:
 
-      override def name: String = PolicyBuilderImpl.this.name match
+      override def name: String = BasicPolicyBuilder.this.name match
         case Some(name) => name
         case _ => "Policy"
 
-      override def credentialPolicies: Seq[CredentialPolicy] = PolicyBuilderImpl.this._credentialPolicies
+      override def credentialPolicies: Seq[CredentialPolicy] = BasicPolicyBuilder.this._credentialPolicies
 
-      override def cryptographicAlgorithm: Option[CryptographicAlgorithm] = PolicyBuilderImpl.this._cryptographicAlgorithm
+      override def cryptographicAlgorithm: Option[CryptographicAlgorithm] = BasicPolicyBuilder.this._cryptographicAlgorithm
 
-      override def saltPolicy: Option[SaltPolicy] = PolicyBuilderImpl.this._saltPolicy
+      override def saltPolicy: Option[SaltPolicy] = BasicPolicyBuilder.this._saltPolicy
 
-      override def transmissionProtocol: Option[Protocol] = PolicyBuilderImpl.this._protocol
+      override def transmissionProtocol: Option[Protocol] = BasicPolicyBuilder.this._protocol
 
       override def toString: String =
-        s"${if PolicyBuilderImpl.this.name.isDefined then PolicyBuilderImpl.this.name.get else ""}Policy { " +
+        s"${if BasicPolicyBuilder.this.name.isDefined then BasicPolicyBuilder.this.name.get else ""}Policy { " +
           s"Protocol = $transmissionProtocol, " +
           s"CryptographicAlgorithm = $cryptographicAlgorithm, SaltPolicy = $saltPolicy, " +
           s"CredentialPolicies = $credentialPolicies }"

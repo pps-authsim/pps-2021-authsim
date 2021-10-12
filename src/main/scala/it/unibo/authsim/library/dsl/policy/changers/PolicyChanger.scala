@@ -2,7 +2,7 @@ package it.unibo.authsim.library.dsl.policy.changers
 
 import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
-import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder.BasicPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.*
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
@@ -41,29 +41,17 @@ object PolicyChanger:
    * @param policy policy to change
    * @return a instance of Policy Changer for [[Policy Policy]]
    */
-  def apply(policy: Policy) = new PolicyBuilder with PolicyChanger[Policy]:
+  def apply(policy: Policy) = new BasicPolicyBuilder(Some(policy.name)) with PolicyChanger[Policy]:
     require(policy != null, "policy must be initialized")
-
-    private val builder: PolicyBuilder = PolicyBuilder(policy.name)
-
-    policy.credentialPolicies foreach { builder.of(_) }
-
-    if policy.transmissionProtocol.isDefined then builder.transmitWith(policy.transmissionProtocol.get)
-
+    policy.credentialPolicies foreach { this.of(_) }
+    if policy.transmissionProtocol.isDefined then this.transmitWith(policy.transmissionProtocol.get)
     if policy.cryptographicAlgorithm.isDefined && policy.saltPolicy.isDefined then
-      builder.storeWith((policy.cryptographicAlgorithm.get, policy.saltPolicy.get))
+      this.storeWith((policy.cryptographicAlgorithm.get, policy.saltPolicy.get))
     else if policy.cryptographicAlgorithm.isDefined then
-      builder.storeWith(policy.cryptographicAlgorithm.get)
-
-    override def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)): this.type = this.builderMethod(credentialPolicy => builder.of(credentialPolicy))(credentialPolicy)
-    override def of(credentialPolicy: CredentialPolicy): this.type = this.builderMethod(credentialPolicy => builder.of(credentialPolicy))(credentialPolicy)
-    override def and(credentialPolicy: CredentialPolicy): this.type = this.builderMethod(credentialPolicy => builder.and(credentialPolicy))(credentialPolicy)
-    override def transmitWith(protocol: Protocol): this.type = this.builderMethod(protocol => builder.transmitWith(protocol))(protocol)
-    override def storeWith(cryptographicAlgorithm: CryptographicAlgorithm): this.type = this.builderMethod(cryptographicAlgorithm => builder.storeWith(cryptographicAlgorithm))(cryptographicAlgorithm)
-    override def storeWith(cryptographicAlgorithmSalted: (CryptographicAlgorithm, SaltPolicy)): this.type = this.builderMethod(cryptographicAlgorithmSalted => builder.storeWith(cryptographicAlgorithmSalted))(cryptographicAlgorithmSalted)
+      this.storeWith(policy.cryptographicAlgorithm.get)
     override def build: Policy = policy
 
-    override def rebuild: Policy = builder.build
+    override def rebuild: Policy = super.build
 
   /**
    * @param userIDPolicy userID policy to change

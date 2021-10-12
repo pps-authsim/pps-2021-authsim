@@ -78,7 +78,10 @@ object PolicyChanger:
     if userIDPolicy.minimumUpperChars.isDefined then this.minimumUpperChars(userIDPolicy.minimumUpperChars.get)
     if userIDPolicy.minimumNumbers.isDefined then this.minimumNumbers(userIDPolicy.minimumNumbers.get)
     if userIDPolicy.minimumSymbols.isDefined then this.minimumSymbols(userIDPolicy.minimumSymbols.get)
-    override def rebuild: UserIDPolicy = this.build
+    override def build: UserIDPolicy = userIDPolicy
+
+    override def rebuild: UserIDPolicy = super.build
+
 
   /**
    * @param passwordPolicy password policy to change
@@ -93,7 +96,10 @@ object PolicyChanger:
     if passwordPolicy.minimumUpperChars.isDefined then this.minimumUpperChars(passwordPolicy.minimumUpperChars.get)
     if passwordPolicy.minimumNumbers.isDefined then this.minimumNumbers(passwordPolicy.minimumNumbers.get)
     if passwordPolicy.minimumSymbols.isDefined then this.minimumSymbols(passwordPolicy.minimumSymbols.get)
-    override def rebuild: PasswordPolicy = this.build
+    override def build: PasswordPolicy = passwordPolicy
+
+    override def rebuild: PasswordPolicy = super.build
+
 
   /**
    * @param otpPolicy opt policy to change
@@ -104,7 +110,9 @@ object PolicyChanger:
     this.setAlphabet(otpPolicy.alphabet)
     this.minimumLength(otpPolicy.minimumLength)
     if otpPolicy.maximumLength.isDefined then this.maximumLength(otpPolicy.maximumLength.get)
-    override def rebuild: OTPPolicy = this.build
+    override def build: OTPPolicy = otpPolicy
+
+    override def rebuild: OTPPolicy = super.build
 
   /**
    * @param saltPolicy salt policy to change
@@ -119,5 +127,7 @@ object PolicyChanger:
     if saltPolicy.minimumUpperChars.isDefined then this.minimumUpperChars(saltPolicy.minimumUpperChars.get)
     if saltPolicy.minimumNumbers.isDefined then this.minimumNumbers(saltPolicy.minimumNumbers.get)
     if saltPolicy.minimumSymbols.isDefined then this.minimumSymbols(saltPolicy.minimumSymbols.get)
-    override def rebuild: SaltPolicy = this.build
+    override def build: SaltPolicy = saltPolicy
+
+    override def rebuild: SaltPolicy = super.build
 

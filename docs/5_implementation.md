@@ -19,6 +19,26 @@ Di seguito viene riassunto quanto realizzato da ogni componente del gruppo.
 
 ## Ntronov Kyrillos
 
+Kyrillos Ntronov ha realizzato interamente la parte client (package **it.unibo.authsim.client.app**). 
+
+In particolare sono stati realizzati:
+
+- GUI
+- MVVM & Data binding
+- Dependency Injection (Cake Pattern) & components
+- Persistence (SQL, Mongo in memory DB)
+- AttackSimulation task
+- Integrazione client con la libreria
+
+e i test relativi.
+
+Inoltre ha svolto i seguenti compiti DevOps e orgnaizzativi:
+
+- Integrazione di **Travis CI** con la repository (organization) github
+- Tentativo d'integrazione di **SonarCould** (l'integrazione è di fatto configurata ma non si riesce utilizzarla a causa dell'assenza di supporto per Scala3)
+- **SBT build automation** & scripts
+- **Scrum Master**
+
 ## Pasquali Marica
 
 ## Speranza Alex

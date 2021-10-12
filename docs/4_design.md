@@ -74,5 +74,7 @@ sono delegate al set interno, di cui però non si conosce il tipo specifico.
 
 // todo deferred proxy
 
+// todo repositories (mongo reactive), properties....
+
 ## Organizzazione del codice
 // TODO

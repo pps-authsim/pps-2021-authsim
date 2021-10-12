@@ -7,23 +7,44 @@ import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.*
 import it.unibo.authsim.library.dsl.policy.model.Policy
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 
+/**
+ * A ''PolicyChanger'' is a trait that is used to redefine a policy
+ * @tparam T value of the policy
+ */
 trait PolicyChanger[T]:
+  /**
+   * @return an instance of new policy
+   */
   def rebuild: T
 
 object PolicyChanger:
 
+  /**
+   * ''UserIDPolicyChanger'' is trait that is used to create a PolicyChanger for [[UserIDPolicy userID policy]]
+   */
   trait UserIDPolicyChanger extends UserIDPolicyBuilder with PolicyChanger[UserIDPolicy]
+  /**
+   * ''PasswordPolicyChanger'' is trait that is used to create a PolicyChanger for [[PasswordPolicy password policy]]
+   */
   trait PasswordPolicyChanger extends PasswordPolicyBuilder with PolicyChanger[PasswordPolicy]
+  /**
+   * ''OTPPolicyChanger'' is trait that is used to create a PolicyChanger for [[OTPPolicy otp policy]]
+   */
   trait OTPPolicyChanger extends OTPPolicyBuilder with PolicyChanger[OTPPolicy]
+  /**
+   * ''SaltPolicyChanger'' is trait that is used to create a PolicyChanger for [[SaltPolicy salt policy]]
+   */
   trait SaltPolicyChanger extends SaltPolicyBuilder with PolicyChanger[SaltPolicy]
 
 
+  /**
+   * @param policy policy to change
+   * @return a instance of Policy Changer for [[Policy Policy]]
+   */
   def apply(policy: Policy) = new PolicyBuilder with PolicyChanger[Policy]:
     require(policy != null, "policy must be initialized")
 
-    private val builder: PolicyBuilder = policy.name match
-      case "" => PolicyBuilder()
-      case _ => PolicyBuilder(policy.name)
+    private val builder: PolicyBuilder = PolicyBuilder(policy.name)
 
     policy.credentialPolicies foreach { builder.of(_) }
 
@@ -44,6 +65,10 @@ object PolicyChanger:
 
     override def rebuild: Policy = builder.build
 
+  /**
+   * @param userIDPolicy userID policy to change
+   * @return a instance of [[UserIDPolicyChanger]]
+   */
   def userID(userIDPolicy: UserIDPolicy) = new UserIDPolicyChanger:
     require(userIDPolicy != null, "userID policy must be initialized")
     this.addAlphabet(userIDPolicy.alphabet)
@@ -55,6 +80,10 @@ object PolicyChanger:
     if userIDPolicy.minimumSymbols.isDefined then this.minimumSymbols(userIDPolicy.minimumSymbols.get)
     override def rebuild: UserIDPolicy = this.build
 
+  /**
+   * @param passwordPolicy password policy to change
+   * @return a instance of [[PasswordPolicyChanger]]
+   */
   def password(passwordPolicy: PasswordPolicy) = new PasswordPolicyChanger:
     require(passwordPolicy != null, "password policy must be initialized")
     this.addAlphabet(passwordPolicy.alphabet)
@@ -66,6 +95,10 @@ object PolicyChanger:
     if passwordPolicy.minimumSymbols.isDefined then this.minimumSymbols(passwordPolicy.minimumSymbols.get)
     override def rebuild: PasswordPolicy = this.build
 
+  /**
+   * @param otpPolicy opt policy to change
+   * @return a instance of [[OTPPolicyChanger]]
+   */
   def otp(otpPolicy: OTPPolicy) = new OTPPolicyChanger:
     require(otpPolicy != null, "OTP policy must be initialized")
     this.setAlphabet(otpPolicy.alphabet)
@@ -73,6 +106,10 @@ object PolicyChanger:
     if otpPolicy.maximumLength.isDefined then this.maximumLength(otpPolicy.maximumLength.get)
     override def rebuild: OTPPolicy = this.build
 
+  /**
+   * @param saltPolicy salt policy to change
+   * @return a instance of [[SaltPolicyChanger]]
+   */
   def salt(saltPolicy: SaltPolicy) = new SaltPolicyChanger:
     require(saltPolicy != null, "salt policy must be initialized")
     this.addAlphabet(saltPolicy.alphabet)

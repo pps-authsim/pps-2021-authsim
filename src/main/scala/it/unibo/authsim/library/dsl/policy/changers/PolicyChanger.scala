@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.dsl.policy.changer
+package it.unibo.authsim.library.dsl.policy.changers
 
 import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm

@@ -106,9 +106,7 @@ object PolicyBuilder:
 
     override def build: Policy = new Policy:
 
-      override def name: String = BasicPolicyBuilder.this.name match
-        case Some(name) => name
-        case _ => "Policy"
+      override def name: String = BasicPolicyBuilder.this.name.getOrElse("Policy")
 
       override def credentialPolicies: Seq[CredentialPolicy] = BasicPolicyBuilder.this._credentialPolicies
 
@@ -119,7 +117,7 @@ object PolicyBuilder:
       override def transmissionProtocol: Option[Protocol] = BasicPolicyBuilder.this._protocol
 
       override def toString: String =
-        s"${if BasicPolicyBuilder.this.name.isDefined then BasicPolicyBuilder.this.name.get else ""}Policy { " +
+        s"${BasicPolicyBuilder.this.name.getOrElse("")}Policy { " +
           s"Protocol = $transmissionProtocol, " +
           s"CryptographicAlgorithm = $cryptographicAlgorithm, SaltPolicy = $saltPolicy, " +
           s"CredentialPolicies = $credentialPolicies }"

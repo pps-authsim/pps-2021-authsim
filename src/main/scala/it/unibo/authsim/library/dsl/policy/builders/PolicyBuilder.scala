@@ -62,6 +62,14 @@ object PolicyBuilder:
     private var _protocol: Option[Protocol] = Option.empty
     private var _cryptographicAlgorithm: Option[CryptographicAlgorithm] = Option.empty
     private var _saltPolicy: Option[SaltPolicy] = Option.empty
+    
+    protected def init(policy: Policy): Unit =
+      policy.credentialPolicies foreach { this.of(_) }
+      if policy.transmissionProtocol.isDefined then this.transmitWith(policy.transmissionProtocol.get)
+      if policy.cryptographicAlgorithm.isDefined && policy.saltPolicy.isDefined then
+        this.storeWith((policy.cryptographicAlgorithm.get, policy.saltPolicy.get))
+      else if policy.cryptographicAlgorithm.isDefined then
+        this.storeWith(policy.cryptographicAlgorithm.get)
 
     override def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)) = this of credentialPolicy._1 and credentialPolicy._2
 

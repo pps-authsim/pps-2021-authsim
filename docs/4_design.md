@@ -2,6 +2,8 @@
 
 ## Scelte rilevanti
 
+## Library
+
 ### `AbstractBruteForceAttackBuilder`
 #### metodi `protected`
 Nella classe `AbstractBruteForceBuilder` sono stati inseriti i metodi di configurazione relativi 
@@ -61,6 +63,16 @@ più esterne) si avvicina molto alla descrizione a parole (in lingua inglese) di
 Il pattern `Decorator` è stato usato nella dichiarazione del trait `Alphabet` rispetto al trait `Set[String]` di Scala.
 Infatti, oltre a estendere il trait, contiene anche un oggetto dello stesso tipo e infatti le operazioni su un alfabeto
 sono delegate al set interno, di cui però non si conosce il tipo specifico.
+
+## Client
+
+// todo observable collection
+
+// todo dettaglio cake pattern
+
+// todo task (threading) 
+
+// todo deferred proxy
 
 ## Organizzazione del codice
 // TODO

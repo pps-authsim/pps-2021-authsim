@@ -5,7 +5,9 @@ import it.unibo.authsim.library.dsl.builder.Builder
 import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.policy.model.Policy
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
+
+import scala.reflect.ClassTag
 
 /**
  * ''PolicyBuilder'' is a trait that is used to build a new policy
@@ -53,9 +55,9 @@ trait PolicyBuilder extends Builder[Policy]:
  */
 object PolicyBuilder:
   def apply(): PolicyBuilder = new PolicyBuilderImpl();
-  def apply(policyName: String): PolicyBuilder = new PolicyBuilderImpl(policyName);
+  def apply(policyName: String): PolicyBuilder = new PolicyBuilderImpl(Some(policyName));
 
-  private class PolicyBuilderImpl(private val name: String = "") extends PolicyBuilder:
+  private class PolicyBuilderImpl(private val name: Option[String] = None) extends PolicyBuilder:
     private var _credentialPolicies: Seq[CredentialPolicy] = Seq.empty
     private var _protocol: Option[Protocol] = Option.empty
     private var _cryptographicAlgorithm: Option[CryptographicAlgorithm] = Option.empty
@@ -63,7 +65,24 @@ object PolicyBuilder:
 
     override def of(credentialPolicy: (UserIDPolicy, PasswordPolicy)) = this of credentialPolicy._1 and credentialPolicy._2
 
-    override def of(credentialPolicy: CredentialPolicy) = this.builderMethod((credentialPolicy: CredentialPolicy) => this._credentialPolicies = credentialPolicy +: this._credentialPolicies)(credentialPolicy)
+    override def of(credentialPolicy: CredentialPolicy) = this.builderMethod((credentialPolicy: CredentialPolicy) =>
+      def findIndexOfInstance[T: ClassTag](credentialPolicy: CredentialPolicy): Int =
+        this._credentialPolicies.indexWhere {
+          case _: T =>
+            credentialPolicy match
+              case _: T => true
+              case _ => false
+          case _ => false
+        }
+
+      val index: Option[Int] = List(findIndexOfInstance[UserIDPolicy](credentialPolicy),
+                                    findIndexOfInstance[PasswordPolicy](credentialPolicy),
+                                    findIndexOfInstance[OTPPolicy](credentialPolicy)).find(_ != -1)
+
+      if index.isEmpty then this._credentialPolicies = this._credentialPolicies :+ credentialPolicy
+      else this._credentialPolicies = this._credentialPolicies.updated(index.get, credentialPolicy)
+
+    )(credentialPolicy)
 
     override def and(credentialPolicy: CredentialPolicy) = this of credentialPolicy
 
@@ -79,7 +98,9 @@ object PolicyBuilder:
 
     override def build: Policy = new Policy:
 
-      override def name: String = PolicyBuilderImpl.this.name
+      override def name: String = PolicyBuilderImpl.this.name match
+        case Some(name) => name
+        case _ => "Policy"
 
       override def credentialPolicies: Seq[CredentialPolicy] = PolicyBuilderImpl.this._credentialPolicies
 
@@ -90,7 +111,7 @@ object PolicyBuilder:
       override def transmissionProtocol: Option[Protocol] = PolicyBuilderImpl.this._protocol
 
       override def toString: String =
-        s"${name}Policy {" +
+        s"${if PolicyBuilderImpl.this.name.isDefined then PolicyBuilderImpl.this.name.get else ""}Policy { " +
           s"Protocol = $transmissionProtocol, " +
           s"CryptographicAlgorithm = $cryptographicAlgorithm, SaltPolicy = $saltPolicy, " +
           s"CredentialPolicies = $credentialPolicies }"

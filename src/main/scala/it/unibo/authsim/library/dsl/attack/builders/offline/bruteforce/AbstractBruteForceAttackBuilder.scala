@@ -5,16 +5,22 @@ import it.unibo.authsim.library.dsl.attack.builders.offline.{OfflineAttack, Offl
 import it.unibo.authsim.library.dsl.attack.builders.{Attack, ConcurrentStringCombinator}
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
-import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.UserProvider
-import it.unibo.authsim.library.user.model.User
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
+import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
+import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.{AES, DES, Caesar}
+import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.RSACipher
+import it.unibo.authsim.library.dsl.cryptography.cipher.symmetric.{AESCipher, CaesarCipher, DESCipher}
+import it.unibo.authsim.library.user.model.{User, UserInformation}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.{Duration, MILLISECONDS}
+import scala.concurrent.duration.{Duration, NANOSECONDS}
 import scala.concurrent.{Await, Future, TimeoutException}
 
 /**
- * A builder of bruteforce attacks.
+ * A builder of bruteforce attacks. It allows to specify the Alphabet to use in the attack and maximum length of the string to build.
+ * The alphabet is mandatory.
+ * The length of the words defaults to 1.
  */
 abstract class AbstractBruteForceAttackBuilder[T <: Alphabet[T]] extends OfflineAttackBuilder:
   private var alphabet: Alphabet[T] = null
@@ -49,9 +55,14 @@ abstract class AbstractBruteForceAttackBuilder[T <: Alphabet[T]] extends Offline
    */
   protected def protectedGetMaximumLength: Int = this._maximumLength
 
-  final override def build: Attack = new BruteForceAttack(this.getTarget(), this.getHashFunction(), this.protectedGetAlphabet, this.protectedGetMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
+  final override def build: Attack =
+    require(this.getTarget() != null, "UserProvider not set. Aborting attack creation.")
+    require(this.protectedGetAlphabet != null, "Alphabet not set. Aborting attack creation.")
+    new BruteForceAttack(this.getTarget(), this.protectedGetAlphabet, this.protectedGetMaximumLength, this.getStatisticsConsumer(), this.getTimeout(), this.getNumberOfWorkers)
 
-private class BruteForceAttack(private val target: UserProvider, private val hashFunction: HashFunction, private val alphabet: Alphabet[_], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
+private class BruteForceAttack(private val target: UserProvider, private val alphabet: Alphabet[_], private val maximumLength: Int, private val logTo: Option[StatisticsConsumer], private val timeout: Option[Duration], private val jobs: Int) extends OfflineAttack:
+
+  private var timedOut: Boolean = false
 
   override def start(): Unit =
     var jobResults: List[Future[Statistics]] = List.empty
@@ -62,20 +73,23 @@ private class BruteForceAttack(private val target: UserProvider, private val has
     try {
       Await.result(Future.sequence(jobResults), timeout.getOrElse(Duration.Inf)).foreach(stats => totalResults = totalResults + stats)
     } catch {
-      case e: TimeoutException => totalResults = totalResults + Statistics.timedOut
+      case e: TimeoutException => {
+        this.timedOut = true
+        totalResults = totalResults + Statistics.timedOut
+      }
     }
     val endTime = System.nanoTime()
-    val elapsedTime = Duration(endTime - startTime, MILLISECONDS)
+    val elapsedTime = Duration(endTime - startTime, NANOSECONDS)
     totalResults = totalResults + Statistics.onlyElapsedTime(elapsedTime)
     logTo.foreach(logSpec => logSpec.consume(totalResults))
 
-  private def futureJob(targetUsers: List[User], stringProvider: ConcurrentStringCombinator): Statistics =
+  private def futureJob(targetUsers: List[UserInformation], stringProvider: ConcurrentStringCombinator): Statistics =
     var localStatistics = Statistics.zero
     var nextPassword = stringProvider.getNextString()
-    while !nextPassword.isEmpty do
+    while !nextPassword.isEmpty && !this.timedOut do
       val nextPasswordString = nextPassword.get
-      val hashedPassword = hashFunction.hash(nextPasswordString)
       targetUsers.foreach(user => {
+        val hashedPassword = retrievePasswordEncrypter(user)(nextPasswordString)
         localStatistics = localStatistics + Statistics.onlyBreaches(hashedPassword == user.password match {
           case true => Set(User(user.username, nextPasswordString))
           case false => Set()
@@ -85,3 +99,15 @@ private class BruteForceAttack(private val target: UserProvider, private val has
       nextPassword = stringProvider.getNextString()
     end while
     localStatistics
+
+  private def retrievePasswordEncrypter(userInfo: UserInformation): String => String =
+    userInfo.algorithm match {
+      case None => s => s
+      case Some(algorithm) => algorithm match {
+        case hashFunction: HashFunction => hashFunction.hash
+        case caesar: Caesar => s => CaesarCipher().encrypt(s, caesar.keyLength)
+        case des: DES => s => DESCipher().encrypt(s, algorithm.salt.getOrElse(""))
+        case aes: AES => s => AESCipher().encrypt(s, algorithm.salt.getOrElse(""))
+        case rsa: RSA => s => RSACipher().encrypt(s, algorithm.salt.getOrElse(""))
+      }
+    }

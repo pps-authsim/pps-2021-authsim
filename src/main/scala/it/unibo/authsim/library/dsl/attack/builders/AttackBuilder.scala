@@ -6,8 +6,11 @@ import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import scala.concurrent.duration.Duration
 
 /**
- * A builder for attacks, which can specify a timeout and to which StatisticsConsumer to log.
+ * A builder for attacks, which can specify a timeout and to which StatisticsConsumer to log, both of which are optional.
+ * If the consumner is not specified, the logging does not take place.
+ * If the timeout is not specified, the attack will continue to run until the end of the inputs.
  */
+@throws[IllegalArgumentException]("Not all mandatory fields have been configured.")
 trait AttackBuilder extends Builder[Attack]:
   private var statisticsConsumer: Option[StatisticsConsumer] = Option.empty
   private var timeout: Option[Duration] = Option.empty
@@ -20,7 +23,7 @@ trait AttackBuilder extends Builder[Attack]:
    * @param statisticsConsumer The StatisticsConsumer to log to.
    * @return
    */
-  def logTo(statisticsConsumer: StatisticsConsumer) = this.builderMethod[StatisticsConsumer](consumer => this.statisticsConsumer = Option(consumer))(statisticsConsumer)
+  def logTo(statisticsConsumer: StatisticsConsumer): this.type = this.builderMethod[StatisticsConsumer](consumer => this.statisticsConsumer = Option(consumer))(statisticsConsumer)
 
   /**
    * Sets the timeout for an attack.

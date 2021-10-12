@@ -5,7 +5,7 @@ import it.unibo.authsim.library.dsl.builder.Builder
 import it.unibo.authsim.library.dsl.otp.generator.OTPGenerator
 import it.unibo.authsim.library.dsl.otp.model.*
 import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.*
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.OTPPolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.OTPPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.OTPPolicy
 
 import java.util.concurrent.TimeUnit

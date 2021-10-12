@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.*
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.*
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 import org.scalatest.*
 import org.scalatest.wordspec.AnyWordSpec

@@ -1,5 +1,6 @@
 package it.unibo.authsim.client.app
 
+import it.unibo.authsim.client.app.components.registry.ComponentRegistry
 import it.unibo.authsim.client.app.mvvm.model.AuthsimModel
 import it.unibo.authsim.client.app.mvvm.view.AuthsimViewSFX
 import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModelSFX
@@ -62,7 +63,9 @@ object AuthsimApp extends JFXApp3 :
     val securityViewModel: SecurityViewModel = ViewPropertiesBinder.bindSecurityTab(view, viewModelDeferedProxy)
     val attackViewModel: AttackViewModel = ViewPropertiesBinder.bindAttackTab(view, viewModelDeferedProxy)
 
-    val authsimViewModel = new AuthsimViewModelSFX(usersViewModel, securityViewModel, attackViewModel, model)
+    val runner = ComponentRegistry.simulationRunner
+
+    val authsimViewModel = new AuthsimViewModelSFX(usersViewModel, securityViewModel, attackViewModel, model, runner)
 
     viewModelDeferedProxy.delegate = Option(authsimViewModel)
 

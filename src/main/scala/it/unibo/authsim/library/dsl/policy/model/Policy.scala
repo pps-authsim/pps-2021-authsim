@@ -1,8 +1,8 @@
 package it.unibo.authsim.library.dsl.policy.model
 
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, SaltPolicy}
 import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, SaltPolicy}
 
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex

@@ -3,9 +3,10 @@ package it.unibo.authsim.client.app.mvvm.model.security
 import it.unibo.authsim.client.app.mvvm.model.security
 import it.unibo.authsim.library.dsl.Protocol
 import it.unibo.authsim.library.dsl.Protocol.*
+import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.dsl.policy.defaults.PolicyDefault
 import it.unibo.authsim.library.dsl.policy.model.Policy
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.CredentialPolicy
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy, OTPPolicy}
 
 case class SecurityPolicy(val policy: String, val description: String)
 
@@ -19,9 +20,16 @@ object SecurityPolicy:
 
     implicit class RichString(base: String):
       def descriptor(defaultVal: DefaultVal) =
+        val alphabets = defaultVal.policy.credentialPolicies.map {
+          case u: UserIDPolicy => "userID" -> u.alphabet.alphanumericsymbols.mkString
+          case p: PasswordPolicy => "password" -> p.alphabet.alphanumericsymbols.mkString
+          case o: OTPPolicy => "otp" -> o.alphabet.alphanumericsymbols.mkString
+        }.reverse.toMap
+
         s"""${base}\n
             ${if defaultVal.policy.transmissionProtocol.isDefined then s"Credentials are trasmitted with protocol ${defaultVal.policy.transmissionProtocol.get.getClass.getSimpleName.toUpperCase}." else "No protocol." }\n
-            The alphabet:  ${defaultVal.policy.credentialPolicies.map(_.alphabet).map(a => a.alphanumericsymbols.mkString).distinct.mkString}"""
+            The alphabet:\n${alphabets.map((who, alpha) => s"\t\t- $who : $alpha\n").mkString}
+        """
 
     protected case class DefaultVal(val policy: Policy) extends super.Val:
       def name: String = (if policy.transmissionProtocol.isDefined then s"${policy.transmissionProtocol.get.getClass.getSimpleName}-" else "") + policy.name
@@ -30,9 +38,11 @@ object SecurityPolicy:
             """
              An userID has
               - minimum length of 3 characters
+              - maximum length of 6 characters
 
              A password has
               - minimum length of 3 characters
+              - maximum length of 7 characters
 
             Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
         case "Simple" =>
@@ -42,6 +52,7 @@ object SecurityPolicy:
 
              A password has
               - minimum length of 3 characters
+              - maximum length of 7 characters
 
              Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
         case "Medium" =>
@@ -65,7 +76,7 @@ object SecurityPolicy:
               - minimum length of 8 characters
               - a minimum of 1 symbols
 
-             Credentials (userID, password) are stored in plain text in the database.""".descriptor(this)
+             The userID is stored in plain text and password is stored with SHA1.""".descriptor(this)
         case "SuperHard" =>
             """
              An userID has
@@ -157,3 +168,11 @@ object SecurityPolicy:
     def credentialsPoliciesFrom(name: String): Option[Seq[CredentialPolicy]] =
       val default = this.values.find(_.name == name)
       if default.isDefined then Some(default.get.policy.credentialPolicies) else None
+
+    /**
+     * @param name name of selected default policy
+     * @return a optional [[CryptographicAlgorithm cryptographic algorithm]] of selected default policy
+     */
+    def cryptographicAlgorithmFrom(name: String): Option[CryptographicAlgorithm] =
+      val default = this.values.find(_.name == name)
+      if default.isDefined then default.get.policy.cryptographicAlgorithm else None

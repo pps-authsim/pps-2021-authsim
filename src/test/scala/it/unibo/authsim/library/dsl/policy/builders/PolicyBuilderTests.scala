@@ -1,13 +1,13 @@
 package it.unibo.authsim.library.dsl.policy.builders
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction.{SHA1, SHA256, SHA384}
 import it.unibo.authsim.library.dsl.Protocol.*
-import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.AES
 import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
+import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction.{SHA1, SHA256, SHA384}
+import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.AES
 import it.unibo.authsim.library.dsl.policy.builders.PolicyBuilder
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{OTPPolicyBuilder, PasswordPolicyBuilder, SaltPolicyBuilder, UserIDPolicyBuilder}
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.{OTPPolicyBuilder, PasswordPolicyBuilder, SaltPolicyBuilder, UserIDPolicyBuilder}
 import it.unibo.authsim.library.dsl.policy.model.Policy
+import it.unibo.authsim.library.dsl.policy.model.StringPolicies.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.*
 
@@ -27,9 +27,9 @@ class PolicyBuilderTests extends AnyFlatSpec with should.Matchers:
   private val optPolicy: OTPPolicy = OTPPolicyBuilder() minimumLength 10 maximumLength 10 build
   private val optPolicy1: OTPPolicy = OTPPolicyBuilder() minimumLength 10 maximumLength 30 build
 
-  private val CREDENTIALS_POLICY: Seq[CredentialPolicy] = Seq(passwordPolicy, userIDPolicy)
-  private val CREDENTIALS_POLICY_1: Seq[CredentialPolicy] = Seq(passwordPolicy1, userIDPolicy1)
-  private val CREDENTIALS_POLICY_2: Seq[CredentialPolicy] = Seq(optPolicy, passwordPolicy1, userIDPolicy1)
+  private val CREDENTIALS_POLICY: Seq[CredentialPolicy] = Seq(userIDPolicy, passwordPolicy)
+  private val CREDENTIALS_POLICY_1: Seq[CredentialPolicy] = Seq(userIDPolicy1, passwordPolicy1)
+  private val CREDENTIALS_POLICY_2: Seq[CredentialPolicy] = Seq(userIDPolicy1, passwordPolicy1, optPolicy)
 
 
   private val policy0: Policy =

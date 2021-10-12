@@ -1,41 +1,43 @@
-package it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric
+package it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricEncryptionAlgorithm
+import it.unibo.authsim.library.dsl.cryptography.algorithm.AsymmetricAlgorithm
 import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
-import it.unibo.authsim.library.dsl.cryptography.encrypter.asymmetric.key.{KeyPair, KeysGenerator}
+import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.{KeyPair, KeysGenerator}
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
-import it.unibo.authsim.library.dsl.cryptography.encrypter.{AsymmetricEncrypter, BasicCipher}
+import it.unibo.authsim.library.dsl.cryptography.cipher.{AsymmetricCipher, BasicCipher}
 
 import java.security.*
 import java.security.{KeyPairGenerator, KeyPair as JavaKeyPair}
 import java.security.spec.{PKCS8EncodedKeySpec, X509EncodedKeySpec}
 import javax.crypto.Cipher
 
+
 /**
  * RSA cipher object
  */
 object RSACipher:
-  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitConversion._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitToArray._
 
   /**
    * Apply method for the object
    * @return        an istance of the RSA class
    */
-  def apply() = new RSAEncrypterImpl()
+  def apply() = new BasicRSACipher()
 
   /**
    * Basic implementation of an encrypter which use RSA algorithm for the cryptographic operation
    */
-  case class RSAEncrypterImpl() extends BasicCipher with AsymmetricEncrypter:
+  case class BasicRSACipher() extends BasicCipher with AsymmetricCipher:
     /**
      * Variable representing the algorithm used for the cryptographic operation
      */
-    var algorithm: RSA= RSA()
+    val algorithm: RSA= RSA()
     
     /**
      * Variable representing a KeyFactory object that converts public/private keys of the RSA algorithm
      */
-    private val keyFactory = KeyFactory.getInstance(algorithm.algorithmName)
+    private val keyFactory = KeyFactory.getInstance(algorithm.name)
 
     /**
      * Variable representing the defaul name for key pair file
@@ -95,14 +97,14 @@ object RSACipher:
      *  @return                        A string representing the password either encrypted or decrypted
      */
     override def crypto[A,B](mode:EncryptionMode, password: A, inputKey: B): String=
-      val cipher = Cipher.getInstance(algorithm.algorithmName);
+      val cipher = Cipher.getInstance(algorithm.name);
       mode match{
         case EncryptionMode.Encryption =>
-          val key = publicKeyFromString(inputKey)
+          val key = privateKeyFromString(inputKey)
           cipher.init(Cipher.ENCRYPT_MODE, key)
           Base64.encodeToString(cipher.doFinal(password))
         case EncryptionMode.Decryption =>
-          val key = privateKeyFromString(inputKey)
+          val key = publicKeyFromString(inputKey)
           cipher.init(Cipher.DECRYPT_MODE, key)
           new String(cipher.doFinal(Base64.decodeToArray(password)))
       }

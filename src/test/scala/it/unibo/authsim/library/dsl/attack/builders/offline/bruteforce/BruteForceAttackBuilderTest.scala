@@ -4,6 +4,7 @@ import it.unibo.authsim.library.dsl.attack.builders.ConcurrentStringCombinator
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
 import it.unibo.authsim.library.dsl.policy.model.Policy
+
 import it.unibo.authsim.library.dsl.UserProvider
 import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.user.model.UserInformation
@@ -25,7 +26,7 @@ class BruteForceAttackBuilderTest extends AnyWordSpec:
       println("Breached credentials: " + consumable.successfulBreaches.map(u => u.username + " - " + u.password).reduceOption((u1, u2) => u1 + "\n" + u2).getOrElse("No credentials breached"))
 
     val myProxy = new UserProvider {
-      override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("abc"), None))
+      override def userInformations(): List[UserInformation] = List(UserInformation("mario", HashFunction.MD5().hash("abc"), Some(HashFunction.MD5())))
     }
     private val myLogger = new TestStatisticsConsumer()
     private val myAlphabet = ConcurrentStringCombinator.lowercaseLetters
@@ -33,12 +34,9 @@ class BruteForceAttackBuilderTest extends AnyWordSpec:
     val myBruteForceBuilder = new BruteForceAttackBuilder()
 
     "The BruteForceAttackBuilder" must {
-      myBruteForceBuilder against myProxy hashingWith HashFunction.MD5() usingAlphabet myAlphabet
+      myBruteForceBuilder against myProxy usingAlphabet myAlphabet
       "declare a target" in {
         assert(myBruteForceBuilder.getTarget() != null)
-      }
-      "select a hash function" in {
-        assert(myBruteForceBuilder.getHashFunction() != null)
       }
       "declare an alphabet to use" in {
         assert(myBruteForceBuilder.getAlphabet != null)
@@ -56,19 +54,19 @@ class BruteForceAttackBuilderTest extends AnyWordSpec:
         assert(!myBruteForceBuilder.getTimeout().isEmpty)
       }
       "specify the maximum length of the password" in {
-        myBruteForceBuilder maximumLength 2
+        myBruteForceBuilder maximumWordLength 2
         assert(myBruteForceBuilder.getMaximumLength == 2)
       }
     }
 
     "A bruteforce attack" should {
       "crack a simple password" in {
-        (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumLength maximumPasswordLength hashingWith HashFunction.MD5() jobs 4 logTo myLogger).executeNow()
+        (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumWordLength maximumPasswordLength jobs 4 logTo myLogger).executeNow()
         assert(!myLogger.getStatistics.successfulBreaches.isEmpty)
       }
       "timeout if out of time" in {
         val consumer = new TestStatisticsConsumer()
-        (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumLength maximumPasswordLength hashingWith HashFunction.MD5() jobs 4 logTo consumer timeout Duration.Zero).executeNow()
+        (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumWordLength maximumPasswordLength jobs 4 logTo consumer timeout Duration.Zero).executeNow()
         assert(consumer.getStatistics.timedOut)
       }
     }

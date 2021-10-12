@@ -34,5 +34,4 @@ class UserAutoBuilder extends UserBuilder[User]:
    * @param numberOfUsers   number of users to be created it should be a posive value, if not it will be implicitly converted to be so
    * @return                a sequence of the require number of users
    */
-  def build(numberOfUsers: Int): Seq[User] =
-    List.fill(numberOfUsers.abs)(build).toSeq
+  def build(numberOfUsers: Int): Seq[User] = List.fill(numberOfUsers.abs)(build).toSeq

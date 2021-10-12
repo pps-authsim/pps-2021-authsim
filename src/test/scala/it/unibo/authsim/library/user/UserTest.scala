@@ -1,6 +1,7 @@
 package it.unibo.authsim.library.user
 import scala.language.postfixOps
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{OTPPolicyBuilder, PasswordPolicyBuilder, UserIDPolicyBuilder}
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.OTPPolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.{PasswordPolicyBuilder, UserIDPolicyBuilder}
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.UserCostumBuilder
 import it.unibo.authsim.library.user.builder.UserBuilder
@@ -32,8 +33,8 @@ class UserTest extends AnyWordSpec with should.Matchers{
   private val autoUser1:User = autoUserBuilder1.build
 
   private val autoUserBuilder2:UserAutoBuilder= UserAutoBuilder()
-
   private var userSequence:Seq[User]= autoUserBuilder2.build(min)
+  
   private var usernameSequence:Seq[String] = for(e<-userSequence) yield e.username
   private var passwordSequence:Seq[String]  = for(e<-userSequence) yield e.password
 
@@ -47,7 +48,6 @@ class UserTest extends AnyWordSpec with should.Matchers{
   }
 
   "If a user created with a set of credential policies then user credentials" should  {
-
     s"be complaint with the policy '${userIDPolicy}'" in{
       assert(StringPolicyChecker(userIDPolicy) check (costumUser1.get.username))
     }

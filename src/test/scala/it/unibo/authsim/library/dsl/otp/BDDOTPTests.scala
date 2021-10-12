@@ -4,7 +4,7 @@ import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.dsl.otp.builders.{HOTPBuilder, TOTPBuilder}
 import it.unibo.authsim.library.dsl.otp.model.{HOTP, TOTP}
 import it.unibo.authsim.library.dsl.otp.util.OTPHelpers.generatorLength
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.OTPPolicyBuilder
+import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.OTPPolicyBuilder
 import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
 import org.scalatest.GivenWhenThen
 import org.scalatest.funsuite.AnyFunSuite

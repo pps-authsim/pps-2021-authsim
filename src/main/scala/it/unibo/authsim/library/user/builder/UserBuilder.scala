@@ -9,7 +9,7 @@ import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 
 
 /**
- * Abstract class for building users, it provides basic method to add policies and check if user credentials are complaint with them.
+ * Abstract class for building users, it provides basic methods to add policies and check if user credentials are complaint with them.
  * @tparam U
  */
 abstract class UserBuilder[U] extends Builder[U]:
@@ -18,9 +18,9 @@ abstract class UserBuilder[U] extends Builder[U]:
   protected var _password:String= ""
 
   /**
-   * Method that check if the the provided credential for the user meet the input policy
+   * Method that checks if the the provided credential for the user meet the input policy.
    *
-   * @return true if the the credentials are complaint with the policy or false if they are not
+   * @return : true if the the credentials are complaint with the policy, or false if they are not
    */
   protected def checkPolicy(): Boolean=
     _credentialPolicies.map(c =>
@@ -33,10 +33,10 @@ abstract class UserBuilder[U] extends Builder[U]:
     ).contains(false).unary_!
     
   /**
-   * Setter for the policy to apply to the credential of a user
+   * Setter for the policy to apply to the credential of a user.
    *
-   * @param policy      a policy to apply to the credential of the user
-   * @return            a UserCostumBuilder where the in the policy field is added the provided value
+   * @param policy : a policy to apply to the credential of the user
+   * @return : a UserCostumBuilder where the policy field is filled with the provided value
    */
   def withPolicy(policy:CredentialPolicy) =
     this.builderMethod((policy: CredentialPolicy) => this._credentialPolicies = policy +: this._credentialPolicies)(policy)

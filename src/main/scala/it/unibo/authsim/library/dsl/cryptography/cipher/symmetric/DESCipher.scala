@@ -15,17 +15,18 @@ import javax.crypto.spec.*
  * DES cipher object
  */
 object DESCipher:
-  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitConversion._
-  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitToArray._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitToBuiltInType.ImplicitConversion._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitToBuiltInType.ImplicitToArray._
 
   /**
-   * Apply method for the object
-   * @return        an istance of the DES class
+   * Apply method for the object.
+   * 
+   * @return : an istance of the DES class
    */
   def apply() = new BasicDESCipher()
 
   /**
-   * Basic implementation of an cipher which use DES algorithm for the cryptographic operation
+   * Basic implementation of an cipher which use DES algorithm for the cryptographic operation.
    */
   case class BasicDESCipher() extends BasicCipher with SymmetricCipher:
     /**
@@ -34,37 +35,36 @@ object DESCipher:
     val algorithm : DES = DES()
     
     /**
-     * Private variable representing the salt value to be used during the cryptographic operations
+     * Private variable representing the salt value to be used during the cryptographic operations.
      */
     private val salt = Arrays.copyOf(algorithm.salt, 8)
 
     /**
-     * Private variable that represent the number of iterations used in the generation of 
-     * algorithm params
+     * Private variable that represent the number of iterations used in the generation of algorithm params.
      */
     private var _iterationCount: Int = 19
 
     /**
-     * Private variable that specify which transformation must be applied from the Cipher
+     * Private variable that specify which transformation must be applied from the Cipher.
      */
     private val _trasformation : String = "PBEWithMD5AndDES"
 
     /**
-     * Setter for the iteration value 
+     * Setter for the iteration value.
      * 
-     * @param iteration         new iterations value
+     * @param iteration : new iterations value
      */
     def iterationCount_(iteration: Int): Unit = _iterationCount = iteration
     
     /**
-     * Method that performs the encryption and decryption tasks
+     * Method that performs the encryption and decryption tasks.
      *
-     * @param mode                    Mode in with the method must operate, either as a decrypter or an encrypter
-     * @param password                Password to be encrypted or decrypted
-     * @param inputKey
-     * @tparam A                      Generic parameter for the password
-     * @tparam B                      Generic parameter for the secret
-     *  @return                        A string representing the password either encrypted or decrypted
+     * @param mode : mode in with the method must operate, either as a decrypter or an encrypter
+     * @param password : password to be encrypted or decrypted
+     * @param secret : secret used to encrypt or decrypt
+     * @tparam A : generic parameter for the password
+     * @tparam B : generic parameter for the secret
+     *  @return : a string representing the password either encrypted or decrypted
      */
     override def crypto[A, B](mode:EncryptionMode, password: A, secret: B): String=
       var cipher = Cipher.getInstance(_trasformation)
@@ -80,10 +80,10 @@ object DESCipher:
       }
 
     /**
-     * Private method repsonsible of the creation of the SecretKey
+     * Private method repsonsible for the creation of the SecretKey.
      *
-     * @param secret      string value to be used in the creation of SecretKey
-     * @return            a new SecretKey
+     * @param secret : string value to be used in the creation of SecretKey
+     * @return : a new SecretKey
      */
     private def secretKey(secret: String): SecretKey =
       var keySpec: KeySpec = new PBEKeySpec(secret, salt ,_iterationCount)

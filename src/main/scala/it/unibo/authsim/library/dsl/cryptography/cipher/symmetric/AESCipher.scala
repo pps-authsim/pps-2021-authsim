@@ -15,46 +15,48 @@ import java.util.*
 import scala.util.Random
 
 /**
- * AES cipher object
+ * AES cipher object.
  */
 object AESCipher:
-  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitConversion._
-  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitToArray._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitToBuiltInType.ImplicitConversion._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitToBuiltInType.ImplicitToArray._
   
   /**
-   * Apply method for the object
-   * @return        an istance of the AES class
+   * Apply method for the object.
+   * 
+   * @return : an istance of the AES class
    */
   def apply() = new BasicAESCipher()
+  
   /**
-   * Basic implementation of an encrypter which use AES algorithm for the cryptographic operation
+   * Basic implementation of an encrypter which use AES algorithm for the cryptographic operation.
    */
   case class BasicAESCipher() extends BasicCipher with SymmetricCipher:
 
     /**
-     * Variable representing the algorithm used for the cryptographic operation
+     * Variable representing the algorithm used for the cryptographic operation.
      */
     val algorithm : AES = AES()
 
     /**
-     * Private variable that specify which transformation must be applied from the Cipher
+     * Private variable that specify which transformation must be applied from the Cipher.
      */
     private val _trasformation: String = "AES/ECB/PKCS5PADDING"
 
     /**
-     * Private variable representing the salt value to be used during the cryptographic operations
+     * Private variable representing the salt value to be used during the cryptographic operations.
      */
     private val salt = Arrays.copyOf(algorithm.salt, 8)
 
     /**
-     * Method that performs the encryption and decryption tasks
+     * Method that performs the encryption and decryption tasks.
      *
-     * @param mode                    Mode in with the method must operate, either as a decrypter or an encrypter
-     * @param password                Password to be encrypted or decrypted
-     * @param secret                  Secred to encrypt or decrypt the password
-     * @tparam A                      Generic parameter for the password
-     * @tparam B                      Generic parameter for the secret
-     *  @return                        A string representing the password either encrypted or decrypted
+     * @param mode : mode in with the method must operate, either as a decrypter or an encrypter
+     * @param password : password to be encrypted or decrypted
+     * @param secret : secred to encrypt or decrypt the password
+     * @tparam A : generic parameter for the password
+     * @tparam B : generic parameter for the secret
+     *  @return : a string representing the password either encrypted or decrypted
      */
     override def crypto[A,B](mode:EncryptionMode, password: A, secret: B): String=
       val cipher: Cipher = Cipher.getInstance(_trasformation)
@@ -68,10 +70,10 @@ object AESCipher:
       }
 
     /**
-     * Private method repsonsible of the creation of the SecretKeySpecification
+     * Private method repsonsible of the creation of the SecretKeySpecification.
      *
-     * @param secret          string value to be used in the creation of SecretKeySpecification
-     * @return                a SecretKeySpecification compliant with algorithm chosen
+     * @param secret : string value to be used in the creation of SecretKeySpecification
+     * @return : a SecretKeySpecification compliant with algorithm chosen
      */
     private def secretKeySpec(secret: String): SecretKeySpec =
       var keyBytes: Array[Byte] = secret.concat(salt)

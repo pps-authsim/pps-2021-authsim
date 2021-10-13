@@ -64,6 +64,8 @@ Il pattern `Decorator` è stato usato nella dichiarazione del trait `Alphabet` r
 Infatti, oltre a estendere il trait, contiene anche un oggetto dello stesso tipo e infatti le operazioni su un alfabeto
 sono delegate al set interno, di cui però non si conosce il tipo specifico.
 
+### `Factory`
+//le apply sugli object sono factories
 ## Client
 
 ### ScalaFx Task

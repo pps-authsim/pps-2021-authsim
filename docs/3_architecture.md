@@ -107,4 +107,7 @@ In questo modo UserSqlComponent ha l'accesso a PropertiesService che viene istan
 
 ### Client
 
-// TODO scalafx
+#### ScalaFx
+
+La scelta di ScalaFx come libreria UI ha influenzato anche l'implementazione di MVVM. L'implementazione di ViewModel infatti utilizza
+le properties e Observers offerti dalla libreria. Questo ha facilitato lo sviluppo, semplificando il binding con la View.

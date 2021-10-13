@@ -66,15 +66,28 @@ sono delegate al set interno, di cui però non si conosce il tipo specifico.
 
 ## Client
 
-// todo observable collection
+### ScalaFx Task
 
-// todo dettaglio cake pattern
+La simulazione di un attacco potrebbe durare per molto tempo, quindi non sarebbe
+accettabile bloccare il thread della gui con una computazione impegnativa.
 
-// todo task (threading) 
+La libreria ScalaFx offre *Task[T]* una classe utility analoga a *SwingWorker* che permette di
+eseguire una computazione non bloccante su un thread diverso da quello di EDT.
 
-// todo deferred proxy
+Permette inoltre di comunicare con la GUI tramite il metodo `updateMessage` che permette di aggiornare
+un StringProperty, `messageProperty`, disponibile alla GUI.
 
-// todo repositories (mongo reactive), properties....
+In questo modo si riesce a eseguire la simulazione e stampare su un elemento della gui i log della sua esecuzione.
+
+### Observer
+
+
+
+### Repositories
+
+
+
+### Properties
 
 ## Organizzazione del codice
-// TODO
+// TODO package diagram?

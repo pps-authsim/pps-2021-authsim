@@ -71,7 +71,7 @@ in quanto la business logic è incapsulata quasi interamente nel dominio del *ta
 
 Questo diagramma riassume l'implementazione del pattern nel progetto.
 Si nota la presenza di una classe intermedia *AuthsimViewModelDeferedProxy* che effettua l'handling dei messaggi provenienti dalla view
-e delega la loro esecuzione alla classe ViewModel concreta. ViewModel concreta è stata implementata utilizzando le properties offerte da ScalaFx.
+e delega la loro esecuzione alla classe ViewModel concreta. ViewModel concreta è stata implementata utilizzando le *properties* offerte da ScalaFx.
 
 #### Business Logic e Dependency Injection
 
@@ -99,6 +99,9 @@ La business logic non è stata sufficientemente complessa in modo da permettere 
 estendibile con altri *component* qualora servisse ampliare l'applicativo con delle funzionalità nuove.
 
 ![Component Registry](/pps-2021-authsim/assets/images/registry.png)
+
+In fatto che UserSqlComponent dichiara PropertiesServiceComponent come self-type implica che il trait deve essere portato come mix-in senza estenderlo direttamente.
+In questo modo UserSqlComponent ha l'accesso a PropertiesService che viene istanziato nella classe ComponentRegistry
 
 ## Scelte tecnologiche
 

@@ -24,7 +24,7 @@ import scalafx.collections.ObservableBuffer
 object ModelBinder:
 
   def bindUsersViewModel(usersModel: UsersModel, viewModel: UsersViewModel): Unit =
-    ModelBinder.bindPropertiesWithObservableList(usersModel.presetsList, viewModel.generateUsersFormProperties.presetListProperty.value, preset => new UserGenerationPreset(preset.name, preset.description))
+    ModelBinder.bindPropertiesWithObservableList(usersModel.presetsList, viewModel.generateUsersFormProperties.presetListProperty.value, preset => new UserGenerationPreset(preset.policy, preset.description))
     ModelBinder.bindPropertiesWithObservableList(usersModel.usersList, viewModel.usersListProperties.usersListProperty.value, user => new UserEntry(user.username, user.password))
     viewModel.generateUsersFormProperties.presetProperty.addListener((observable, oldValue, newValue) => {
       val description = newValue.description

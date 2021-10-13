@@ -56,7 +56,7 @@ Nell'ottica del progetto Agile è stato deciso di creare una pipeline di CI e bu
 #### Scala 3
 
 // TODO scrivere qualcosa...
-
+// Da qualche parte bisogna aggiungere qualcosa di spinto sui test-> coverage sviluppo TDD
 #### Github
 
 Per il versioning distribuito del progetto è stato utilizzato *GitHub*, nel quale venne creata un *organization* per il progetto.

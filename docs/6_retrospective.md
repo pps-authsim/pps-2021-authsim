@@ -86,5 +86,11 @@ Nell'ultima iterazione, sono stati prodotti gli artefatti Prolog.
 
 # Commenti finali
 
+#### Client
+
+// todo utilizzare meglio persistenza
+// todo wrappare javafx
+// todo usare properties custom per svincolarsi da scalafx
+
 ## Sviluppi futuri
 

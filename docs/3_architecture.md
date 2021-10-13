@@ -86,7 +86,7 @@ Inoltre facilita il testing dei component singoli permettendo il mocking facile 
 
 ![Dependency Injection](/pps-2021-authsim/assets/images/DI.png)
 
-In Scala questo pattern è ottenibile anche con le feature del linguaggio piuttosto che utilizzo delle librerie esterne o framework (che vengano comunque offerti dall'ecosistema).
+In Scala questo pattern è ottenibile anche con le feature del linguaggio piuttosto che l'utilizzo delle librerie esterne o framework (che vengono comunque offerti dall'ecosistema).
 
 Una possibilità consiste nell'implementare il *"Cake Pattern"*, proposto nel paper *Scalable Component Abstractions*, che 
 tramite l'utilizzo di self-types permette la composizione di componenti modulari con dei trait multipli, stabilendo la relazione
@@ -98,7 +98,10 @@ Nel progetto il *"top layer"* dell'ambiente di DI è stato rappresentato con la 
 La business logic non è stata sufficientemente complessa in modo da permettere delle gerarchie delle dipendenze complesse, tuttavia rimane facilmente
 estendibile con altri *component* qualora servisse ampliare l'applicativo con delle funzionalità nuove.
 
-// TODO aggiungere UML di component registry e i component
+![Component Registry](/pps-2021-authsim/assets/images/registry.png)
 
 ## Scelte tecnologiche
 
+### Client
+
+// TODO scalafx

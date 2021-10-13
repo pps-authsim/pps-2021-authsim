@@ -69,6 +69,10 @@ in quanto la business logic è incapsulata quasi interamente nel dominio del *ta
 
 ![Authsim MVVM](/pps-2021-authsim/assets/images/mvvmauthsim.png)
 
+Questo diagramma riassume l'implementazione del pattern nel progetto.
+Si nota la presenza di una classe intermedia *AuthsimViewModelDeferedProxy* che effettua l'handling dei messaggi provenienti dalla view
+e delega la loro esecuzione alla classe ViewModel concreta. ViewModel concreta è stata implementata utilizzando le properties offerte da ScalaFx.
+
 #### Business Logic e Dependency Injection
 
 La parte di business logic del progetto viene implementata nel dominio sotto forma della gerarchia dei 
@@ -78,7 +82,7 @@ In essenza, si tratta di separare i *concern* di costruire e di utilizzare gli o
 Una classe che utilizza degli oggetti di business logic (detti Service) non necessita di sapere come istanziarli, invece la loro costruzione 
 viene delegata a un *injection* e vengono portati come dipendenze tramite la loro iniezione nel costruttore della classe utilizzata.
 
-Inoltre facilita il testing dei component singoli permettendo il mocking delle dipendenze iniettate.
+Inoltre facilita il testing dei component singoli permettendo il mocking facile delle dipendenze iniettate.
 
 ![Dependency Injection](/pps-2021-authsim/assets/images/DI.png)
 

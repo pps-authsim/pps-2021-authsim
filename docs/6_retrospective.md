@@ -100,3 +100,8 @@ Molti sono gli sviluppi futuri di cui il framework potrebbe giovare.
 Infatti, grazie all'architettura definita si potrebbe facilmente pensare di introdurre nuovi tipi di attacco, metodi di cifratura e policy.
 Tuttavia, un estensione del framework potrebbe non essere la sola strada possibile, difatti si potrebbe anche pensare di sfruttare il paradigma logico per l'implementazione di alcune operazioni core.
 Per la sua intrinseca natura esplorativa, Prolog potrebbe essere utilizzato negli attacchi di tipo Brute Force ad esempio.
+
+
+
+
+//TODO: aggiungere PRODUCT BACKLOG

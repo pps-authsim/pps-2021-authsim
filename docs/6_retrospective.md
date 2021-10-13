@@ -84,7 +84,10 @@ Nell'ultima iterazione, sono stati prodotti gli artefatti Prolog.
 % E quanto ne è rimasto in ogni sprint
 ## Gestione delle iterazioni
 
-# Commenti finali
+# Conclusione e commenti finali
+Lo sviluppo del progetto è stata un esperienza essenziale nel nostro percorso di studi in quanto ha permesso di toccare con mano molti degli aspetti centrali affrontanti nel corso.
+Infatti, la realizzazione del sistema ha non solo permesso ai membri di testare cosa volesse dire lavorare seguendo un processo di programmazione agile, ma anche di sviluppare un applicativo avendo bene in mente un set di pattern e principi che ne potessero garantire la qualità.
+Lo studio di ognuno di questi aspetti è stato un fondamentale momento di arricchimento personale per ognuno dei membri del gruppo che ha potuto quindi estendere la propria conoscenza attraverso i contenuti del corso e il background degli altri membri.
 
 #### Client
 
@@ -93,4 +96,7 @@ Nell'ultima iterazione, sono stati prodotti gli artefatti Prolog.
 // todo usare properties custom per svincolarsi da scalafx
 
 ## Sviluppi futuri
-
+Molti sono gli sviluppi futuri di cui il framework potrebbe giovare.
+Infatti, grazie all'architettura definita si potrebbe facilmente pensare di introdurre nuovi tipi di attacco, metodi di cifratura e policy.
+Tuttavia, un estensione del framework potrebbe non essere la sola strada possibile, difatti si potrebbe anche pensare di sfruttare il paradigma logico per l'implementazione di alcune operazioni core.
+Per la sua intrinseca natura esplorativa, Prolog potrebbe essere utilizzato negli attacchi di tipo Brute Force ad esempio.

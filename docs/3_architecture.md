@@ -67,7 +67,7 @@ Model rappresentano l'incapsulamento dei dati dell'applicativo. Da questo punto 
 Solitamente i model includono anche la business logic e la logica di validazione, tuttavia per questo progetto è stato deciso mantenere un ulteriore separazione tra la business logic e i model
 in quanto la business logic è incapsulata quasi interamente nel dominio del *task* della simulazione dell'attacco.
 
-// TODO aggiungere UML concreto di MVVM
+![Authsim MVVM](/pps-2021-authsim/assets/images/mvvmauthsim.png)
 
 #### Business Logic e Dependency Injection
 
@@ -78,9 +78,9 @@ In essenza, si tratta di separare i *concern* di costruire e di utilizzare gli o
 Una classe che utilizza degli oggetti di business logic (detti Service) non necessita di sapere come istanziarli, invece la loro costruzione 
 viene delegata a un *injection* e vengono portati come dipendenze tramite la loro iniezione nel costruttore della classe utilizzata.
 
-Inoltre facilita il testing dei component singoli permettendo il mocking delle dipendenze iniettate.g
+Inoltre facilita il testing dei component singoli permettendo il mocking delle dipendenze iniettate.
 
-![Dependency Injection](/pps-2021-authsim/assets/images/attack.png)
+![Dependency Injection](/pps-2021-authsim/assets/images/DI.png)
 
 In Scala questo pattern è ottenibile anche con le feature del linguaggio piuttosto che utilizzo delle librerie esterne o framework (che vengano comunque offerti dall'ecosistema).
 

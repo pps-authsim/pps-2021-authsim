@@ -83,6 +83,8 @@ Nell'ultima iterazione, sono stati prodotti gli artefatti Prolog.
 
 % E quanto ne è rimasto in ogni sprint
 ## Gestione delle iterazioni
-# Commenti finali}
+
+# Commenti finali
+
 ## Sviluppi futuri
 

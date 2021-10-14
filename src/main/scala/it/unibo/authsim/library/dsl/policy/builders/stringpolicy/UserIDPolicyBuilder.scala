@@ -5,7 +5,6 @@ import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.StringPolicyBui
 import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.StringPolicyBuildersHelpers
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.UserIDPolicy
 
-import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
 /**
@@ -19,7 +18,7 @@ case class UserIDPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder
 
     override def alphabet: PolicyAlphabet = UserIDPolicyBuilder.this.alphabetPolicy
 
-    override def patterns: ListBuffer[Regex] = UserIDPolicyBuilder.this.patterns
+    override def patterns: Seq[Regex] = UserIDPolicyBuilder.this.patterns.toSeq
 
     override def minimumUpperChars: Option[Int] = UserIDPolicyBuilder.this.minUpperChars
 

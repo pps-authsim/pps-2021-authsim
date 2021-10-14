@@ -20,7 +20,7 @@ trait AES extends SymmetricAlgorithm:
  */
 object AES:
   import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.key.KeysGenerator
-  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitConversion._
 
   /**
    * Apply method for the object
@@ -93,4 +93,4 @@ object AES:
      * 
      *  @return                 a string representing the name of crypthographic algorithm
      */
-    override def algorithmName: String = _name
+    override def name: String = _name

@@ -4,7 +4,6 @@ import de.flapdoodle.embed.mongo.{MongodProcess, MongodStarter}
 import de.flapdoodle.embed.mongo.config.{MongodConfig, Net}
 import de.flapdoodle.embed.mongo.distribution.Version
 import de.flapdoodle.embed.process.runtime.Network
-import it.unibo.authsim.client.app.components.config.PropertiesServiceComponent
 import it.unibo.authsim.client.app.components.persistence.{PersistenceException, UserEntity, UserRepository}
 import org.mongodb.scala.{Document, FindObservable, MongoClient, MongoCollection, Observable, Observer, SingleObservable}
 import org.mongodb.scala.model.Filters.*
@@ -17,8 +16,6 @@ import scala.concurrent.duration.Duration
 import scala.util.{Try, Using}
 
 trait UserMongoRepositoryComponent:
-
-  this: PropertiesServiceComponent =>
 
   val userMongoRepository: UserRepository
 

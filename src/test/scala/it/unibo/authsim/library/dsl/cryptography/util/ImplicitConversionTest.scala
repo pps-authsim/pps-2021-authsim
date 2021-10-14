@@ -3,12 +3,14 @@ package it.unibo.authsim.library.dsl.cryptography.util
 import it.unibo.authsim.library.dsl.cryptography.util.Base64
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.*
+import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitToArray._
+import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitConversion._
+import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitToList._
+import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitToSeq.listToSeq
 import it.unibo.authsim.library.dsl.cryptography.utility.ImplicitConversionChecker.*
 import org.scalatest.GivenWhenThen
 import org.scalatest.featurespec.AnyFeatureSpec
 class ImplicitConversionTest extends AnyFeatureSpec with GivenWhenThen with Matchers {
-
   private val testString="foo"
   private val testString2="999"
 
@@ -71,4 +73,48 @@ class ImplicitConversionTest extends AnyFeatureSpec with GivenWhenThen with Matc
       isConversionAvailable[String, Byte]() shouldBe true
     }
   }
+
+  feature("Implicit conversion from generic array to sequence"){
+    import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitToSeq.arrayToSeq
+    scenario("is conversion available to int sequence") {
+      isConversionAvailable[Array[Int], Seq[Int]]() shouldBe true
+    }
+    scenario("is conversion available to string sequence") {
+      isConversionAvailable[Array[String], Seq[String]]() shouldBe true
+    }
+  }
+
+  feature("Implicit conversion from a generic list to sequence"){
+    scenario("is conversion available to int sequence") {
+      isConversionAvailable[List[Int], Seq[Int]]() shouldBe true
+    }
+    scenario("is conversion available to string sequence") {
+      isConversionAvailable[List[String], Seq[String]]() shouldBe true
+    }
+  }
+
+  feature("Implicit conversion from a generic array to list"){
+    scenario("is conversion available to int list") {
+      isConversionAvailable[Seq[Int], List[Int]]() shouldBe true
+    }
+    scenario("is conversion available to string list") {
+      isConversionAvailable[Seq[String], List[String]]() shouldBe true
+    }
+  }
+
+  feature("Implicit conversion from a generic sequence to array"){
+    scenario("is conversion available to int array") {
+      isConversionAvailable[Seq[Int], Array[Int]]() shouldBe true
+    }
+  }
+
+  feature("Implicit conversion from a generic list to array"){
+    scenario("is conversion available to int array") {
+      isConversionAvailable[List[Int], Array[Int]]() shouldBe true
+    }
+    scenario("is conversion available to string list") {
+      isConversionAvailable[List[String], Array[String]]() shouldBe true
+    }
+  }
 }
+

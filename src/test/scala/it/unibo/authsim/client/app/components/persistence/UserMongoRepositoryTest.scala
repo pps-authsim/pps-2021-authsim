@@ -99,6 +99,26 @@ class UserMongoRepositoryTest extends AnyWordSpec with BeforeAndAfterAll with Be
 
     }
 
+    "All users are retrieved" should {
+
+      "Retrieve all users" taggedAs (DataBaseTest) in {
+        setUpUsersInDb()
+
+        val retrieveResult = userMongoRepository.retrieveAllUsers()
+
+        assert(retrieveResult.isSuccess)
+        assert(retrieveResult.get.equals(Seq(new UserEntity("testUser", "1234"), new UserEntity("anotherUser", "abcd1234"))))
+      }
+
+      "Retrieve nothing if users not present" taggedAs (DataBaseTest) in {
+        val retrieveResult = userMongoRepository.retrieveAllUsers()
+
+        assert(retrieveResult.isSuccess)
+        assert(retrieveResult.get.equals(Seq()))
+      }
+
+    }
+
   }
 
   private def getDatabaseSnapshot(): Seq[UserEntity] =

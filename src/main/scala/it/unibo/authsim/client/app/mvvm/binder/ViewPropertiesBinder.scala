@@ -33,7 +33,7 @@ object ViewPropertiesBinder:
     val tab = view.usersTab
 
     val addUserFormProperties = new AddUserFormProperties(tab.usernameProperty, tab.passwordProperty);
-    val generateUsersForm = new GenerateUsersFormProperties(tab.quantityProperty, tab.presetListProperty, tab.presetProperty);
+    val generateUsersForm = new GenerateUsersFormProperties(tab.quantityProperty, tab.presetListProperty, tab.presetProperty, tab.presetDescriptionProperty);
     val usersListProperties = new UsersListViewProperties(tab.usersListProperty, tab.usersListSelectedProperty);
 
     val usersViewModel = new UsersViewModel(addUserFormProperties, generateUsersForm, usersListProperties)
@@ -44,7 +44,8 @@ object ViewPropertiesBinder:
 
     tab.bindOnDeleteSelected((e: ActionEvent) => viewModel.deleteSelectedUsers())
     tab.bindOnReset((e: ActionEvent) => viewModel.resetUsers())
-
+    
+    
     usersViewModel
 
 
@@ -77,6 +78,7 @@ object ViewPropertiesBinder:
 
     tab.bindOnSequenceChange((o: ObservableValue[_ <: AttackSequenceEntry], oldValue: AttackSequenceEntry, newValue: AttackSequenceEntry) => tab.attackSequenceDescriptionProperty.value = newValue.description)
     tab.bindOnAttackLaunch((e: ActionEvent) => viewModel.launchAttack())
+    tab.bindOnAttackStop((e: ActionEvent) => viewModel.stopAttack())
 
     attackViewModel
 

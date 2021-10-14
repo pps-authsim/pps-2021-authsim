@@ -33,8 +33,8 @@ class UserTest extends AnyWordSpec with should.Matchers{
   private val autoUser1:User = autoUserBuilder1.build
 
   private val autoUserBuilder2:UserAutoBuilder= UserAutoBuilder()
-
   private var userSequence:Seq[User]= autoUserBuilder2.build(min)
+  
   private var usernameSequence:Seq[String] = for(e<-userSequence) yield e.username
   private var passwordSequence:Seq[String]  = for(e<-userSequence) yield e.password
 
@@ -48,7 +48,6 @@ class UserTest extends AnyWordSpec with should.Matchers{
   }
 
   "If a user created with a set of credential policies then user credentials" should  {
-
     s"be complaint with the policy '${userIDPolicy}'" in{
       assert(StringPolicyChecker(userIDPolicy) check (costumUser1.get.username))
     }

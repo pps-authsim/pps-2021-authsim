@@ -72,7 +72,7 @@ private[asymmetric] object KeysGenerator extends KeyGenerator[KeyPair]:
    *  @return             the key pair
    */
   override def generateKeys(fileName: String): KeyPair =
-    val keyGen = KeyPairGenerator.getInstance(_algorithm.algorithmName)
+    val keyGen = KeyPairGenerator.getInstance(_algorithm.name)
     keyGen.initialize(_algorithm.keyLength)
     val keyPair = keyGen.generateKeyPair
     saveKeys(keyPair, fileName)

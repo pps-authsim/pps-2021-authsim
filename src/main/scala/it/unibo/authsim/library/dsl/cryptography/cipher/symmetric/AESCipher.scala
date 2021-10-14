@@ -18,7 +18,8 @@ import scala.util.Random
  * AES cipher object
  */
 object AESCipher:
-  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion._  
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitConversion._
+  import it.unibo.authsim.library.dsl.cryptography.util.ImplicitConversion.ImplicitToArray._
   
   /**
    * Apply method for the object
@@ -75,4 +76,4 @@ object AESCipher:
     private def secretKeySpec(secret: String): SecretKeySpec =
       var keyBytes: Array[Byte] = secret.concat(salt)
       keyBytes= Arrays.copyOf(keyBytes, algorithm.keyLength)
-      new SecretKeySpec(keyBytes, algorithm.algorithmName)
+      new SecretKeySpec(keyBytes, algorithm.name)

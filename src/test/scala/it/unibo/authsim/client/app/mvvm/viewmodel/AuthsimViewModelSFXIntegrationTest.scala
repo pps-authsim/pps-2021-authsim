@@ -10,7 +10,7 @@ import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, Secur
 import it.unibo.authsim.client.app.mvvm.model.users.UsersModel
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackTab
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityTab}
-import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UsersTab}
+import it.unibo.authsim.client.app.mvvm.view.tabs.users.{UserEntry, UserGenerationPreset, UsersTab}
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.proxy.AuthsimViewModelDeferedProxy
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
@@ -21,10 +21,12 @@ import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.mockito.Mockito
 import org.mockito.Mockito.*
+import org.mockito.ArgumentMatchers.any
 import it.unibo.authsim.library.user.model.User
 import org.scalatest.BeforeAndAfterEach
 
 import scala.collection.mutable.ListBuffer
+import it.unibo.authsim.client.app.components.registry.ComponentRegistry.SimulationRunner
 
 object AuthsimViewModelSFXIntegrationTest:
 
@@ -36,11 +38,13 @@ class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with 
   var model: AuthsimModel = null
   var mockView: AuthsimViewSFX = null
   var viewModel: AuthsimViewModel = null
+  var mockRunner: SimulationRunner = null
 
   override def beforeEach() =
     AuthsimViewModelSFXIntegrationTest.setUpViewModelTest()
     model = new AuthsimModel(new UsersModel(), new SecurityModel(), new AttackModel())
     mockView = makeMockView()
+    mockRunner = makeMockRunner()
 
     val viewModelDeferedProxy = new AuthsimViewModelDeferedProxy
 
@@ -48,7 +52,7 @@ class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with 
     val securityViewModel: SecurityViewModel = ViewPropertiesBinder.bindSecurityTab(mockView, viewModelDeferedProxy)
     val attackViewModel: AttackViewModel = ViewPropertiesBinder.bindAttackTab(mockView, viewModelDeferedProxy)
 
-    viewModel = new AuthsimViewModelSFX(usersViewModel, securityViewModel, attackViewModel, model)
+    viewModel = new AuthsimViewModelSFX(usersViewModel, securityViewModel, attackViewModel, model, mockRunner)
 
     ModelInitializer.initializeUsersModel(model.usersModel)
     ModelInitializer.initializeSecurityModel(model.securityModel)
@@ -116,7 +120,17 @@ class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with 
 
     }
 
-    // TODO add users generated tests when ready
+    "users are generated" should {
+      "generate expected quantity of users" in {
+        mockView.usersTab.presetProperty.value = new UserGenerationPreset("Simple", "")
+        mockView.usersTab.quantityProperty.value = "3"
+
+        viewModel.generateUsers()
+
+        assert(model.usersModel.usersList.value.length == 4)
+        assert(mockView.usersTab.usersListProperty.value.size == 4)
+      }
+    }
 
     "user is deleted" should {
       "have selected user deleted" in {
@@ -149,14 +163,14 @@ class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with 
 
     "attack is launched" should {
 
-      "launch attack with selected properties" in {
+      "launch attack if necessary properties are selected" in {
         mockView.securityTab.fireSelectPolicy(0)
         mockView.securityTab.fireSelectCredentialsSource(0)
         mockView.attackTab.fireSelectSequence(0)
 
         viewModel.launchAttack()
 
-        // TODO changeme when library is hooked
+        Mockito.verify(mockRunner).runSimulation(any())
       }
 
       "display error message with selected properties incomplete" in {
@@ -164,15 +178,14 @@ class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with 
 
         viewModel.launchAttack()
 
-        val logValue = mockView.attackTab.attackLogProperty.value
-        assert(logValue.equals("Please, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"))
+        Mockito.verify(mockRunner, times(0)).runSimulation(any())
       }
 
     }
 
   }
 
-  def makeMockView(): AuthsimViewSFX =
+  private def makeMockView(): AuthsimViewSFX =
     val userTab = new UsersTab
     val securityTab = new SecurityTab
     val attackTab = new AttackTab
@@ -183,6 +196,9 @@ class AuthsimViewModelSFXIntegrationTest extends AnyWordSpec with Matchers with 
     doReturn(attackTab).when(mock).attackTab
     mock
 
-  def assertUserTabHasDefaultValues(): Unit =
+  private def assertUserTabHasDefaultValues(): Unit =
     assert(model.usersModel.usersList.value.sameElements(Seq(User("user", "password"))))
     assert(mockView.usersTab.usersListProperty.value.get(0).equals(new UserEntry("user", "password")))
+
+  private def makeMockRunner(): SimulationRunner =
+    MockitoSugar.mock[SimulationRunner]

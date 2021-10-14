@@ -1,3 +1,4 @@
+
 package it.unibo.authsim.library.policy.model
 
 import it.unibo.authsim.library.Protocol

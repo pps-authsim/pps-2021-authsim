@@ -51,8 +51,9 @@ object OTPHelpers:
       if charsIterator.hasNext then
         val charReplaced: Char = charsIterator.next
         val indexToReplace: Option[Int] = base.findIndexChar(charReplaced)
-        if indexToReplace.isEmpty then replaceFirstDifferent(range.drop(1))
-        else base.updated(indexToReplace.get, charReplaced)
+        indexToReplace match
+          case Some(index) => base.updated(index, charReplaced)
+          case None => replaceFirstDifferent(range.drop(1))
       else base
   /**
    * A default implementation of an seed generator (@see [[it.unibo.authsim.library.otp.builders.OTPBuilder.AbstractOTPBuilder.generateSeed]])

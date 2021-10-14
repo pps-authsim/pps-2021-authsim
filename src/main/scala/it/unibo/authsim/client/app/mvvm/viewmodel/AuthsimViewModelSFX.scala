@@ -1,5 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.viewmodel
 
+import it.unibo.authsim.client.app.components.registry.ComponentRegistry
 import it.unibo.authsim.client.app.mvvm.binder.{ModelBinder, ModelInitializer, ViewPropertiesBinder}
 import it.unibo.authsim.client.app.mvvm.viewmodel.attack.AttackViewModel
 import it.unibo.authsim.client.app.mvvm.viewmodel.security.SecurityViewModel
@@ -14,12 +15,16 @@ import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
+import it.unibo.authsim.library.policy.model.StringPolicies.CredentialPolicy
 import it.unibo.authsim.library.user.model.User
 import javafx.collections.ObservableList
 import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
+import it.unibo.authsim.library.user.builder.UserAutoBuilder
+import it.unibo.authsim.client.app.components.registry.ComponentRegistry.SimulationRunner
 
 object AuthsimViewModelSFX:
-  val ATTACK_MISSING_VALUE_TEXT = "Please, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
+  val ATTACK_MISSING_VALUE_TEXT = "\nPlease, make sure to have at least one user, select a policy, a credentials source and an attack procedure before initiating an attack!"
+  val ATTACK_STOPPED_TEXT = "\nAttack has been stopped by user."
 
 /**
  * Binds View with Model via the ViewModel layer. ScalaFx implementation using scalafx properties.
@@ -29,7 +34,8 @@ object AuthsimViewModelSFX:
 class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
                           private val securityViewModel: SecurityViewModel,
                           private val attackViewModel: AttackViewModel,
-                          private val model: AuthsimModel) extends AuthsimViewModel:
+                          private val model: AuthsimModel,
+                          private val simulationRunner: SimulationRunner) extends AuthsimViewModel:
 
   ModelBinder.bindUsersViewModel(model.usersModel, usersViewModel)
   ModelBinder.bindSecurityViewModel(model.securityModel, securityViewModel)
@@ -45,12 +51,18 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
 
 
   override def generateUsers(): Unit =
-    val quantity = usersViewModel.generateUsersFormProperties.quantityProperty.getValue();
+    val quantity = usersViewModel.generateUsersFormProperties.quantityProperty.getValue().toInt;
     val preset = usersViewModel.generateUsersFormProperties.presetProperty.getValue();
 
-    val credentialsPolicies = SecurityPolicy.Default.credentialsPoliciesFrom(preset)
+    val credentialsPolicies = SecurityPolicy.Default.credentialsPoliciesFrom(preset.name)
     if(credentialsPolicies.isDefined) then
-      println(credentialsPolicies) // TODO finish user generation
+      generateUsers(quantity, credentialsPolicies.get)
+        .foreach(user => model.usersModel.usersList += user)
+
+  private def generateUsers(quantity: Int, credentialsPolicies: Seq[CredentialPolicy]): Seq[User] =
+    val userBuilder = UserAutoBuilder()
+    credentialsPolicies.foreach(policy => userBuilder withPolicy(policy))
+    userBuilder build(quantity)
 
 
   override def deleteSelectedUsers(): Unit =
@@ -66,7 +78,7 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
 
 
   override def launchAttack(): Unit =
-    val users = model.usersModel.usersList.value
+    val users = model.usersModel.usersList.value.toSeq
     val policy = model.securityModel.selectedSecurityPolicy
     val credentialsSource = model.securityModel.selectedCredentialsSource
     val selectedProcedure = model.attackModel.selectedAttackSequence
@@ -74,12 +86,13 @@ class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
     if !users.isEmpty && policy.nonEmpty && credentialsSource.nonEmpty && selectedProcedure.nonEmpty then
       attackViewModel.attackSequenceProperties.attackLog.value = ""
 
-      val simulation = new AttackSimulation(users, policy.get.policy, credentialsSource.get.source, selectedProcedure.get.sequence)
+      val simulation = new AttackSimulation(users, policy.get.policy, credentialsSource.get.source, selectedProcedure.get.attack)
       simulation.messageProperty().addListener((observable, oldValue, newValue) => attackViewModel.attackSequenceProperties.attackLog.value += newValue)
-
-      new Thread(simulation).start()
+      simulationRunner.runSimulation(simulation)
     else
       attackViewModel.attackSequenceProperties.attackLog.value = AuthsimViewModelSFX.ATTACK_MISSING_VALUE_TEXT
 
-
+  override def stopAttack(): Unit =
+    attackViewModel.attackSequenceProperties.attackLog.value += AuthsimViewModelSFX.ATTACK_STOPPED_TEXT
+    simulationRunner.stopSimulation()
 

@@ -106,6 +106,11 @@ object StringPolicyBuilder:
         patterns.insert(0, this.alphabetPolicy.minimalLength)
       )(alphabetPolicy)
 
+    protected def init(policy: StringPolicy with RestrictStringPolicy): Unit =
+        this.setAlphabet(policy.alphabet)
+        this.minimumLength(policy.minimumLength)
+        if policy.maximumLength.isDefined then this.maximumLength(policy.maximumLength.get)
+
     /**
      * @param number maximum length of string to set
      * @return instance of the actual builder
@@ -146,6 +151,13 @@ object StringPolicyBuilder:
     protected var minLowerChars: Option[Int] = None
     protected var minSymbols: Option[Int] = None
     protected var minNumbers: Option[Int] = None
+
+    protected def init(policy: StringPolicy with RestrictStringPolicy with MoreRestrictStringPolicy): Unit =
+      super.init(policy)
+      if policy.minimumLowerChars.isDefined then this.minimumLowerChars(policy.minimumLowerChars.get)
+      if policy.minimumUpperChars.isDefined then this.minimumUpperChars(policy.minimumUpperChars.get)
+      if policy.minimumNumbers.isDefined then this.minimumNumbers(policy.minimumNumbers.get)
+      if policy.minimumSymbols.isDefined then this.minimumSymbols(policy.minimumSymbols.get)
 
     private enum What:
       case LOWER, UPPER, SYMBOL, NUMBER, MAX, MIN

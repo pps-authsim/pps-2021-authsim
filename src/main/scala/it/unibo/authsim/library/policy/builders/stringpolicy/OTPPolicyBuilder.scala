@@ -22,6 +22,6 @@ case class OTPPolicyBuilder() extends AbstractStringPolicyBuilder[OTPPolicy] :
 
     override def alphabet: PolicyAlphabet = OTPPolicyBuilder.this.alphabetPolicy
 
-    override def patterns: ListBuffer[Regex] = OTPPolicyBuilder.this.patterns
+    override def patterns: Seq[Regex] = OTPPolicyBuilder.this.patterns.toSeq
 
     override def toString: String = StringPolicyBuildersHelpers.buildToString("OTPPolicy", this)

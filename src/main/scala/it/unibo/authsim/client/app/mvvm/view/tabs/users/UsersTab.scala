@@ -12,7 +12,7 @@ import scalafx.beans.property.{ObjectProperty, StringProperty}
 import scalafx.collections.ObservableBuffer
 import scalafx.event.ActionEvent
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.control.{Button, ChoiceBox, Label, ListView, SplitPane, TextField, TextFormatter}
+import scalafx.scene.control.{Button, ChoiceBox, Label, ListView, SplitPane, TextArea, TextField, TextFormatter}
 import scalafx.scene.control.TextFormatter.Change
 import scalafx.scene.layout.{GridPane, HBox, VBox}
 import scalafx.scene.paint.Color.*
@@ -29,20 +29,22 @@ class UsersTab() extends SplitPane :
 
   private val quantityField = AuthsimViewSFX.makeNumberTextField()
 
-  private val presetSelect = new ChoiceBox[String]
+  private val presetSelect = new ChoiceBox[UserGenerationPreset]
   private val generateButton = new Button("Generate")
 
   private val usersList = new ListView[UserEntry]()
   private val deleteSelectedButton = new Button("Delete Selected")
   private val resetButton = new Button("Reset")
+  private val presetDescription = new TextArea()
 
   val usernameProperty: StringProperty = usernameField.text
   val passwordProperty: StringProperty = passwordField.text
   val quantityProperty: StringProperty = quantityField.text
-  val presetListProperty: ObjectProperty[ObservableList[String]] = presetSelect.items
-  val presetProperty: ObjectProperty[String] = presetSelect.value
+  val presetListProperty: ObjectProperty[ObservableList[UserGenerationPreset]] = presetSelect.items
+  val presetProperty: ObjectProperty[UserGenerationPreset] = presetSelect.value
   val usersListProperty: ObjectProperty[ObservableList[UserEntry]] = usersList.items
   val usersListSelectedProperty: ReadOnlyObjectProperty[UserEntry] = usersList.selectionModel.value.selectedItemProperty()
+  val presetDescriptionProperty: StringProperty = presetDescription.text
 
   items.add(makeUserCreationPane())
   items.add(makeUserManagementPane())
@@ -56,7 +58,8 @@ class UsersTab() extends SplitPane :
 
   private def makeUserManagementPane(): VBox = new VBox {
     children = Seq(
-      new UsersList(usersList, deleteSelectedButton, resetButton)
+      new UsersList(usersList, deleteSelectedButton, resetButton),
+      new PresetDescription(presetDescription)
     )
   }
 
@@ -90,7 +93,7 @@ class AddUserForm(usernameField: TextField, passwordField: TextField, saveButton
 
 
 
-class GenerateUsersForm(quantityField: TextField, presetSelect: ChoiceBox[String], generateButton: Button) extends GridPane :
+class GenerateUsersForm(quantityField: TextField, presetSelect: ChoiceBox[UserGenerationPreset], generateButton: Button) extends GridPane :
   alignment = Pos.Center;
   hgap = 10;
   vgap = 10;
@@ -125,4 +128,16 @@ class UsersList(usersList: ListView[UserEntry], deleteSelectedButton: Button, re
         resetButton
       )
     }
+  )
+
+class PresetDescription(presetDescription: TextArea) extends VBox:
+
+  children = Seq(
+    new HBox() {
+      alignment = Pos.Center
+      children = Seq(
+        new Label("User Generation Preset Description")
+      )
+    },
+    presetDescription
   )

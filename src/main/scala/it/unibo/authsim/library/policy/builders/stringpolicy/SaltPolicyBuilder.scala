@@ -19,7 +19,7 @@ case class SaltPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuilder[S
 
     override def alphabet: PolicyAlphabet = SaltPolicyBuilder.this.alphabetPolicy
 
-    override def patterns: ListBuffer[Regex] = SaltPolicyBuilder.this.patterns
+    override def patterns: Seq[Regex] = SaltPolicyBuilder.this.patterns.toSeq
 
     override def minimumUpperChars: Option[Int] = SaltPolicyBuilder.this.minUpperChars
 

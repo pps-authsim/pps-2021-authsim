@@ -9,4 +9,8 @@ import scala.util.matching.Regex
  */
 object StringPolicyChecker:
 
-  def apply(policy: StringPolicy): PolicyChecker[String] = implicitly[List[Regex] => PolicyChecker[String]].apply(policy.patterns.toList)
+  def apply(policy: StringPolicy): PolicyChecker[String] = BasicStringPolicyChecker(policy)
+
+  private case class BasicStringPolicyChecker(policy: StringPolicy) extends PolicyChecker[String]:
+    require(policy != null, "policy must be initialized")
+    override def check(value: String): Boolean = policy.patterns forall { _.matches(value.trim) }

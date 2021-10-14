@@ -11,6 +11,6 @@ class BruteForceAttackBuilder extends AbstractBruteForceAttackBuilder[SymbolicAl
 
   def getAlphabet = super.protectedGetAlphabet
 
-  def maximumLength(maximumLength: Int) = super.protectedMaximumLength(maximumLength)
+  def maximumWordLength(maximumLength: Int) = super.protectedMaximumLength(maximumLength)
 
   def getMaximumLength = super.protectedGetMaximumLength

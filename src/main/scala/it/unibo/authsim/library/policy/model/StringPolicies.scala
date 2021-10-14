@@ -16,12 +16,12 @@ object StringPolicies:
      */
     def alphabet: PolicyAlphabet
     /**
-     * @return list of regular expression
+     * @return sequence of regular expression
      */
-    def patterns: ListBuffer[Regex]
+    def patterns: Seq[Regex]
     /**
      * Generate a string based on the policy
- *
+     *
      * @param policyAutoGenerator (@see [[PolicyAutoGenerator#stringPolicyAutoGenerator]])
      * @return a random string that respects the string policy
      */

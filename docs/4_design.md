@@ -81,15 +81,28 @@ in quanto quando restituisce un `Option` vuoto significa che le combinazioni di 
 - `Generators`
   ![OTP Generators Package UML](assets/images/otp/otp-generator-package.svg)
 
+### Cryptography
 
+- `Generators`
+
+- `Cipher`
+
+### User
+- `User`
+- 
+  - `UserBuilder`
+
+- `UserInformation`
+  - `UserInformationBuilder`
 
 ## Pattern di progettazione
-### `Builder` 
+### Creazionali
+- `Builder` 
 Il pattern `Builder` è stato usato in gran parte del framework, in quanto la maggior parte degli oggetti da costruire
 non richiedevano di specificare tutti i parametri di configurazione, restituendo un oggetto di un tipo generale.
 Un esempio è `BruteForceAttackBuilder`, il quale costruisce un oggetto di tipo `Attack` e non `BruteforceAttack`.
 
-### `Chaining Method`
+- `Chaining Method`
 Il pattern `Chaining Method` è stato usato implementando i metodi dei builder con il metodo `builderMethod`,
 il quale restituisce un riferimento al tipo più specifico possibile del `Builder` su cui è chiamato.
 L'uso di questo pattern permette di potenziare la notazione infissa dei metodi di Scala e raggiungere una scrittura di
@@ -102,21 +115,33 @@ Un esempio di ciò è la seguente stringa (fonte: `BruteForceAttackBuilderTest`)
 Si può vedere che la configurazione della costruzione di un attacco (cioè il codice all'interno delle parentesi tonde
 più esterne) si avvicina molto alla descrizione a parole (in lingua inglese) di ciò che si richiede.
 
-### `Decorator`
+- `Singleton`
+Il pattern  `Singleton` è stato utilizzato nell'implementazione del `KeysGenerator` tale oggetto, responsabile della creazione delle chiavi necessarie alle implementazioni di crittografia asimettrica è stato reso visibile solo a livello di package ed accessibile dal solo cifrario che implementa tale crittografia, `RSACipher`.
+Tale oggetto, è quindi l'unico punto di accesso globale al generatore di chiavi.
+La scelta, è stata fatta per assicurare l'assenza di incosistenze ed errori nella generazione della coppia di chiavi crittografiche.
+
+- `Abstract Factory`
+Il pattern `Abstract Factory` è stato utilizzato nella creazione degli oggetti.
+\\Boh
+
+
+
+### Strutturali 
+
+- `Decorator`
 Il pattern `Decorator` è stato usato nella dichiarazione del trait `Alphabet` rispetto al trait `Set[String]` di Scala.
 Infatti, oltre a estendere il trait, contiene anche un oggetto dello stesso tipo e infatti le operazioni su un alfabeto
 sono delegate al set interno, di cui però non si conosce il tipo specifico.
 
-### `Factory`
-//le apply sugli object sono factories
+### Comportamentali
 
-
-### `Template Method`
-Il pattern `Template Method` è stato utilizzato nella realizzazione dei cifrari, per portare a fattore comune il comportamento di questi nella realizzazione delle operazioni di cifratura evitando inutili duplicazioni di codice.
+- `Template Method`
+Il pattern `Template Method` è stato utilizzato nella realizzazione dei cifrari, per poter portare a fattore comune il comportamento di questi nella realizzazione delle operazioni di cifratura evitando inutili duplicazioni di codice.
 Questi infatti estendono da una classe astratta `BasicCipher` la quale espone le implementazioni di base dei metodi `encrypt` e `decrypt` lasciando ai cifrari specifici l'implementazione del metodo `crypto` responsabile dell'implementazione delle operazioni di cifratura.
 Tali metodi sono infatti invarianti rispetto ai cifrari proposti[^CaesarCipher]
 
-[^CaesarCipher]: L'unica eccezione  fatta solamente per il `CaesarCipher` in quanto unico cifrario a non estendere dalla classe astratta per la natura intrinseca dell'algoritmo.
+[^CaesarCipher]: L'unica eccezione è rappresentata dal `CaesarCipher` in quanto unico cifrario a non estendere dalla classe astratta per la natura intrinseca dell'algoritmo.
+Questi infatti al contrario degli altri nasce per essere utilizzato con un numero intero come segreto e non con una stringa.
 
 //TODO: AlphabetCommonClasses.alphabenumericsymbols è template method e anche i metodi di trait RegexAlphabet e RansomAlphabet 
 

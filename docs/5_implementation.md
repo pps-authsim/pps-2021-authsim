@@ -20,6 +20,7 @@ Nello sviluppo del progetto mi sono occupata del modulo della crittografia e del
 Nello specifico, dopo aver definito le interfacce dei componenti con gli altri membri del gruppo, mi sono occupata dello sviluppo di quanto contenuto nei package:
 - `User`
 - `Cryptography`
+
 oltre al trait `UserProvider`
 
 ## Ntronov Kyrillos

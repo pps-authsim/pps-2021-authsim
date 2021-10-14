@@ -71,7 +71,7 @@ sono delegate al set interno, di cui però non si conosce il tipo specifico.
 La simulazione di un attacco potrebbe durare per molto tempo, quindi non sarebbe
 accettabile bloccare il thread della gui con una computazione impegnativa.
 
-La libreria ScalaFx offre *Task[T]* una classe utility analoga a *SwingWorker* che permette di
+La libreria ScalaFx offre `Task[T]` una classe utility analoga a `SwingWorker` che permette di
 eseguire una computazione non bloccante su un thread diverso da quello di EDT.
 
 Permette inoltre di comunicare con la GUI tramite il metodo `updateMessage` che permette di aggiornare
@@ -82,9 +82,7 @@ In questo modo si riesce a eseguire la simulazione e stampare su un elemento del
 ### Observer
 
 
-
 ### Repositories
-
 
 
 ### Properties

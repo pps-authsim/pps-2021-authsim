@@ -111,8 +111,12 @@ sono delegate al set interno, di cui però non si conosce il tipo specifico.
 //le apply sugli object sono factories
 
 
-###`Template Method`
-//Cipher
+### `Template Method`
+Il pattern `Template Method` è stato utilizzato nella realizzazione dei cifrari, per portare a fattore comune il comportamento di questi nella realizzazione delle operazioni di cifratura evitando inutili duplicazioni di codice.
+Questi infatti estendono da una classe astratta `BasicCipher` la quale espone le implementazioni di base dei metodi `encrypt` e `decrypt` lasciando ai cifrari specifici l'implementazione del metodo `crypto` responsabile dell'implementazione delle operazioni di cifratura.
+Tali metodi sono infatti invarianti rispetto ai cifrari proposti[^CaesarCipher]
+
+[^CaesarCipher]: L'unica eccezione  fatta solamente per il `CaesarCipher` in quanto unico cifrario a non estendere dalla classe astratta per la natura intrinseca dell'algoritmo.
 
 //TODO: AlphabetCommonClasses.alphabenumericsymbols è template method e anche i metodi di trait RegexAlphabet e RansomAlphabet 
 

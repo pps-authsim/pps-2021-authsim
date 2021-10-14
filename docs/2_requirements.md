@@ -10,9 +10,9 @@ verranno di seguiti esposti in sezioni differenti i requisiti specifici per ognu
 I requisiti di business riguardano la “business solution” del progetto, includendo i bisogni dei clienti e le loro aspettative.
 A valle di un analisi preliminare del progetto sono stati identificati i requisiti di business identificati per il framework e l'applicativo dimostrativo possono essere riassunti come segue.
 
-### Library / DSL
+### Library 
 
-L'obiettivo del progetto era la realizzazione di un framework con DSL per simulare e testare la memorizzazione e le policy di protezione delle credenziali degli utenti che possono essere sottoposti a differenti tipi di attacchi oltre che a un applicazione dimostrativa che possa mostrare come la DSL può essere utilizzata.
+L'obiettivo del progetto era la realizzazione di un framework per simulare e testare la memorizzazione e le policy di protezione delle credenziali degli utenti che possono essere sottoposti a differenti tipi di attacchi oltre che a un applicazione dimostrativa che possa mostrare come la libreria può essere utilizzata.
 
 Il framework deve quindi permettere la creazione di nuovi utenti le cui credenziali devono poter essere configurate scegliendo il metodo di accesso, le security policy che possono essere applicate a queste ultime ed i metodi di cifratura con cui queste possono essere criptate.
 Deve inoltre essere possibile definire il tipo di attacco con cui si intende effettuare il password cracking e la sorgente delle credenziali da proteggere.
@@ -35,7 +35,7 @@ I requisiti utente sono quei requisiti che si riferiscono ai bisogni degli utent
 le azioni che l’utente deve essere in grado di attuare sul sistema.
 La raccolta di tali requisiti è stata realizzata mediante *User stories*.
 
-### Library / DSL
+### Library
 
 #### User Story 1
 
@@ -118,7 +118,7 @@ La raccolta di tali requisiti è stata realizzata mediante *User stories*.
 
 In questa sezione vengono descritti quelli che sono i requisiti funzionali del sistema, ovvero le funzionalità che il framework e il simulatore devono offrire.
 
-### Library / DSL
+### Library
 
 Il framework deve permettere di definire:
 - le security policy da applicare alle password associate agli utenti del sistema (es. lunghezza della password e caratteri richiesti)
@@ -144,7 +144,7 @@ Il simulatore deve permettere di:
 
 In questa parte del capitolo vengono delineati i requisiti non funzionali, ossia le proprietà che il sistema deve soddisfare.
 
-### Library / DSL
+### Library
 
 Il framework deve essere sviluppato perseguendo i principi di modularità e decomposizione in modo da renderlo facilmente estensibile ed ispezionabile.
 ...

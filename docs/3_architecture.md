@@ -1,7 +1,9 @@
 # Design architetturale
 
 In questo capitolo vengono descritti i principali elementi dell'architettura adottata
-durante lo sviluppo
+durante lo sviluppo.
+
+La fase di design ha rappresentato il core del progetto, durante quest'ultima è stata definita l'architettura del complessiva del framework, così come quella dell'applicativo dimostrativo.
 
 ## Architettura complessiva
 
@@ -11,7 +13,10 @@ durante lo sviluppo
 
 ### Library
 
-// TODO magari qualcosa su DSL
+Fin dall'inizio della pianificazione dell'architettura del framework è stato chiaro che questi doveva essere progettato mettendo al centro dello sviluppo tre principi su tutti: la modularità, l'anticipazione dei cambiamenti e l'incrementalità.
+Tenendo in mente questi obiettivi è stata quindi architettata una struttura che potesse essere componibile in maniera modulabile per poterne permettere il rilascio incrementale e l'estensione in maniera quanto più semplice possibile.
+
+Il framework è stato progettato per essere il più dichiarativo possibile, avvalendosi della notazione infissa dei metodi offerta da Scala.
 
 ### Client
 

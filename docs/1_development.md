@@ -19,9 +19,10 @@ in quanto il progetto proposto ha un aspetto interdisciplinare con la *Sicurezza
 Il processo di *Scrum* è stato modificato per rispecchiare meglio la tipologia e le scadenze imposte del progetto.
 In particolare:
 
-- Gli sprint sono effettuati con la cadenza settimanale, all'inizio della quale viene proposto un meet di tutti i membri del team per effettuare sia Sprint Review che la retrospettiva di quello precedente.
-- Non viene effettuato il daily scrum
-- Backlog refinement è dinamico e avviene durante la settimana dello sprint
+- gli sprint sono effettuati con la cadenza settimanale, all'inizio della quale viene proposto un meet di tutti i membri del team per effettuare lo Sprint Planning mentre la Sprint Review e la retrospettiva dell'iterazione appena conclusa avvenivano generalmente nella giornata precedente.
+- a causa degli impegni universitarie e lavorativi così come la dislocazione dei membri in diverse sedi non è stato possibile svolgere il daily scrum in maniera formale con stand-up meeting.
+La coordinazione e l'aggiornamento è quindi avvenuta attraverso canali ufficiali, sebbene più informali, quali ad esempio il canale del gruppo su \textit{Microsoft Teams}.
+- Backlog refinement si è svolto in maniera dinamica avvenendo durante la settimana dello sprint
 
 Durante le riunioni veniva discusso lo stato del progetto e stabilito il backlog dello sprint in base al product backlog.
 Inoltre veniva fatta una retrospettiva sullo sprint precedente dove veniva mostrato e spiegato il lavoro svolto da ciascun membro e stabilito l'andamento del progetto.
@@ -55,7 +56,7 @@ Nell'ottica del progetto Agile è stato deciso di creare una pipeline di CI e bu
 #### Scala 3
 
 // TODO scrivere qualcosa...
-
+// Da qualche parte bisogna aggiungere qualcosa di spinto sui test-> coverage sviluppo TDD: red-blu-...
 #### Github
 
 Per il versioning distribuito del progetto è stato utilizzato *GitHub*, nel quale venne creata un *organization* per il progetto.

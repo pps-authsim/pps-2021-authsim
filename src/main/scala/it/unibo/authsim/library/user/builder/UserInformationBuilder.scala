@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.user.builder
 
-import it.unibo.authsim.library.dsl.builder.Builder
-import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
+import it.unibo.authsim.library.builder.Builder
+import it.unibo.authsim.library.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.user.model.UserInformation
 
 import scala.language.postfixOps

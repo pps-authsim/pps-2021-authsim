@@ -1,6 +1,6 @@
 package it.unibo.authsim.library.user.model
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
+import it.unibo.authsim.library.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.user.model.User
 
 /**

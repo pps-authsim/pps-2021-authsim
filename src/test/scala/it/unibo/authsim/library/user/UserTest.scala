@@ -1,15 +1,15 @@
 package it.unibo.authsim.library.user
 import scala.language.postfixOps
-import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.OTPPolicyBuilder
-import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.{PasswordPolicyBuilder, UserIDPolicyBuilder}
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, UserIDPolicy}
+import it.unibo.authsim.library.policy.builders.stringpolicy.OTPPolicyBuilder
+import it.unibo.authsim.library.policy.builders.stringpolicy.{PasswordPolicyBuilder, UserIDPolicyBuilder}
+import it.unibo.authsim.library.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.UserCostumBuilder
 import it.unibo.authsim.library.user.builder.UserBuilder
 import it.unibo.authsim.library.user.builder.UserAutoBuilder
 import it.unibo.authsim.library.user.model.User
 import org.scalatest.matchers.should
 import org.scalatest.wordspec.AnyWordSpec
-import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
+import it.unibo.authsim.library.policy.checkers.StringPolicyChecker
 import it.unibo.authsim.library.user.builder.util.Util
 
 class UserTest extends AnyWordSpec with should.Matchers{

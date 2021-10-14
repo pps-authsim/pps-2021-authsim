@@ -1,10 +1,10 @@
 package it.unibo.authsim.library.user.builder
 
-import it.unibo.authsim.library.dsl.builder.Builder
-import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.{PasswordPolicyBuilder, UserIDPolicyBuilder}
+import it.unibo.authsim.library.builder.Builder
+import it.unibo.authsim.library.policy.builders.stringpolicy.{PasswordPolicyBuilder, UserIDPolicyBuilder}
 import it.unibo.authsim.library.user.model.User
-import it.unibo.authsim.library.dsl.policy.checkers.StringPolicyChecker
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
+import it.unibo.authsim.library.policy.checkers.StringPolicyChecker
+import it.unibo.authsim.library.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.util.Util.generateRandomString
 
 

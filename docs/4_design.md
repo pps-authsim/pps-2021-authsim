@@ -1,7 +1,5 @@
 # Design di dettaglio
 
-## Scelte rilevanti
-
 ## Library
 
 ### `AbstractBruteForceAttackBuilder`
@@ -66,6 +64,12 @@ sono delegate al set interno, di cui però non si conosce il tipo specifico.
 
 ### `Factory`
 //le apply sugli object sono factories
+
+
+###`Template Method`
+//Cipher
+
+
 ## Client
 
 ### ScalaFx Task

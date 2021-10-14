@@ -1,12 +1,11 @@
 package it.unibo.authsim.client.app.mvvm.model.security
 
 import it.unibo.authsim.client.app.mvvm.model.security
-import it.unibo.authsim.library.dsl.Protocol
-import it.unibo.authsim.library.dsl.Protocol.*
-import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
-import it.unibo.authsim.library.dsl.policy.defaults.PolicyDefault
-import it.unibo.authsim.library.dsl.policy.model.Policy
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, PasswordPolicy, UserIDPolicy, OTPPolicy}
+import it.unibo.authsim.library.Protocol.*
+import it.unibo.authsim.library.cryptography.algorithm.CryptographicAlgorithm
+import it.unibo.authsim.library.policy.defaults.PolicyDefault
+import it.unibo.authsim.library.policy.model.Policy
+import it.unibo.authsim.library.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, UserIDPolicy}
 
 case class SecurityPolicy(val policy: String, val description: String)
 

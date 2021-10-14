@@ -15,7 +15,7 @@ import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.CredentialPolicy
+import it.unibo.authsim.library.policy.model.StringPolicies.CredentialPolicy
 import it.unibo.authsim.library.user.model.User
 import javafx.collections.ObservableList
 import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer

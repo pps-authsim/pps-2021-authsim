@@ -2,8 +2,8 @@ package it.unibo.authsim.client.app.simulation.integration
 
 import it.unibo.authsim.client.app.components.persistence.{UserEntity, UserRepository}
 import it.unibo.authsim.client.app.simulation.exception.SimulationException
-import it.unibo.authsim.library.dsl.UserProvider
-import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
+import it.unibo.authsim.library.UserProvider
+import it.unibo.authsim.library.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.user.model.UserInformation
 
 import scala.util.{Failure, Success}

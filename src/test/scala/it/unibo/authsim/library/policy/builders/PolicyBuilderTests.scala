@@ -1,7 +1,7 @@
 package it.unibo.authsim.library.policy.builders
 
 import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction.{SHA1, SHA256, SHA384}
-import it.unibo.authsim.library.dsl.Protocol.*
+import it.unibo.authsim.library.Protocol.*
 import it.unibo.authsim.library.cryptography.algorithm.symmetric.AES
 import it.unibo.authsim.library.cryptography.algorithm.asymmetric.RSA
 import it.unibo.authsim.library.policy.builders.PolicyBuilder

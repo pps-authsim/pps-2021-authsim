@@ -168,6 +168,4 @@ Il codice del progetto è diviso in due marco-package: `client` e `library`
 
 L'organizzazione del codice del client può essere riassunta con il seguente diagramma:
 
-
-
-//TODO package uml?
+![Client Packages](assets/images/client-packages.png)

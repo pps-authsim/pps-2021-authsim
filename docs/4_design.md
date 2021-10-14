@@ -38,6 +38,51 @@ Questa classe funge da monitor per le combinazioni di stringhe richieste. In que
 parallelo non interferiscono tra di loro. Inoltre, fornisce anche una condizione di terminazione, 
 in quanto quando restituisce un `Option` vuoto significa che le combinazioni di stringhe richieste sono terminate.
 
+
+### `Policy`
+//TODO: aggiungere descrizione dei diagrammi Policy
+
+![Policy Package UML](assets/images/policy/policy-package.svg)
+
+- `Model`
+  ![Policy Model Package UML](assets/images/policy/policy-model-package.svg)
+
+- `Alphabet`
+  ![Policy Alphabet Package UML](assets/images/policy/policy-alphabet-package.svg)
+
+- `Builders`
+  ![Policy Builders Package UML](assets/images/policy/policy-builders-package.svg)
+
+- `Changers`
+  ![Policy Changers Package UML](assets/images/policy/policy-changers-package.svg)
+
+- `Checkers`
+  ![Policy Checkers Package UML](assets/images/policy/policy-checkers-package.svg)
+
+- `Defaults`
+  ![Policy Defaults Package UML](assets/images/policy/policy-defaults-package.svg)
+
+- `Extractor`
+  ![Policy Extractors Package UML](assets/images/policy/policy-extractors-package.svg)
+
+- `Generators`
+  ![Policy Generators Package UML](assets/images/policy/policy-generators-package.svg)
+
+### `OTP (One-Time Password)`
+//TODO: aggiungere descrizione dei diagrammi OTP
+![OTP Package UML](assets/images/otp/otp-package.svg)
+
+- `Model`
+  ![OTP Model Package UML](assets/images/otp/otp-model-package.svg)
+
+- `Builders`
+  ![OTP Builders Package UML](assets/images/otp/otp-builders-package.svg)
+
+- `Generators`
+  ![OTP Generators Package UML](assets/images/otp/otp-generator-package.svg)
+
+
+
 ## Pattern di progettazione
 ### `Builder` 
 Il pattern `Builder` è stato usato in gran parte del framework, in quanto la maggior parte degli oggetti da costruire
@@ -68,6 +113,8 @@ sono delegate al set interno, di cui però non si conosce il tipo specifico.
 
 ###`Template Method`
 //Cipher
+
+//TODO: AlphabetCommonClasses.alphabenumericsymbols è template method e anche i metodi di trait RegexAlphabet e RansomAlphabet 
 
 
 ## Client

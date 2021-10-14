@@ -1,6 +1,5 @@
 package it.unibo.authsim.library.policy.defaults
 
-import it.unibo.authsim.library.Protocol
 import it.unibo.authsim.library.Protocol.*
 import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction.*
 import it.unibo.authsim.library.policy.builders.PolicyBuilder

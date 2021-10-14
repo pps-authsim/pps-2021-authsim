@@ -1,7 +1,6 @@
 package it.unibo.authsim.client.app.simulation.attacks
 
 import it.unibo.authsim.library.UserProvider
-import it.unibo.authsim.library.UserProvider
 import it.unibo.authsim.library.alphabet.{Dictionary, SymbolicAlphabet}
 import it.unibo.authsim.library.attack.builders.{AttackBuilder, ConcurrentStringCombinator}
 import it.unibo.authsim.library.attack.builders.offline.bruteforce.{BruteForceAttackBuilder, DictionaryAttackBuilder}

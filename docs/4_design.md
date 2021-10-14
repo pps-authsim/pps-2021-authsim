@@ -119,6 +119,16 @@ sono delegate al set interno, di cui però non si conosce il tipo specifico.
 
 ## Client
 
+### Observer
+
+// TODO UML ObservableListBuffer
+
+### Factory
+
+
+
+// TODO UML AttackFactory
+
 ### ScalaFx Task
 
 La simulazione di un attacco potrebbe durare per molto tempo, quindi non sarebbe
@@ -132,13 +142,32 @@ un StringProperty, `messageProperty`, disponibile alla GUI.
 
 In questo modo si riesce a eseguire la simulazione e stampare su un elemento della gui i log della sua esecuzione.
 
-### Observer
+L'esecuzione del task viene effettuata da un component `SimulationRunnerComponent` responsabile di avviare e di fermare il task in esecuzione.
+Questa classe utilizza `ExecutorService` mono-thread (`newSingleThreadExecutor`) per gestire il task. 
 
+// TODO UML Task e runner
 
 ### Repositories
 
+// TODO UML SQL e Mongo Repository
 
-### Properties
+### Properties Service
+
+Nello svolgimento del progetto, 
+
+// TODO UML properties Service e SQLRepository
 
 ## Organizzazione del codice
-// TODO package diagram?
+
+Il codice del progetto è diviso in due marco-package: `client` e `library`
+
+### Library 
+//TODO package uml?
+
+### Client
+
+L'organizzazione del codice del client può essere riassunta con il seguente diagramma:
+
+
+
+//TODO package uml?

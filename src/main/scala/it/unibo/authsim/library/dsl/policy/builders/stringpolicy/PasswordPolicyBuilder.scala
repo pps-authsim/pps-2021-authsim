@@ -5,7 +5,6 @@ import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.StringPolicyBui
 import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.StringPolicyBuildersHelpers
 import it.unibo.authsim.library.dsl.policy.model.StringPolicies.PasswordPolicy
 
-import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
 /**
@@ -19,7 +18,7 @@ case class PasswordPolicyBuilder() extends AbstractMoreRestrictStringPolicyBuild
 
     override def alphabet: PolicyAlphabet = PasswordPolicyBuilder.this.alphabetPolicy
 
-    override def patterns: ListBuffer[Regex] = PasswordPolicyBuilder.this.patterns
+    override def patterns: Seq[Regex] = PasswordPolicyBuilder.this.patterns.toSeq
 
     override def minimumUpperChars: Option[Int] = PasswordPolicyBuilder.this.minUpperChars
 

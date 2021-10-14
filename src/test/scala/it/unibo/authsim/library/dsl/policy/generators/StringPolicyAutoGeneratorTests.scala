@@ -26,7 +26,7 @@ class StringPolicyAutoGeneratorTests extends AnyFunSuite with BeforeAndAfter:
       override def digits = SymbolicAlphabet()
       override def symbols = SymbolicAlphabet()
     }
-    override def patterns: ListBuffer[Regex] = ListBuffer.empty
+    override def patterns: Seq[Regex] = Seq.empty
   }
 
   private var myRestrictedPolicy: StringPolicy = new StringPolicy with RestrictStringPolicy {
@@ -36,7 +36,7 @@ class StringPolicyAutoGeneratorTests extends AnyFunSuite with BeforeAndAfter:
       override def digits = SymbolicAlphabet(ListSet("0", "3"))
       override def symbols = SymbolicAlphabet()
     }
-    override def patterns: ListBuffer[Regex] = ListBuffer.empty
+    override def patterns: Seq[Regex] = Seq.empty
 
     override def minimumLength: Int = 3
 

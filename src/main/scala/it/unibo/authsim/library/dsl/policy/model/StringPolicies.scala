@@ -3,7 +3,6 @@ package it.unibo.authsim.library.dsl.policy.model
 import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet
 import it.unibo.authsim.library.dsl.policy.generators.PolicyAutoGenerator
 
-import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
 object StringPolicies:
@@ -16,9 +15,9 @@ object StringPolicies:
      */
     def alphabet: PolicyAlphabet
     /**
-     * @return list of regular expression
+     * @return sequence of regular expression
      */
-    def patterns: ListBuffer[Regex]
+    def patterns: Seq[Regex]
     /**
      * Generate a string based on the policy
      *

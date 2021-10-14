@@ -16,11 +16,12 @@ A valle di questo processo ogni componente ha scelto di focalizzarsi su una macr
 Di seguito viene riassunto quanto realizzato da ogni componente del gruppo.
 
 ## Brugnatti Giulia
-Nello sviluppo del progetto mi sono occupata del modulo della crittografia e della gestione degli utenti così come delle \texttt{UserInformation}.
+Nello sviluppo del progetto mi sono occupata del modulo della crittografia e della gestione degli utenti così come delle `UserInformation` e di tutte le utilities ad esse collegate.
 Nello specifico, dopo aver definito le interfacce dei componenti con gli altri membri del gruppo, mi sono occupata dello sviluppo di quanto contenuto nei package:
-- user
-- cryptography
-- 
+- `User`
+- `Cryptography`
+oltre al trait `UserProvider`
+
 ## Ntronov Kyrillos
 
 Kyrillos Ntronov ha realizzato interamente la parte client (package **it.unibo.authsim.client.app**). 

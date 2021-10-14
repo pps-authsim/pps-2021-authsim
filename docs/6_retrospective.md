@@ -90,10 +90,11 @@ Infatti, la realizzazione del sistema ha non solo permesso ai membri di testare 
 Lo studio di ognuno di questi aspetti è stato un fondamentale momento di arricchimento personale per ognuno dei membri del gruppo che ha potuto quindi estendere la propria conoscenza attraverso i contenuti del corso e il background degli altri membri.
 
 #### Client
+Il client non ha avuto modo di utilizzare la persistenza in modo significativo ai fini della simulazione, tuttavia rimane sempre la possibilità di estendere
+la libreria per supportare gli attacchi che sviluppano le vulnerabilità dei database specifici.
 
-// todo utilizzare meglio persistenza
-// todo wrappare javafx
-// todo usare properties custom per svincolarsi da scalafx
+Per quanto riguarda MVVM, al momento l'implementazione rimane vincolata alle properties di ScalaFx, si potrebbe fare un ViewModel più generico
+e riutilizzabile con UI diverse se le properties fossero implementate "in casa".
 
 ## Sviluppi futuri
 Molti sono gli sviluppi futuri di cui il framework potrebbe giovare.

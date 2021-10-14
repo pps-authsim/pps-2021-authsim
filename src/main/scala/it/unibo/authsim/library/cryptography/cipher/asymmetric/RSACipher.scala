@@ -16,7 +16,7 @@ import javax.crypto.Cipher
  * RSA cipher object
  */
 object RSACipher:
-  import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitConversion._
+  import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitConversionToBuiltinType._
   import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitToArray._
 
   /**

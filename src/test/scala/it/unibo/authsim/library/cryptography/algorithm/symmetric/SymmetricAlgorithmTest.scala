@@ -2,7 +2,7 @@ package it.unibo.authsim.library.cryptography.algorithm.symmetric
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import it.unibo.authsim.library.cryptography.algorithm.symmetric.*
-import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType._
+import it.unibo.authsim.library.cryptography.util.ImplicitConversion._
 import scala.util.Random
 
 class SymmetricAlgorithmTest extends AnyWordSpec with Matchers {

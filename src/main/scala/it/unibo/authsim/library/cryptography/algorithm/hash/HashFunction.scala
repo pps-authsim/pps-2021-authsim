@@ -7,7 +7,7 @@ import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 
 import java.nio.charset.StandardCharsets
-import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType.ImplicitConversion._
+import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitConversionToBuiltinType._
 /**
  * Trait representing the hash function.
  */

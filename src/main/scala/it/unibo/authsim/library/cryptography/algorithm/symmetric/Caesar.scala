@@ -21,7 +21,7 @@ object Caesar:
    * Class representing a basic implementation of the Caesar Cipher algorithm.
    */
   case class BasicCaesar() extends Caesar:
-    import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType._
+    import it.unibo.authsim.library.cryptography.util.ImplicitConversion._
     
     /**
      * Private variable representing the algorithm name.

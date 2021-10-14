@@ -6,7 +6,7 @@ import it.unibo.authsim.client.app.mvvm.common.CredentialsSourceType
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
 import it.unibo.authsim.client.app.simulation.exception.SimulationException
-import it.unibo.authsim.client.app.simulation.provider.RepositoryUserProvider
+import it.unibo.authsim.client.app.simulation.integration.StatisticsLogger
 import it.unibo.authsim.library.UserProvider
 import it.unibo.authsim.library.user.model.{User, UserInformation}
 import javafx.concurrent.Task
@@ -16,6 +16,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 import scala.concurrent.duration.{Duration, HOURS}
 import it.unibo.authsim.client.app.simulation.attacks.AttackConfiguration
+import it.unibo.authsim.client.app.simulation.integration.RepositoryUserProvider
 import it.unibo.authsim.library.attack.builders.AttackBuilder
 import it.unibo.authsim.library.attack.statistics.Statistics
 import it.unibo.authsim.library.consumers.StatisticsConsumer

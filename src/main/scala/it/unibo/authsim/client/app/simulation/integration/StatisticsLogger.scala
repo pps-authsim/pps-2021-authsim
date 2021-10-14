@@ -1,4 +1,4 @@
-package it.unibo.authsim.client.app.simulation
+package it.unibo.authsim.client.app.simulation.integration
 
 import it.unibo.authsim.library.attack.statistics.Statistics
 import it.unibo.authsim.library.consumers.StatisticsConsumer

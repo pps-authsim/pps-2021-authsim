@@ -6,7 +6,7 @@ import it.unibo.authsim.client.app.mvvm.common.CredentialsSourceType
 import it.unibo.authsim.client.app.mvvm.model.attack.AttackSequence
 import it.unibo.authsim.client.app.mvvm.model.security.{CredentialsSource, SecurityPolicy}
 import it.unibo.authsim.client.app.simulation.exception.SimulationException
-import it.unibo.authsim.client.app.simulation.provider.RepositoryUserProvider
+import it.unibo.authsim.client.app.simulation.integration.{RepositoryUserProvider, StatisticsLogger}
 import it.unibo.authsim.library.dsl.UserProvider
 import it.unibo.authsim.library.dsl.attack.statistics.Statistics
 import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer

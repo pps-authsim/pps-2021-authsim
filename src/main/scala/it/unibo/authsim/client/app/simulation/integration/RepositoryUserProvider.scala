@@ -1,4 +1,4 @@
-package it.unibo.authsim.client.app.simulation.provider
+package it.unibo.authsim.client.app.simulation.integration
 
 import it.unibo.authsim.client.app.components.persistence.{UserEntity, UserRepository}
 import it.unibo.authsim.client.app.simulation.exception.SimulationException

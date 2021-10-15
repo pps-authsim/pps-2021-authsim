@@ -15,17 +15,28 @@ A valle di questo processo ogni componente ha scelto di focalizzarsi su una macr
 
 Di seguito viene riassunto quanto realizzato da ogni componente del gruppo.
 
-## Brugnatti Giulia
+## Brugnatti Giulia //TODO RILEGGI E FINISCI---> L'ULTIMA PARTE NON HA UN VERSO AL MONDO MA SONO STANCA
 Nello sviluppo del progetto mi sono occupata del modulo della crittografia e della gestione degli utenti così come delle `UserInformation` e di tutte le utilities ad esse collegate.
 
 Nello specifico, dopo aver definito le interfacce dei componenti con gli altri membri del gruppo, mi sono occupata dello sviluppo di quanto contenuto nei package:
-- `User`
-- `Cryptography`
+- `it.unibo.authsim.library.user`
+- `it.unibo.authsim.library.cryptography`
 
-oltre al trait `UserProvider`
-//-`KeysGenerator` oggetto, responsabile della creazione delle chiavi necessarie alle implementazioni di crittografia asimettrica è stato reso visibile solo a livello di package ed accessibile dal solo cifrario che implementa tale crittografia, `RSACipher`.
-Tale oggetto, è quindi l'unico punto di accesso globale al generatore di chiavi.
-La scelta, è stata fatta per assicurare l'assenza di incosistenze ed errori nella generazione della coppia di chiavi crittografiche.
+oltre al trait `UserProvider`.
+Per quanto riguarda il contenuto del package: `it.unibo.authsim.library.cryptography` per garantire la correttezza e la manutenibilità delle operazioni ho scelto di appoggiarmi su alcune librerie note nell'ambito dell'implementazione di task di sicurezza informatica.
+Questa scelta mi ha dato un modo da un lato di prendere confidenza con il build tool scelto per il progetto e dall'altro di sperimentare su di esse.
+Nei primi sprint, infatti mi sono occupata di studiare la teoria inerente alle operazioni crittografiche che intendevo implementare così come le librerie scelte per lo scopo in modo da identificarne le possibili criticità che l'utilizzo di queste avrebbe arrecato agli utenti.
+Questa fase è stata essenziale da un lato per capire come sviluppare i cifrari che il framework avrebbe dovuto mettere a disposizione e dall'altro di concepire quale livello di astrazione intendevo implementare nella realizzazione dei componenti del modulo.
+La definizione di tale livello ha quindi permesso di celare all'utilizzatore le criticità che i framework potevano presentare fornendo a questi ultimi un insieme ridotto di metodi uniformi, semplici ed intuitivi da utilizzare per la realizzazione delle proprie operazioni core della crittografia senza doversi preoccupare di dettagli implementativi irrilevanti inerenti ai tipi passati, così come al modo in cui veniva effettivamente implementata dal framework l'operazione richiesta.
+
+Un aspetto rilevante, delle parti del framework da me implementate riguarda il fatto che abbia fatto quanto mi fosse possibile per mettere a disposizione dell'utilizzatore operazioni sicure che non causassero eccezioni e valori `null`.
+Infatti, per evitare questi funesti casi, da un lato sono stati messi a disposizione dei builder in grado di istanziare correttamente le entità prescelte e dall'altro si scelto di prediligere la restituzione di `Option` in caso l'utilizzatore tenti la definizione di valori non consistenti.
+Inoltre, in un discreto numero di casi si è scelto di incapsulare l'implementazione specifica delle diverse entità del sistema in oggetti, per poter lasciare gli utenti finali astrarre dall'implementazione specifica di questi ultimi e dalle librerie utilizzate.
+
+
+Infine, per favorire la leggibilità del codice sono stati implementati degli oggetti in grado di eseguire un discreto numero di conversioni implicite.
+Infatti, molte delle librerie utilizzate richiedevano di passare in input, ad esempio alle operazioni di cifratura, tipi specifici quali, Array di Char o di Byte, tuttavia, ome anticipato nei paragrafi precedenti, si è scelto di definire un livello di astrazione che favorisse l'usabilità da parte degli utenti per questa ragione si è pensato di definire dei metodi parametrici.
+
 ## Ntronov Kyrillos
 
 Kyrillos Ntronov ha realizzato interamente la parte client (package **it.unibo.authsim.client.app**). 

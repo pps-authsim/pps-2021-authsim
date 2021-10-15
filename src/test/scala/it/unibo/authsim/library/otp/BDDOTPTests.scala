@@ -3,7 +3,7 @@ package it.unibo.authsim.library.otp
 import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.otp.builders.{HOTPBuilder, TOTPBuilder}
 import it.unibo.authsim.library.otp.model.{HOTP, TOTP}
-import it.unibo.authsim.library.otp.util.OTPHelpers.generatorLength
+import it.unibo.authsim.library.otp.generators.LengthGenerator.generatorLength
 import it.unibo.authsim.library.policy.builders.stringpolicy.OTPPolicyBuilder
 import it.unibo.authsim.library.policy.checkers.StringPolicyChecker
 import org.scalatest.GivenWhenThen
@@ -57,6 +57,8 @@ class BDDOTPTests extends AnyFeatureSpec with GivenWhenThen:
       And(" it is valid")
       assert(hotp.check(generatedPin))
       Then("user is logged in")
+      And("the given pincode is no longer valid")
+      assert(!hotp.check(generatedPin))
     }
 
     scenario("Session is ended"){
@@ -96,6 +98,8 @@ class BDDOTPTests extends AnyFeatureSpec with GivenWhenThen:
       And(" it is valid")
       assert(totp.check(generatedPin))
       Then("user is logged in")
+      And("the given pincode is no longer valid")
+      assert(!totp.check(generatedPin))
     }
     scenario(s"$timeout have passed"){
       Given("a otp value that respect policy")

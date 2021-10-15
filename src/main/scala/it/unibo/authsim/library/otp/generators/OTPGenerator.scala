@@ -1,4 +1,4 @@
-package it.unibo.authsim.library.otp.generator
+package it.unibo.authsim.library.otp.generators
 
 import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.otp.util.OTPHelpers.*

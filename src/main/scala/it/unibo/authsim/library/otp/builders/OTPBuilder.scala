@@ -2,7 +2,7 @@ package it.unibo.authsim.library.otp.builders
 
 import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.builder.Builder
-import it.unibo.authsim.library.otp.generator.OTPGenerator
+import it.unibo.authsim.library.otp.generators.{LengthGenerator, OTPGenerator, SeedGenerator}
 import it.unibo.authsim.library.otp.model.*
 import it.unibo.authsim.library.otp.util.OTPHelpers.*
 import it.unibo.authsim.library.policy.builders.stringpolicy.OTPPolicyBuilder
@@ -19,12 +19,18 @@ import scala.util.Random
  */
 trait OTPBuilder[T] extends Builder[T]:
   /**
+   * Set a [[SeedGenerator seed generator]]
+   * @param generator a generator of the seesion seed to set
+   * @return instance of the actual builder
+   */
+  def seed(implicit generator: SeedGenerator[Int]): this.type
+  /**
    * Set a [[OTPPolicy one time password policy]]
    * @param policy otp policy to set
    * @param generateLength a generator of the actual length of one time password given a otp policy
    * @return instance of the actual builder
    */
-  def withPolicy(policy: OTPPolicy)(implicit generateLength: OTPPolicy => Int): this.type
+  def withPolicy(policy: OTPPolicy)(implicit generateLength: LengthGenerator): this.type
 
 object OTPBuilder:
   /**
@@ -78,22 +84,39 @@ object OTPBuilder:
     protected val SEPARATOR_SECRET = '-'
     protected var _policy: OTPPolicy = null
     protected var _secret: String = Random.alphanumeric.take(10).mkString
+    protected var _checked: Boolean = false
 
     protected var _length: Int = 0
     this.withPolicy(OTPPolicyBuilder() minimumLength 4 maximumLength 10 build)
 
+    protected var _seedGenerator: SeedGenerator[Int] = SeedGenerator.generatorSeed
     protected var _seed: Int = 0
     this.generateSeed
 
-    protected def generateSeed(implicit seedGenerator: () => Int): Unit =
-      val genSeed: Int = seedGenerator()
-      this._seed = if genSeed == this._seed then genSeed + 1 else genSeed
+    private def generateSeed: Unit = if _seedGenerator != null then this._seed = _seedGenerator.seed(this._seed)
 
-    override def withPolicy(policy: OTPPolicy)(implicit lengthGenerator: OTPPolicy => Int) =
+    protected def reset: Unit =
+      this.generateSeed
+      this._checked = false
+
+    protected def checked(valid: Boolean): Boolean = this._checked match
+      case true => false
+      case _ =>
+        this._checked = valid
+        if valid then this.generateSeed
+        valid
+
+    override def withPolicy(policy: OTPPolicy)(implicit lengthGenerator: LengthGenerator) =
       this.builderMethod[OTPPolicy](policy =>
         this._policy = policy;
-        this._length = lengthGenerator(policy)
+        this._length = lengthGenerator.length(policy)
       )(policy)
+
+    override def seed(implicit generator: SeedGenerator[Int]): this.type =
+      this.builderMethod[SeedGenerator[Int]](seedGenerator => {
+        this._seedGenerator = seedGenerator
+        this._seed = this._seedGenerator.seed(this._seed)
+      })(generator)
 
     override def secret(secret: SecretValue) = this.builderMethod[SecretValue](secret => this._secret = s"${secret._1}$SEPARATOR_SECRET${secret._2}")(secret)
 

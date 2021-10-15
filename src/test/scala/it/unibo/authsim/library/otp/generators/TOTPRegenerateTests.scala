@@ -4,7 +4,7 @@ import it.unibo.authsim.library.otp.builders.OTPBuilder.SecretValue
 import it.unibo.authsim.library.otp.builders.TOTPBuilder
 import it.unibo.authsim.library.otp.generators.OTPRegenerateHelpers.*
 import it.unibo.authsim.library.otp.model.TOTP
-import it.unibo.authsim.library.otp.util.OTPHelpers.generatorLength
+import it.unibo.authsim.library.otp.generators.LengthGenerator.generatorLength
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.util.concurrent.TimeUnit

@@ -81,9 +81,36 @@ in quanto quando restituisce un `Option` vuoto significa che le combinazioni di 
 - `Generators`
   ![OTP Generators Package UML](assets/images/otp/otp-generator-package.svg)
 
-### Cryptography
+### Cryptography //TODO-COMPLETA E RILEGGI
+La crittografia è la parte del sistema adibita alle operazioni crittografiche.
+Quest'ultima incapsula gli algoritmi crittografici così come i cifrari che ne permettono le operazioni principali.
+- `Algorithm`
+Gli algoritmi crittografici rappresentano la base della crittografia essi espongono un proprio nome, così come le feature principali dell'algoritmo.
+Si è deciso che il framework doveva supportare tre macro tipologie di algoritmi crittografici, in modo da lasciare all'utilizzatore decidere se garantire l'integrità, l'autenticità, o la confidenzialità dei dati.
+  - `Hash`
+  Nel framework è stato deciso di mettere a disposizione le principali funzioni hash [^Hash]
+  
 
-- `Generators`
+Tuttavia, non solo funzioni hash considerate attualmente sicure, ma bensì di permettere all'utente di disporre anche di funzioni non sicure, in modo da permettere confronti tra algoritmi resistenti alla crittoanalisi e altri che violano almeno una delle proprietà di sicurezza delle funzioni hash[^Hash-proprietà].
+
+Nel caso del framework le funzioni hash vengono utilizzate per evitare all'utente di salvare le password in chiaro nel database, tuttavia essendo queste non invertibili, perchè l'utente possa controllare l'integrità della password non potrà decriptare il valore hash ma fare un confronto tra il valore hash della password passata in input e quello salvata sul database.
+
+Per rendere il processo maggiormente sicuro è stato deciso lasciare all'utente la possibilità di definire anche un valore di sale per garantire una maggiore sicurezza agli attacchi crittografici.
+
+[^Hash]Gli algoritmi hash sono particolari tipi di funzioni utilizzati per garantire la confidenzialità dei dati.
+Questi ultimi infatti permettono di convertire input di una lunghezza arbitraria, in stringhe di lunghezza fissa, questo mapping deve essere infeasible da invertire e resistente alle collisioni per essere considerato sicuro.
+
+[^Hash-proprietà] Le proprietà di sicurezza di riferimento delle funzioni hash sono tre: resistenza alla preimmagine, resistenza alla seconda preimmagine e resistenza alla collisione. Per maggiori informazioni consultare \[link to Funzioni Crittofiche di hash!](https://it.wikipedia.org/wiki/Funzione_crittografica_di_hash).
+  
+  
+  - `SymmetricAlgoritm`
+  Gli algoritmi di crittografia simmetrica, sono gli algoritmi crittografici in grado di garantire la confidenzialità in un sistema.
+Per quanto riguarda questa tipologia di algoritmi si è scelto di mettere a disposizione tre cifrari piuttosto differenti, il Cifrario di Cesare, DES, AES, anche in questo caso si è scelto di lasciare gli utilizzatori disporre anche di algoritmi la cui insicurezza è nota da lungo tempo [^CifrarioCesareInsicuro] poichè lo scopo del framework è quello di permettere all'utente di fare di confronti.
+
+[^CifrarioCesareInsicuro]L'insicurezza del Cifrario di Cesare è stata evidente fin dal XI a seguito degli studi sulle tecniche di crittoanalisi del arabo \textit{Al-Kindi}. La sicurezza di DES invece è stata messa in questione dal 1997 quando per la prima volta sono stati violati messaggi criptati col suddetto algoritmo. Attualmente AES è l'unico algoritmo proposto ad essere approvato dal \textit{NSA} per il passaggio di informazioni *top secret*. 
+
+ - `AsymmetricAlgoritm`
+
 
 - `Cipher`
 
@@ -114,16 +141,6 @@ Un esempio di ciò è la seguente stringa (fonte: `BruteForceAttackBuilderTest`)
 ```
 Si può vedere che la configurazione della costruzione di un attacco (cioè il codice all'interno delle parentesi tonde
 più esterne) si avvicina molto alla descrizione a parole (in lingua inglese) di ciò che si richiede.
-
-- `Singleton`
-Il pattern  `Singleton` è stato utilizzato nell'implementazione del `KeysGenerator` tale oggetto, responsabile della creazione delle chiavi necessarie alle implementazioni di crittografia asimettrica è stato reso visibile solo a livello di package ed accessibile dal solo cifrario che implementa tale crittografia, `RSACipher`.
-Tale oggetto, è quindi l'unico punto di accesso globale al generatore di chiavi.
-La scelta, è stata fatta per assicurare l'assenza di incosistenze ed errori nella generazione della coppia di chiavi crittografiche.
-
-- `Abstract Factory`
-Il pattern `Abstract Factory` è stato utilizzato nella creazione degli oggetti.
-\\Boh
-
 
 
 ### Strutturali 

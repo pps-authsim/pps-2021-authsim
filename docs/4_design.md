@@ -82,16 +82,20 @@ in quanto quando restituisce un `Option` vuoto significa che le combinazioni di 
   ![OTP Generators Package UML](assets/images/otp/otp-generator-package.svg)
 
 ### Cryptography //TODO-COMPLETA E RILEGGI
-La crittografia è la parte del sistema adibita alle operazioni crittografiche.
-Quest'ultima incapsula gli algoritmi crittografici così come i cifrari che ne permettono le operazioni principali.
-- `Algorithm`
-Gli algoritmi crittografici rappresentano la base della crittografia essi espongono un proprio nome, così come le feature principali dell'algoritmo.
-Si è deciso che il framework doveva supportare tre macro tipologie di algoritmi crittografici, in modo da lasciare all'utilizzatore decidere se garantire l'integrità, l'autenticità, o la confidenzialità dei dati.
-  - `Hash`
-  Nel framework è stato deciso di mettere a disposizione le principali funzioni hash [^Hash]
-  
+La crittografia è la parte del sistema adibita a tutte le operazioni crittografiche.
+Quest'ultima incapsula gli algoritmi crittografici così come i cifrari che ne permettono le operazioni principali e le utilities ad essi collegati.
+Gli algoritmi crittografici sono stati modellati tramite una gerarchia che trova la sua *root* nell'interfaccia `CryptographicAlgorithm`.
 
-Tuttavia, non solo funzioni hash considerate attualmente sicure, ma bensì di permettere all'utente di disporre anche di funzioni non sicure, in modo da permettere confronti tra algoritmi resistenti alla crittoanalisi e altri che violano almeno una delle proprietà di sicurezza delle funzioni hash[^Hash-proprietà].
+- `CryptographicAlgorithm`
+Il trait `CryptographicAlgorithm` modella un generico algoritmo di crittografia racchiudendone i metodi core comuni a tutti i suddetti algoritmi.
+//TODO add interface
+
+Nel framework si è deciso di supportare tre macro tipologie di algoritmi crittografici, in modo da lasciare all'utilizzatore decidere se garantire l'integrità, l'autenticità, o la confidenzialità dei dati.
+Di seguito vengono quindi descritte le tre famiglie supportate partendo dalle funzioni hash, per poi arrivare agli algoritmi a chiave simmetrica ed asimmetrica.
+
+  - `HashFunction`
+  Il trait `HashFunction`, modella una generica funzione hash[^Hash], esponendone le funzionalità principali.
+  Nel framework è stato deciso di mettere a disposizione i più noti algoritmi per fare hashing; nello specifico, non solo funzioni hash considerate attualmente sicure, ma bensì di permettere all'utente di disporre anche di funzioni non sicure, in modo da permettere confronti tra algoritmi resistenti alla crittoanalisi e altri che violano almeno una delle proprietà di sicurezza delle funzioni hash[^Hash-proprietà].
 
 Nel caso del framework le funzioni hash vengono utilizzate per evitare all'utente di salvare le password in chiaro nel database, tuttavia essendo queste non invertibili, perchè l'utente possa controllare l'integrità della password non potrà decriptare il valore hash ma fare un confronto tra il valore hash della password passata in input e quello salvata sul database.
 

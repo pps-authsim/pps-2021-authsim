@@ -47,6 +47,14 @@ Inoltre ha svolto i seguenti compiti DevOps e orgnaizzativi:
 
 ## Pasquali Marica
 
+Ho partecipato alla progettazione delle varie interfacce della libreria.
+
+Successivamente, mi sono occupata della realizzazione di tutte le interfacce riguardanti le _Policy_ e le _One-Time Password_,
+quindi di tutte le classi che si trovano nei seguenti package:
+- `it.unibo.authsim.library.policy`
+- `it.unibo.authsim.library.otp`
+
+
 ## Speranza Alex
 ### Alphabet
 Il trait `Alphabet` rappresenta un insieme di simboli utilizzata per comporre stringhe.
@@ -111,7 +119,7 @@ attacco non sia andato a buon fine (cioè se non è stata trovata la password di
 
 Il companion object di `StatisticsConsumer` offre anche un'implementazione di base che scrive sul terminale i dati consumati.
 
-|[Consumer UML](/pps-2021-authsim/assets/images/ConsumerFullUml.jpg)
+![Consumer UML](/pps-2021-authsim/assets/images/ConsumerFullUml.jpg)
 
 ### ConcurrentStringCombinator
 I `ConcurrentStringCombinator` sono oggetti il cui compito è di produrre tutte le combinazioni dei simboli dell'alfabeto

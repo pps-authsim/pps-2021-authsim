@@ -15,8 +15,8 @@ import javax.crypto.spec.*
  * DES cipher object
  */
 object DESCipher:
-  import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType.ImplicitConversion._
-  import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType.ImplicitToArray._
+  import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitConversionToBuiltinType._
+  import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitToArray._
 
   /**
    * Apply method for the object.

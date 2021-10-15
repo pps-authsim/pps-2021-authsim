@@ -3,10 +3,10 @@ package it.unibo.authsim.library.cryptography.util
 import it.unibo.authsim.library.cryptography.util.Base64
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType.ImplicitToArray._
-import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType.ImplicitConversion._
-import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType.ImplicitToList._
-import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType.ImplicitToSeq.listToSeq
+import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitToArray._
+import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitConversionToBuiltinType._
+import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitToList._
+import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitToSeq.listToSeq
 import it.unibo.authsim.library.cryptography.utility.ImplicitConversionChecker.*
 import org.scalatest.GivenWhenThen
 import org.scalatest.featurespec.AnyFeatureSpec
@@ -75,7 +75,7 @@ class ImplicitConversionTest extends AnyFeatureSpec with GivenWhenThen with Matc
   }
 
   feature("Implicit conversion from generic array to sequence"){
-    import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType.ImplicitToSeq.arrayToSeq
+    import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitToSeq.arrayToSeq
     scenario("is conversion available to int sequence") {
       isConversionAvailable[Array[Int], Seq[Int]]() shouldBe true
     }

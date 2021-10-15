@@ -19,7 +19,7 @@ trait DES extends SymmetricAlgorithm:
  */
 object DES:
   import it.unibo.authsim.library.cryptography.cipher.asymmetric.key.KeysGenerator
-  import it.unibo.authsim.library.cryptography.util.ImplicitToBuiltInType.ImplicitConversion._
+  import it.unibo.authsim.library.cryptography.util.ImplicitConversion.ImplicitConversionToBuiltinType._
   /**
    * Apply method for the object
    * 

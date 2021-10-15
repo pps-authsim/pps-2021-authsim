@@ -3,7 +3,7 @@ package it.unibo.authsim.library.cryptography.util
 /**
  * Utility object that provides some implicit conversions.
  */
-object ImplicitToBuiltInType:
+object ImplicitConversion:
   /**
    * Variable representing the charset to be used in encoding operations.
    */
@@ -12,7 +12,7 @@ object ImplicitToBuiltInType:
   /**
    * Utility object to perform implicit conversions.
    */
-  object ImplicitConversion:
+  object ImplicitConversionToBuiltinType:
     import ImplicitToArray._
     /**
      * Method that converts a generic value into a string.
@@ -98,7 +98,7 @@ object ImplicitToBuiltInType:
    * Object to provide implicit conversion to an array.
    */
   object ImplicitToArray:
-    import ImplicitConversion._
+    import ImplicitConversionToBuiltinType._
     import scala.reflect.ClassTag
 
     /**

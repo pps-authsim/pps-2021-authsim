@@ -39,9 +39,10 @@ parallelo non interferiscono tra di loro. Inoltre, fornisce anche una condizione
 in quanto quando restituisce un `Option` vuoto significa che le combinazioni di stringhe richieste sono terminate.
 
 
-### Policy
-
+### `Policy`
 //TODO: aggiungere descrizione dei diagrammi Policy
+
+![Policy Package UML](assets/images/policy/policy-package.svg)
 
 - `Model`
   ![Policy Model Package UML](assets/images/policy/policy-model-package.svg)
@@ -67,8 +68,9 @@ in quanto quando restituisce un `Option` vuoto significa che le combinazioni di 
 - `Generators`
   ![Policy Generators Package UML](assets/images/policy/policy-generators-package.svg)
 
-### OTP (One-Time Password)
+### `OTP (One-Time Password)`
 //TODO: aggiungere descrizione dei diagrammi OTP
+![OTP Package UML](assets/images/otp/otp-package.svg)
 
 - `Model`
   ![OTP Model Package UML](assets/images/otp/otp-model-package.svg)
@@ -76,8 +78,8 @@ in quanto quando restituisce un `Option` vuoto significa che le combinazioni di 
 - `Builders`
   ![OTP Builders Package UML](assets/images/otp/otp-builders-package.svg)
 
-- `Generator`
-  ![OTP Generator Package UML](assets/images/otp/otp-generator-package.svg)
+- `Generators`
+  ![OTP Generators Package UML](assets/images/otp/otp-generator-package.svg)
 
 ### Cryptography //TODO-COMPLETA E RILEGGI
 La crittografia è la parte del sistema adibita a tutte le operazioni crittografiche.
@@ -99,7 +101,7 @@ Nel caso del framework le funzioni hash vengono utilizzate per evitare all'utent
 
 Per rendere il processo maggiormente sicuro è stato deciso lasciare all'utente la possibilità di definire anche un valore di sale per garantire una maggiore sicurezza agli attacchi crittografici.
 
-[^Hash]Gli algoritmi hash sono particolari tipi di funzioni utilizzati per garantire la confidenzialità dei dati.
+[^Hash] Gli algoritmi hash sono particolari tipi di funzioni utilizzati per garantire la confidenzialità dei dati.
 Questi ultimi infatti permettono di convertire input di una lunghezza arbitraria, in stringhe di lunghezza fissa, questo mapping deve essere infeasible da invertire e resistente alle collisioni per essere considerato sicuro.
 
 [^Hash-proprietà] Le proprietà di sicurezza di riferimento delle funzioni hash sono tre: resistenza alla preimmagine, resistenza alla seconda preimmagine e resistenza alla collisione. Per maggiori informazioni consultare \[link to Funzioni Crittofiche di hash!](https://it.wikipedia.org/wiki/Funzione_crittografica_di_hash).
@@ -111,18 +113,62 @@ Per quanto riguarda questa tipologia di algoritmi si è scelto di mettere a disp
 
 [^CifrarioCesareInsicuro]L'insicurezza del Cifrario di Cesare è stata evidente fin dal XI a seguito degli studi sulle tecniche di crittoanalisi del arabo \textit{Al-Kindi}. La sicurezza di DES invece è stata messa in questione dal 1997 quando per la prima volta sono stati violati messaggi criptati col suddetto algoritmo. Attualmente AES è l'unico algoritmo proposto ad essere approvato dal \textit{NSA} per il passaggio di informazioni *top secret*. 
 
+
  - `AsymmetricAlgoritm`
+  Il modulo di crittografia a chiave asimmetrica, concerne quella categoria di algoritmi in grado di garantire l'autenticità.
+Il framework in questo caso mette a disposizione un solo algoritmo RSA.
+Quest'ultimo viene utilizzato sia per quanto riguarda la generazione delle chiavi stesse da utilizzare durante le operazioni di crittografia, sia per la generazioni delle chiavi stesse.
+Le chiavi vengono quindi rappresentate come unica entità, denominata KeyPair, 
 
 
 - `Cipher`
+Trait che modella un generico cifrario, esponendo i metodi comuni a tutte le tipologie di cifrari identificati, questi come `CryptographicAlgorithm` rappresenta la *root* per tutte le diverse categorie di cifrari: `SymmetricCipher` e  `AsymmetricCipher`.
 
+Infatti, ad ogni algoritmo di encryption identificato (algoritmi a chiave simmetrica, o asimmetrica) è stato associato un cifrario che incapsula la logica con cui l'algoritmo viene utilizzato per criptare e successivamente decriptare una segreto.
+
+I cifrari sono stati implementati cercando di incapsulare le operazioni comuni in un abstract class applicando il pattern `Template Method` per seguire il principio *DRY*, tuttavia, sebbene il paradigma funzionale si appoggi sull'idea che ogni cosa dovrebbe essere una funzione, in questo caso si è preferito non implementare factories per la creazione di oggetti, in quanto avrebbe potuto impendire l'estensibilità del framework o, minarne la consistenza.
+
+L'entità adibita a tale compito è il `BasicCipher`, classe astratta che fornisce le implementazioni dei metodi di *encryption* e *decryption* oltre che un metodo, `crypto`,  per l'implementazione dell'operazione di cifratura.
+
+  Di seguito vengono descritti i cifrari implementati, nell'ordine prima quelli simmetrici e poi quelli asimettrici.
+  
+  - `CaesarCipher`
+  Cifrario che modella la logica per l'implementazione di un cifrario di Cesare.
+  Si tratta dell'unico cifrario a non avvalersi dell'implementazione di base per i cifrari a causa della natura intrinseca dell'algoritmo.
+  Questi infatti al contrario degli altri nasce per essere utilizzato con un numero intero come segreto e non con una stringa.
+  
+  - `AESCipher`
+  Cifrario che sfruttando l'algoritmo di `AES` per l'implementazione delle operazioni di cifratura.
+  - `DESCipher`
+   Cifrario che sfruttando l'algoritmo di `DES` per l'implementazione delle operazioni di cifratura.
+  - `RSACipher`
+  -  Cifrario che sfruttando l'algoritmo di `RSA` per l'implementazione delle operazioni di cifratura.
+  Oltre alle operazioni base della crittografia, un cifrario relativo alla crittografia asimmetrica deve inoltre mettere a disposizione un insieme di operazioni per la gestione dell chiavi.
+    - `KeyGenerator`
+  Componente del sistema adibito alla gestione delle chiavi da utilizzare durante le operazioni di crittografia con chiave asimmetrica.
+  Questo componente per evitare incosistenze deve essere accessibile solo dal cifrario che lo utilizza e permettere di generare, o caricare delle chiavi pre-esistenti.
+      - `KeyPair`: entità che rappresenta una coppia di chiavi: una privata da utilizzare durante l'encryption ed una pubblica per permettere la decryption.
+     
+     % Tale classe come i cifrari cercano di wrapper le classi delle librerie utilizzate per l'effettiva implementazione, in modo da poterla sostituire in qualsiasi momento in maniera trasparente, senza che l'utente finale subisca conseguenze.
+![User Builder e UserInformation](assets/images/library-cryptography/cipher/cipher.png)
 ### User
 - `User`
-- 
-  - `UserBuilder`
-
+Il trait `User` modella un generico utente, il quale è caratterizzato da uno `userName` e da una `password`.
 - `UserInformation`
-  - `UserInformationBuilder`
+Il trait `UserInformation` modella d'altro canto l'informazione che deve essere salvata, questo estende il trait `User` aggiungendo un nuovo campo che permette di memorizzare l'algoritmo utilizzato per la cifratura della password.
+Difatti, in questo a differenza di quanto accade per l'entità precedente, la password viene salvata criptata (se l'utente ha deciso di farlo) per evitare attacchi di tipo *credential stuffing*.
+![User Builder e UserInformation](assets/images/library-user/user/user_model.PNG)
+
+Per garantire la consistenza delle informazioni e il rispetto delle policy sono stati implementati due macro tipologie di builder in grado di implementare la costruzione da un lato degli utenti e dall'altro delle informazioni ad esse relative.
+I builder afferenti alle due categorie builder, così come tutti i builder del framework, estendendono l'interfaccia  `Builder`.
+Nello specifico per l'implementazione dei builder degli utenti si è scelto nuovamente di applicare il principio *Dry* mettendo a disposizione una classe astratta `UserBuilder`che implementi i metodi di base comuni a tutti i builder degli utenti.
+Vengono quindi creati due builder specifici per gli utenti: il primo `UserCostumBuilder` in grado di permettere la costruizione di utenti a partire da credenziali e opzionalmente policy scelte dall'utente.
+Il secondo  `UserAutoBuilder` che al contrario permette la definzioni di un numero prestabilito di utenti a partire da un set di policy definite dagli utenti.
+Quest'ultimo è infatti in grado di generare credenziali randomiche che rispettino le *regole* scelte dall'utilizzatore per il numero richiesto di utenti.
+
+COme per gli User anche per le `UserInformation` è stato implementato un builder in grado assicurarne una corretta istanziazione, questi prende il nome di: `UserInformationBuilder`.
+![User Builder e UserInformation](assets/images/library-user/user/user_builder.PNG)
+
 
 ## Pattern di progettazione
 ### Creazionali
@@ -136,7 +182,6 @@ Il pattern `Chaining Method` è stato usato implementando i metodi dei builder c
 il quale restituisce un riferimento al tipo più specifico possibile del `Builder` su cui è chiamato.
 L'uso di questo pattern permette di potenziare la notazione infissa dei metodi di Scala e raggiungere una scrittura di
 codice simile al linguaggio naturale.
-
 Un esempio di ciò è la seguente stringa (fonte: `BruteForceAttackBuilderTest`):
 ```
 (new BruteForceAttackBuilder() against myProxy usingAlphabet myAlphabet maximumLength maximumPasswordLength hashingWith HashFunction.MD5() jobs 4 logTo consumer timeout Duration.Zero).executeNow()
@@ -167,7 +212,6 @@ Questi infatti estendono da una classe astratta `BasicCipher` la quale espone le
 Tali metodi sono infatti invarianti rispetto ai cifrari proposti[^CaesarCipher]
 
 [^CaesarCipher]: L'unica eccezione è rappresentata dal `CaesarCipher` in quanto unico cifrario a non estendere dalla classe astratta per la natura intrinseca dell'algoritmo.
-Questi infatti al contrario degli altri nasce per essere utilizzato con un numero intero come segreto e non con una stringa.
 
 //TODO: AlphabetCommonClasses.alphabenumericsymbols è template method e anche i metodi di trait RegexAlphabet e RansomAlphabet 
 
@@ -217,10 +261,7 @@ Nello svolgimento del progetto,
 Il codice del progetto è diviso in due marco-package: `client` e `library`
 
 ### Library 
-
-L'organizzazione del codice della libreria può essere riassunta con il seguente diagramma:
-
-![Client Packages](assets/images/library-packages.svg)
+//TODO package uml?
 
 ### Client
 

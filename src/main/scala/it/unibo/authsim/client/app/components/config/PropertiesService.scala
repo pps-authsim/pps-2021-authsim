@@ -4,10 +4,16 @@ import java.io.{ByteArrayInputStream, InputStream}
 import java.util.Properties
 import scala.io.Source
 
+/**
+ * Serivice responsible for reading and exposing application properties
+ * @param inputStream input stream of the readable java properties. Importantly, this stream will be closed after reading its contents
+ */
 trait PropertiesService:
 
+  /**
+   * Path to the folder containing path to the in-memory database folder
+   */
   val databaseBasePathFolder: String
-
 
 object PropertiesServiceComponent:
   private def databaseBasePathFolderKey = "db.base.path"
@@ -15,11 +21,7 @@ object PropertiesServiceComponent:
 trait PropertiesServiceComponent:
 
   val propertiesService: PropertiesService
-
-  /**
-   * Serivice responsible for reading and exposing application properties
-   * @param inputStream input stream of the readable java properties. Importantly, this stream will be closed after reading its contents
-   */
+  
   class PropertiesServiceImpl(source: Source) extends PropertiesService:
 
     private val lines = source.getLines.reduce((a, b) => a + "\n" + b)

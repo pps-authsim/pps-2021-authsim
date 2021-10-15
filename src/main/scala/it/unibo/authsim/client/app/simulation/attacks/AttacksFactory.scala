@@ -11,9 +11,15 @@ import it.unibo.authsim.library.policy.alphabet.PolicyAlphabet.PolicyDefaultAlph
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.Duration
 
+/**
+ * A facotry for constructing attacks with the provided userProvider and StatisticsConsume
+ * @param userProvider userProvider
+ * @param logger statisticsConsumer
+ */
 class AttacksFactory(private val userProvider: UserProvider, private val logger: StatisticsConsumer):
 
   private val defaultAlphabets = new PolicyDefaultAlphabet()
+  
   /**
    * @return an AttackBuilder configured to attack a userProvider, using lowercase characters to construct the password string
    *         with a maximum length of 6 and logging to the given logger, without timeout.

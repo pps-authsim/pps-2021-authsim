@@ -8,7 +8,7 @@ import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
 import javafx.collections.ObservableList
 
 /**
- * Application's model
+ * Application's model aggregation
  * @param usersModel users model
  * @param securityModel security model
  * @param attackModel attack model

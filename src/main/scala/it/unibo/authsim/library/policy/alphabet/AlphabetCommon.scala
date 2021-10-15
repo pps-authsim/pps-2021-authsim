@@ -2,12 +2,10 @@ package it.unibo.authsim.library.policy.alphabet
 
 import it.unibo.authsim.library.alphabet.SymbolicAlphabet
 
-import scala.util.matching.Regex
-
 /**
- * An ''Alphabet'' is a trait that is used to define a new alphabet
+ * ''AlphabetCommon'' is a trait that is used to define a new alphabet
  */
-trait AlphabetCommonClasses:
+trait AlphabetCommon:
   /**
    * @return sequence of lowercase characters of alphabet
    */

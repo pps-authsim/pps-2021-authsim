@@ -3,9 +3,9 @@ package it.unibo.authsim.library.policy.alphabet
 import it.unibo.authsim.library.alphabet.SymbolicAlphabet
 import org.scalatest.wordspec.AnyWordSpec
 
-class AlphabetCommonClassesTests extends AnyWordSpec:
+class AlphabetCommonTests extends AnyWordSpec:
 
-  private val alphabet: AlphabetCommonClasses = new AlphabetCommonClasses:
+  private val alphabet: AlphabetCommon = new AlphabetCommon:
     override def lowers = SymbolicAlphabet(Set.from(for i <- 'a' to 't' yield i.toString))
     override def uppers = SymbolicAlphabet(Set.from(for i <- 'A' to 'T' yield i.toString))
     override def symbols = SymbolicAlphabet(Set("$", "%"))

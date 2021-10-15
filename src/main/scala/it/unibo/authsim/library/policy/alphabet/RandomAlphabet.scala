@@ -7,7 +7,7 @@ import scala.util.Random
 /**
  * A ''RandomAlphabet'' a trait that is used to define a new alphabet with randomize methods
  */
-trait RandomAlphabet extends AlphabetCommonClasses:
+trait RandomAlphabet extends AlphabetCommon:
   /**
    * @return stream of lowercase characters of alphabet
    */

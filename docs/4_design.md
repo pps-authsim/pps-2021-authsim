@@ -129,7 +129,7 @@ Per quanto riguarda questa tipologia di algoritmi si è scelto di mettere a disp
 ## Pattern di progettazione
 ### Creazionali
 - `Builder` 
-Il pattern `Builder` è stato usato in gran parte del framework, in quanto la maggior parte degli oggetti da costruire
+Il pattern `Builder` è stato usato in gran parte del framework sia nell'accezione di Scala attraverso l'utilizzo di valori predefiniti nei costruttori, sia nella versione tradizionale del pattern in quanto la maggior parte degli oggetti da costruire
 non richiedevano di specificare tutti i parametri di configurazione, restituendo un oggetto di un tipo generale.
 Un esempio è `BruteForceAttackBuilder`, il quale costruisce un oggetto di tipo `Attack` e non `BruteforceAttack`.
 
@@ -146,6 +146,13 @@ Un esempio di ciò è la seguente stringa (fonte: `BruteForceAttackBuilderTest`)
 Si può vedere che la configurazione della costruzione di un attacco (cioè il codice all'interno delle parentesi tonde
 più esterne) si avvicina molto alla descrizione a parole (in lingua inglese) di ciò che si richiede.
 
+- `Factory`
+Il pattern `Factory` è stato utilizzato nella libreria nell'accezione di Scala, ossia utilizzando il metodo `apply` nei *companion objects* per istanziare oggetti mantenendo privata l'implementazione delle classi.
+
+- `Singleton`
+Il pattern `Singleton`, come accaduto per il pattern `Factory` non è stato implementato nella sua versione tradizionale, bensì è stato declinato sfruttando le potenzialità messe a disposizione dal linguaggio Scala.
+Nello specifico, gli *Object* sono stati utilizzati spesso come `Singleton` nella libreria, un esempio si può notare nel `KeyGenerator`, struttura responsabile della creazione delle chiavi necessarie alle implementazioni di crittografia asimettrica.
+Tale oggetto infatti è stato reso visibile solo a livello di package ed accessibile dal solo cifrario che sfrutta un algoritmo di crittografia asimmetrica, ossia il `RSACipher` che quindi risulta essere l'unico punto di accesso globale al generatore di chiavi. La scelta, è stata fatta per assicurare l'assenza di incosistenze ed errori nella generazione della coppia di chiavi crittografiche.
 
 ### Strutturali 
 

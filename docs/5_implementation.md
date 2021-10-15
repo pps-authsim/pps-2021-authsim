@@ -4,7 +4,7 @@
 Lo strumento principale utilizzato all'interno del progetto per testare i componenti è stato *ScalaTest*.
 Tale tool è stato usato sia per il testing degli elementi del framework, sia per quelli dell'applicativo dimostrativo.
 Nello specifico per testare il comportamento del sistema sono stati realizzati degli Unit test per tutte le componenti rilevanti della GUI e della DSL.
-
+// TODO aggiungi il fatto del TDD
 ## Suddivisione del lavoro
 Da un lato il lavoro è stato suddiviso in modo tale da incontrare le esigenze temporali dei singoli membri e dall'altro perché fosse il più equo possibile.
 Tuttavia, a causa della limitata esperienza dei membri del gruppo nella gestione del processo di sviluppo alcuni compiti si sono dimostrati inevitabilmente più onerosi di altri.
@@ -22,7 +22,9 @@ Nello specifico, dopo aver definito le interfacce dei componenti con gli altri m
 - `Cryptography`
 
 oltre al trait `UserProvider`
-
+//-`KeysGenerator` oggetto, responsabile della creazione delle chiavi necessarie alle implementazioni di crittografia asimettrica è stato reso visibile solo a livello di package ed accessibile dal solo cifrario che implementa tale crittografia, `RSACipher`.
+Tale oggetto, è quindi l'unico punto di accesso globale al generatore di chiavi.
+La scelta, è stata fatta per assicurare l'assenza di incosistenze ed errori nella generazione della coppia di chiavi crittografiche.
 ## Ntronov Kyrillos
 
 Kyrillos Ntronov ha realizzato interamente la parte client (package **it.unibo.authsim.client.app**). 

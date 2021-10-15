@@ -39,10 +39,8 @@ parallelo non interferiscono tra di loro. Inoltre, fornisce anche una condizione
 in quanto quando restituisce un `Option` vuoto significa che le combinazioni di stringhe richieste sono terminate.
 
 
-### `Policy`
+### Policy
 //TODO: aggiungere descrizione dei diagrammi Policy
-
-![Policy Package UML](assets/images/policy/policy-package.svg)
 
 - `Model`
   ![Policy Model Package UML](assets/images/policy/policy-model-package.svg)
@@ -68,17 +66,16 @@ in quanto quando restituisce un `Option` vuoto significa che le combinazioni di 
 - `Generators`
   ![Policy Generators Package UML](assets/images/policy/policy-generators-package.svg)
 
-### `OTP (One-Time Password)`
+### OTP (One-Time Password)
 //TODO: aggiungere descrizione dei diagrammi OTP
-![OTP Package UML](assets/images/otp/otp-package.svg)
 
 - `Model`
   ![OTP Model Package UML](assets/images/otp/otp-model-package.svg)
 
-- `Builders`
-  ![OTP Builders Package UML](assets/images/otp/otp-builders-package.svg)
+  - `Builders` //TODO: modificare UML
+    ![OTP Builders Package UML](assets/images/otp/otp-builders-package.svg)
 
-- `Generators`
+- `Generators`  //TODO: modificare UML
   ![OTP Generators Package UML](assets/images/otp/otp-generator-package.svg)
 
 ### Cryptography //TODO-COMPLETA E RILEGGI
@@ -261,7 +258,9 @@ Nello svolgimento del progetto,
 Il codice del progetto è diviso in due marco-package: `client` e `library`
 
 ### Library 
-//TODO package uml?
+L'organizzazione del codice della libreria può essere riassunta con il seguente diagramma:
+
+![Client Packages](assets/images/library-packages.svg)
 
 ### Client
 

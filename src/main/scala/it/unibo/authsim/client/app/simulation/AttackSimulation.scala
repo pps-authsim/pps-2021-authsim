@@ -28,10 +28,6 @@ class AttackSimulation(
                         private val attackSequence: AttackConfiguration
                       ) extends Task[Unit]:
 
-  private val database: UserRepository = credentialsSource match
-    case CredentialsSourceType.Sql => ComponentRegistry.userSqlRepository
-    case CredentialsSourceType.Mongo => ComponentRegistry.userMongoRepository
-
   override def call(): Unit =
     launchAttack match
       case Success(_) => succeeded()
@@ -39,31 +35,37 @@ class AttackSimulation(
 
   private val launchAttack: Try[Unit] = Try {
     printInitialMessage()
-    insertUsersIntoDatabase()
+    insertUsersIntoDatabase() match
+      case Success(_) => buildAndExecuteAttack()
+      case Failure(error) => throw new SimulationException(error.getMessage)
+  }
+
+  private def buildAndExecuteAttack(): Unit =
     val attackBuilder = makeAttack(makeUserProvider)(makeLogger)
     printAttackStarted()
     startAttack(attackBuilder)
     printAttackFinished()
-  }
 
-  private def insertUsersIntoDatabase(): Unit =
+  private def insertUsersIntoDatabase(): Try[Unit] =
     val userEntities = users.map(user => new UserEntity(user.username, user.password)).toList
-
-    database.saveUsers(userEntities) match
-      case Success(_) => // do nothing
-      case Failure(error) => throw new SimulationException(error.getMessage)
+    database.saveUsers(userEntities)
 
   private val makeUserProvider: UserProvider =
     val matchedAlgorithm = SecurityPolicy.Default.cryptographicAlgorithmFrom(policy)
     new RepositoryUserProvider(database, matchedAlgorithm)
 
+  private val database: UserRepository = credentialsSource match
+    case CredentialsSourceType.Sql => ComponentRegistry.userSqlRepository
+    case CredentialsSourceType.Mongo => ComponentRegistry.userMongoRepository
+
   private val makeLogger: StatisticsConsumer =
     new StatisticsLogger(printStatistics)
 
   private val makeAttack: UserProvider => StatisticsConsumer => AttackBuilder =
-    userProvider => logger =>
-    val factory = AttacksFactory(userProvider, logger)
-    attackSequence match
+    userProvider => logger => matchAttack(AttacksFactory(userProvider, logger))(attackSequence)
+
+  private val matchAttack: AttacksFactory => AttackConfiguration => AttackBuilder =
+    factory => attackSequence => attackSequence match
       case AttackConfiguration.BruteForceAll => factory.bruteForceAll()
       case AttackConfiguration.BruteForceLetters => factory.bruteForceLetters()
       case AttackConfiguration.BruteForceLowers => factory.bruteForceLowers()

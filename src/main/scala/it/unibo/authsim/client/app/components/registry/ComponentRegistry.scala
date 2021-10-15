@@ -4,8 +4,10 @@ import it.unibo.authsim.client.app.components.config.{PropertiesService, Propert
 import it.unibo.authsim.client.app.components.persistence.UserRepository
 import it.unibo.authsim.client.app.components.persistence.sql.UserSqlRepositoryComponent
 import it.unibo.authsim.client.app.components.persistence.mongo.UserMongoRepositoryComponent
+import it.unibo.authsim.client.app.components.runner.SimulationRunnerComponent
 
 import java.io.FileInputStream
+import java.util.concurrent.Executors
 import scala.io.Source
 
 /**
@@ -13,10 +15,13 @@ import scala.io.Source
  */
 object ComponentRegistry extends UserMongoRepositoryComponent
   with UserSqlRepositoryComponent
-  with PropertiesServiceComponent:
+  with PropertiesServiceComponent
+  with SimulationRunnerComponent:
 
   override val propertiesService: PropertiesService = new PropertiesServiceImpl(Source.fromResource("application.properties"))
 
   override val userSqlRepository: UserRepository = new UserSqlRepository
 
   override val userMongoRepository: UserRepository = new UserMongoRepository
+
+  override val simulationRunner: SimulationRunner = new SimulationRunnerImpl(Executors.newSingleThreadExecutor())

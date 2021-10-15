@@ -8,21 +8,23 @@ class AuthsimViewModelDeferedProxy() extends AuthsimViewModel:
 
   var delegate: Option[AuthsimViewModel] = Option.empty
 
-  def saveUser(): Unit =
+  override def saveUser(): Unit =
     delegate.map(delegate => delegate.saveUser())
 
-  def generateUsers(): Unit =
+  override def generateUsers(): Unit =
     delegate.map(delegate => delegate.generateUsers())
 
-  def deleteSelectedUsers(): Unit =
+  override def deleteSelectedUsers(): Unit =
     delegate.map(delegate => delegate.deleteSelectedUsers())
 
-  def resetUsers(): Unit =
+  override def resetUsers(): Unit =
     delegate.map(delegate => delegate.resetUsers())
 
-  def launchAttack(): Unit =
+  override def launchAttack(): Unit =
     delegate.map(delegate => delegate.launchAttack())
 
+  override def stopAttack(): Unit =
+    delegate.map(delegate => delegate.stopAttack())
 
 
 

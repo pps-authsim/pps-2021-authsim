@@ -16,3 +16,5 @@ trait AuthsimViewModel:
   def resetUsers(): Unit
 
   def launchAttack(): Unit
+  
+  def stopAttack(): Unit

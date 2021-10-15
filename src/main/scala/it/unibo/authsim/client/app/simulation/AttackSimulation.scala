@@ -33,18 +33,18 @@ class AttackSimulation(
     case CredentialsSourceType.Mongo => ComponentRegistry.userMongoRepository
 
   override def call(): Unit =
-    try
-      printInitialMessage()
-      insertUsersIntoDatabase()
-      val userProvider = makeUserProvider()
-      val logger = makeLogger()
-      val attackBuilder = makeAttack(userProvider, logger)
-      printAttackStarted()
-      startAttack(attackBuilder)
-      printAttackFinished()
-      succeeded()
-    catch
-      case e: SimulationException => printErrorMessage(e.message)
+    launchAttack match
+      case Success(_) => succeeded()
+      case Failure(e) => printErrorMessage(s"Simulation failed: $e")
+
+  private val launchAttack: Try[Unit] = Try {
+    printInitialMessage()
+    insertUsersIntoDatabase()
+    val attackBuilder = makeAttack(makeUserProvider)(makeLogger)
+    printAttackStarted()
+    startAttack(attackBuilder)
+    printAttackFinished()
+  }
 
   private def insertUsersIntoDatabase(): Unit =
     val userEntities = users.map(user => new UserEntity(user.username, user.password)).toList
@@ -53,14 +53,15 @@ class AttackSimulation(
       case Success(_) => // do nothing
       case Failure(error) => throw new SimulationException(error.getMessage)
 
-  private def makeUserProvider(): UserProvider =
+  private val makeUserProvider: UserProvider =
     val matchedAlgorithm = SecurityPolicy.Default.cryptographicAlgorithmFrom(policy)
     new RepositoryUserProvider(database, matchedAlgorithm)
 
-  private def makeLogger(): StatisticsConsumer =
+  private val makeLogger: StatisticsConsumer =
     new StatisticsLogger(printStatistics)
 
-  private def makeAttack(userProvider: UserProvider, logger: StatisticsConsumer): AttackBuilder =
+  private val makeAttack: UserProvider => StatisticsConsumer => AttackBuilder =
+    userProvider => logger =>
     val factory = AttacksFactory(userProvider, logger)
     attackSequence match
       case AttackConfiguration.BruteForceAll => factory.bruteForceAll()

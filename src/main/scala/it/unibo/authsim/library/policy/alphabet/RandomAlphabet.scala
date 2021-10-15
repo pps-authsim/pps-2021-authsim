@@ -27,7 +27,7 @@ trait RandomAlphabet extends AlphabetCommon:
   /**
    * @return stream of all characters (lowercase and uppercase), digits and symbols of alphabet
    */
-  def randomAlphanumericsymbols: LazyList[Char] = this.createLazyListFromAlphabets(this.lowers and this.uppers and this.digits and this.symbols)
+  def randomAlphanumericsymbols: LazyList[Char] = this.createLazyListFromAlphabets(this.alphanumericsymbols)
 
   /**
    * @param alphabet sequence of characters of the alphabet

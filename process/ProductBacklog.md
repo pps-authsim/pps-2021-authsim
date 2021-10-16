@@ -1,4 +1,4 @@
-| Priority | Product Backlog Item     | Descrizione                                                                                        | Estimate Effort | Sprint  |
+| Priority | Product Backlog Item     | Descrizione                                                                                        | Estimate Effort | Sprint  |         |         |         |         |         |         |         |
 |----------|--------------------------|----------------------------------------------------------------------------------------------------|:---------------:|---------|---------|---------|---------|---------|---------|---------|---------|
 |          |                          |                ­­­­                                                                                    |                 | Sprint1 | Sprint2 | Sprint3 | Sprint4 | Sprint5 | Sprint6 | Sprint7 | Sprint8 |
 |          | User-Stories             | Definizione delle card per le User-Stories                                                         |                 |         |         |         |         |         |         |         |         |

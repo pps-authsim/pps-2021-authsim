@@ -4,8 +4,14 @@
 ## Testing
 Lo strumento principale utilizzato all'interno del progetto per testare i componenti è stato *ScalaTest*.
 Tale tool è stato usato sia per il testing degli elementi del framework, sia per quelli dell'applicativo dimostrativo.
-Nello specifico per testare il comportamento del sistema sono stati realizzati degli Unit test per tutte le componenti rilevanti della GUI e della DSL.
-// TODO aggiungi il fatto del TDD
+
+Per lo sviluppo dell'intero framework è stato adottato l'approccio Test Driven Development, scrivendo unit test per tutte le funzionalità del framework. 
+Questo metodo di sviluppo ha aiutato a sviluppare codice senza incorrere in problemi di regressione e, nel caso fossero sorti, 
+a identificarli e a correggerli immediatamente.
+
+Per l'applicazione dimostrativa, invece, sono stati eseguiti unit test solo per i componenti del modello del programma,
+mentre i test sulla parte visuale sono stati eseguiti manualmente, direttamente durante l'esecuzione.
+
 ## Suddivisione del lavoro
 Da un lato il lavoro è stato suddiviso in modo tale da incontrare le esigenze temporali dei singoli membri e dall'altro perché fosse il più equo possibile.
 Tuttavia, a causa della limitata esperienza dei membri del gruppo nella gestione del processo di sviluppo alcuni compiti si sono dimostrati inevitabilmente più onerosi di altri.

@@ -2,7 +2,7 @@ package it.unibo.authsim.library.otp.builders
 
 import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.builder.Builder
-import it.unibo.authsim.library.otp.generators.{LengthGenerator, OTPGenerator, SeedGenerator}
+import it.unibo.authsim.library.otp.generators.{LengthGenerator, OTPGenerator}
 import it.unibo.authsim.library.otp.model.*
 import it.unibo.authsim.library.otp.util.OTPHelpers.*
 import it.unibo.authsim.library.policy.builders.stringpolicy.OTPPolicyBuilder
@@ -18,12 +18,6 @@ import scala.util.Random
  * @tparam T the type to build
  */
 trait OTPBuilder[T] extends Builder[T]:
-  /**
-   * Set a [[SeedGenerator seed generator]]
-   * @param generator a generator of the seesion seed to set
-   * @return instance of the actual builder
-   */
-  def seed(implicit generator: SeedGenerator[Int]): this.type
   /**
    * Set a [[OTPPolicy one time password policy]]
    * @param policy otp policy to set
@@ -89,11 +83,12 @@ object OTPBuilder:
     protected var _length: Int = 0
     this.withPolicy(OTPPolicyBuilder() minimumLength 4 maximumLength 10 build)
 
-    protected var _seedGenerator: SeedGenerator[Int] = SeedGenerator.generatorSeed
     protected var _seed: Int = 0
     this.generateSeed
 
-    private def generateSeed: Unit = if _seedGenerator != null then this._seed = _seedGenerator.seed(this._seed)
+    private def generateSeed: Unit =
+      val genSeed = Random.between(Int.MinValue, Int.MaxValue)
+      this._seed = if genSeed == this._seed then genSeed + 1 else genSeed
 
     protected def reset: Unit =
       this.generateSeed
@@ -111,12 +106,6 @@ object OTPBuilder:
         this._policy = policy;
         this._length = lengthGenerator.length(policy)
       )(policy)
-
-    override def seed(implicit generator: SeedGenerator[Int]): this.type =
-      this.builderMethod[SeedGenerator[Int]](seedGenerator => {
-        this._seedGenerator = seedGenerator
-        this._seed = this._seedGenerator.seed(this._seed)
-      })(generator)
 
     override def secret(secret: SecretValue) = this.builderMethod[SecretValue](secret => this._secret = s"${secret._1}$SEPARATOR_SECRET${secret._2}")(secret)
 

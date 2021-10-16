@@ -42,6 +42,9 @@ trait UserMongoRepositoryComponent:
       val mongodExecutable = starter.prepare(mongodConfig)
       mongodExecutable.start()
 
+  /**
+   * Mongo implementation of UserRepository
+   */
   class UserMongoRepository extends UserRepository :
 
     private val mongoClient = MongoClient()

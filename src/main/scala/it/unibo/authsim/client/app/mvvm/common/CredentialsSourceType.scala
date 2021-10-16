@@ -1,5 +1,8 @@
 package it.unibo.authsim.client.app.mvvm.common
 
+/**
+ * Enum representing available persistence providers
+ */
 enum CredentialsSourceType(val description: String):
 
   case Sql extends CredentialsSourceType("""

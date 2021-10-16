@@ -12,7 +12,9 @@ import scalafx.beans.property.{ObjectProperty, ReadOnlyObjectProperty, StringPro
 import scalafx.scene.layout.{HBox, VBox}
 import scalafx.event.ActionEvent
 
-// todo expose only properties
+/**
+ * UI element representing Attack View
+ */
 class AttackTab extends VBox :
 
   private val attackSequenceList = makeAttackSequenceList()

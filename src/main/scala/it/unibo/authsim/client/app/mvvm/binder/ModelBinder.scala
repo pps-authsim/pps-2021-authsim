@@ -19,7 +19,7 @@ import javafx.collections.ObservableList
 import scalafx.collections.ObservableBuffer
 
 /**
- * Helper object for binding model and viewModel dynamic callbacks
+ * Helper object for binding model and viewModel dynamic notification callbacks
  */
 object ModelBinder:
 

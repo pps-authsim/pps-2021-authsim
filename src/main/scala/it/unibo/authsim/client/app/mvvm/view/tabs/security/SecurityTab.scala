@@ -9,6 +9,9 @@ import scalafx.scene.control.*
 import scalafx.scene.layout.{HBox, VBox}
 import scalafx.beans.property.{ObjectProperty, StringProperty}
 
+/**
+ * UI element representing Security View
+ */
 class SecurityTab extends VBox :
 
   private val securityPoliciesList = makeSecurityPoliciesList()

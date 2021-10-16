@@ -39,7 +39,7 @@ object AuthsimViewSFX {
 }
 
 /**
- * Application's view consisting of tabbed views
+ * Application's view aggregate consisting of tabs views
  * @param usersTab users tab
  * @param securityTab security tab
  * @param attackTab attack tab

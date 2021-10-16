@@ -21,6 +21,9 @@ import scalafx.scene.text.{Font, FontWeight, Text}
 import scalafx.util.converter.FormatStringConverter
 import scalafx.Includes.eventClosureWrapperWithParam
 
+/**
+ * UI element representing Users View
+ */
 class UsersTab() extends SplitPane :
 
   private val usernameField = new TextField()

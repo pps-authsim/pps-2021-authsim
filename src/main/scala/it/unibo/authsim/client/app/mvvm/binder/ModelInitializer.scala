@@ -9,6 +9,9 @@ import it.unibo.authsim.client.app.simulation.attacks.AttackConfiguration
 
 import scala.collection.mutable.ListBuffer
 
+/**
+ * Helper object to populate model with default and static values
+ */
 object ModelInitializer:
 
   def initializeUsersModel(usersModel: UsersModel): Unit =

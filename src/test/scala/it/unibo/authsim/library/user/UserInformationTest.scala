@@ -1,14 +1,14 @@
 package it.unibo.authsim.library.user
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.symmetric.DES
-import it.unibo.authsim.library.dsl.cryptography.algorithm.asymmetric.RSA
-import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
-import it.unibo.authsim.library.dsl.cryptography.cipher.symmetric.DESCipher
-import it.unibo.authsim.library.dsl.cryptography.cipher.asymmetric.RSACipher
+import it.unibo.authsim.library.cryptography.algorithm.symmetric.DES
+import it.unibo.authsim.library.cryptography.algorithm.asymmetric.RSA
+import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
+import it.unibo.authsim.library.cryptography.cipher.symmetric.DESCipher
+import it.unibo.authsim.library.cryptography.cipher.asymmetric.RSACipher
 import it.unibo.authsim.library.user.builder.{UserAutoBuilder, UserBuilder, UserCostumBuilder, UserInformationBuilder}
-import it.unibo.authsim.library.dsl.policy.builders.stringpolicy.UserIDPolicyBuilder
-import it.unibo.authsim.library.dsl.policy.model.Policy
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, UserIDPolicy}
+import it.unibo.authsim.library.policy.builders.stringpolicy.UserIDPolicyBuilder
+import it.unibo.authsim.library.policy.model.Policy
+import it.unibo.authsim.library.policy.model.StringPolicies.{CredentialPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.util.Util
 import it.unibo.authsim.library.user.model.{User, UserInformation}
 import org.scalatest.GivenWhenThen

@@ -4,6 +4,10 @@ import it.unibo.authsim.client.app.mvvm.viewmodel.AuthsimViewModel
 
 import scala.util.{Failure, Success}
 
+/**
+ * A Proxy used to provide an interface to the constructors that require a ViewModel that
+ * hasn't been yet constructed
+ */
 class AuthsimViewModelDeferedProxy() extends AuthsimViewModel:
 
   var delegate: Option[AuthsimViewModel] = Option.empty

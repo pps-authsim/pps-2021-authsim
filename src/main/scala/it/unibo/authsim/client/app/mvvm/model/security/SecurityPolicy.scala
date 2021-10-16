@@ -1,7 +1,6 @@
 package it.unibo.authsim.client.app.mvvm.model.security
 
-import it.unibo.authsim.client.app.mvvm.model.security
-import it.unibo.authsim.library.Protocol.*
+//import it.unibo.authsim.client.app.mvvm.model.security
 import it.unibo.authsim.library.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.policy.defaults.PolicyDefault
 import it.unibo.authsim.library.policy.model.Policy
@@ -22,8 +21,8 @@ object SecurityPolicy:
         val alphabets = defaultVal.policy.credentialPolicies.map {
           case u: UserIDPolicy => "userID" -> u.alphabet.alphanumericsymbols.mkString
           case p: PasswordPolicy => "password" -> p.alphabet.alphanumericsymbols.mkString
-          case o: OTPPolicy => "otp" -> o.alphabet.alphanumericsymbols.mkString
-        }.reverse.toMap
+          case o: OTPPolicy => "otp" -> o.alphabet.digits.mkString
+        }.toMap
 
         s"""${base}\n
             ${if defaultVal.policy.transmissionProtocol.isDefined then s"Credentials are trasmitted with protocol ${defaultVal.policy.transmissionProtocol.get.getClass.getSimpleName.toUpperCase}." else "No protocol." }\n
@@ -118,9 +117,6 @@ object SecurityPolicy:
     implicit def valueToDefaultVal(x: Value): DefaultVal = x.asInstanceOf[DefaultVal]
 
     private val policiesDefaults = PolicyDefault()
-    private val policiesDefaultsHTTP = PolicyDefault(Http())
-    private val policiesDefaultsHTTPS = PolicyDefault(Https())
-    private val policiesDefaultsSSH = PolicyDefault(Ssh())
 
     val SUPERSIMPLE = DefaultVal(policiesDefaults.superSimple)
     val SIMPLE = DefaultVal(policiesDefaults.simple)
@@ -129,44 +125,22 @@ object SecurityPolicy:
     val HARDHARD = DefaultVal(policiesDefaults.hardHard)
     val SUPERHARDHARD = DefaultVal(policiesDefaults.superHardHard)
 
-    val HTTP_SUPERSIMPLE = DefaultVal(policiesDefaultsHTTP.superSimple)
-    val HTTP_SIMPLE = DefaultVal(policiesDefaultsHTTP.simple)
-    val HTTP_MEDIUM = DefaultVal(policiesDefaultsHTTP.medium)
-    val HTTP_HARD = DefaultVal(policiesDefaultsHTTP.hard)
-    val HTTP_HARDHARD = DefaultVal(policiesDefaultsHTTP.hardHard)
-    val HTTP_SUPERHARDHARD = DefaultVal(policiesDefaultsHTTP.superHardHard)
-
-    val HTTPS_SUPERSIMPLE = DefaultVal(policiesDefaultsHTTPS.superSimple)
-    val HTTPS_SIMPLE = DefaultVal(policiesDefaultsHTTPS.simple)
-    val HTTPS_MEDIUM = DefaultVal(policiesDefaultsHTTPS.medium)
-    val HTTPS_HARD = DefaultVal(policiesDefaultsHTTPS.hard)
-    val HTTPS_HARDHARD = DefaultVal(policiesDefaultsHTTPS.hardHard)
-    val HTTPS_SUPERHARDHARD = DefaultVal(policiesDefaultsHTTPS.superHardHard)
-
-    val SSH_SUPERSIMPLE = DefaultVal(policiesDefaultsSSH.superSimple)
-    val SSH_SIMPLE = DefaultVal(policiesDefaultsSSH.simple)
-    val SSH_MEDIUM = DefaultVal(policiesDefaultsSSH.medium)
-    val SSH_HARD = DefaultVal(policiesDefaultsSSH.hard)
-    val SSH_HARDHARD = DefaultVal(policiesDefaultsSSH.hardHard)
-    val SSH_SUPERHARDHARD = DefaultVal(policiesDefaultsSSH.superHardHard)
-
     /**
      * @return a sequence of defined default policies that do not have a transmission protocol mapped in [[SecurityPolicy]]
      */
-    def withoutProtocol: Seq[SecurityPolicy] = this.values.toSeq.filter(_.policy.transmissionProtocol.isEmpty).map(default => SecurityPolicy(default.name, default.description(showAlphabet = true)))
+    def withoutProtocol: Seq[SecurityPolicy] = for default <- this.values.toSeq.filter(_.policy.transmissionProtocol.isEmpty) yield SecurityPolicy(default.name, default.description(showAlphabet = true))
 
     /**
      * @return a sequence of all defined default policies mapped in [[SecurityPolicy]]
      */
-    def all: Seq[SecurityPolicy] = (for default <- this.values.toSeq yield SecurityPolicy(default.name, default.description(showAlphabet = false)))
+    def all: Seq[SecurityPolicy] = for default <- this.values.toSeq yield SecurityPolicy(default.name, default.description(showAlphabet = false))
 
     /**
      * @param name name of selected default policy
      * @return a optional sequence of [[CredentialPolicy credential policies]] of selected default policy
      */
     def credentialsPoliciesFrom(name: String): Option[Seq[CredentialPolicy]] =
-      val defaultOpt = this.values.find(_.name == name)
-      defaultOpt match
+      this.values.find(_.name == name) match
         case Some(default) => Some(default.policy.credentialPolicies)
         case _ => None
 
@@ -176,7 +150,6 @@ object SecurityPolicy:
      * @return a optional [[CryptographicAlgorithm cryptographic algorithm]] of selected default policy
      */
     def cryptographicAlgorithmFrom(name: String): Option[CryptographicAlgorithm] =
-      val defaultOpt = this.values.find(_.name == name)
-      defaultOpt match
+      this.values.find(_.name == name) match
         case Some(default) => default.policy.cryptographicAlgorithm
         case _ => None

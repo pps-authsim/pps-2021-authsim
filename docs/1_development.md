@@ -60,6 +60,10 @@ Scala3 è stato scelto per le nuove feature aggiunte, tra le quali:
 - Sintassi più dichiarativa per le strutture di controllo del flusso come `if`, `while` e `for`.
 - La possibilità di definire parametri per i trait.
 
+Queste nuove feature di Scala3 hanno permesso di scrivere codice più conciso e senza "distrazioni" date da parentesi obbligatorie che non aggiungono significato al codice.
+
+Inoltre, anche durante il momento di revisione, la lettura e l'analisi del codice sono risultate molto più veloci, in quanto non si perdeva tempo nell'eliminare mentalmente le parentesi. 
+
 #### Github
 
 Per il versioning distribuito del progetto è stato utilizzato *GitHub*, nel quale venne creata un *organization* per il progetto.

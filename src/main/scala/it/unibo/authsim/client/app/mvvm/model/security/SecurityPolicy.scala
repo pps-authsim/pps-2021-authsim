@@ -1,6 +1,5 @@
 package it.unibo.authsim.client.app.mvvm.model.security
 
-//import it.unibo.authsim.client.app.mvvm.model.security
 import it.unibo.authsim.library.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.policy.defaults.PolicyDefault
 import it.unibo.authsim.library.policy.model.Policy

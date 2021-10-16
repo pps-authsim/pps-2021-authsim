@@ -12,9 +12,12 @@ A valle di un analisi preliminare del progetto sono stati identificati i requisi
 
 ### Library 
 
-L'obiettivo del progetto era la realizzazione di un framework per simulare e testare la memorizzazione e le policy di protezione delle credenziali degli utenti che possono essere sottoposti a differenti tipi di attacchi oltre che a un applicazione dimostrativa che possa mostrare come la libreria può essere utilizzata.
+L'obiettivo del progetto era la realizzazione di un framework per simulare e testare la memorizzazione e le policy di protezione delle credenziali 
+degli utenti che possono essere sottoposti a differenti tipi di attacchi oltre che a un applicazione dimostrativa che possa mostrare come la libreria 
+può essere utilizzata.
 
-Il framework deve quindi permettere la creazione di nuovi utenti le cui credenziali devono poter essere configurate scegliendo il metodo di accesso, le security policy che possono essere applicate a queste ultime ed i metodi di cifratura con cui queste possono essere criptate.
+Il framework deve quindi permettere la creazione di nuovi utenti le cui credenziali devono poter essere configurate scegliendo il metodo di accesso, 
+le security policy che possono essere applicate a queste ultime ed i metodi di cifratura con cui queste possono essere criptate.
 Deve inoltre essere possibile definire il tipo di attacco con cui si intende effettuare il password cracking e la sorgente delle credenziali da proteggere.
 
 ### Client
@@ -39,7 +42,7 @@ La raccolta di tali requisiti è stata realizzata mediante *User stories*.
 
 #### User Story 1
 
-// TODO Revisionare, Framework e' svincolato dai DB. Forse e' meglio dire che vogliamo essere agnostici rispetto al modo in cui passiamo gli utenti?
+// TODO Revisionare, Framework è svincolato dai DB. Forse è meglio dire che vogliamo essere agnostici rispetto al modo in cui passiamo gli utenti?
 
 |           	|   	|
 |-------------	|-----	|
@@ -137,7 +140,7 @@ Il simulatore deve permettere di:
 - Configurare il tipo delle contromisure (policy) da adottare per la simulazione dell'attacco.
 - Configurare il tipo della persistenza (SQL o Mongo) da utilizzare per memorizzare gli utenti.
 - Configurare il tipo dell'attacco da simulare.
-- Lanciare l'attacco allo scopo di crackare le password degli utenti forniti.
+- Lanciare l'attacco allo scopo di decifrare le password degli utenti forniti.
 - Visualizzare il log, le metriche e il risultato dell'attacco.
 
 ## Non-functional Requirements
@@ -146,10 +149,10 @@ In questa parte del capitolo vengono delineati i requisiti non funzionali, ossia
 
 ### Library
 
-Il framework deve essere sviluppato perseguendo i principi di modularità e decomposizione in modo da renderlo facilmente estensibile ed ispezionabile.
-...
+Il framework deve essere sviluppato perseguendo i principi di modularità e decomposizione in modo da renderlo facilmente estendibile ed ispezionabile.
 
-// TODO dire qualcosa inerente al livello di astrazione, ora come ora non sono ispirata.
+Inoltre, l'uso del framework deve somigliare alla descrizione di ciò che si vuole fare, quindi permettere di utilizzare la notazione infissa di Scala
+per poter creare righe di codice come se fossero frasi di senso compiuto.
 
 ### Client
 
@@ -163,10 +166,10 @@ Il simulatore deve inoltre permettere di visualizzare i dati inerenti al risulta
 In questa parte del capitolo infine vengono elencati i vincoli sullo processo di sviluppo, come
 le tecnologie, quality assessment e gli standard stabiliti.
 
-- Si devono seguire le best practice e le convention di Scala e in particolare le nuove preferenze sintattiche di Scala 3
-- Si deve avere una mentalità Agile e di seguire la metodologia Scrum modificata (delineata nel capitolo precedente)
-- Si deve utilizzare la CI, in particolare per controllare l'idoneità del codice prima di chiudere un pull request
+- Si devono seguire le best practice e le convention di Scala e in particolare le nuove preferenze sintattiche di Scala 3.
+- Si deve avere una mentalità Agile e di seguire la metodologia Scrum modificata (delineata nel capitolo precedente).
+- Si deve utilizzare la CI, in particolare per controllare l'idoneità del codice prima di chiudere un pull request.
 - Nonostante l'assenza dei tool automatici, si deve evitare di produrre code smell, vulnerabilità e anti-pattern, inoltre si deve puntare ad avere la coverage dei unit test sopra 80%,
 in particolare sulle sezioni critiche del codice.
-- Infine, si è deciso di omologare l'IDE utilizzato scegliendo IntelliJ come la piattaforma "standard" per lo sviluppo
-- Per la parte grafica si deve utilizzare il framework ScalaFx e il pattern architetturale MVVM
+- Per la parte grafica si deve utilizzare il framework ScalaFx e il pattern architetturale MVVM.
+- Infine, si è deciso di omologare l'IDE utilizzato scegliendo IntelliJ come la piattaforma "standard" per lo sviluppo.

@@ -131,20 +131,46 @@ Sono state progettate delle Security Policy di Default che sfruttano le varie fu
 
 ![Policy Defaults Package UML](assets/images/policy/policy-defaults-package.svg)
 
-### OTP (One-Time Password)
-//TODO: aggiungere descrizione dei diagrammi OTP
+###Generatore di One-Time Password (OTP)
 
-- `Model`
+La One Time Password è una password che è valida solo per una singola sessione di accesso o una transazione. 
+Per questo suo scopo l'OTP è anche detta password usa e getta.
+Le OTP possono essere utilizzate come unico fattore di autenticazione, o in aggiunta ad un altro fattore, 
+come può essere la password dell'utente, in modo da realizzare una autenticazione a due fattori.
 
-[comment]: <> (  ![OTP Model Package UML]&#40;assets/images/otp/otp-model-package.svg&#41;)
+![OTP Model Package UML](assets/images/otp/otp-model-package.svg)
 
-- `Builders` //TODO: modificare UML
+Le interfacce `OTP`, `HOTP`, `TOTP` definiscono un tipo immutabile di One-Time Password.
 
-[comment]: <> (    ![OTP Builders Package UML]&#40;assets/images/otp/otp-builders-package.svg&#41;)
+`OTP` è l' interfaccia che definisce un tipo generico di one time password.
+ - `polciy: OTPPolicy` restituisce la policy che viene applicata alla otp
+ - `length: Int` restituisce l'effettiva lunghezza dell'otp 
+ - `reset: Unit` effettua il reset del otp generatore
+ - `generate: String` restituisce una valida otp
+ - `check(pincode: String): Boolean` verifica che il _pincode_ passatogli sia una valida otp
 
-- `Generators`  //TODO: modificare UML
+Le sue estensioni, ovvero le effettive interfacce, sono:
 
-[comment]: <> (  ![OTP Generators Package UML]&#40;assets/images/otp/otp-generator-package.svg&#41;)
+ - `HOTP` rappresenta una OTP basata sulla hash-based message authentication codes (HMAC).
+   - `hashFunction: HashFunction` restituisce la funzione hash con cui viene generata l'otp
+   
+
+ - `TOTP` rappresenta una particolare OTP basata sulla hash-based message authentication codes (HMAC), in aggiunta possiede un limite di tempo di utilizzo.
+ 
+   - `timeout: Duration` restituisce la durata di tempo di validità della otp
+   - `createDate: Option[Long]` restituisce opzionalmente la data di generazione della otp. Se non presente, significa che la otp non è stata ancora generata.
+
+La creazione delle one time password è delegata alle classi `HOTPBuilder`, `TOTPBuilder`, progettate utilizzando il pattern _Builder_.
+La struttura dei vari builder rispecchia il modello descritto precedentemente.
+
+![OTP Builders Package UML](assets/images/otp/otp-builders-package.svg)
+
+L'algoritmo dell'HOTP è stato incapsulato nell'oggetto `OTPGenerator`, in modo tale da poterlo utilizzare anche standalone.
+
+La generazione della lunghezza della OTP è delegata alla interfaccia `LengthGenerator`, la quale possiede un metodo che prende in input una OTP policy e genera la lunghezza effettiva (`length(optPolicy: OTPPolicy): Int`).
+Questa interfaccia viene utilizza nel `OTPBuilder` attraverso il metodo `withPolicy(policy: OTPPolicy)(implicit generateLength: LengthGenerator)`.
+
+![OTP Builders Package UML](assets/images/otp/otp-generators-package.svg)
 
 ### Cryptography 
 Il modulo di crittografia è la parte del sistema adibita a tutte le operazioni crittografiche.
@@ -280,9 +306,6 @@ Questi infatti estendono da una classe astratta `BasicCipher` la quale espone le
 Tali metodi sono infatti invarianti rispetto ai cifrari proposti[^CaesarCipher].
 
 [^CaesarCipher]: L'unica eccezione è rappresentata dal `CaesarCipher` in quanto unico cifrario a non estendere dalla classe astratta per la natura intrinseca dell'algoritmo.
-
-//TODO: AlphabetCommonClasses.alphabenumericsymbols è template method e anche i metodi di trait RegexAlphabet e RansomAlphabet 
-
 
 ## Client
 

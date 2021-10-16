@@ -15,7 +15,7 @@ import it.unibo.authsim.client.app.mvvm.util.ObservableListBuffer
 import it.unibo.authsim.client.app.mvvm.view.tabs.attack.AttackSequenceEntry
 import it.unibo.authsim.client.app.mvvm.view.tabs.security.{CredentialsSourceEntry, SecurityPolicyEntry}
 import it.unibo.authsim.client.app.mvvm.view.tabs.users.UserEntry
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.CredentialPolicy
+import it.unibo.authsim.library.policy.model.StringPolicies.CredentialPolicy
 import it.unibo.authsim.library.user.model.User
 import javafx.collections.ObservableList
 import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
@@ -27,9 +27,12 @@ object AuthsimViewModelSFX:
   val ATTACK_STOPPED_TEXT = "\nAttack has been stopped by user."
 
 /**
- * Binds View with Model via the ViewModel layer. ScalaFx implementation using scalafx properties.
- * @param view view
- * @param model model
+ * A ScalaFX properties based implementation of the AuthSimViewModel
+ * @param usersViewModel users view model
+ * @param securityViewModel security view model
+ * @param attackViewModel attack view model
+ * @param model model model
+ * @param simulationRunner simulation runner
  */
 class AuthsimViewModelSFX(private val usersViewModel: UsersViewModel,
                           private val securityViewModel: SecurityViewModel,

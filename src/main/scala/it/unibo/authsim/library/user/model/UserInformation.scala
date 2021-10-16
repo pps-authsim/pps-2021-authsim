@@ -1,42 +1,57 @@
 package it.unibo.authsim.library.user.model
 
-import it.unibo.authsim.library.dsl.cryptography.algorithm.CryptographicAlgorithm
+import it.unibo.authsim.library.cryptography.algorithm.CryptographicAlgorithm
 import it.unibo.authsim.library.user.model.User
 
 /**
- * Trait that represent a UserInformation
+ * Trait that represents a UserInformation,
  */
 trait UserInformation() extends User:
+  /**
+   * Getter for the algorithm used to encrypt the password,
+   *
+   * @return : an optional of the algorithm used to encrypt the password, or none if the password was not encrypted
+   */
   def algorithm: Option[CryptographicAlgorithm]
 
 /**
- * Object that represent a UserInformation
+ * Companion object for the UserInformation trait.
  */
 object UserInformation:
   
   /**
-   * Apply method for User
+   * Apply method for the UserInformation object.
    * 
-   * @param username              Name of the user
-   * @param password              Encrypted password of the user
-   * @param algorithm     Information about the algorithm used to encrypt the password
-   * @return
+   * @param username : username of the user
+   * @param password : encrypted password of the user
+   * @param algorithm : algorithm used to encrypt the password
+   * @return : a BasicUserInformation
    */
   def apply(username: String,
             password: String,
             algorithm: Option[CryptographicAlgorithm]) =
-            new UserInformationImpl(username,password, algorithm)
+            new BasicUserInformation(username,password, algorithm)
 
+  /**
+   * Apply method for the UserInformation object.
+   *
+   * @param username : username of the user
+   * @param password : encrypted password of the user
+   * @return : a BasicUserInformation where algorithm field is filled with the default value (None)
+   */
   def apply(username: String,
             password: String) =
-    new UserInformationImpl(username,password, None)
+    new BasicUserInformation(username,password, None)
+
   /**
-   * Case class implementing UserInformation trait
-   * @param username            Name of the user
-   * @param password            Encrypted password of the user
-   * @param algorithm    Information about the algorithm used to encrypt the password
+   * Case class implementing UserInformation trait.
+   * 
+   * @param username : name of the user
+   * @param password : encrypted password of the user
+   * @param algorithm : an optional of the algorithm used to encrypt the password, or none if the password is not encrypted
    */
-  case class UserInformationImpl(override val username: String,
-                                 override val password: String,
-                                 algorithm: Option[CryptographicAlgorithm])
+
+  case class BasicUserInformation(override val username: String,
+                                  override val password: String,
+                                  algorithm: Option[CryptographicAlgorithm])
                                    extends UserInformation()

@@ -1,19 +1,25 @@
 package it.unibo.authsim.client.app.simulation.attacks
 
-import it.unibo.authsim.library.dsl.UserProvider
-import it.unibo.authsim.library.dsl.alphabet.{Dictionary, SymbolicAlphabet}
-import it.unibo.authsim.library.dsl.attack.builders.{AttackBuilder, ConcurrentStringCombinator}
-import it.unibo.authsim.library.dsl.attack.builders.offline.bruteforce.{BruteForceAttackBuilder, DictionaryAttackBuilder}
-import it.unibo.authsim.library.dsl.consumers.StatisticsConsumer
-import it.unibo.authsim.library.dsl.cryptography.algorithm.hash.HashFunction
-import it.unibo.authsim.library.dsl.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
+import it.unibo.authsim.library.UserProvider
+import it.unibo.authsim.library.alphabet.{Dictionary, SymbolicAlphabet}
+import it.unibo.authsim.library.attack.builders.{AttackBuilder, ConcurrentStringCombinator}
+import it.unibo.authsim.library.attack.builders.offline.bruteforce.{BruteForceAttackBuilder, DictionaryAttackBuilder}
+import it.unibo.authsim.library.consumers.StatisticsConsumer
+import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
+import it.unibo.authsim.library.policy.alphabet.PolicyAlphabet.PolicyDefaultAlphabet
 
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.Duration
 
+/**
+ * A facotry for constructing attacks with the provided userProvider and StatisticsConsume
+ * @param userProvider userProvider
+ * @param logger statisticsConsumer
+ */
 class AttacksFactory(private val userProvider: UserProvider, private val logger: StatisticsConsumer):
 
   private val defaultAlphabets = new PolicyDefaultAlphabet()
+  
   /**
    * @return an AttackBuilder configured to attack a userProvider, using lowercase characters to construct the password string
    *         with a maximum length of 6 and logging to the given logger, without timeout.

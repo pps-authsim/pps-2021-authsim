@@ -1,11 +1,11 @@
 package it.unibo.authsim.library.user.builder.util
 
 /**
- * Object to provide usefull function
+ * Object that provides usefull functions
  */
 object Util:
   /**
-   * Method that generate a randomic string composed by letter and numbers
+   * Method that generates a randomic string composed by letter and numbers
    *
    * @param length    length of the string to be created, default value is 5
    * @return          new randomic string of the given length
@@ -15,7 +15,7 @@ object Util:
     RandomStringUtils.randomAlphanumeric(length)
     
   /**
-   * Method that generate a randomic string composed by letter and numbers 
+   * Method that generates a randomic string composed by letter and numbers 
    * of a random length in a range
    *
    * @param minVal    min length of the string
@@ -27,7 +27,8 @@ object Util:
     Random.alphanumeric.filter(_ isLetterOrDigit).take(Random between(minVal,maxVal)) mkString
 
   /**
-   * Method to count the occurence of the elements of Sequence
+   * Method that counts the occurence of the elements in a sequence
+   * 
    * @param list      sequence of elements
    * @return          the number of elments that occures multiple times in the input sequence
    */

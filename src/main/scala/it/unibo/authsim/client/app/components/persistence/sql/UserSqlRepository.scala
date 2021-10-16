@@ -41,6 +41,9 @@ trait UserSqlRepositoryComponent:
           |select * from users
       """.stripMargin
 
+  /**
+   * SQL implementation of UserRepository
+   */
   class UserSqlRepository extends UserRepository:
 
     private val baseDirectory = propertiesService.databaseBasePathFolder

@@ -1,5 +1,8 @@
 package it.unibo.authsim.client.app.simulation.attacks
 
+/**
+ * An enum representing a preconfigured attack
+ */
 enum AttackConfiguration:
 
   case BruteForceLowers extends AttackConfiguration

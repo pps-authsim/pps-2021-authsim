@@ -37,11 +37,11 @@ object OTPGenerator:
     val previousValues: PreviousGenerateOTP = previous.get(secret).getOrElse(PreviousGenerateOTP())
     if previousValues.isChangeSeed(seed) then
       val hmacStr: String = this.hmac(hashFunction, secret).map(_.toUInt).mkString
+      Random.setSeed(seed)
       val start: Int = Random.between(0, hmacStr.length, previousValues.start.get)
       var pin = hmacStr.slice(start, start + digits)
       if pin.length < digits then (1 to digits - pin.length).foreach(_ => pin = pin.appended('0'))
-      if previousValues.regeneratedSamePin(pin) then
-        pin = pin.replaceFirstDifferent(('0' to '9'))
+      if previousValues.regeneratedSamePin(pin) then pin = pin.replaceFirstDifferent(('0' to '9'))
       previous.update(secret, PreviousGenerateOTP(Some(seed), Some(start), Some(pin)))
       pin
     else

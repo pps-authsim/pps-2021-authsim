@@ -24,4 +24,4 @@ object ComponentRegistry extends UserMongoRepositoryComponent
 
   override val userMongoRepository: UserRepository = new UserMongoRepository
 
-  override val simulationRunner: SimulationRunner = new SimulationRunnerImpl(Executors.newSingleThreadExecutor())
+  override val simulationRunner: SimulationRunner = new SimulationRunnerImpl(() => Executors.newSingleThreadExecutor())

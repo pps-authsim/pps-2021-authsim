@@ -24,10 +24,12 @@ trait SimulationRunnerComponent:
      */
     def stopSimulation(): Unit
 
-  class SimulationRunnerImpl(var executor: ExecutorService) extends SimulationRunner:
+  class SimulationRunnerImpl(private val executorSupplier: () => ExecutorService) extends SimulationRunner:
+
+    private var executor = executorSupplier.apply()
 
     override def runSimulation(simulation: AttackSimulation): Unit =
-      if executor.isShutdown then executor = Executors.newSingleThreadExecutor()
+      if executor.isShutdown then executor = executorSupplier.apply()
       executor.submit(simulation)
 
     override def stopSimulation(): Unit =

@@ -42,7 +42,7 @@ Inoltre, in un discreto numero di casi si è scelto di incapsulare l'implementaz
 
 ## Ntronov Kyrillos
 
-Kyrillos Ntronov ha realizzato interamente la parte client (package **it.unibo.authsim.client.app**). 
+Kyrillos Ntronov ha realizzato interamente la parte client (package **it.unibo.authsim.client.app**) eccetto `it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy`. 
 
 In particolare sono stati realizzati:
 

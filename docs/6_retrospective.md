@@ -74,10 +74,10 @@ Durante la sesta iterazione sono state svolte le seguenti attività:
 La settima iterazione è stata usata per integrare completamente tutti i componenti del sistema e ultimare gli aspetti finali del progetto. 
 Infine, è stata testata l'applicazione dimostrativa.
 
-Nello specifico è stata ultimata la stesura della relazione, così come la documentazione formale su *github pages* e sul codice sorgente del progetto.
+Nello specifico è stata quasi completata la stesura della relazione, così come la documentazione formale su *github pages* e sul codice sorgente del progetto.
 
 ### Iterazione 8: 13/10/2021 - 17/10/2021
-Nell'ultima iterazione, sono stati prodotti gli artefatti Prolog.
+Nell'ultima iterazione, sono stati eseguiti gli ultimi ritocchi al codice ed ultimata la relazione di progetto.
 
 ## Gestione del backlog
 

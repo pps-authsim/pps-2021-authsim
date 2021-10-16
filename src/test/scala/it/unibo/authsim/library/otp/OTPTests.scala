@@ -4,7 +4,7 @@ import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.otp.builders.*
 import it.unibo.authsim.library.otp.builders.OTPBuilder.*
 import it.unibo.authsim.library.otp.model.*
-import it.unibo.authsim.library.otp.util.OTPHelpers.generatorLength
+import it.unibo.authsim.library.otp.generators.LengthGenerator.generatorLength
 import it.unibo.authsim.library.policy.checkers.{PolicyChecker, StringPolicyChecker}
 import it.unibo.authsim.library.policy.defaults.stringpolicy.OTPPolicyDefault
 import it.unibo.authsim.library.policy.model.StringPolicies.OTPPolicy
@@ -49,6 +49,11 @@ class OTPTests extends AnyWordSpec:
     s"check pincode $hmacOTPGenerated" should {
       "return true" in {
         assert(hotp check hmacOTPGenerated)
+      }
+    }
+    s"check a valid but already used pincode: $hmacOTPGenerated" should {
+      "return false" in {
+        assert(!(hotp check hmacOTPGenerated))
       }
     }
     s"check pincode $pincodeWrong" should {

@@ -3,7 +3,7 @@ package it.unibo.authsim.library.policy.builders.stringpolicy
 import it.unibo.authsim.library.policy.model.StringPolicies.{MoreRestrictStringPolicy, RestrictStringPolicy, StringPolicy}
 
 object StringPolicyBuildersHelpers:
-  def buildToString(name: String, stringPolicy: StringPolicy | RestrictStringPolicy | MoreRestrictStringPolicy): String =
+  def buildToString(name: String, stringPolicy: StringPolicy): String =
     val string: StringBuilder = new StringBuilder(name).append(" { ")
 
     if stringPolicy.isInstanceOf[RestrictStringPolicy] then

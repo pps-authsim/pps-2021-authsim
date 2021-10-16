@@ -21,7 +21,7 @@ object StringPolicyBuilder:
   /**
    * ''SettableAlphabetBuilder'' rappresent an extension to build a new policy of type string with another alphabet
    */
-  trait SettableAlphabetBuilder:
+  trait SettableAlphabetBuilder[T] extends StringPolicyBuilder[T]:
     /**
      * Set a [[PolicyAlphabet policy alphabet]]
      * @param alphabetPolicy policy alphabet to set
@@ -32,7 +32,7 @@ object StringPolicyBuilder:
   /**
    * ''RestrictStringPolicyBuilder'' rappresent an extension to build a new restricted policy of type string
    */
-  trait RestrictStringPolicyBuilder:
+  trait RestrictStringPolicyBuilder[T] extends StringPolicyBuilder[T]:
     /**
      * Set the maximum length a string must have.
      * @param number maximum length of string to set
@@ -49,7 +49,7 @@ object StringPolicyBuilder:
   /**
    * ''MoreRestrictStringPolicyBuilder'' rappresent an extension to build a new more restricted policy of type string
    */
-  trait MoreRestrictStringPolicyBuilder:
+  trait MoreRestrictStringPolicyBuilder[T] extends StringPolicyBuilder[T] :
     /**
      * Set the minimum number of lowercase characters a string must have.
      * @param number minimum number of lowercase characters to set
@@ -79,7 +79,7 @@ object StringPolicyBuilder:
    * ''AbstractStringPolicyBuilder'' is an abstract builder that implements [[StringPolicyBuilder]] and [[RestrictStringPolicyBuilder]] methods
    * @tparam T the type to build
    */
-  abstract class AbstractStringPolicyBuilder[T] extends StringPolicyBuilder[T] with RestrictStringPolicyBuilder:
+  abstract class AbstractStringPolicyBuilder[T] extends StringPolicyBuilder[T] with RestrictStringPolicyBuilder[T]:
     protected var minLen: Int = 1
     protected var maxLen: Option[Int] = None
     protected var alphabetPolicy: PolicyAlphabet = null
@@ -139,14 +139,14 @@ object StringPolicyBuilder:
    * ''AbstractStringPolicyWithSettableAlphabetBuilder'' is an abstract builder that extends [[AbstractStringPolicyBuilder]] and implements [[SettableAlphabetBuilder]] methods
    * @tparam T the type to build
    */
-  abstract class AbstractStringPolicyBuilderWithSettableAlphabet[T] extends AbstractStringPolicyBuilder[T] with SettableAlphabetBuilder:
+  abstract class AbstractStringPolicyBuilderWithSettableAlphabet[T] extends AbstractStringPolicyBuilder[T] with SettableAlphabetBuilder[T]:
     override def addAlphabet(alphabetPolicy: PolicyAlphabet) = this.builderMethod((alphabetPolicy: PolicyAlphabet) => super.setAlphabet(alphabetPolicy))(alphabetPolicy)
 
   /**
    * ''AbstractMoreRestrictStringPolicyBuilder'' is an abstract builder that extends [[AbstractStringPolicyBuilderWithSettableAlphabet]] and implements [[MoreRestrictStringPolicyBuilder]] methods
    * @tparam T the type to build
    */
-  abstract class AbstractMoreRestrictStringPolicyBuilder[T] extends AbstractStringPolicyBuilderWithSettableAlphabet[T] with MoreRestrictStringPolicyBuilder:
+  abstract class AbstractMoreRestrictStringPolicyBuilder[T] extends AbstractStringPolicyBuilderWithSettableAlphabet[T] with MoreRestrictStringPolicyBuilder[T]:
     protected var minUpperChars: Option[Int] = None
     protected var minLowerChars: Option[Int] = None
     protected var minSymbols: Option[Int] = None

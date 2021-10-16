@@ -2,8 +2,7 @@ package it.unibo.authsim.library.otp.builders
 
 import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.otp.builders.OTPBuilder.AbstractTOTPBuilder
-import it.unibo.authsim.library.otp.model.{HOTP, TOTP}
-import it.unibo.authsim.library.otp.util.OTPHelpers.generatorSeed
+import it.unibo.authsim.library.otp.model.TOTP
 import it.unibo.authsim.library.policy.model.StringPolicies.OTPPolicy
 
 import scala.concurrent.duration.Duration
@@ -34,8 +33,8 @@ case class TOTPBuilder() extends AbstractTOTPBuilder:
     override def check(pincode: String): Boolean =
       val validTime = this.createDate.isDefined && this.createDate.get + this.timeout.toMillis > System.currentTimeMillis()
       if !validTime then this.reset
-      validTime && TOTPBuilder.this.otpGenerator(pincode.length) == pincode
+      TOTPBuilder.this.checked(validTime && TOTPBuilder.this.otpGenerator(pincode.length) == pincode)
 
-    override def reset: Unit = TOTPBuilder.this.generateSeed
+    override def reset: Unit = TOTPBuilder.this.reset
 
     override def toString: String = s"TOTP = { timeout = $timeout, create date = $createDate, length = $length, hash function = ${hashFunction.getClass.getSimpleName} , secret = $secret, policy = $policy }"

@@ -71,7 +71,7 @@ L'alfabeto `PolicyAlphabet` è stato progettato utilizzando il pattern template 
 - `digits` restituisce un alfabeto contenente solamente i caratteri numerici
 - `symbols` restituisce un alfabeto contenente solamente caratteri speciali
 
-Questi metodi restituiscono un alfabeto del tipo `SymbolicAlphabet` (extends [`Alphabet`](#Alphabet)).
+Questi metodi restituiscono un alfabeto del tipo `SymbolicAlphabet` (extends [`Alphabet`](#alphabet)).
 
 L'alfabeto è stato _arricchito_ con il mixin `RandomAlphabet` che definisce metodi che restituiscono una lazy list di caratteri
 e con il mixin `RegexAlphabet` che definisce metodi che restituiscono una espressione regolare.

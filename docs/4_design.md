@@ -234,9 +234,9 @@ un StringProperty, `messageProperty`, disponibile alla GUI.
 In questo modo si riesce a eseguire la simulazione e stampare su un elemento della gui i log della sua esecuzione.
 
 L'esecuzione del task viene effettuata da un component `SimulationRunnerComponent` responsabile di avviare e di fermare il task in esecuzione.
-Questa classe utilizza `ExecutorService` mono-thread (`newSingleThreadExecutor`) per gestire il task.
+Questa classe utilizza `ExecutorService` istanziato con thread singolo (`newSingleThreadExecutor`) per gestire il task.
 
-// TODO UML Task e runner
+![Simulation Runner](assets/images/runner.png)
 
 ### Repository
 
@@ -254,7 +254,7 @@ tuttavia con qualche accorgimento sono state adattate ad essere utilizzare nell'
 L'accesso alla persistenza è stato gestito nelle classi `Repository` ispirate a *Domain Driven Design*, forniscono
 un'interfaccia che astrae l'accesso ai dati e rende trasparente l'implementazione.
 
-// TODO UML SQL e Mongo Repository
+![Repositories](assets/images/repositories.png)
 
 ### Service
 
@@ -262,9 +262,7 @@ Per gestire la business logic dell'applicativo sono state create delle classi `S
   - `Properties Service` - cui compito è quello di fornire un'astrazione per il caricamente e l'accesso alle properties definite nel file di configurazione esterna
     `application.properties`
   - `SimulationRunner` - cui compito è quello di astrarre la gestione dell'esecuzione del task della simulazione
-
-// TODO UML properties Service e SimulationRunner
-
+  
 ### Error Handling Funzionale
 
 Nel client si cercava di preferire error handling funzionale.
@@ -296,7 +294,7 @@ In particolare `ObservableListBuffer[A]` supporta i listener per gli eventi
   
 I listener si possono passare in costruzione utilizzando uno degli `apply` nel suo Companion Object oppure anche post-costruzione con i metodi appositi.
 
-// TODO UML ObservableListBuffer
+![ObservableListBuffer](assets/images/observable.png)
 
 ## Organizzazione del codice
 

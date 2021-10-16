@@ -220,16 +220,6 @@ Tali metodi sono infatti invarianti rispetto ai cifrari proposti[^CaesarCipher].
 
 ## Client
 
-### Observer
-
-// TODO UML ObservableListBuffer
-
-### Factory
-
-
-
-// TODO UML AttackFactory
-
 ### ScalaFx Task
 
 La simulazione di un attacco potrebbe durare per molto tempo, quindi non sarebbe
@@ -244,19 +234,69 @@ un StringProperty, `messageProperty`, disponibile alla GUI.
 In questo modo si riesce a eseguire la simulazione e stampare su un elemento della gui i log della sua esecuzione.
 
 L'esecuzione del task viene effettuata da un component `SimulationRunnerComponent` responsabile di avviare e di fermare il task in esecuzione.
-Questa classe utilizza `ExecutorService` mono-thread (`newSingleThreadExecutor`) per gestire il task. 
+Questa classe utilizza `ExecutorService` mono-thread (`newSingleThreadExecutor`) per gestire il task.
 
 // TODO UML Task e runner
 
-### Repositories
+### Repository
+
+Si possono persistere gli utenti in due modi: Database SQL e Database Mongo.
+Per facilitare il deploy dell'applicazione, è stato deciso di utilizzare i database in-memory:
+
+ - SLQ - con h2 database
+ - MongoDB - con flapdoodle embedded mongo
+
+Entrambi sono delle dipendenze Java e quindi sono state integrate con il codice Scala.
+
+Queste dipendenze sono state pensate per gli ambienti di testing, 
+tuttavia con qualche accorgimento sono state adattate ad essere utilizzare nell'applicativo.
+
+L'accesso alla persistenza è stato gestito nelle classi `Repository` ispirate a *Domain Driven Design*, forniscono
+un'interfaccia che astrae l'accesso ai dati e rende trasparente l'implementazione.
 
 // TODO UML SQL e Mongo Repository
 
-### Properties Service
+### Service
 
-Nello svolgimento del progetto, 
+Per gestire la business logic dell'applicativo sono state create delle classi `Service` ispirate a *Domain Driven Design*.
+  - `Properties Service` - cui compito è quello di fornire un'astrazione per il caricamente e l'accesso alle properties definite nel file di configurazione esterna
+    `application.properties`
+  - `SimulationRunner` - cui compito è quello di astrarre la gestione dell'esecuzione del task della simulazione
 
-// TODO UML properties Service e SQLRepository
+// TODO UML properties Service e SimulationRunner
+
+### Error Handling Funzionale
+
+Nel client si cercava di preferire error handling funzionale.
+In particolare sono stati usati i costrutti `Try` e `Using`.
+
+### Promise
+
+Il driver di MongoDB per Scala 2 (portato nell'ambiente del progetto con cross building) 
+esponse un API asincrona basata sul pattern `Observer`. Per le esigenze della simulazione è stato deciso
+di rendere sequenziali le operazioni con il database. Per questo motivo si è ricorso al costrutto `Promise`.
+Semplicemente ogni volta che si sesegue un'operazione su MongoDB viene restituito un `Observable` e viene creata 
+una `Promise` che viene risolta in certe condizioni (che dipendono dall'operazioni in questione), oppure rigettata nel caso d'errore.
+
+In questo modo eseguendo `Await.result` sulla promise, il flusso diventa sequenziale.
+
+### Factory
+
+Per costruire gli attacchi preconfigurati è stato utilizzato il pattern `Factory`.
+La classe `AttacksFactory` viene istanziata con `UserProvider` e `StatisticsConsumer` necessari per costruire `AttackBuilder` richiesto.
+
+### Observer
+
+Per gestire le notifiche dinamiche tra ViewModel e Model, è stata creata la classe `ObservableListBuffer[A]` che permette di eseguire delle operazioni
+semplici con una collection (mutable) di elementi di tipo `A` notificando i listener su quel evento.
+
+In particolare `ObservableListBuffer[A]` supporta i listener per gli eventi
+  - add element
+  - remove element
+  
+I listener si possono passare in costruzione utilizzando uno degli `apply` nel suo Companion Object oppure anche post-costruzione con i metodi appositi.
+
+// TODO UML ObservableListBuffer
 
 ## Organizzazione del codice
 

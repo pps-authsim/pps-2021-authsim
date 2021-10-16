@@ -12,7 +12,7 @@ Il framework è stato opportunamente adattato alle esigenze personali dovute all
 Per questa ragione, per poter sperimentare a pieno il potenzialità della metodologia prescelta alcuni membri del gruppo hanno impersonato un duplice ruolo nella realizzazione del progetto: da un lato quello di sviluppatori e dall'altro quello di alcune delle figure principali coinvolte in un processo Scrum.
 
 Nello specifico:
-- Giulia Brugnatti e Marica Pasquali hanno interpretato le esperte del dominio, in quanto il progetto proposto ha un aspetto interdisciplinare con la *Sicurezza delle reti* di cui i membri del gruppo hanno varia padronanza.
+- Giulia Brugnatti e Marica Pasquali hanno interpretato le esperte del dominio, in quanto hanno proposto il progetto e, avendo una conoscenza maggiore riguardo alla *Sicurezza delle reti* rispetto agli altri membri del gruppo, hanno anche formulato i casi d'uso e i requisiti dello stesso.
 - Kyrillos Ntronov ha assunto il ruolo di *Scrum Master*, il cui compito è stato quello di promuovere la "Agile culture", favorire la comunicazione tra i membri del gruppo e prendersi carico degli aspetti organizzativi dei meet.
 - Alex Speranza è stato il *Product Owner*, il cui compito è stato sia quello di stabilire il valore degli sviluppi proposti nell'ottica del prodotto finale.
 

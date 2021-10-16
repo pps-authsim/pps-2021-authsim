@@ -55,12 +55,3 @@ object OTPHelpers:
           case Some(index) => base.updated(index, charReplaced)
           case None => replaceFirstDifferent(range.drop(1))
       else base
-  /**
-   * A default implementation of an seed generator (@see [[it.unibo.authsim.library.otp.builders.OTPBuilder.AbstractOTPBuilder.generateSeed]])
-   */
-  implicit val generatorSeed: () => Int = () => Random.between(Int.MinValue, Int.MaxValue)
-
-  /**
-   * A default implementation of an length generator (@see [[it.unibo.authsim.library.otp.builders.OTPBuilder.withPolicy]])
-   */
-  implicit val generatorLength: OTPPolicy => Int = (policy: OTPPolicy) => Random.between(policy.minimumLength, policy.maximumLength.getOrElse(policy.minimumLength + 10) + 1)

@@ -30,7 +30,7 @@ object StringPolicies:
   /**
    * ''RestrictStringPolicy'' rappresents a restriction on policies of the type string
    */
-  trait RestrictStringPolicy:
+  trait RestrictStringPolicy extends StringPolicy:
     /**
      * @return minimum length that string must have
      */
@@ -43,7 +43,7 @@ object StringPolicies:
   /**
    * ''MoreRestrictStringPolicy'' rappresents  an additional restriction for policies of the type string
    */
-  trait MoreRestrictStringPolicy:
+  trait MoreRestrictStringPolicy extends StringPolicy:
     /**
      * @return optional minimum number of uppercase characters a string must have
      */

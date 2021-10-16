@@ -42,43 +42,109 @@ in quanto quando restituisce un `Option` vuoto significa che le combinazioni di 
 
 
 ### Policy
-//TODO: aggiungere descrizione dei diagrammi Policy
 
-- `Model`
-  ![Policy Model Package UML](assets/images/policy/policy-model-package.svg)
+![Policy Model Package UML](assets/images/policy/policy-model-package.svg)
 
-- `Alphabet`
-  ![Policy Alphabet Package UML](assets/images/policy/policy-alphabet-package.svg)
+Le interfacce `Policy`, `UserIDPolicy`,`PasswordPolicy`,`OTPPolicy`,`Saltpolicy` definiscono un tipo immutabile di politica di sicurezza.
 
-- `Builders`
-  ![Policy Builders Package UML](assets/images/policy/policy-builders-package.svg)
+- `Policy` è un' interfaccia che rappresenta una container d' informazioni riguardanti le credenziali dell' utente.
+  - `credentialPolicies: Seq[CredentialPolicy]` identifica le policy relative alle credenziali
+  - `cryptographicAlgorithm: Option[CryptographicAlgorithm]` identifica l'eventuale algoritmo crittografico utilizzato per memorizzare le credenziali nel database. Nel caso non sia presente, significa che sono state memorizzate in _plaintext_
+  - `saltPolicy: Option[SaltPolicy]` identifica una policy su un eventuale valore di sale utilizzato per crittografare le credenziali
+  - `transmissionProtocol: Option[Protocol]` identifica l'eventuale protocollo (interfaccia `Protocol`) utilizzato per trasferire le credenziali dal host locale a un host remoto. Se non è presente significa che le credenziali sono usate in locale
+   
 
-- `Changers`
-  ![Policy Changers Package UML](assets/images/policy/policy-changers-package.svg)
+- `UserIDPolicy`,`PasswordPolicy`,`OTPPolicy` sono interfacce di security policy riguardanti le credenziali vere e proprie (userID, password, otp), definite dall'amministratore di sistema.
 
-- `Checkers`
-  ![Policy Checkers Package UML](assets/images/policy/policy-checkers-package.svg)
 
-- `Defaults`
-  ![Policy Defaults Package UML](assets/images/policy/policy-defaults-package.svg)
+- `Saltpolicy` è l'interfaccia che definisce come deve essere un valore di sale.
 
-- `Extractor`
-  ![Policy Extractors Package UML](assets/images/policy/policy-extractors-package.svg)
+Le credenziali e i valori di sale sono di tipo stringa, quindi le policy corrispondenti sono state progettare in modo da essere un estensione dell' interfaccia `StringPolicy` 
+che richiede un alfabeto (`PolicyAlphabet`), grazie al quale possono essere generate automaticamente le stringhe, attraverso il metodo `generate(implicit policyAutoBuilder: StringPolicy => PolicyAutoBuilder[String]): String`, senza che l' utilizzatore debba generarle manualmente.
 
-- `Generators`
-  ![Policy Generators Package UML](assets/images/policy/policy-generators-package.svg)
+Il metodo utilizzato per generare automaticamente le stringhe è una Higher-Order Function, ovvero una funzione che accetta altre funzioni come parametri, quindi 
+il metodo delega alla funzione passatagli ( `implict StringPolicy => PolicyAutoBuilder[String]` ) la generazione della stringa basata sulla `StringPolicy`.
+
+L'alfabeto `PolicyAlphabet` è stato progettato utilizzando il pattern template method, in modo tale che l'utilizzatore debba definire solamente una parte o tutti i seguenti metodi:
+- `lowers` restituisce un alfabeto contenente solamente i caratteri minuscoli
+- `uppers` restituisce un alfabeto contenente solamente i caratteri maiuscoli
+- `digits` restituisce un alfabeto contenente solamente i caratteri numerici
+- `symbols` restituisce un alfabeto contenente solamente caratteri speciali
+
+Questi metodi restituiscono un alfabeto del tipo `SymbolicAlphabet` (extends [`Alphabet`](#Alphabet)).
+
+L'alfabeto è stato _arricchito_ con il mixin `RandomAlphabet` che definisce metodi che restituiscono una lazy list di caratteri
+e con il mixin `RegexAlphabet` che definisce metodi che restituiscono una espressione regolare.
+
+Ogni `StringPolicy` può essere _arricchita_ da una o più interfacce (mixins) che definiscono dei metodi utili per la generazione e la validazione delle stesse.
+
+- `RestrictStringPolicy` definisce metodi riguardanti la lunghezza della stringa
+  - `minimumLength: Int` restituisce il valore minimo della lunghezza della stringa
+  - `maximumLength: Option[Int]` restituisce opzionalmente il valore della massima lunghezza. Se non è presente il valore massimo, significa che non c'è un limite superiore alla lunghezza che una stringa può avere.
+
+
+- `MoreRestrictStringPolicy` definisce metodi riguardanti il contenuto della stringa
+  - `minimumUpperChars: Option[Int]` : restituisce opzionalmente il valore minimo di caratteri maiuscolo che una stringa deve contenere
+  - `minimumLowerChars: Option[Int]` : restituisce opzionalmente il valore minimo di caratteri minuscoli che una stringa deve contenere
+  - `minimumSymbols: Option[Int]` : restituisce opzionalmente il valore minimo di caratteri speciali che una stringa deve contenere
+  - `minimumNumbers: Option[Int]` : restituisce opzionalmente il valore minimo di caratteri numerici che una stringa deve contenere
+  
+   Nel caso in cui uno o più di questi metodi non restituisca un valore, significa che non c'è un limite inferiore per il contenuto della stringa. 
+   Per esempio se `minimumUpperChars = None` significa che in una stringa può non esserci nessun carattere maiuscolo.
+
+
+La creazione delle security policy è delegata alle classi `PolicyBuilder`, `UserIDPolicyBuilder`, `PasswordPolicyBuilder`, `OTPPolicyBuilder`, `SaltPolicyBuilder`, progettate utilizzando il pattern _Builder_.
+La struttura dei vari builder rispecchia il modello descritto precedentemente.
+
+In più è stata inserita una interfaccia (mixin) `SettableAlphabetBuilder`, utile al settaggio di un nuovo alfabeto. Questa interfaccia è stata creata per necessita visto che non tutte le `StringPolicy` devono cambiare alfabeto, 
+infatti le One Time Password (OTP), per definizione, hanno un alfabeto fisso di soli caratteri numerici.
+
+
+![Policy Builders Package UML](assets/images/policy/policy-builders-package.svg)
+
+Essendo le security policy immutabili, esiste la possibilità di modificare delle policy già definite tramite l' oggetto `PolicyChanger`, il quale definisce dei metodi factory per ogni policy progetta.
+ - `apply(policy: Policy): BasicPolicyBuilder with PolicyChanger[Policy]`
+ - `userID(userIDPolicy: UserIDPolicy): UserIDPolicyChanger`
+ - `password(passwordPolicy: PasswordPolicy):PasswordPolicyChanger`
+ - `otp(otpPolicy: OTPPolicy): OTPPolicyChanger`
+ - `salt(saltPolicy: SaltPolicy): SaltPolicyChanger`
+ 
+Tutti i PolicyChanger estendono il builder corrispondente e l'interfaccia mixin `PolicyChanger[T]`, nella quale è definito un metodo `rebuild: T` che ricostruisce la security policy con le eventuali modifiche.
+
+![Policy Changers Package UML](assets/images/policy/policy-changers-package.svg)
+
+Una prerogativa delle security policy relative alle stringhe è quella di essere validate/verificate, ciò è possibile utilizzando l' oggetto `StringPolicyChecker` 
+che possiede il metodo factory `apply(policy: Stringpolicy): PolicyChecker[String]` che crea un istanza di `PolicyChecker[String]` la quale possiede un metodo `check(value: String): Boolean`
+che verifica che il valore passatogli sia conforme alla policy precedentemente inserita.
+  
+![Policy Checkers Package UML](assets/images/policy/policy-checkers-package.svg)
+
+
+Per facilitare l'assegnamento delle credenziali generate in base al tipo di credenziale (userID, password, otp) sono stati progettati degli extractor object (ovvero oggetti che definiscono un metodo `unapply(credentialPolicy: CredentialPolicy): Option[String]`).
+ - `UserIDGenerate` estrae l'userID generato dalla `CredentialPolicy`
+ - `PasswordGenerate`  estrae la password generata dalla `CredentialPolicy`
+ - `OTPGenerate`  estrae l'OTP generato dalla `CredentialPolicy`
+
+![Policy Extractors Package UML](assets/images/policy/policy-extractors-package.svg)
+
+Sono state progettate delle Security Policy di Default che sfruttano le varie funzionalità descritte precedentemente.
+
+![Policy Defaults Package UML](assets/images/policy/policy-defaults-package.svg)
 
 ### OTP (One-Time Password)
 //TODO: aggiungere descrizione dei diagrammi OTP
 
 - `Model`
-  ![OTP Model Package UML](assets/images/otp/otp-model-package.svg)
 
-  - `Builders` //TODO: modificare UML
-    ![OTP Builders Package UML](assets/images/otp/otp-builders-package.svg)
+[comment]: <> (  ![OTP Model Package UML]&#40;assets/images/otp/otp-model-package.svg&#41;)
+
+- `Builders` //TODO: modificare UML
+
+[comment]: <> (    ![OTP Builders Package UML]&#40;assets/images/otp/otp-builders-package.svg&#41;)
 
 - `Generators`  //TODO: modificare UML
-  ![OTP Generators Package UML](assets/images/otp/otp-generator-package.svg)
+
+[comment]: <> (  ![OTP Generators Package UML]&#40;assets/images/otp/otp-generator-package.svg&#41;)
 
 ### Cryptography 
 Il modulo di crittografia è la parte del sistema adibita a tutte le operazioni crittografiche.

@@ -4,6 +4,7 @@ import it.unibo.authsim.client.app.components.persistence.{PersistenceException,
 import it.unibo.authsim.client.app.components.config.PropertiesServiceComponent
 
 import java.sql.{Connection, DriverManager, PreparedStatement, Statement}
+import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try, Using}
 
 trait UserSqlRepositoryComponent:
@@ -35,6 +36,14 @@ trait UserSqlRepositoryComponent:
         |select * from users where username = ? and password = ?
       """.stripMargin
 
+    private val selectAllUsersSql =
+        """
+          |select * from users
+      """.stripMargin
+
+  /**
+   * SQL implementation of UserRepository
+   */
   class UserSqlRepository extends UserRepository:
 
     private val baseDirectory = propertiesService.databaseBasePathFolder
@@ -87,6 +96,24 @@ trait UserSqlRepositoryComponent:
           else
             throw new PersistenceException(s"Could not retrieve user $username $password from DB")
 
+      )
+
+    override def retrieveAllUsers(): Try[Seq[UserEntity]] =
+      usingStatement(
+        UserSqlRepository.selectAllUsersSql,
+        statement =>
+          var users = ListBuffer[UserEntity]()
+          val resultSet = statement.executeQuery()
+
+          while
+            resultSet.next()
+          do
+            val username = resultSet.getString("USERNAME")
+            val password = resultSet.getString("PASSWORD")
+            val user = new UserEntity(username, password)
+            users += user
+
+          users.toSeq
       )
 
     private def usingStatement[T](sql: String, statementFunction: (PreparedStatement => T)): Try[T] =

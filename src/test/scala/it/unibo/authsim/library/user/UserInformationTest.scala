@@ -1,71 +1,119 @@
 package it.unibo.authsim.library.user
 
-import it.unibo.authsim.library.user.builder.UserInformationBuilder
-import it.unibo.authsim.library.dsl.policy.builders.StringPoliciesBuilders.{OTPPolicyBuilder, PasswordPolicyBuilder, SaltPolicyBuilder, UserIDPolicyBuilder}
-import it.unibo.authsim.library.dsl.policy.model.Policy
-import it.unibo.authsim.library.dsl.policy.model.StringPolicies.{CredentialPolicy, OTPPolicy, PasswordPolicy, SaltPolicy, UserIDPolicy}
+import it.unibo.authsim.library.cryptography.algorithm.symmetric.DES
+import it.unibo.authsim.library.cryptography.algorithm.asymmetric.RSA
+import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
+import it.unibo.authsim.library.cryptography.cipher.symmetric.DESCipher
+import it.unibo.authsim.library.cryptography.cipher.asymmetric.RSACipher
+import it.unibo.authsim.library.user.builder.{UserAutoBuilder, UserBuilder, UserCostumBuilder, UserInformationBuilder}
+import it.unibo.authsim.library.policy.builders.stringpolicy.UserIDPolicyBuilder
+import it.unibo.authsim.library.policy.model.Policy
+import it.unibo.authsim.library.policy.model.StringPolicies.{CredentialPolicy, UserIDPolicy}
 import it.unibo.authsim.library.user.builder.util.Util
-import it.unibo.authsim.library.user.model.{CryptoInformation, UserInformation}
-import org.scalatest.BeforeAndAfter
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar.mock
+import it.unibo.authsim.library.user.model.{User, UserInformation}
+import org.scalatest.GivenWhenThen
+import org.scalatest.featurespec.AnyFeatureSpec
+import org.scalatest.matchers.should.Matchers
 
-class UserInformationTest extends AnyWordSpec{
-  private def to = afterWord("to")
-  private def are = afterWord("are")
-  private def so = afterWord("so")
+class UserInformationTest extends AnyFeatureSpec with GivenWhenThen with Matchers {
 
+  private val min = 5
+  private val shortName = Util.generateRandomString(min-1)
+  private val name = Util.generateRandomString(min)
+  private val password = Util.generateRandomString(min)
+  private val admPassword = Util.generateRandomString(min)
 
-  //TODO: qui ci dovrò mettere le algorithm policy non il mock
-  import org.mockito.Mock
-  @Mock abstract class AlgorithmPolicy extends Policy
-  @Mock val algorithmPolicy = mock[AlgorithmPolicy]
+  private val userIDPolicy: CredentialPolicy = UserIDPolicyBuilder() minimumLength min build
 
-  private val min= 5
-  private val name= Util.generateRandomString(min)
-  private val encryptedPassword= Util.generateRandomString(min)
-  private val cryptoInfo = CryptoInformation(algorithmPolicy)
+  private val autoUserBuilder = UserAutoBuilder() withPolicy (userIDPolicy)
+  private val autoUser: User = autoUserBuilder.build
 
-  private var userBuilder1 : UserInformationBuilder = UserInformationBuilder() withUserName(name) withPassword(encryptedPassword)
-  private var userInformation1 : Option[UserInformation] = userBuilder1.build
-  private var userBuilder2 : UserInformationBuilder = UserInformationBuilder() withUserName(name) withPassword(encryptedPassword) withAlgorithmPolicy(cryptoInfo)
-  private var userInformation2 : Option[UserInformation] = userBuilder2.build
+  private var costumUserBuilder = UserCostumBuilder() withName (name) withPassword (password) withPolicy (userIDPolicy)
+  private val costumUser: Option[User] = costumUserBuilder.build
 
-  private var userBuilder3 = UserInformationBuilder() withUserName(name) withAlgorithmPolicy(cryptoInfo)
-  private var userInformation3 : Option[UserInformation] = userBuilder3.build
+  feature ("UserInformation creation") {
 
-  "A userInformation" when {
-    "created" should {
-      "have a name" in{
-        assert(userInformation1.get.username == name)
-      }
-      "and a password" in {
-        assert(userInformation1.get.password == encryptedPassword)
-      }
-      /*
-      "one could choose to not use cryptographic algorithm for storing the password, in this case the salt information should take the default values" in {
-        assert(userInformation.cryptoInformation == ???))
-      }
-      */
-    }
-  }
-  "however one could also create a user whithout null values" when{
-    "but user's name must always be provided" in {
-      assert(userInformation2.get.username == name)
-    }
-    "as well as user's password should be" in {
-      assert(userInformation2.get.password == encryptedPassword)
-    }
-    /*
-    "the salt value if provided should be" in {
-      assert(userInformation2.get.cryptoInformation == cryptoInfo)
+    scenario("Password store in clear") {
+      Given("No cryptographic algorithm")
+      When("a userInformation is created")
+      val userInformationBuilder: UserInformationBuilder = UserInformationBuilder() withUserName (costumUser.get.username) withPassword (password)
+      val userInformation: Option[UserInformation] = userInformationBuilder.build
+
+      Then("to check if the username is correctly saved")
+      costumUser.get.username shouldBe userInformation.get.username
+
+      And("to check if the password is stored in clear")
+      userInformation.get.algorithm shouldBe (None)
+
+      And("to check if the password is correctly saved")
+      costumUser.get.password shouldBe userInformation.get.password
     }
 
-    */
-  }
-  "Finally" when{
-    "one try to be a user information without providing the credentials values should get no UserInformation" in {
-      assert(userInformation3 == None)
+    scenario("Hashed password") {
+      Given("an hash algorithm")
+      val sha = HashFunction.SHA384()
+
+      When("a user information is created with an hashed password")
+      val userInformationBuilder: UserInformationBuilder = UserInformationBuilder() withUserName (autoUser.username) withPassword (sha.hash(autoUser.password)) withAlgorithm (sha)
+      val userInformation: Option[UserInformation] = userInformationBuilder.build
+
+      Then("to check if the username is correctly saved")
+      autoUser.username shouldBe userInformation.get.username
+
+      And("to check if the password is stored in clear")
+      userInformation.get.algorithm.get shouldBe sha
+
+      And("to check if the password was correctly saved")
+      sha.hash(autoUser.password) shouldBe userInformation.get.password
     }
+
+    scenario("Password encrypted with a symmetric algorithm") {
+      Given("a symmetric algorithm")
+      val des = DES()
+
+      And("a cipher for the algorithm")
+      val cipher = DESCipher()
+
+      When("a user information is created with a password encrypted")
+      val userInformationBuilder: UserInformationBuilder = UserInformationBuilder() withUserName (autoUser.username) withPassword (cipher.encrypt(autoUser.password, admPassword)) withAlgorithm (des)
+      val userInformation: Option[UserInformation] = userInformationBuilder.build
+
+      Then("to check if the username is correctly saved")
+      autoUser.username shouldBe userInformation.get.username
+
+      And("to check if the password is stored in clear")
+      userInformation.get.algorithm.get shouldBe des
+
+      And("to check if the password is correctly saved")
+      autoUser.password shouldBe cipher.decrypt(userInformation.get.password, admPassword)
+    }
+
+    scenario("Password encrypted with a asymmetric algorithm") {
+      Given("a asymmetric algorithm")
+      val rsa = RSA()
+
+      And("a cipher for the algorithm")
+      val cipher = RSACipher()
+      cipher.generateKeys()
+
+      info("A new key pair should be generated")
+      val keypair= cipher.generateKeys("test.ser")
+      val(pvt, pub) = (keypair.privateKey, keypair.publicKey)
+
+      When("a user information is created with a password encrypted")
+      val userInformationBuilder: UserInformationBuilder = UserInformationBuilder() withUserName (autoUser.username) withPassword (cipher.encrypt(autoUser.password, pvt)) withAlgorithm (rsa)
+      val userInformation: Option[UserInformation] = userInformationBuilder.build
+
+      Then("to check if the username is correctly saved")
+      autoUser.username shouldBe userInformation.get.username
+
+      And("to check if the password is stored in clear")
+      userInformation.get.algorithm.get shouldBe rsa
+
+      And("to check if the password is correctly saved")
+      autoUser.password shouldBe cipher.decrypt(userInformation.get.password, pub)
+    }
+
   }
 }
+

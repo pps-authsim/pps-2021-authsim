@@ -12,13 +12,16 @@ import scalafx.beans.property.{ObjectProperty, ReadOnlyObjectProperty, StringPro
 import scalafx.scene.layout.{HBox, VBox}
 import scalafx.event.ActionEvent
 
-// todo expose only properties
+/**
+ * UI element representing Attack View
+ */
 class AttackTab extends VBox :
 
   private val attackSequenceList = makeAttackSequenceList()
   private val attackSequenceDescription = makeAttackSequenceDescription()
   private val attackLog = makeAttackLog()
   private val launchAttackButton = new Button("Launch Attack!")
+  private val stopAttackButton = new Button("Stop Attack")
 
   val attackSequenceListProperty: ObjectProperty[ObservableList[AttackSequenceEntry]] = attackSequenceList.items
   val attackSequenceListSelectedValueProperty: ReadOnlyObjectProperty[AttackSequenceEntry] = attackSequenceList.selectionModel.getValue.selectedItemProperty()
@@ -57,7 +60,8 @@ class AttackTab extends VBox :
       children = Seq(
         new Label("Attack Log"),
         attackLog,
-        launchAttackButton
+        launchAttackButton,
+        stopAttackButton
       )
     },
   )
@@ -67,5 +71,7 @@ class AttackTab extends VBox :
 
   def fireAttackLaunch(): Unit = launchAttackButton.fire()
   def bindOnAttackLaunch(handler: EventHandler[javafx.event.ActionEvent]) = launchAttackButton.setOnAction(handler)
-
+  
+  def fireStopAttack(): Unit = stopAttackButton.fire()
+  def bindOnAttackStop(handler: EventHandler[javafx.event.ActionEvent]) = stopAttackButton.setOnAction(handler)
 

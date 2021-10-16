@@ -22,6 +22,12 @@ bin/
 *.ipr
 *.iws
 .idea
+.run
+
+
+# test files
+*.txt
+*.ser
 
 # project specific
 

@@ -1,10 +1,11 @@
+
 # Implementazione
 
 ## Testing
 Lo strumento principale utilizzato all'interno del progetto per testare i componenti è stato *ScalaTest*.
 Tale tool è stato usato sia per il testing degli elementi del framework, sia per quelli dell'applicativo dimostrativo.
 Nello specifico per testare il comportamento del sistema sono stati realizzati degli Unit test per tutte le componenti rilevanti della GUI e della DSL.
-
+// TODO aggiungi il fatto del TDD
 ## Suddivisione del lavoro
 Da un lato il lavoro è stato suddiviso in modo tale da incontrare le esigenze temporali dei singoli membri e dall'altro perché fosse il più equo possibile.
 Tuttavia, a causa della limitata esperienza dei membri del gruppo nella gestione del processo di sviluppo alcuni compiti si sono dimostrati inevitabilmente più onerosi di altri.
@@ -16,6 +17,28 @@ A valle di questo processo ogni componente ha scelto di focalizzarsi su una macr
 Di seguito viene riassunto quanto realizzato da ogni componente del gruppo.
 
 ## Brugnatti Giulia
+Nello sviluppo del progetto mi sono occupata del modulo della crittografia e della gestione degli utenti così come delle `UserInformation` e di tutte le utilities ad esse collegate.
+
+Nello specifico, dopo aver definito le interfacce dei componenti con gli altri membri del gruppo, mi sono occupata dello sviluppo di quanto contenuto nei package:
+- `it.unibo.authsim.library.user`
+- `it.unibo.authsim.library.cryptography`
+
+oltre al trait `UserProvider` e di tutti i test ad essi relativi.
+
+Per quanto riguarda il contenuto del package: `it.unibo.authsim.library.cryptography` per garantire la correttezza e la manutenibilità delle operazioni ho scelto di appoggiarmi su alcune librerie note nell'ambito dell'implementazione di task di sicurezza informatica.
+
+Questa scelta mi ha dato un modo da un lato di prendere confidenza con il build tool scelto per il progetto e dall'altro di sperimentare su di esse.
+Nei primi sprint, infatti mi sono occupata di studiare e documentarmi a proposito della teoria inerente alle operazioni crittografiche che intendevo implementare così come le librerie scelte per lo scopo in modo tale da apprendere il linguaggio del dominio che dovevo implementare e da identificare le possibili criticità che l'utilizzo dei framework scelti avrebbe arrecato agli utenti.
+Questa fase è stata essenziale da un lato per capire come sviluppare i cifrari che il framework avrebbe dovuto mettere a disposizione e dall'altro di concepire quale livello di astrazione intendevo implementare nella realizzazione dei componenti del modulo.
+La definizione di tale livello ha quindi permesso di celare all'utilizzatore le criticità che i framework potevano presentare fornendo a questi ultimi un insieme ridotto di metodi uniformi, semplici ed intuitivi da utilizzare per la realizzazione delle proprie operazioni di crittografia.
+Gli utilizzatori della libreria così facendo non devono quindi preoccuparsi di dettagli implementativi per loro irrilevanti inerenti ad esempio ai tipi passati, così come al modo in cui veniva effettivamente implementata dal framework l'operazione richiesta.
+
+Per poter permettere questa agilità nell'utilizzo del operazioni crittografiche e favorire la leggibilità del codice, si è scelto quando fosse possibile di implementare i metodi perchè prendessero in input argomenti generici che vengono poi gestiti internamente attraverso delle conversioni implicite.
+Tale scelta si è resa necessaria poichè molte delle librerie utilizzate richiedevano di passare in input, ad esempio alle operazioni di cifratura, tipi specifici quali, Array di Char o di Byte, che potevano essere considerati poco intuitivi da parte degli utenti finali del sistema, si è quindi preferito celare questo aspetto anche per rendere possibile ed agevole un eventuale cambio di framework in futuro.
+
+Un aspetto rilevante, delle parti del framework da me implementate riguarda il fatto che abbia fatto quanto mi fosse possibile per mettere a disposizione dell'utilizzatore operazioni sicure che non causassero eccezioni e valori `null`.
+Infatti, per evitare questi funesti casi, da un lato sono stati messi a disposizione dei builder in grado di istanziare correttamente le entità prescelte e dall'altro si scelto di prediligere la restituzione di `Option` in caso l'utilizzatore tenti la definizione di valori non consistenti.
+Inoltre, in un discreto numero di casi si è scelto di incapsulare l'implementazione specifica delle diverse entità del sistema in oggetti, per poter lasciare gli utenti finali astrarre dall'implementazione specifica di questi ultimi e dalle librerie utilizzate.
 
 ## Ntronov Kyrillos
 
@@ -40,6 +63,14 @@ Inoltre ha svolto i seguenti compiti DevOps e orgnaizzativi:
 - **Scrum Master**
 
 ## Pasquali Marica
+
+Ho partecipato alla progettazione delle varie interfacce della libreria.
+
+Successivamente, mi sono occupata della realizzazione di tutte le interfacce riguardanti le _Policy_ e le _One-Time Password_,
+quindi di tutte le classi che si trovano nei seguenti package:
+- `it.unibo.authsim.library.policy`
+- `it.unibo.authsim.library.otp`
+
 
 ## Speranza Alex
 ### Alphabet
@@ -105,7 +136,7 @@ attacco non sia andato a buon fine (cioè se non è stata trovata la password di
 
 Il companion object di `StatisticsConsumer` offre anche un'implementazione di base che scrive sul terminale i dati consumati.
 
-|[Consumer UML](/pps-2021-authsim/assets/images/ConsumerFullUml.jpg)
+![Consumer UML](/pps-2021-authsim/assets/images/ConsumerFullUml.jpg)
 
 ### ConcurrentStringCombinator
 I `ConcurrentStringCombinator` sono oggetti il cui compito è di produrre tutte le combinazioni dei simboli dell'alfabeto

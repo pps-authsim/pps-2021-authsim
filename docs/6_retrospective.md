@@ -77,7 +77,7 @@ Infine, è stata testata l'applicazione dimostrativa.
 Nello specifico è stata quasi completata la stesura della relazione, così come la documentazione formale su *github pages* e sul codice sorgente del progetto.
 
 ### Iterazione 8: 13/10/2021 - 17/10/2021
-Nell'ultima iterazione, sono stati eseguiti gli ultimi ritocchi al codice ed ultimata la relazione di progetto.
+Nell'ultima iterazione, sono state eseguite le ultime revisioni al codice ed ultimata la relazione di progetto.
 
 ## Gestione del backlog
 

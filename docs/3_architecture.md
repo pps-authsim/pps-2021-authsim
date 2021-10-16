@@ -9,7 +9,7 @@ così come quella dell'applicativo dimostrativo.
 
 Il progetto è stato diviso in due sotto-progetti: il framework e l'applicazione.
 
-Il framework è una libreria a se stante e non dipende in alcun modo dall'applicazione, mentre quest'ultima deve utilizzare il framework.
+Il framework è una libreria a sè stante e non dipende in alcun modo dall'applicazione, mentre quest'ultima deve utilizzare il framework.
 
 ## Pattern architetturali usati
 

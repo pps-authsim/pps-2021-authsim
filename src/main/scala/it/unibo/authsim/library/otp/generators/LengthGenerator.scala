@@ -18,5 +18,4 @@ object LengthGenerator:
   /**
    * A default implementation of an length generator.
    */
-  implicit val generatorLength: LengthGenerator = new LengthGenerator:
-    override def length(policy: OTPPolicy): Int = Random.between(policy.minimumLength, policy.maximumLength.getOrElse(policy.minimumLength + 10) + 1)
+  implicit val generatorLength: LengthGenerator = (policy: OTPPolicy) => Random.between(policy.minimumLength, policy.maximumLength.getOrElse(policy.minimumLength + 10) + 1)

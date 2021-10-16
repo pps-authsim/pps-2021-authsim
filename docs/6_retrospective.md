@@ -79,10 +79,8 @@ Nello specifico è stata quasi completata la stesura della relazione, così come
 ### Iterazione 8: 13/10/2021 - 17/10/2021
 Nell'ultima iterazione, sono state eseguite le ultime revisioni al codice ed ultimata la relazione di progetto.
 
-## Gestione del backlog
-
-% E quanto ne è rimasto in ogni sprint
-## Gestione delle iterazioni
+## Backlog
+Il backlog è visibile nell'apposita sezione dell'appendice.
 
 # Conclusione e commenti finali
 Lo sviluppo del progetto è stata un esperienza essenziale nel nostro percorso di studi in quanto ha permesso di toccare con mano molti degli aspetti centrali affrontanti nel corso.

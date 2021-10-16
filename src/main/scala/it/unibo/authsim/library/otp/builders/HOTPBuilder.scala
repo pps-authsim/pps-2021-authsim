@@ -8,7 +8,7 @@ import it.unibo.authsim.library.policy.model.StringPolicies.OTPPolicy
 /**
  * ''TOTPBuilder'' is the Hash Message Authentication Codes based One-Time Password (HOTP) builder.
  */
-case class HOTPBuilder() extends AbstractHOTPBuilder:
+case class HOTPBuilder() extends AbstractHOTPBuilder[HOTP]:
   override def build: HOTP = new HOTP:
 
     override def length: Int = HOTPBuilder.this._length

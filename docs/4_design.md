@@ -131,7 +131,7 @@ Sono state progettate delle Security Policy di Default che sfruttano le varie fu
 
 ![Policy Defaults Package UML](assets/images/policy/policy-defaults-package.svg)
 
-###Generatore di One-Time Password (OTP)
+### Generatore di One-Time Password (OTP)
 
 La One Time Password è una password che è valida solo per una singola sessione di accesso o una transazione. 
 Per questo suo scopo l'OTP è anche detta password usa e getta.

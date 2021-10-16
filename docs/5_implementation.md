@@ -4,7 +4,7 @@
 ## Testing
 Lo strumento principale utilizzato all'interno del progetto per testare i componenti è stato *ScalaTest*.
 Tale tool è stato usato sia per il testing degli elementi del framework, sia per quelli dell'applicativo dimostrativo.
-Nello specifico per testare il comportamento del sistema sono stati realizzati degli Unit test per tutte le componenti rilevanti della GUI e della DSL.
+Nello specifico per testare il comportamento del sistema sono stati realizzati degli Unit test per tutte le componenti rilevanti della _GUI_ e della _Library_.
 // TODO aggiungi il fatto del TDD
 ## Suddivisione del lavoro
 Da un lato il lavoro è stato suddiviso in modo tale da incontrare le esigenze temporali dei singoli membri e dall'altro perché fosse il più equo possibile.
@@ -71,6 +71,11 @@ quindi di tutte le classi che si trovano nei seguenti package:
 - `it.unibo.authsim.library.policy`
 - `it.unibo.authsim.library.otp`
 
+e inoltre del trait `it.unibo.authsim.library.Protocol`.
+
+Ho partecipato all'integrazione della library nella parte client per quanto riguarda le security policy, implementando gli oggetti:
+ - `it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy`
+ - `it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy.Default`
 
 ## Speranza Alex
 ### Alphabet

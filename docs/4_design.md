@@ -1,3 +1,5 @@
+
+
 # Design di dettaglio
 
 ## Library
@@ -78,24 +80,22 @@ in quanto quando restituisce un `Option` vuoto significa che le combinazioni di 
 - `Generators`  //TODO: modificare UML
   ![OTP Generators Package UML](assets/images/otp/otp-generator-package.svg)
 
-### Cryptography //TODO-COMPLETA E RILEGGI
-La crittografia è la parte del sistema adibita a tutte le operazioni crittografiche.
+### Cryptography 
+Il modulo di crittografia è la parte del sistema adibita a tutte le operazioni crittografiche.
 Quest'ultima incapsula gli algoritmi crittografici così come i cifrari che ne permettono le operazioni principali e le utilities ad essi collegati.
+
+#### Algorithm
 Gli algoritmi crittografici sono stati modellati tramite una gerarchia che trova la sua *root* nell'interfaccia `CryptographicAlgorithm`.
 
 - `CryptographicAlgorithm`
 Il trait `CryptographicAlgorithm` modella un generico algoritmo di crittografia racchiudendone i metodi core comuni a tutti i suddetti algoritmi.
-//TODO add interface
-
+//TODO add interface_ encryption_algorithm, hashAlgorithm symmetric
 Nel framework si è deciso di supportare tre macro tipologie di algoritmi crittografici, in modo da lasciare all'utilizzatore decidere se garantire l'integrità, l'autenticità, o la confidenzialità dei dati.
 Di seguito vengono quindi descritte le tre famiglie supportate partendo dalle funzioni hash, per poi arrivare agli algoritmi a chiave simmetrica ed asimmetrica.
 
   - `HashFunction`
   Il trait `HashFunction`, modella una generica funzione hash[^Hash], esponendone le funzionalità principali.
   Nel framework è stato deciso di mettere a disposizione i più noti algoritmi per fare hashing; nello specifico, non solo funzioni hash considerate attualmente sicure, ma bensì di permettere all'utente di disporre anche di funzioni non sicure, in modo da permettere confronti tra algoritmi resistenti alla crittoanalisi e altri che violano almeno una delle proprietà di sicurezza delle funzioni hash[^Hash-proprietà].
-
-Nel caso del framework le funzioni hash vengono utilizzate per evitare all'utente di salvare le password in chiaro nel database, tuttavia essendo queste non invertibili, perchè l'utente possa controllare l'integrità della password non potrà decriptare il valore hash ma fare un confronto tra il valore hash della password passata in input e quello salvata sul database.
-
 Per rendere il processo maggiormente sicuro è stato deciso lasciare all'utente la possibilità di definire anche un valore di sale per garantire una maggiore sicurezza agli attacchi crittografici.
 
 [^Hash] Gli algoritmi hash sono particolari tipi di funzioni utilizzati per garantire la confidenzialità dei dati.
@@ -103,25 +103,35 @@ Questi ultimi infatti permettono di convertire input di una lunghezza arbitraria
 
 [^Hash-proprietà] Le proprietà di sicurezza di riferimento delle funzioni hash sono tre: resistenza alla preimmagine, resistenza alla seconda preimmagine e resistenza alla collisione. Per maggiori informazioni consultare \[link to Funzioni Crittofiche di hash!](https://it.wikipedia.org/wiki/Funzione_crittografica_di_hash).
   
+ Entrambe le famiglie di algoritmi di encryption estendono da un trait condiviso che ne modella operazioni comuni; questi prende il nome di `EncryptionAlgoritm` .
   
   - `SymmetricAlgoritm`
-  Gli algoritmi di crittografia simmetrica, sono gli algoritmi crittografici in grado di garantire la confidenzialità in un sistema.
-Per quanto riguarda questa tipologia di algoritmi si è scelto di mettere a disposizione tre cifrari piuttosto differenti, il Cifrario di Cesare, DES, AES, anche in questo caso si è scelto di lasciare gli utilizzatori disporre anche di algoritmi la cui insicurezza è nota da lungo tempo [^CifrarioCesareInsicuro] poichè lo scopo del framework è quello di permettere all'utente di fare di confronti.
+  Il trait `SymmetricAlgoritm` è una delle due macrocategorie di algoritmi di crittografia; nello specifico questi modella la famiglia di algoritmi di crittografia simmetrica[^CrittografiaSimmetrica].
+  
+ [^CrittografiaSimmetrica] Gli algoritmi di crittografia simmetrica sono gli algoritmi crittografici in grado di garantire la confidenzialità in un sistema.
+ 
+Per quanto riguarda questa tipologia di algoritmi si è scelto di mettere a disposizione tre algoritmi piuttosto differenti, il *Cifrario di Cesare*, *DES*, *AES*, anche in questo caso si è scelto di lasciare gli utilizzatori disporre anche di algoritmi la cui insicurezza è nota da lungo tempo [^CifrarioCesareInsicuro] ricordando che lo scopo del framework è quello di permettere all'utente di fare di confronti.
 
-[^CifrarioCesareInsicuro]L'insicurezza del Cifrario di Cesare è stata evidente fin dal XI a seguito degli studi sulle tecniche di crittoanalisi del arabo \textit{Al-Kindi}. La sicurezza di DES invece è stata messa in questione dal 1997 quando per la prima volta sono stati violati messaggi criptati col suddetto algoritmo. Attualmente AES è l'unico algoritmo proposto ad essere approvato dal \textit{NSA} per il passaggio di informazioni *top secret*. 
+[^CifrarioCesareInsicuro]L'insicurezza del Cifrario di Cesare è stata evidente fin dal XI a seguito degli studi sulle tecniche di crittoanalisi del arabo *Al-Kindi*. La sicurezza di DES invece è stata messa in questione dal 1997 quando per la prima volta sono stati violati messaggi criptati col suddetto algoritmo. Attualmente AES è l'unico algoritmo proposto ad essere approvato dal *NSA* per il passaggio di informazioni *top secret*. 
 
 
  - `AsymmetricAlgoritm`
-  Il modulo di crittografia a chiave asimmetrica, concerne quella categoria di algoritmi in grado di garantire l'autenticità.
-Il framework in questo caso mette a disposizione un solo algoritmo RSA.
-Quest'ultimo viene utilizzato sia per quanto riguarda la generazione delle chiavi stesse da utilizzare durante le operazioni di crittografia, sia per la generazioni delle chiavi stesse.
-Le chiavi vengono quindi rappresentate come unica entità, denominata KeyPair, 
+  Il trait `AsymmetricAlgoritm` come l'interfaccia precedente estende dal trait `EncryptionAlgoritm` modellando in questo caso gli algoritmi a chiave asimmetrica[^AlgoritmiAsimmetrici].
+  
+[^AlgoritmiAsimmetrici]  Il modulo di crittografia a chiave asimmetrica, concerne quella categoria di algoritmi in grado di garantire l'autenticità.
 
+Il framework in questo caso mette a disposizione un solo algoritmo *RSA*.
+Quest'ultimo viene utilizzato sia per quanto riguarda la generazione delle chiavi stesse da utilizzare durante le operazioni di crittografia, sia per la generazioni delle chiavi stesse.
+
+La libreria separa quelle che sono le caratteristiche statiche degli algoritmi, da quelle che sono le modalità in cui queste vengono sfruttate per l'implementazione delle operazioni crittografiche.
+Gli algoritmi appena descritti modellano le prime e di seguito verranno esposti i cifrari, che implementano le seconde.
 
 - `Cipher`
 Trait che modella un generico cifrario, esponendo i metodi comuni a tutte le tipologie di cifrari identificati, questi come `CryptographicAlgorithm` rappresenta la *root* per tutte le diverse categorie di cifrari: `SymmetricCipher` e  `AsymmetricCipher`.
 
-Infatti, ad ogni algoritmo di encryption identificato (algoritmi a chiave simmetrica, o asimmetrica) è stato associato un cifrario che incapsula la logica con cui l'algoritmo viene utilizzato per criptare e successivamente decriptare una segreto.
+Infatti, ad ogni algoritmo di encryption[^EncryptionVSHashing] identificato (algoritmi a chiave simmetrica, o asimmetrica) è stato associato un cifrario che incapsula la logica con cui l'algoritmo viene utilizzato per criptare e successivamente decriptare una segreto.
+
+[^EncryptionVSHashing] Nel caso del framework le funzioni hash vengono utilizzate per evitare all'utente di salvare le password in chiaro nel database, tuttavia essendo queste non invertibili, perchè l'utente possa controllare l'integrità della password non potrà decriptare il valore hash ma fare un confronto tra il valore hash della password passata in input e quello salvata sul database.
 
 I cifrari sono stati implementati cercando di incapsulare le operazioni comuni in un abstract class applicando il pattern `Template Method` per seguire il principio *DRY*, tuttavia, sebbene il paradigma funzionale si appoggi sull'idea che ogni cosa dovrebbe essere una funzione, in questo caso si è preferito non implementare factories per la creazione di oggetti, in quanto avrebbe potuto impendire l'estensibilità del framework o, minarne la consistenza.
 
@@ -134,20 +144,15 @@ L'entità adibita a tale compito è il `BasicCipher`, classe astratta che fornis
   Si tratta dell'unico cifrario a non avvalersi dell'implementazione di base per i cifrari a causa della natura intrinseca dell'algoritmo.
   Questi infatti al contrario degli altri nasce per essere utilizzato con un numero intero come segreto e non con una stringa.
   
-  - `AESCipher`
-  Cifrario che sfruttando l'algoritmo di `AES` per l'implementazione delle operazioni di cifratura.
-  - `DESCipher`
-   Cifrario che sfruttando l'algoritmo di `DES` per l'implementazione delle operazioni di cifratura.
-  - `RSACipher`
-  -  Cifrario che sfruttando l'algoritmo di `RSA` per l'implementazione delle operazioni di cifratura.
-  Oltre alle operazioni base della crittografia, un cifrario relativo alla crittografia asimmetrica deve inoltre mettere a disposizione un insieme di operazioni per la gestione dell chiavi.
+  - `AESCipher`, `DESCipher` ed `RSACipher`
+ Sono i cifrari che sfruttando rispettivamente gli algoritmi `AES`, `DES` ed `RSA`per l'implementazione delle operazioni di cifratura.
+`RSACipher` oltre alle operazioni base della crittografia, un cifrario relativo alla crittografia asimmetrica deve inoltre mettere a disposizione un insieme di operazioni per la gestione dell chiavi sfruttando delle specifiche strutture la più importante delle quali è il: `KeyGenerator`.
     - `KeyGenerator`
   Componente del sistema adibito alla gestione delle chiavi da utilizzare durante le operazioni di crittografia con chiave asimmetrica.
   Questo componente per evitare incosistenze deve essere accessibile solo dal cifrario che lo utilizza e permettere di generare, o caricare delle chiavi pre-esistenti.
       - `KeyPair`: entità che rappresenta una coppia di chiavi: una privata da utilizzare durante l'encryption ed una pubblica per permettere la decryption.
      
-     % Tale classe come i cifrari cercano di wrapper le classi delle librerie utilizzate per l'effettiva implementazione, in modo da poterla sostituire in qualsiasi momento in maniera trasparente, senza che l'utente finale subisca conseguenze.
-![User Builder e UserInformation](assets/images/library-cryptography/cipher/cipher.png)
+![Cipher](assets/images/library-cryptography/cipher/cipher.png)
 ### User
 - `User`
 Il trait `User` modella un generico utente, il quale è caratterizzato da uno `userName` e da una `password`.

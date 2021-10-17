@@ -4,7 +4,7 @@ import it.unibo.authsim.library.otp.builders.OTPBuilder.SecretValue
 import it.unibo.authsim.library.otp.builders.HOTPBuilder
 import it.unibo.authsim.library.otp.generators.OTPRegenerateHelpers.*
 import it.unibo.authsim.library.otp.model.HOTP
-import it.unibo.authsim.library.otp.util.OTPHelpers.generatorLength
+import it.unibo.authsim.library.otp.generators.LengthGenerator.generatorLength
 import org.scalatest.wordspec.AnyWordSpec
 
 import scala.language.postfixOps

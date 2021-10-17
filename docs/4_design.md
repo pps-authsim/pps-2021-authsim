@@ -42,43 +42,135 @@ in quanto quando restituisce un `Option` vuoto significa che le combinazioni di 
 
 
 ### Policy
-//TODO: aggiungere descrizione dei diagrammi Policy
 
-- `Model`
-  ![Policy Model Package UML](assets/images/policy/policy-model-package.svg)
+![Policy Model Package UML](assets/images/policy/policy-model-package.svg)
 
-- `Alphabet`
-  ![Policy Alphabet Package UML](assets/images/policy/policy-alphabet-package.svg)
+Le interfacce `Policy`, `UserIDPolicy`,`PasswordPolicy`,`OTPPolicy`,`Saltpolicy` definiscono un tipo immutabile di politica di sicurezza.
 
-- `Builders`
-  ![Policy Builders Package UML](assets/images/policy/policy-builders-package.svg)
+- `Policy` è un' interfaccia che rappresenta una container d' informazioni riguardanti le credenziali dell' utente.
+  - `credentialPolicies: Seq[CredentialPolicy]` identifica le policy relative alle credenziali
+  - `cryptographicAlgorithm: Option[CryptographicAlgorithm]` identifica l'eventuale algoritmo crittografico utilizzato per memorizzare le credenziali nel database. Nel caso non sia presente, significa che sono state memorizzate in _plaintext_
+  - `saltPolicy: Option[SaltPolicy]` identifica una policy su un eventuale valore di sale utilizzato per crittografare le credenziali
+  - `transmissionProtocol: Option[Protocol]` identifica l'eventuale protocollo (interfaccia `Protocol`) utilizzato per trasferire le credenziali dal host locale a un host remoto. Se non è presente significa che le credenziali sono usate in locale
+   
 
-- `Changers`
-  ![Policy Changers Package UML](assets/images/policy/policy-changers-package.svg)
+- `UserIDPolicy`,`PasswordPolicy`,`OTPPolicy` sono interfacce di security policy riguardanti le credenziali vere e proprie (userID, password, otp), definite dall'amministratore di sistema.
 
-- `Checkers`
-  ![Policy Checkers Package UML](assets/images/policy/policy-checkers-package.svg)
 
-- `Defaults`
-  ![Policy Defaults Package UML](assets/images/policy/policy-defaults-package.svg)
+- `Saltpolicy` è l'interfaccia che definisce come deve essere un valore di sale.
 
-- `Extractor`
-  ![Policy Extractors Package UML](assets/images/policy/policy-extractors-package.svg)
+Le credenziali e i valori di sale sono di tipo stringa, quindi le policy corrispondenti sono state progettare in modo da essere un estensione dell' interfaccia `StringPolicy` 
+che richiede un alfabeto (`PolicyAlphabet`), grazie al quale possono essere generate automaticamente le stringhe, attraverso il metodo `generate(implicit policyAutoBuilder: StringPolicy => PolicyAutoBuilder[String]): String`, senza che l' utilizzatore debba generarle manualmente.
 
-- `Generators`
-  ![Policy Generators Package UML](assets/images/policy/policy-generators-package.svg)
+Il metodo utilizzato per generare automaticamente le stringhe è una Higher-Order Function, ovvero una funzione che accetta altre funzioni come parametri, quindi 
+il metodo delega alla funzione passatagli ( `implict StringPolicy => PolicyAutoBuilder[String]` ) la generazione della stringa basata sulla `StringPolicy`.
 
-### OTP (One-Time Password)
-//TODO: aggiungere descrizione dei diagrammi OTP
+L'alfabeto `PolicyAlphabet` è stato progettato utilizzando il pattern template method, in modo tale che l'utilizzatore debba definire solamente una parte o tutti i seguenti metodi:
+- `lowers` restituisce un alfabeto contenente solamente i caratteri minuscoli
+- `uppers` restituisce un alfabeto contenente solamente i caratteri maiuscoli
+- `digits` restituisce un alfabeto contenente solamente i caratteri numerici
+- `symbols` restituisce un alfabeto contenente solamente caratteri speciali
 
-- `Model`
-  ![OTP Model Package UML](assets/images/otp/otp-model-package.svg)
+Questi metodi restituiscono un alfabeto del tipo `SymbolicAlphabet` (extends [`Alphabet`](#alphabet)).
 
-  - `Builders` //TODO: modificare UML
-    ![OTP Builders Package UML](assets/images/otp/otp-builders-package.svg)
+L'alfabeto è stato _arricchito_ con il mixin `RandomAlphabet` che definisce metodi che restituiscono una lazy list di caratteri
+e con il mixin `RegexAlphabet` che definisce metodi che restituiscono una espressione regolare.
 
-- `Generators`  //TODO: modificare UML
-  ![OTP Generators Package UML](assets/images/otp/otp-generator-package.svg)
+Ogni `StringPolicy` può essere _arricchita_ da una o più interfacce (mixins) che definiscono dei metodi utili per la generazione e la validazione delle stesse.
+
+- `RestrictStringPolicy` definisce metodi riguardanti la lunghezza della stringa
+  - `minimumLength: Int` restituisce il valore minimo della lunghezza della stringa
+  - `maximumLength: Option[Int]` restituisce opzionalmente il valore della massima lunghezza. Se non è presente il valore massimo, significa che non c'è un limite superiore alla lunghezza che una stringa può avere.
+
+
+- `MoreRestrictStringPolicy` definisce metodi riguardanti il contenuto della stringa
+  - `minimumUpperChars: Option[Int]` : restituisce opzionalmente il valore minimo di caratteri maiuscolo che una stringa deve contenere
+  - `minimumLowerChars: Option[Int]` : restituisce opzionalmente il valore minimo di caratteri minuscoli che una stringa deve contenere
+  - `minimumSymbols: Option[Int]` : restituisce opzionalmente il valore minimo di caratteri speciali che una stringa deve contenere
+  - `minimumNumbers: Option[Int]` : restituisce opzionalmente il valore minimo di caratteri numerici che una stringa deve contenere
+  
+   Nel caso in cui uno o più di questi metodi non restituisca un valore, significa che non c'è un limite inferiore per il contenuto della stringa. 
+   Per esempio se `minimumUpperChars = None` significa che in una stringa può non esserci nessun carattere maiuscolo.
+
+
+La creazione delle security policy è delegata alle classi `PolicyBuilder`, `UserIDPolicyBuilder`, `PasswordPolicyBuilder`, `OTPPolicyBuilder`, `SaltPolicyBuilder`, progettate utilizzando il pattern _Builder_.
+La struttura dei vari builder rispecchia il modello descritto precedentemente.
+
+In più è stata inserita una interfaccia (mixin) `SettableAlphabetBuilder`, utile al settaggio di un nuovo alfabeto. Questa interfaccia è stata creata per necessita visto che non tutte le `StringPolicy` devono cambiare alfabeto, 
+infatti le One Time Password (OTP), per definizione, hanno un alfabeto fisso di soli caratteri numerici.
+
+
+![Policy Builders Package UML](assets/images/policy/policy-builders-package.svg)
+
+Essendo le security policy immutabili, esiste la possibilità di modificare delle policy già definite tramite l' oggetto `PolicyChanger`, il quale definisce dei metodi factory per ogni policy progetta.
+ - `apply(policy: Policy): BasicPolicyBuilder with PolicyChanger[Policy]`
+ - `userID(userIDPolicy: UserIDPolicy): UserIDPolicyChanger`
+ - `password(passwordPolicy: PasswordPolicy):PasswordPolicyChanger`
+ - `otp(otpPolicy: OTPPolicy): OTPPolicyChanger`
+ - `salt(saltPolicy: SaltPolicy): SaltPolicyChanger`
+ 
+Tutti i PolicyChanger estendono il builder corrispondente e l'interfaccia mixin `PolicyChanger[T]`, nella quale è definito un metodo `rebuild: T` che ricostruisce la security policy con le eventuali modifiche.
+
+![Policy Changers Package UML](assets/images/policy/policy-changers-package.svg)
+
+Una prerogativa delle security policy relative alle stringhe è quella di essere validate/verificate, ciò è possibile utilizzando l' oggetto `StringPolicyChecker` 
+che possiede il metodo factory `apply(policy: Stringpolicy): PolicyChecker[String]` che crea un istanza di `PolicyChecker[String]` la quale possiede un metodo `check(value: String): Boolean`
+che verifica che il valore passatogli sia conforme alla policy precedentemente inserita.
+  
+![Policy Checkers Package UML](assets/images/policy/policy-checkers-package.svg)
+
+
+Per facilitare l'assegnamento delle credenziali generate in base al tipo di credenziale (userID, password, otp) sono stati progettati degli extractor object (ovvero oggetti che definiscono un metodo `unapply(credentialPolicy: CredentialPolicy): Option[String]`).
+ - `UserIDGenerate` estrae l'userID generato dalla `CredentialPolicy`
+ - `PasswordGenerate`  estrae la password generata dalla `CredentialPolicy`
+ - `OTPGenerate`  estrae l'OTP generato dalla `CredentialPolicy`
+
+![Policy Extractors Package UML](assets/images/policy/policy-extractors-package.svg)
+
+Sono state progettate delle Security Policy di Default che sfruttano le varie funzionalità descritte precedentemente.
+
+![Policy Defaults Package UML](assets/images/policy/policy-defaults-package.svg)
+
+### Generatore di One-Time Password (OTP)
+
+La One Time Password è una password che è valida solo per una singola sessione di accesso o una transazione. 
+Per questo suo scopo l'OTP è anche detta password usa e getta.
+Le OTP possono essere utilizzate come unico fattore di autenticazione, o in aggiunta ad un altro fattore, 
+come può essere la password dell'utente, in modo da realizzare una autenticazione a due fattori.
+
+![OTP Model Package UML](assets/images/otp/otp-model-package.svg)
+
+Le interfacce `OTP`, `HOTP`, `TOTP` definiscono un tipo immutabile di One-Time Password.
+
+`OTP` è l' interfaccia che definisce un tipo generico di one time password.
+ - `polciy: OTPPolicy` restituisce la policy che viene applicata alla otp
+ - `length: Int` restituisce l'effettiva lunghezza dell'otp 
+ - `reset: Unit` effettua il reset del otp generatore
+ - `generate: String` restituisce una valida otp
+ - `check(pincode: String): Boolean` verifica che il _pincode_ passatogli sia una valida otp
+
+Le sue estensioni, ovvero le effettive interfacce, sono:
+
+ - `HOTP` rappresenta una OTP basata sulla hash-based message authentication codes (HMAC).
+   - `hashFunction: HashFunction` restituisce la funzione hash con cui viene generata l'otp
+   
+
+ - `TOTP` rappresenta una particolare OTP basata sulla hash-based message authentication codes (HMAC), in aggiunta possiede un limite di tempo di utilizzo.
+ 
+   - `timeout: Duration` restituisce la durata di tempo di validità della otp
+   - `createDate: Option[Long]` restituisce opzionalmente la data di generazione della otp. Se non presente, significa che la otp non è stata ancora generata.
+
+La creazione delle one time password è delegata alle classi `HOTPBuilder`, `TOTPBuilder`, progettate utilizzando il pattern _Builder_.
+La struttura dei vari builder rispecchia il modello descritto precedentemente.
+
+![OTP Builders Package UML](assets/images/otp/otp-builders-package.svg)
+
+L'algoritmo dell'HOTP è stato incapsulato nell'oggetto `OTPGenerator`, in modo tale da poterlo utilizzare anche standalone.
+
+La generazione della lunghezza della OTP è delegata alla interfaccia `LengthGenerator`, la quale possiede un metodo che prende in input una OTP policy e genera la lunghezza effettiva (`length(optPolicy: OTPPolicy): Int`).
+Questa interfaccia viene utilizza nel `OTPBuilder` attraverso il metodo `withPolicy(policy: OTPPolicy)(implicit generateLength: LengthGenerator)`.
+
+![OTP Builders Package UML](assets/images/otp/otp-generators-package.svg)
 
 ### Cryptography 
 Il modulo di crittografia è la parte del sistema adibita a tutte le operazioni crittografiche.
@@ -215,20 +307,7 @@ Tali metodi sono infatti invarianti rispetto ai cifrari proposti[^CaesarCipher].
 
 [^CaesarCipher]: L'unica eccezione è rappresentata dal `CaesarCipher` in quanto unico cifrario a non estendere dalla classe astratta per la natura intrinseca dell'algoritmo.
 
-//TODO: AlphabetCommonClasses.alphabenumericsymbols è template method e anche i metodi di trait RegexAlphabet e RansomAlphabet 
-
-
 ## Client
-
-### Observer
-
-// TODO UML ObservableListBuffer
-
-### Factory
-
-
-
-// TODO UML AttackFactory
 
 ### ScalaFx Task
 
@@ -244,19 +323,67 @@ un StringProperty, `messageProperty`, disponibile alla GUI.
 In questo modo si riesce a eseguire la simulazione e stampare su un elemento della gui i log della sua esecuzione.
 
 L'esecuzione del task viene effettuata da un component `SimulationRunnerComponent` responsabile di avviare e di fermare il task in esecuzione.
-Questa classe utilizza `ExecutorService` mono-thread (`newSingleThreadExecutor`) per gestire il task. 
+Questa classe utilizza `ExecutorService` istanziato con thread singolo (`newSingleThreadExecutor`) per gestire il task.
 
-// TODO UML Task e runner
+![Simulation Runner](assets/images/runner.png)
 
-### Repositories
+### Repository
 
-// TODO UML SQL e Mongo Repository
+Si possono persistere gli utenti in due modi: Database SQL e Database Mongo.
+Per facilitare il deploy dell'applicazione, è stato deciso di utilizzare i database in-memory:
 
-### Properties Service
+ - SLQ - con h2 database
+ - MongoDB - con flapdoodle embedded mongo
 
-Nello svolgimento del progetto, 
+Entrambi sono delle dipendenze Java e quindi sono state integrate con il codice Scala.
 
-// TODO UML properties Service e SQLRepository
+Queste dipendenze sono state pensate per gli ambienti di testing, 
+tuttavia con qualche accorgimento sono state adattate ad essere utilizzare nell'applicativo.
+
+L'accesso alla persistenza è stato gestito nelle classi `Repository` ispirate a *Domain Driven Design*, forniscono
+un'interfaccia che astrae l'accesso ai dati e rende trasparente l'implementazione.
+
+![Repositories](assets/images/repositories.png)
+
+### Service
+
+Per gestire la business logic dell'applicativo sono state create delle classi `Service` ispirate a *Domain Driven Design*.
+  - `Properties Service` - cui compito è quello di fornire un'astrazione per il caricamente e l'accesso alle properties definite nel file di configurazione esterna
+    `application.properties`
+  - `SimulationRunner` - cui compito è quello di astrarre la gestione dell'esecuzione del task della simulazione
+  
+### Error Handling Funzionale
+
+Nel client si cercava di preferire error handling funzionale.
+In particolare sono stati usati i costrutti `Try` e `Using`.
+
+### Promise
+
+Il driver di MongoDB per Scala 2 (portato nell'ambiente del progetto con cross building) 
+esponse un API asincrona basata sul pattern `Observer`. Per le esigenze della simulazione è stato deciso
+di rendere sequenziali le operazioni con il database. Per questo motivo si è ricorso al costrutto `Promise`.
+Semplicemente ogni volta che si sesegue un'operazione su MongoDB viene restituito un `Observable` e viene creata 
+una `Promise` che viene risolta in certe condizioni (che dipendono dall'operazioni in questione), oppure rigettata nel caso d'errore.
+
+In questo modo eseguendo `Await.result` sulla promise, il flusso diventa sequenziale.
+
+### Factory
+
+Per costruire gli attacchi preconfigurati è stato utilizzato il pattern `Factory`.
+La classe `AttacksFactory` viene istanziata con `UserProvider` e `StatisticsConsumer` necessari per costruire `AttackBuilder` richiesto.
+
+### Observer
+
+Per gestire le notifiche dinamiche tra ViewModel e Model, è stata creata la classe `ObservableListBuffer[A]` che permette di eseguire delle operazioni
+semplici con una collection (mutable) di elementi di tipo `A` notificando i listener su quel evento.
+
+In particolare `ObservableListBuffer[A]` supporta i listener per gli eventi
+  - add element
+  - remove element
+  
+I listener si possono passare in costruzione utilizzando uno degli `apply` nel suo Companion Object oppure anche post-costruzione con i metodi appositi.
+
+![ObservableListBuffer](assets/images/observable.png)
 
 ## Organizzazione del codice
 

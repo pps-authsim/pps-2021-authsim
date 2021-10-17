@@ -2,7 +2,7 @@ package it.unibo.authsim.library.otp.builders
 
 import it.unibo.authsim.library.cryptography.algorithm.hash.HashFunction
 import it.unibo.authsim.library.builder.Builder
-import it.unibo.authsim.library.otp.generator.OTPGenerator
+import it.unibo.authsim.library.otp.generators.{LengthGenerator, OTPGenerator}
 import it.unibo.authsim.library.otp.model.*
 import it.unibo.authsim.library.otp.util.OTPHelpers.*
 import it.unibo.authsim.library.policy.builders.stringpolicy.OTPPolicyBuilder
@@ -24,7 +24,7 @@ trait OTPBuilder[T] extends Builder[T]:
    * @param generateLength a generator of the actual length of one time password given a otp policy
    * @return instance of the actual builder
    */
-  def withPolicy(policy: OTPPolicy)(implicit generateLength: OTPPolicy => Int): this.type
+  def withPolicy(policy: OTPPolicy)(implicit generateLength: LengthGenerator): this.type
 
 object OTPBuilder:
   /**
@@ -35,7 +35,7 @@ object OTPBuilder:
   /**
    *  ''SecretBuilder'' rappresents an extension builder to use Secret value.
    */
-  trait SecretBuilder:
+  trait SecretBuilder[T] extends OTPBuilder[T]:
     /**
      * Set the secret key (@see [[SecretValue]])
      * @param secret key to set
@@ -46,7 +46,7 @@ object OTPBuilder:
   /**
    *  ''HmacOTPBuilder'' rappresents an extension builder to implement HOTP.
    */
-  trait HmacOTPBuilder:
+  trait HmacOTPBuilder[T] extends OTPBuilder[T]:
     /**
      * Set the [[HashFunction hash function]] used to generate the otp.
      * @param hashFunction hash function to set
@@ -57,7 +57,7 @@ object OTPBuilder:
   /**
    * ''TimeOTPBuilder'' rappresents an extension builder to implement TOTP.
    */
-  trait TimeOTPBuilder:
+  trait TimeOTPBuilder[T] extends OTPBuilder[T]:
     /**
      * Set the [[Duration time]] that rappresents the expiration of one time password
      * @param timeout time to set
@@ -74,10 +74,11 @@ object OTPBuilder:
    *
    * @tparam T  the type to build
    */
-  abstract class AbstractOTPBuilder[T] extends OTPBuilder[T] with SecretBuilder:
+  abstract class AbstractOTPBuilder[T] extends OTPBuilder[T] with SecretBuilder[T]:
     protected val SEPARATOR_SECRET = '-'
     protected var _policy: OTPPolicy = null
     protected var _secret: String = Random.alphanumeric.take(10).mkString
+    protected var _checked: Boolean = false
 
     protected var _length: Int = 0
     this.withPolicy(OTPPolicyBuilder() minimumLength 4 maximumLength 10 build)
@@ -85,14 +86,25 @@ object OTPBuilder:
     protected var _seed: Int = 0
     this.generateSeed
 
-    protected def generateSeed(implicit seedGenerator: () => Int): Unit =
-      val genSeed: Int = seedGenerator()
+    private def generateSeed: Unit =
+      val genSeed = Random.between(Int.MinValue, Int.MaxValue)
       this._seed = if genSeed == this._seed then genSeed + 1 else genSeed
 
-    override def withPolicy(policy: OTPPolicy)(implicit lengthGenerator: OTPPolicy => Int) =
+    protected def reset: Unit =
+      this.generateSeed
+      this._checked = false
+
+    protected def checked(valid: Boolean): Boolean = this._checked match
+      case true => false
+      case _ =>
+        this._checked = valid
+        if valid then this.generateSeed
+        valid
+
+    override def withPolicy(policy: OTPPolicy)(implicit lengthGenerator: LengthGenerator) =
       this.builderMethod[OTPPolicy](policy =>
         this._policy = policy;
-        this._length = lengthGenerator(policy)
+        this._length = lengthGenerator.length(policy)
       )(policy)
 
     override def secret(secret: SecretValue) = this.builderMethod[SecretValue](secret => this._secret = s"${secret._1}$SEPARATOR_SECRET${secret._2}")(secret)
@@ -103,7 +115,7 @@ object OTPBuilder:
    *  Default:
    *  - [[HashFunction Hash function]] is [[HashFunction.SHA256 SHA256]].
    */
-  abstract class AbstractHOTPBuilder extends AbstractOTPBuilder[HOTP] with HmacOTPBuilder:
+  abstract class AbstractHOTPBuilder[T] extends AbstractOTPBuilder[T] with HmacOTPBuilder[T]:
     protected var _hashFunction: HashFunction = HashFunction.SHA256()
 
     protected def otpGenerator(length: Int = this._length): String = OTPGenerator(this._hashFunction, this._secret, length, this._seed)
@@ -116,7 +128,7 @@ object OTPBuilder:
    * Default:
    *  - [[Duration Time of expiration]] has a duration of 1 minute.
    */
-  abstract class AbstractTOTPBuilder extends AbstractHOTPBuilder with TimeOTPBuilder:
+  abstract class AbstractTOTPBuilder extends AbstractHOTPBuilder[TOTP] with TimeOTPBuilder[TOTP]:
     protected var _timeout: Duration = Duration(1, TimeUnit.MINUTES)
 
     override def timeout(timeout: Duration) = this.builderMethod[Duration](timeout => this._timeout = timeout)(timeout)

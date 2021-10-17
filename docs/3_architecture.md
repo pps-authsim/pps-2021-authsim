@@ -101,7 +101,7 @@ Una possibilità consiste nell'implementare il *"Cake Pattern"*, proposto nel pa
 tramite l'utilizzo di self-types permette la composizione di componenti modulari con dei trait multipli, stabilendo la relazione
 di dipendenza tra i trait ma mantenendo sempre l'incapsulamento (a differenza dell'utilizzo di inhertitance).
 
-Nel progetto il *"top layer"* dell'ambiente di DI è stato rappresentato con la classe *ComponentRegistry* che espone i component singleton che ottengono le dipendenze "iniettate" tramite
+Nel progetto il *"top layer"* dell'ambiente di DI è stato rappresentato con la classe *ComponentRegistry* che espone i component singleton (nel contesto DI) che ottengono le dipendenze "iniettate" tramite
 *self-type annotations*.
 
 La business logic non è stata sufficientemente complessa in modo da permettere delle gerarchie delle dipendenze complesse, tuttavia rimane facilmente

@@ -48,7 +48,7 @@ Inoltre, in un discreto numero di casi si è scelto di incapsulare l'implementaz
 
 ## Ntronov Kyrillos
 
-Kyrillos Ntronov ha realizzato interamente la parte client (package **it.unibo.authsim.client.app**). 
+Kyrillos Ntronov ha realizzato interamente la parte client (package **it.unibo.authsim.client.app**) eccetto `it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy`. 
 
 In particolare sono stati realizzati:
 
@@ -77,6 +77,11 @@ quindi di tutte le classi che si trovano nei seguenti package:
 - `it.unibo.authsim.library.policy`
 - `it.unibo.authsim.library.otp`
 
+e inoltre del trait `it.unibo.authsim.library.Protocol`.
+
+Ho partecipato all'integrazione della library nella parte client per quanto riguarda le security policy, implementando gli oggetti:
+ - `it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy`
+ - `it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy.Default`
 
 ## Speranza Alex
 ### Alphabet

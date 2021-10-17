@@ -1,20 +1,24 @@
 # Design architetturale
 
-In questo capitolo vengono descritti i principali elementi dell'architettura adottata
-durante lo sviluppo.
+In questo capitolo vengono descritti i principali elementi dell'architettura adottata durante lo sviluppo.
 
-La fase di design ha rappresentato il core del progetto, durante quest'ultima è stata definita l'architettura del complessiva del framework, così come quella dell'applicativo dimostrativo.
+La fase di design ha rappresentato il core del progetto, durante quest'ultima è stata definita l'architettura del complessiva del framework, 
+così come quella dell'applicativo dimostrativo.
 
 ## Architettura complessiva
 
-// TODO parlare di divisone tra client/library
+Il progetto è stato diviso in due sotto-progetti: il framework e l'applicazione.
+
+Il framework è una libreria a sè stante e non dipende in alcun modo dall'applicazione, mentre quest'ultima deve utilizzare il framework.
 
 ## Pattern architetturali usati
 
 ### Library
 
-Fin dall'inizio della pianificazione dell'architettura del framework è stato chiaro che questi doveva essere progettato mettendo al centro dello sviluppo tre principi su tutti: la modularità, l'anticipazione dei cambiamenti e l'incrementalità.
-Tenendo in mente questi obiettivi è stata quindi architettata una struttura che potesse essere componibile in maniera modulabile per poterne permettere il rilascio incrementale e l'estensione in maniera quanto più semplice possibile.
+Fin dall'inizio della pianificazione dell'architettura del framework è stato chiaro che questi doveva essere progettato mettendo 
+al centro dello sviluppo tre principi su tutti: la modularità, l'anticipazione dei cambiamenti e l'incrementalità.
+Tenendo in mente questi obiettivi è stata quindi architettata una struttura che potesse essere componibile in maniera modulabile 
+per poterne permettere il rilascio incrementale e l'estensione in maniera quanto più semplice possibile.
 
 Il framework è stato progettato per essere il più dichiarativo possibile, avvalendosi della notazione infissa dei metodi offerta da Scala.
 
@@ -39,7 +43,7 @@ Nel progetto questa parte è stata implementata con le componenti grafiche della
 In particolare la gui è stata modularizzata in tre view aggregate sotto forma di tab della finestra visibile all'utente:
 
 - **Users** - responsabile della definizione e gestione degli utenti coinvolti nella simulazione dell'attacco.
-- **Security** - responsabile della scelta delle policy di sicurezza da applicare e del modo in cui gli utenti vengono memorizzati
+- **Security** - responsabile della scelta delle policy di sicurezza da applicare e del modo in cui gli utenti vengono memorizzati.
 - **Attack** - responsabile della scelta del preset dell'attacco preconfigurato da eseguire e del suo avvio. Inoltre offre la possibilità di visualizzare le
 statistiche e le informazioni relative allo svolgimento dell'attacco.
 
@@ -68,9 +72,9 @@ Si nota anche la necessità di separare gli oggetti del dominio di model dagli o
 
 #### Model
 
-Model rappresentano l'incapsulamento dei dati dell'applicativo. Da questo punto di vista, si potrebe dire che model rappresenta il *domain model* dell'applicativo.
+Model rappresentano l'incapsulamento dei dati dell'applicativo. Da questo punto di vista, si potrebbe dire che model rappresenta il *domain model* dell'applicativo.
 Solitamente i model includono anche la business logic e la logica di validazione, tuttavia per questo progetto è stato deciso mantenere un ulteriore separazione tra la business logic e i model
-in quanto la business logic è incapsulata quasi interamente nel dominio del *task* della simulazione dell'attacco.
+in quanto la prima è incapsulata quasi interamente nel dominio del *task* della simulazione dell'attacco.
 
 ![Authsim MVVM](/pps-2021-authsim/assets/images/mvvmauthsim.png)
 

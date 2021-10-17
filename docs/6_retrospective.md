@@ -48,7 +48,7 @@ Lo sviluppo del framework ha riguardato:
    - realizzazione di utility per meglio modularizzare il codice;
 - del cifrario per la crittografia asimmetrica: RSA e delle utility per la gestione delle chiavi ad esso collegate;
 
-Inoltre sono state ripensate e quindi revisione le implementazioni dei Logger e del Proxy perché meglio aderissero alle nuove esigenze emerse a valle degli ultimi sviluppi del framework.
+Inoltre sono state ripensate e quindi revisionate le implementazioni dei Logger e del Proxy perché meglio aderissero alle nuove esigenze emerse a valle degli ultimi sviluppi del framework.
 
 ### Iterazione 5: 22/09/2021 - 29/09/2021
 La quinta iterazione ha visto nuovamente una revisione di quanto implementato negli sprint precedenti da un lato e dall'altro ha visto lo sviluppo di ulteriori funzionalità del framework.
@@ -74,15 +74,13 @@ Durante la sesta iterazione sono state svolte le seguenti attività:
 La settima iterazione è stata usata per integrare completamente tutti i componenti del sistema e ultimare gli aspetti finali del progetto. 
 Infine, è stata testata l'applicazione dimostrativa.
 
-Nello specifico è stata ultimata la stesura della relazione, così come la documentazione formale su *github pages* e sul codice sorgente del progetto.
+Nello specifico è stata quasi completata la stesura della relazione, così come la documentazione formale su *github pages* e sul codice sorgente del progetto.
 
 ### Iterazione 8: 13/10/2021 - 17/10/2021
-Nell'ultima iterazione, sono stati prodotti gli artefatti Prolog.
+Nell'ultima iterazione, sono state eseguite le ultime revisioni al codice ed ultimata la relazione di progetto.
 
-## Gestione del backlog
-
-% E quanto ne è rimasto in ogni sprint
-## Gestione delle iterazioni
+## Backlog
+Il product backlog è visibile nel file [process/ProductBacklog.md](https://github.com/pps-authsim/pps-2021-authsim/blob/feature/documentation/process/ProductBacklog.md).
 
 # Conclusione e commenti finali
 Lo sviluppo del progetto è stata un esperienza essenziale nel nostro percorso di studi in quanto ha permesso di toccare con mano molti degli aspetti centrali affrontanti nel corso.
@@ -101,8 +99,3 @@ Molti sono gli sviluppi futuri di cui il framework potrebbe giovare.
 Infatti, grazie all'architettura definita si potrebbe facilmente pensare di introdurre nuovi tipi di attacco, metodi di cifratura e policy.
 Tuttavia, un estensione del framework potrebbe non essere la sola strada possibile, difatti si potrebbe anche pensare di sfruttare il paradigma logico per l'implementazione di alcune operazioni core.
 Per la sua intrinseca natura esplorativa, Prolog potrebbe essere utilizzato negli attacchi di tipo Brute Force ad esempio.
-
-
-
-
-//TODO: aggiungere PRODUCT BACKLOG

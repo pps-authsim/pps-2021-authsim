@@ -31,7 +31,7 @@ lazy val root = project
 
     // test
 
-    libraryDependencies += "org.scalatestplus" %% "mockito-3-4" % "3.2.9.0" % "test",
+    libraryDependencies += "org.scalatestplus" %% "mockito-3-4" % "3.2.9.0" % Test,
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test ,
 
     // util
@@ -46,7 +46,7 @@ lazy val root = project
     libraryDependencies += "com.h2database" % "h2" % "1.4.200",
     libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.25",
     libraryDependencies += "de.flapdoodle.embed" % "de.flapdoodle.embed.mongo" % "3.0.0",
-    libraryDependencies += "org.immutables" % "value" % "2.8.8" % "provided",
+    libraryDependencies += "org.immutables" % "value" % "2.8.8",
     libraryDependencies += ("org.mongodb.scala" %% "mongo-scala-driver" % "4.3.2").cross(CrossVersion.for3Use2_13),
 
     // gui
@@ -63,3 +63,24 @@ lazy val root = project
         .map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName)
     }
 )
+
+// Build configuration
+
+ThisBuild / assemblyMergeStrategy := {
+  case PathList("META-INF", xs@_*) =>
+    xs.map(_.toLowerCase) match {
+      case ("manifest.mf" :: Nil) |
+           ("index.list" :: Nil) |
+           ("dependencies" :: Nil) |
+           ("license" :: Nil) |
+           ("notice" :: Nil) => MergeStrategy.discard
+      case _ => MergeStrategy.first
+    }
+  case "reference.conf" => MergeStrategy.concat
+  case _ => MergeStrategy.first
+}
+
+ThisBuild/ assemblyJarName := "authsim.jar"
+
+ThisBuild / mainClass := Some("it.unibo.authsim.client.app.AuthsimApp")
+

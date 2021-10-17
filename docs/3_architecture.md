@@ -2,7 +2,7 @@
 
 In questo capitolo vengono descritti i principali elementi dell'architettura adottata durante lo sviluppo.
 
-La fase di design ha rappresentato il core del progetto, durante quest'ultima è stata definita l'architettura del complessiva del framework, 
+La fase di design ha rappresentato il core del progetto, durante quest'ultima è stata definita l'architettura complessiva del framework, 
 così come quella dell'applicativo dimostrativo.
 
 ## Architettura complessiva

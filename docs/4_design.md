@@ -241,7 +241,7 @@ L'entità adibita a tale compito è il `BasicCipher`, classe astratta che fornis
   
   - `AESCipher`, `DESCipher` ed `RSACipher`
  Sono i cifrari che sfruttando rispettivamente gli algoritmi `AES`, `DES` ed `RSA`per l'implementazione delle operazioni di cifratura.
-`RSACipher` oltre alle operazioni base della crittografia, un cifrario relativo alla crittografia asimmetrica deve inoltre mettere a disposizione un insieme di operazioni per la gestione dell chiavi sfruttando delle specifiche strutture la più importante delle quali è il: `KeyGenerator`.
+`RSACipher` oltre alle operazioni base della crittografia, un cifrario relativo alla crittografia asimmetrica deve inoltre mettere a disposizione un insieme di operazioni per la gestione delle chiavi sfruttando delle specifiche strutture la più importante delle quali è il: `KeyGenerator`.
     - `KeyGenerator`
   Componente del sistema adibito alla gestione delle chiavi da utilizzare durante le operazioni di crittografia con chiave asimmetrica.
   Questo componente per evitare incosistenze deve essere accessibile solo dal cifrario che lo utilizza e permettere di generare, o caricare delle chiavi pre-esistenti.

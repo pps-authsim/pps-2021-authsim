@@ -218,6 +218,8 @@ Quest'ultimo viene utilizzato sia per quanto riguarda la generazione delle chiav
 La libreria separa quelle che sono le caratteristiche statiche degli algoritmi, da quelle che sono le modalità in cui queste vengono sfruttate per l'implementazione delle operazioni crittografiche.
 Gli algoritmi appena descritti modellano le prime e di seguito verranno esposti i cifrari, che implementano le seconde.
 
+![Algorithm](assets/images/library-cryptography/algoritm/algorithm.png)
+
 - `Cipher`
 Trait che modella un generico cifrario, esponendo i metodi comuni a tutte le tipologie di cifrari identificati, questi come `CryptographicAlgorithm` rappresenta la *root* per tutte le diverse categorie di cifrari: `SymmetricCipher` e  `AsymmetricCipher`.
 

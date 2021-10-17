@@ -17,7 +17,7 @@ import org.mockito.Mockito.reset
 class SimulationRunnerImplTest extends AnyWordSpec with SimulationRunnerComponent with BeforeAndAfterEach with MockitoSugar:
 
   val mockExecutorService = MockitoSugar.mock[ExecutorService]
-  override val simulationRunner: SimulationRunner = new SimulationRunnerImpl(mockExecutorService)
+  override val simulationRunner: SimulationRunner = new SimulationRunnerImpl(() => mockExecutorService)
 
   override def beforeEach(): Unit =
     reset(mockExecutorService)

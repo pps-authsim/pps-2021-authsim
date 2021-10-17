@@ -48,7 +48,7 @@ Lo sviluppo del framework ha riguardato:
    - realizzazione di utility per meglio modularizzare il codice;
 - del cifrario per la crittografia asimmetrica: RSA e delle utility per la gestione delle chiavi ad esso collegate;
 
-Inoltre sono state ripensate e quindi revisione le implementazioni dei Logger e del Proxy perché meglio aderissero alle nuove esigenze emerse a valle degli ultimi sviluppi del framework.
+Inoltre sono state ripensate e quindi revisionate le implementazioni dei Logger e del Proxy perché meglio aderissero alle nuove esigenze emerse a valle degli ultimi sviluppi del framework.
 
 ### Iterazione 5: 22/09/2021 - 29/09/2021
 La quinta iterazione ha visto nuovamente una revisione di quanto implementato negli sprint precedenti da un lato e dall'altro ha visto lo sviluppo di ulteriori funzionalità del framework.

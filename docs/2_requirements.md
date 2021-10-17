@@ -165,7 +165,7 @@ In questa parte del capitolo infine vengono elencati i vincoli sullo processo di
 le tecnologie, quality assessment e gli standard stabiliti.
 
 - Si devono seguire le best practice e le convention di Scala e in particolare le nuove preferenze sintattiche di Scala 3.
-- Si deve avere una mentalità Agile e di seguire la metodologia Scrum modificata (delineata nel capitolo precedente).
+- Si deve avere una mentalità Agile e seguire la metodologia Scrum modificata (delineata nel capitolo precedente).
 - Si deve utilizzare la CI, in particolare per controllare l'idoneità del codice prima di chiudere un pull request.
 - Nonostante l'assenza dei tool automatici, si deve evitare di produrre code smell, vulnerabilità e anti-pattern, inoltre si deve puntare ad avere la coverage dei unit test sopra 80%,
 in particolare sulle sezioni critiche del codice.

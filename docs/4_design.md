@@ -182,7 +182,7 @@ Gli algoritmi crittografici sono stati modellati tramite una gerarchia che trova
 
 - `CryptographicAlgorithm`
    Il trait `CryptographicAlgorithm` modella un generico algoritmo di crittografia racchiudendone i metodi core comuni a tutti i suddetti algoritmi.
-//TODO add interface_ encryption_algorithm, hashAlgorithm symmetric
+
 Nel framework si è deciso di supportare tre macro tipologie di algoritmi crittografici, in modo da lasciare all'utilizzatore decidere se garantire l'integrità, l'autenticità, o la confidenzialità dei dati.
 Di seguito vengono quindi descritte le tre famiglie supportate partendo dalle funzioni hash, per poi arrivare agli algoritmi a chiave simmetrica ed asimmetrica.
 

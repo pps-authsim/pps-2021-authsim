@@ -148,7 +148,7 @@ attacco non sia andato a buon fine (cioè se non è stata trovata la password di
 
 Il companion object di `StatisticsConsumer` offre anche un'implementazione di base che scrive sul terminale i dati consumati.
 
-![Consumer UML](/pps-2021-authsim/assets/images/ConsumerFullUml.jpg)
+![Consumer UML](/pps-2021-authsim/assets/images/ConsumersFullUml.jpg)
 
 ### ConcurrentStringCombinator
 I `ConcurrentStringCombinator` sono oggetti il cui compito è di produrre tutte le combinazioni dei simboli dell'alfabeto

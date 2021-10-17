@@ -41,7 +41,7 @@ parallelo non interferiscono tra di loro. Inoltre, fornisce anche una condizione
 in quanto quando restituisce un `Option` vuoto significa che le combinazioni di stringhe richieste sono terminate.
 
 
-### Policy
+### Security Policy
 
 ![Policy Model Package UML](assets/images/policy/policy-model-package.svg)
 
@@ -163,6 +163,7 @@ Le sue estensioni, ovvero le effettive interfacce, sono:
 La creazione delle one time password è delegata alle classi `HOTPBuilder`, `TOTPBuilder`, progettate utilizzando il pattern _Builder_.
 La struttura dei vari builder rispecchia il modello descritto precedentemente.
 
+L'interfaccia `OTPBuilder` può essere _arrichita_ con le interfacce (mixins) `SecretBuilder`, `HmacOTPBuilder` e `TimeOTPBuilder` a seconda di quale tipo di OTP si vuole implementare.
 ![OTP Builders Package UML](assets/images/otp/otp-builders-package.svg)
 
 L'algoritmo dell'HOTP è stato incapsulato nell'oggetto `OTPGenerator`, in modo tale da poterlo utilizzare anche standalone.

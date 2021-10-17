@@ -49,7 +49,7 @@ Inoltre, in un discreto numero di casi si è scelto di incapsulare l'implementaz
 
 ## Ntronov Kyrillos
 
-Kyrillos Ntronov ha realizzato interamente la parte client (package **it.unibo.authsim.client.app**) eccetto `it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy`. 
+Ho realizzato interamente la parte client (package **it.unibo.authsim.client.app**) eccetto `it.unibo.authsim.client.app.mvvm.model.security.SecurityPolicy`. 
 
 In particolare sono stati realizzati:
 
@@ -62,7 +62,7 @@ In particolare sono stati realizzati:
 
 e i test relativi.
 
-Inoltre ha svolto i seguenti compiti DevOps e orgnaizzativi:
+Inoltre ho svolto i seguenti compiti DevOps e organizzativi:
 
 - Integrazione di **Travis CI** con la repository (organization) github
 - Tentativo d'integrazione di **SonarCould** (l'integrazione è di fatto configurata ma non si riesce utilizzarla a causa dell'assenza di supporto per Scala3)
@@ -96,14 +96,14 @@ e il `Set` all'interno ha lo stesso tipo per contenere i simboli; il pattern `De
 
 Inoltre, avendo `String` come tipo specifico del `Set`, è possibile utilizzare il trait anche per definire dizionari, cioè insiemi di parole con lunghezza maggiore di 1.
 
-Infine, è stato dato un tipo generico al trait stesso per permettere al metodo `and` di avere un tipo di ritorno specifico in base alla classe che lo ridefinisce:
+Infine, ho dato un tipo generico al trait stesso per permettere al metodo `and` di avere un tipo di ritorno specifico in base alla classe che lo ridefinisce:
 ad esempio, un alfabeto `SymbolicAlphabet`, quando unito con un altro alfabeto, restituisce un oggetto dello stesso tipo,
 in quanto l'operazione di unione avviene sui `Set` interni, mentre la funzione `acceptor` rimane la stessa dell'alfabeto su cui è stato chiamato `and`.
 
 ![Alphabet UML](/pps-2021-authsim/assets/images/AlphabetFullUml.jpg)
 
 ### Builder
-Il trait `Builder` è stato progettato come base per gli eventuali builder del progetto, pertanto definisce un proprio tipo generico,
+Ho progettato il trait `Builder` come base per gli eventuali builder del progetto, pertanto definisce un proprio tipo generico,
 che rappresenta il tipo dell'oggetto che costruirà infatti è il tipo di ritorno del metodo `build`.
 
 Inoltre, il trait definisce un metodo ausiliario per definire altri metodi compatibili con il pattern `Chaining Method`, proprio per questo
@@ -142,7 +142,7 @@ In questo modo è molto semplice aggregare delle statistiche ottenute da diversi
 Il trait `Consumer` rappresenta un qualsiasi consumatore di oggetti (infatti il trait definisce un tipo generico),
 quindi il metodo principale `consume` richiede un argomento e non restituisce alcun risultato.
 
-Il trait `StatisticsConsumer` rappresenta un `Consumer` di `Statistics`, e deve essere esteso da chiunque sia interessato
+Il trait `StatisticsConsumer` specifica il trait `Consumer` per degli oggetti di tipo `Statistics`, e deve essere esteso da chiunque sia interessato
 a consumare le statistiche di un attacco, sia per semplicemente stamparle sul terminale, che eventualmente controllare che un
 attacco non sia andato a buon fine (cioè se non è stata trovata la password di alcun utente).
 
@@ -163,13 +163,13 @@ le cifre da `0` a `9` e i simboli principali della tabella ASCII originale.
 
 ### Attacks
 
-Per gli attacchi è stata specificato solo un trait `Attack` pubblico, che tutti gli attacchi devono estendere.
+Per gli attacchi ho scritto solo un trait `Attack` pubblico, che tutti gli attacchi devono estendere.
 Il trait definisce il metodo `start`, che permette di eseguire l'attacco.
 
 Per creare un attacco si fa uso di builder (che estendono il trait `Builder[Attack]`), definiti a cascata in base alla tipologia dell'attacco e dei parametri che la tipologia stessa richiede:
 - `AttackBuilder`: si è supposto che, oltre a poter costruire un attacco, si possa anche eseguire subito col metodo `executeNow`; 
    inoltre, per un qualsiasi attacco si può specificare uno `StatisticsConsumer` a cui inviare le statistiche dell'attacco e un tempo di timeout, oltre al quale l'attacco viene considerato interrotto.
-- `OfflineAttackBuilder`: per gli attacchi offline è stato ipotizzato che fosse necessario scegliere un provider di informazioni delgi utenti e, 
+- `OfflineAttackBuilder`: per gli attacchi offline ho ipotizzato che fosse necessario scegliere un provider di informazioni delgi utenti e, 
    dato che questo tipo di attacchi si presta bene alla parallelizzazione delle operazioni basilari, il numero di thread da utilizzare per eseguire l'attacco.
 - `AbstractBruteForceAttackBuilder`: questa classe astratta generalizza i parametri necessari per tutti gli attacchi bruteforce, 
    cioè quelli semplici e gli attacchi a dizionario, permettendo di impostare il tipo di `Alphabet` da usare e il numero 

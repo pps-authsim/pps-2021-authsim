@@ -72,7 +72,7 @@ La raccolta di tali requisiti è stata realizzata mediante *User stories*.
 |-------------	|-----	|
 | WHO         	| In qualità di amministratore del sistema 	|
 | WHAT        	| vorrei che il framework mi permettesse di scegliere quale tipo di attacco implementare contro il mio sistema 	|
-| WHY         	| in modo da poter valutare quale sarebbe lo sforzo richiesto per crackare le password dei miei utenti 	|
+| WHY         	| in modo da poter valutare quale sarebbe lo sforzo richiesto per scoprire le password dei miei utenti 	|
 
 ### Client
 

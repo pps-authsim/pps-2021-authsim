@@ -188,13 +188,13 @@ Di seguito vengono quindi descritte le tre famiglie supportate partendo dalle fu
 
   - `HashFunction`
   Il trait `HashFunction`, modella una generica funzione hash[^Hash], esponendone le funzionalità principali.
-  Nel framework è stato deciso di mettere a disposizione i più noti algoritmi per fare hashing; nello specifico, non solo funzioni hash considerate attualmente sicure, ma bensì di permettere all'utente di disporre anche di funzioni non sicure, in modo da permettere confronti tra algoritmi resistenti alla crittoanalisi e altri che violano almeno una delle proprietà di sicurezza delle funzioni hash[^Hash-proprietà].
-Per rendere il processo maggiormente sicuro è stato deciso lasciare all'utente la possibilità di definire anche un valore di sale per garantire una maggiore sicurezza agli attacchi crittografici.
+  Nel framework è stato deciso di mettere a disposizione i più noti algoritmi per fare hashing; nello specifico, non solo funzioni hash considerate attualmente sicure, ma bensì di permettere all'utente di disporre anche di funzioni non sicure, in modo da permettere confronti tra algoritmi resistenti alla crittoanalisi e altri che violano almeno una delle proprietà di sicurezza delle funzioni hash[^HashProprieta].
+Per rendere il processo maggiormente sicuro è stato deciso di lasciare all'utente la possibilità di definire anche un valore di sale per garantire una maggiore sicurezza agli attacchi crittografici.
 
 [^Hash]: Gli algoritmi hash sono particolari tipi di funzioni utilizzati per garantire la confidenzialità dei dati.
 Questi ultimi infatti permettono di convertire input di una lunghezza arbitraria, in stringhe di lunghezza fissa, questo mapping deve essere infeasible da invertire e resistente alle collisioni per essere considerato sicuro.
 
-[^Hash-proprietà]: Le proprietà di sicurezza di riferimento delle funzioni hash sono tre: resistenza alla preimmagine, resistenza alla seconda preimmagine e resistenza alla collisione. Per maggiori informazioni consultare \[link to Funzioni Crittofiche di hash!](https://it.wikipedia.org/wiki/Funzione_crittografica_di_hash).
+[^HashProprieta]: Le proprietà di sicurezza di riferimento delle funzioni hash sono tre: resistenza alla preimmagine, resistenza alla seconda preimmagine e resistenza alla collisione. Per maggiori informazioni consultare \[link to Funzioni Crittofiche di hash!](https://it.wikipedia.org/wiki/Funzione_crittografica_di_hash).
   
  Entrambe le famiglie di algoritmi di encryption estendono da un trait condiviso che ne modella operazioni comuni; questi prende il nome di `EncryptionAlgoritm` .
   
@@ -203,7 +203,7 @@ Questi ultimi infatti permettono di convertire input di una lunghezza arbitraria
   
  [^CrittografiaSimmetrica]: Gli algoritmi di crittografia simmetrica sono gli algoritmi crittografici in grado di garantire la confidenzialità in un sistema.
  
-Per quanto riguarda questa tipologia di algoritmi si è scelto di mettere a disposizione tre algoritmi piuttosto differenti, il *Cifrario di Cesare*, *DES*, *AES*, anche in questo caso si è scelto di lasciare gli utilizzatori disporre anche di algoritmi la cui insicurezza è nota da lungo tempo [^CifrarioCesareInsicuro] ricordando che lo scopo del framework è quello di permettere all'utente di fare di confronti.
+Per quanto riguarda questa tipologia di algoritmi si è scelto di mettere a disposizione tre algoritmi piuttosto differenti, il *Cifrario di Cesare*, *DES*, *AES*, anche in questo caso si è scelto di lasciare gli utilizzatori liberi di disporre anche di algoritmi la cui insicurezza è nota da lungo tempo [^CifrarioCesareInsicuro] ricordando che lo scopo del framework è quello di permettere all'utente di fare di confronti.
 
 [^CifrarioCesareInsicuro]: L'insicurezza del Cifrario di Cesare è stata evidente fin dal XI a seguito degli studi sulle tecniche di crittoanalisi del arabo *Al-Kindi*. La sicurezza di DES invece è stata messa in questione dal 1997 quando per la prima volta sono stati violati messaggi criptati col suddetto algoritmo. Attualmente AES è l'unico algoritmo proposto ad essere approvato dal *NSA* per il passaggio di informazioni *top secret*. 
 

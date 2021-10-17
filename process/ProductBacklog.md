@@ -14,7 +14,7 @@
 | OTP                      | Implementazione dell'autenticazione tramite OTP                                                     |           12    |         |         |         |         |         |     14  |      2  |     3  |
 | Repository               | Creazione repository ed aggiunta dei plugin per la sua gestione                                     |             1   |       1 |        1|         |         |         |         |         |         |
 | Design Architetturale    | Descrizione architetturale del sistema tramite diagrammi UML                                        |             5   |       7 |         |         |         |         |         |         |         |
-| Utenti e Proxy           | Implementazione degli utenti e delle entit√† ad esse correlate (User, UserInformation, UserProvider)|             3   |         |       4 |      2  |       2 |     3   |         |     1   |         |
+| Utenti e Proxy           | Implementazione degli utenti e delle entit‡ ad esse correlate (User, UserInformation, UserProvider)|             3   |         |       4 |      2  |       2 |     3   |         |     1   |         |
 | Logger                   | Implementazione del logger                                                                          |              2  |         |       2 |         |       2 |         |         |         |         |
 | Builder                  | Implementazione di un builder comune                                                                |              3  |         |         |         |       4 |         |         |         |         |
 | Mockup                   | Definizione dei mockup per lo sviluppo dell'applicativo grafico                                     |              1  |       2 |         |         |         |         |         |         |         |
@@ -25,4 +25,3 @@
 | Integrazione Library     | Integrare Client con Library                                                                        |              3  |         |         |         |       3 |      4  |       3 |       3 |         |
 | Simulazione attacco      | Implementare le simulazioni degli attacchi                                                          |              2  |         |         |         |         |         |       2 |       3 |         |
 | Deploy                   | Preparazione per il rilascio                                                                        |                 |         |         |         |         |         |         |         |       6 | 
-

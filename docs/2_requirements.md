@@ -42,8 +42,6 @@ La raccolta di tali requisiti è stata realizzata mediante *User stories*.
 
 #### User Story 1
 
-// TODO Revisionare, Framework è svincolato dai DB. Forse è meglio dire che vogliamo essere agnostici rispetto al modo in cui passiamo gli utenti?
-
 |           	|   	|
 |-------------	|-----	|
 | WHO         	| In qualità di amministratore del sistema 	|

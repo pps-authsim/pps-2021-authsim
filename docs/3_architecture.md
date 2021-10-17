@@ -62,8 +62,8 @@ ViewModel implementa le *properties* e i comandi che vengono legati logicamente 
 ViewModel notifica la View dello cambiamento dello stato tramite *notifications* (eventi, callback...).
 In sintesi, view model definisce la funzionalità offerta dalla UI, ma non influisce sulla presentazione grafica.
 
-Inoltre, ViewModel è responsabile della coordinazione delle interazioni propagate dalla view a Model interessato.
-Per questo motivo, spesso model offrono la possibilità di eseguire *data binding* e reagire alle notification o eventi.
+Inoltre, ViewModel è responsabile della coordinazione delle interazioni propagate dalla View al Model interessato.
+Per questo motivo, spesso i Model offrono la possibilità di eseguire *data binding* e reagire alle notification o eventi.
 
 A tale fine, il binding tra View e ViewModel e tra ViewModel e Model è stato implementato con l'utilizzo delle *properties* e delle strutture dati
 che implementano il pattern Observer / Observable.

@@ -80,7 +80,7 @@ Nello specifico è stata quasi completata la stesura della relazione, così come
 Nell'ultima iterazione, sono state eseguite le ultime revisioni al codice ed ultimata la relazione di progetto.
 
 ## Backlog
-Il backlog è visibile nell'apposita sezione dell'appendice.
+Il product backlog è visibile nel file [process/ProductBacklog.md](https://github.com/pps-authsim/pps-2021-authsim/blob/feature/documentation/process/ProductBacklog.md).
 
 # Conclusione e commenti finali
 Lo sviluppo del progetto è stata un esperienza essenziale nel nostro percorso di studi in quanto ha permesso di toccare con mano molti degli aspetti centrali affrontanti nel corso.

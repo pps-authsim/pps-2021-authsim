@@ -3,12 +3,12 @@
 In questo capitolo vengono descritti quelli che sono stati i requisiti emersi durante la fase di analisi.
 
 Essendo il progetto suddiviso in due macro parti principali, il framework e l'applicativo dimostrativo,
-verranno di seguiti esposti in sezioni differenti i requisiti specifici per ognuno dei due macro componenti individuati.
+verranno di seguito esposti in sezioni differenti i requisiti specifici per ognuno dei due componenti individuati.
 
 ## Business Requirements
 
 I requisiti di business riguardano la “business solution” del progetto, includendo i bisogni dei clienti e le loro aspettative.
-A valle di un analisi preliminare del progetto sono stati identificati i requisiti di business identificati per il framework e l'applicativo dimostrativo possono essere riassunti come segue.
+A valle di un analisi preliminare del progetto i requisiti identificati possono essere riassunti come segue.
 
 ### Library 
 
@@ -30,7 +30,7 @@ In particolare:
 - Permettere di selezionare il tipo di attacco da simulare
 - Permettere di selezionare il tipo di persistenza per memorizzare gli utenti (sql/mongo)
 - Permettere di selezionare il tipo di policy di sicurezza da implementare per la simulazione dell'attacco
-- Visualizzare l'andamento dell'attacco e le statistiche relative come il tempo impiegato e se fosse andato a buon fine.
+- Visualizzare l'andamento dell'attacco e le statistiche ad esso relative: tempo impiegato ed esito.
 
 ## User Requirements
 

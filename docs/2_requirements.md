@@ -47,7 +47,7 @@ La raccolta di tali requisiti è stata realizzata mediante *User stories*.
 |           	|   	|
 |-------------	|-----	|
 | WHO         	| In qualità di amministratore del sistema 	|
-| WHAT        	| vorrei che il framework mi permettesse di scegliere da quale database importare le credenziali dei miei utenti 	|
+| WHAT        	| vorrei che il framework mi permettesse di scegliere da quale sorgente importare le credenziali dei miei utenti 	|
 | WHY         	| in modo da poter evitare conversioni 	|
 
 #### User Story 2
